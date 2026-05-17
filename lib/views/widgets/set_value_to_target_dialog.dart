@@ -442,7 +442,9 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
         case InvalidValueState.playlistPositionFormatInvalid:
           warningMessageVM.setError(
             errorType: ErrorType.playlistPositionFormatInvalid,
-            errorArgOne: enteredStr,
+            errorArgOne: widget.validationFunctionArgs[0]
+                .toString(), // the number of selectable playlists
+            errorArgTwo: enteredStr,
           );
 
           _passedValueTextEditingController.text = enteredStr;

@@ -271,7 +271,8 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
                 context: _context,
                 message: AppLocalizations.of(context)!
                     .playlistPositionFormatErrorMessage(
-                        _warningMessageVM.errorArgOne),
+                        _warningMessageVM.errorArgOne,
+                        _warningMessageVM.errorArgTwo),
                 warningMessageVM: _warningMessageVM,
                 themeProviderVM: themeProviderVM,
               );

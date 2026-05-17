@@ -2947,8 +2947,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get movePlaylistMenu => 'Move Playlist ...';
 
   @override
-  String playlistPositionFormatErrorMessage(Object valueStr) {
-    return '$valueStr does not respect the positive or negative integer playlist position format.';
+  String playlistPositionFormatErrorMessage(
+      Object maxValueStr, Object valueStr) {
+    return '\"$valueStr\" does not respect the possible playlist position (from 1 to $maxValueStr).';
   }
 
   @override

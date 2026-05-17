@@ -71,7 +71,7 @@ class SetValueToTargetDialog extends StatefulWidget {
   SetValueToTargetDialog({
     super.key,
     required this.dialogTitle,
-    required this.dialogCommentStr,
+    this.dialogCommentStr = '',
     this.passedValueFieldLabel = '',
     this.passedValueFieldTooltip = '',
     this.passedValueStr = '',
@@ -207,11 +207,14 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              createTitleCommentRowFunction(
-                titleTextWidgetKey: const Key('setValueToTargetDialogKey'),
-                context: context,
-                commentStr: widget.dialogCommentStr,
-              ),
+              (widget.dialogCommentStr.isNotEmpty)
+                  ? createTitleCommentRowFunction(
+                      titleTextWidgetKey:
+                          const Key('setValueToTargetDialogKey'),
+                      context: context,
+                      commentStr: widget.dialogCommentStr,
+                    )
+                  : SizedBox.shrink(),
               (widget.passedValueFieldLabel.isNotEmpty)
                   ? (widget.isPassedValueEditable)
                       ? createEditableRowFunction(

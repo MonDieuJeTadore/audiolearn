@@ -1716,5 +1716,8 @@
   "modifyAudioUrlTooltip": "",
   "modifyAudioUrlDialogComment": "Modify the audio URL to its Youtube video URL.",
   "modifyAudioUrlLabel": "URL",
-  "modifyAudioUrlButton": "Modify"
+  "modifyAudioUrlButton": "Modify",
+  "playlistPositionDefinitionTitle": "Définition de la nouvelle position de la playlist",
+  "playlistPositionFieldLabel": "Nouvelle position",
+  "playlistPositionFieldTooltip": "Valeur de la position où déplacer la playlist."
 }

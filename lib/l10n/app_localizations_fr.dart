@@ -3040,4 +3040,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get modifyAudioUrlButton => 'Modify';
+
+  @override
+  String get playlistPositionDefinitionTitle =>
+      'Définition de la nouvelle position de la playlist';
+
+  @override
+  String get playlistPositionFieldLabel => 'Nouvelle position';
+
+  @override
+  String get playlistPositionFieldTooltip =>
+      'Valeur de la position où déplacer la playlist.';
 }

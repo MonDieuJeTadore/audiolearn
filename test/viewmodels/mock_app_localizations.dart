@@ -3129,4 +3129,15 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get modifyAudioUrlButton => "Modify";
+
+  @override
+  String get playlistPositionDefinitionTitle =>
+      "Playlist new Position Definition";
+
+  @override
+  String get playlistPositionFieldLabel => "Position value";
+
+  @override
+  String get playlistPositionFieldTooltip =>
+      "Position value to move the playlist to.";
 }

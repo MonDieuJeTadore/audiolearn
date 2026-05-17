@@ -4831,6 +4831,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Modify'**
   String get modifyAudioUrlButton;
+
+  /// No description provided for @playlistPositionDefinitionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Playlist new Position Definition'**
+  String get playlistPositionDefinitionTitle;
+
+  /// No description provided for @playlistPositionFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Position value'**
+  String get playlistPositionFieldLabel;
+
+  /// No description provided for @playlistPositionFieldTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Position value to move the playlist to.'**
+  String get playlistPositionFieldTooltip;
 }
 
 class _AppLocalizationsDelegate

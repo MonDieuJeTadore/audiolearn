@@ -372,18 +372,13 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
               context: context,
               builder: (BuildContext context) {
                 return SetValueToTargetDialog(
-                  dialogTitle: "Playlist move Position Definition",
-                  // AppLocalizations.of(context)!
-                  //     .setAudioDownloadFromDateTimeTitle,
-                  dialogCommentStr:
-                      "Set number of positions to move the playlist up (negative) or down (positive)",
-                  // AppLocalizations.of(context)!
-                  //     .audioDownloadFromDateTimeUniquePlaylistExplanation,
-                  passedValueFieldLabel: "Position number",
+                  dialogTitle: AppLocalizations.of(context)!
+                      .playlistPositionDefinitionTitle,
+                  passedValueFieldLabel: AppLocalizations.of(context)!
+                      .playlistPositionFieldLabel,
                   passedValueFieldTooltip:
-                      "Position number to move the playlist up (negative) or down (positive)",
-                  // AppLocalizations.of(context)!
-                  //     .audioDownloadFromDateTimeUniquePlaylistTooltip,
+                      AppLocalizations.of(context)!
+                      .playlistPositionFieldTooltip,
                   checkboxLabelLst: [],
                   validationFunction: validatePlaylistPositionFormat,
                   validationFunctionArgs: [

@@ -965,6 +965,32 @@ class PlaylistListVM extends ChangeNotifier {
     }
   }
 
+  void moveSelectedPlaylistToPosition({
+    int positionNumberToMove = 1,
+  }) {
+    int selectedPlaylistIndexBeforeMoving = _getSelectedPlaylistIndex();
+
+    if (selectedPlaylistIndexBeforeMoving != -1) {
+      _movePlaylistUp(
+        selectedPlaylistIndex: selectedPlaylistIndexBeforeMoving,
+        positionNumberToMove: positionNumberToMove,
+      );
+      _updateAndSavePlaylistOrder();
+
+      if ((selectedPlaylistIndexBeforeMoving - _getSelectedPlaylistIndex())
+              .abs() >
+          1) {
+        _warningMessageVM.signalPlaylistMovePosition(
+          playlistTitle: _uniqueSelectedPlaylist!.title,
+          playlistPositionFrom: selectedPlaylistIndexBeforeMoving + 1,
+          playlistPositionTo: _getSelectedPlaylistIndex() + 1,
+        );
+      }
+
+      notifyListeners();
+    }
+  }
+
   int getPlaylistJsonFileSize({
     required Playlist playlist,
   }) {

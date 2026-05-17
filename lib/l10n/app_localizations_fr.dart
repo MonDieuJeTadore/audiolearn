@@ -3002,7 +3002,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String movedPlaylistMessage(
       Object playlist, Object positionFrom, Object positionTo) {
-    return 'La playlist $playlist a été déplacée de la position $positionFrom à la position $positionTo.';
+    return 'La playlist \"$playlist\" a été déplacée de la position $positionFrom à la position $positionTo.';
   }
 
   @override

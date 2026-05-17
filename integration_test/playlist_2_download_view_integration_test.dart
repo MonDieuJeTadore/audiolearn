@@ -6217,7 +6217,7 @@ void main() {
         );
       });
       testWidgets(
-          '''In playlist download view, move down a playlist located at bottom of
+          '''In playlist downl view mv down a playlist located at bottom of
              the list of playlists by clicking on the move down icon button. This
              positions the moved playlist at top of the list of playlists. Then,
              verifying that it was scrolled correctly and it is visible.''',
@@ -6288,7 +6288,7 @@ void main() {
         );
       });
       testWidgets(
-          '''In playlist download view, move up a playlist located at top of
+          '''In playlist downl view mv up a playlist located at top of
              the list of playlists by clicking on the move up icon button. This
              positions the moved playlist at bottom of the list of playlists. Then,
              verifying that it was scrolled correctly and it is visible.''',

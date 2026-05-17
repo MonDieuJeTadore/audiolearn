@@ -3028,12 +3028,6 @@ class MockAppLocalizations extends AppLocalizations {
   String get movePlaylistMenu => "Move Playlist ...";
 
   @override
-  String playlistPositionFormatErrorMessage(
-    Object valueStr,
-  ) =>
-      "$valueStr does not respect the positive or negative integer playlist position format.";
-
-  @override
   String playlistPositionTooBigErrorMessage(
     Object enteredPosition,
     Object playlistsNumber,
@@ -3140,4 +3134,11 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get playlistPositionFieldTooltip =>
       "Position value to move the playlist to.";
+
+  @override
+  String playlistPositionFormatErrorMessage(
+    Object valueStr,
+    Object maxValueStr,
+  ) =>
+      "\"$valueStr\" does not respect the possible playlist position (1 to $maxValueStr).";
 }

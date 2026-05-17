@@ -4743,8 +4743,9 @@ abstract class AppLocalizations {
   /// No description provided for @playlistPositionFormatErrorMessage.
   ///
   /// In en, this message translates to:
-  /// **'{valueStr} does not respect the positive or negative integer playlist position format.'**
-  String playlistPositionFormatErrorMessage(Object valueStr);
+  /// **'\"{valueStr}\" does not respect the possible playlist position (from 1 to {maxValueStr}).'**
+  String playlistPositionFormatErrorMessage(
+      Object maxValueStr, Object valueStr);
 
   /// No description provided for @playlistPositionTooBigErrorMessage.
   ///

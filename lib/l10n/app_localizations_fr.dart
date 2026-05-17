@@ -2983,8 +2983,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get movePlaylistMenu => 'Déplacer la playlist ...';
 
   @override
-  String playlistPositionFormatErrorMessage(Object valueStr) {
-    return '$valueStr ne respecte pas le format d’une position de playlist qui doit être un entier positif ou négatif.';
+  String playlistPositionFormatErrorMessage(
+      Object maxValueStr, Object valueStr) {
+    return '\"$valueStr\" ne respecte pas la valeur possible de la position d\'une playlist (de 1 à $maxValueStr).';
   }
 
   @override

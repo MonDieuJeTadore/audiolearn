@@ -1582,7 +1582,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
 
     int? parsedPosition = int.tryParse(enteredPositionStr);
 
-    if (parsedPosition == null) {
+    if (enteredPositionStr.isEmpty || parsedPosition == null || parsedPosition < 1) {
       return InvalidValueState
           .playlistPositionFormatInvalid; // This will prevent the dialog from closing
     } else if (parsedPosition.abs() > selectablePlaylistsNumber) {

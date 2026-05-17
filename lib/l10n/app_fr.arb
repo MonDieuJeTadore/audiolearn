@@ -1702,7 +1702,7 @@
   "rewindFilteredAudioToStart": "Repositionner les audios filrés au début",
   "rewindedFilteredPlayableAudioNumber": "{number} audios filtrés de la playlist ont été repositionnés au début et le premier audio écoutable a été selectionné.",
   "movePlaylistMenu": "Déplacer la playlist ...",
-  "playlistPositionFormatErrorMessage": "{valueStr} ne respecte pas le format d’une position de playlist qui doit être un entier positif ou négatif.",
+  "playlistPositionFormatErrorMessage": "\"{valueStr}\" ne respecte pas la valeur possible de la position d'une playlist (de 1 à {maxValueStr}).",
   "playlistPositionTooBigErrorMessage": "{enteredPosition} dépasse le nombre de playlists ({playlistsNumber}) et n’est donc pas valide pour repositionner la playlist.",
   "playlistPositionTooltip": "Position de la playlist: {playlistPosition}",
   "movedPlaylistMessage": "La playlist {playlist} a été déplacée de la position {positionFrom} à la position {positionTo}.",

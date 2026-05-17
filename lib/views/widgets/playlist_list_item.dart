@@ -195,11 +195,6 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
           child: Text(AppLocalizations.of(context)!.displayPlaylistInfo),
         ),
         PopupMenuItem<PlaylistPopupMenuAction>(
-          key: const Key('popup_menu_rename_playlist'),
-          value: PlaylistPopupMenuAction.renamePlaylist,
-          child: Text(AppLocalizations.of(context)!.renamePlaylistMenu),
-        ),
-        PopupMenuItem<PlaylistPopupMenuAction>(
           key: const Key('popup_menu_move_playlist'),
           value: PlaylistPopupMenuAction.movePlaylist,
           child: Text(AppLocalizations.of(context)!.movePlaylistMenu),
@@ -216,15 +211,6 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
           child: Text(AppLocalizations.of(context)!.playlistCommentMenu),
         ),
         PopupMenuItem<PlaylistPopupMenuAction>(
-          key: const Key('popup_menu_import_audio_in_playlist'),
-          value: PlaylistPopupMenuAction.importAudioFilesInPlaylist,
-          child: Tooltip(
-            message:
-                AppLocalizations.of(context)!.playlistImportAudioMenuTooltip,
-            child: Text(AppLocalizations.of(context)!.playlistImportAudioMenu),
-          ),
-        ),
-        PopupMenuItem<PlaylistPopupMenuAction>(
           key: const Key('popup_menu_convert_text_to_audio_in_playlist'),
           value: PlaylistPopupMenuAction.convertTextToAudioInPlaylist,
           child: Tooltip(
@@ -232,27 +218,6 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                 .playlistConvertTextToAudioMenuTooltip,
             child: Text(
                 AppLocalizations.of(context)!.playlistConvertTextToAudioMenu),
-          ),
-        ),
-        PopupMenuItem<PlaylistPopupMenuAction>(
-          key: const Key('popup_menu_download_video_urls_in_playlist'),
-          value:
-              PlaylistPopupMenuAction.downloadVideoUrlsFromTextFileInPlaylist,
-          child: Tooltip(
-            message: AppLocalizations.of(context)!
-                .downloadVideoUrlsFromTextFileInPlaylistTooltip,
-            child: Text(AppLocalizations.of(context)!
-                .downloadVideoUrlsFromTextFileInPlaylist),
-          ),
-        ),
-        PopupMenuItem<PlaylistPopupMenuAction>(
-          key: const Key('popup_menu_update_playable_audio_list'),
-          value: PlaylistPopupMenuAction.updatePlaylistPlayableAudios,
-          child: Tooltip(
-            message: AppLocalizations.of(context)!
-                .updatePlaylistPlayableAudioListTooltip,
-            child: Text(
-                AppLocalizations.of(context)!.updatePlaylistPlayableAudioList),
           ),
         ),
         PopupMenuItem<PlaylistPopupMenuAction>(
@@ -264,21 +229,12 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
           ),
         ),
         PopupMenuItem<PlaylistPopupMenuAction>(
-          key: const Key('popup_menu_set_audio_play_speed'),
-          value: PlaylistPopupMenuAction.setPlaylistAudioPlaySpeed,
+          key: const Key('popup_menu_import_audio_in_playlist'),
+          value: PlaylistPopupMenuAction.importAudioFilesInPlaylist,
           child: Tooltip(
             message:
-                AppLocalizations.of(context)!.setPlaylistAudioPlaySpeedTooltip,
-            child: Text(AppLocalizations.of(context)!.setAudioPlaySpeed),
-          ),
-        ),
-        PopupMenuItem<PlaylistPopupMenuAction>(
-          key: const Key('popup_menu_set_audio_quality'),
-          value: PlaylistPopupMenuAction.setPlaylistAudioQuality,
-          child: Tooltip(
-            message:
-                AppLocalizations.of(context)!.setPlaylistAudioQualityTooltip,
-            child: Text(AppLocalizations.of(context)!.setPlaylistAudioQuality),
+                AppLocalizations.of(context)!.playlistImportAudioMenuTooltip,
+            child: Text(AppLocalizations.of(context)!.playlistImportAudioMenu),
           ),
         ),
         PopupMenuItem<PlaylistPopupMenuAction>(
@@ -321,6 +277,39 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
           key: const Key('popup_menu_delete_playlist'),
           value: PlaylistPopupMenuAction.deletePlaylist,
           child: Text(AppLocalizations.of(context)!.deletePlaylist),
+        ),
+        PopupMenuItem<PlaylistPopupMenuAction>(
+          key: const Key('popup_menu_rename_playlist'),
+          value: PlaylistPopupMenuAction.renamePlaylist,
+          child: Text(AppLocalizations.of(context)!.renamePlaylistMenu),
+        ),
+        PopupMenuItem<PlaylistPopupMenuAction>(
+          key: const Key('popup_menu_set_audio_play_speed'),
+          value: PlaylistPopupMenuAction.setPlaylistAudioPlaySpeed,
+          child: Tooltip(
+            message:
+                AppLocalizations.of(context)!.setPlaylistAudioPlaySpeedTooltip,
+            child: Text(AppLocalizations.of(context)!.setAudioPlaySpeed),
+          ),
+        ),
+        PopupMenuItem<PlaylistPopupMenuAction>(
+          key: const Key('popup_menu_set_audio_quality'),
+          value: PlaylistPopupMenuAction.setPlaylistAudioQuality,
+          child: Tooltip(
+            message:
+                AppLocalizations.of(context)!.setPlaylistAudioQualityTooltip,
+            child: Text(AppLocalizations.of(context)!.setPlaylistAudioQuality),
+          ),
+        ),
+        PopupMenuItem<PlaylistPopupMenuAction>(
+          key: const Key('popup_menu_update_playable_audio_list'),
+          value: PlaylistPopupMenuAction.updatePlaylistPlayableAudios,
+          child: Tooltip(
+            message: AppLocalizations.of(context)!
+                .updatePlaylistPlayableAudioListTooltip,
+            child: Text(
+                AppLocalizations.of(context)!.updatePlaylistPlayableAudioList),
+          ),
         ),
       ],
       elevation: 8,

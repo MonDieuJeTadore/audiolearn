@@ -6220,7 +6220,10 @@ void main() {
           '''In playlist downl view mv down a playlist located at bottom of
              the list of playlists by clicking on the move down icon button. This
              positions the moved playlist at top of the list of playlists. Then,
-             verifying that it was scrolled correctly and it is visible.''',
+             verifying that it was scrolled correctly and it is visible.
+             
+             The new playlist position is verified. The same is done if the
+             playlist is moved down of one position only.''',
           (WidgetTester tester) async {
         await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
           tester: tester,
@@ -6232,11 +6235,11 @@ void main() {
         // the lowest positioned playlist
 
         // Find the playlist list widget using its key
-        final Finder listFinder =
+        Finder playlistListFinder =
             find.byKey(const Key('expandable_playlist_list'));
 
         // Perform the scroll action
-        await tester.drag(listFinder, const Offset(0, -2000));
+        await tester.drag(playlistListFinder, const Offset(0, -2000));
         await tester.pumpAndSettle();
 
         // Select the 'local_10' playlist
@@ -6244,22 +6247,62 @@ void main() {
         String playlistToSelectTitle = 'local_10';
 
         // First, find the Playlist ListTile Text widget
-        await _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox(
+        Finder playlistToSelectListTileTextWidgetFinder =
+            await _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox(
           tester: tester,
           playlistToSelectTitle: playlistToSelectTitle,
           verifyIfCheckboxIsChecked: false,
           tapOnCheckbox: true,
         );
 
+        // Verify the playlist position before it is moved down
+
+        // Trigger the tooltip with a long press
+        await tester.longPress(playlistToSelectListTileTextWidgetFinder);
+
+        // Wait for the tooltip to appear
+        await tester.pumpAndSettle();
+
+        // Verify the the selected playlist text tooltip in french which
+        // contains its position
+        expect(find.text('Position de la playlist: 11'), findsOneWidget);
+
         // Tap on the move down playlist icon button in order to move
         // the lowest positioned playlist to top of the list of playlists
         await tester.tap(find.byKey(Key('move_down_playlist_button')));
         await tester.pumpAndSettle();
 
-        // Now verify that the moved playlist is visible
+        // Now verifying the confirming warning dialog. This warning
+        // dialog is displayed only if the playlist move is > 1 position
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "La playlist \"$playlistToSelectTitle\" a été déplacée de la position 11 à la position 1.",
+          isWarningConfirming: true,
+        );
 
-        Finder playlistToSelectListTileTextWidgetFinder =
+        // Verify the moved playlist position
+
+        playlistListFinder = find.byKey(const Key('expandable_playlist_list'));
+
+        // Perform the scroll up action
+        await tester.drag(playlistListFinder, const Offset(0, 1000));
+        await tester.pumpAndSettle();
+
+        playlistToSelectListTileTextWidgetFinder =
             find.text(playlistToSelectTitle).last;
+
+        // Trigger the tooltip with a long press
+        await tester.longPress(playlistToSelectListTileTextWidgetFinder);
+
+        // Wait for the tooltip to appear
+        await tester.pumpAndSettle();
+
+        // Verify the the selected playlist text tooltip in french which
+        // contains its position
+        expect(find.text('Position de la playlist: 1'), findsOneWidget);
+
+        // Now verify that the moved playlist is visible
 
         // Then obtain the Playlist ListTile widget enclosing the Text widget
         // by finding its ancestor
@@ -6281,17 +6324,37 @@ void main() {
 
         expect(checkboxWidget.value!, true);
 
+        // Tap on the move down playlist icon button in order to move
+        // the playlist down of one position
+        await tester.tap(find.byKey(Key('move_down_playlist_button')));
+        await tester.pumpAndSettle();
+
+        playlistToSelectListTileTextWidgetFinder =
+            find.text(playlistToSelectTitle).last;
+
+        // Trigger the tooltip with a long press
+        await tester.longPress(playlistToSelectListTileTextWidgetFinder);
+
+        // Wait for the tooltip to appear
+        await tester.pumpAndSettle();
+
+        // Verify the the selected playlist text tooltip in french which
+        // contains its position
+        expect(find.text('Position de la playlist: 2'), findsOneWidget);
+
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
         DirUtil.deleteFilesInDirAndSubDirs(
           rootPath: kApplicationPathWindowsTest,
         );
       });
-      testWidgets(
-          '''In playlist downl view mv up a playlist located at top of
+      testWidgets('''In playlist downl view mv up a playlist located at top of
              the list of playlists by clicking on the move up icon button. This
              positions the moved playlist at bottom of the list of playlists. Then,
-             verifying that it was scrolled correctly and it is visible.''',
+             verifying that it was scrolled correctly and it is visible.
+             
+             The new playlist position is verified. The same is done if the
+             playlist is moved up of one position only.''',
           (WidgetTester tester) async {
         await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
           tester: tester,
@@ -6305,12 +6368,25 @@ void main() {
         String playlistToSelectTitle = 'Jeunes pianistes extraordinaires';
 
         // First, find the Playlist ListTile Text widget
-        await _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox(
+        Finder playlistToSelectListTileTextWidgetFinder =
+            await _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox(
           tester: tester,
           playlistToSelectTitle: playlistToSelectTitle,
           verifyIfCheckboxIsChecked: false,
           tapOnCheckbox: true,
         );
+
+        // Verify the playlist position before it is moved up
+
+        // Trigger the tooltip with a long press
+        await tester.longPress(playlistToSelectListTileTextWidgetFinder);
+
+        // Wait for the tooltip to appear
+        await tester.pumpAndSettle();
+
+        // Verify the the selected playlist text tooltip in french which
+        // contains its position
+        expect(find.text('Position de la playlist: 1'), findsOneWidget);
 
         // Tap on the move up playlist icon button in order to move
         // the highest positioned playlist to bottom of the list of
@@ -6318,9 +6394,39 @@ void main() {
         await tester.tap(find.byKey(Key('move_up_playlist_button')));
         await tester.pumpAndSettle();
 
+        // Now verifying the confirming warning dialog. This warning
+        // dialog is displayed only if the playlist move is > 1 position
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "La playlist \"$playlistToSelectTitle\" a été déplacée de la position 1 à la position 11.",
+          isWarningConfirming: true,
+        );
+
+        // Verify the moved playlist position
+
+        Finder playlistListFinder = find.byKey(const Key('expandable_playlist_list'));
+
+        // Perform the scroll down action
+        await tester.drag(playlistListFinder, const Offset(0, -1000));
+        await tester.pumpAndSettle();
+
+        playlistToSelectListTileTextWidgetFinder =
+            find.text(playlistToSelectTitle).last;
+
+        // Trigger the tooltip with a long press
+        await tester.longPress(playlistToSelectListTileTextWidgetFinder);
+
+        // Wait for the tooltip to appear
+        await tester.pumpAndSettle();
+
+        // Verify the the selected playlist text tooltip in french which
+        // contains its position
+        expect(find.text('Position de la playlist: 11'), findsOneWidget);
+
         // Now verify that the moved playlist is visible
 
-        Finder playlistToSelectListTileTextWidgetFinder =
+        playlistToSelectListTileTextWidgetFinder =
             find.text(playlistToSelectTitle).last;
 
         // Then obtain the Playlist ListTile widget enclosing the Text widget
@@ -6342,6 +6448,24 @@ void main() {
             .widget<Checkbox>(playlistToSelectListTileCheckboxWidgetFinder);
 
         expect(checkboxWidget.value!, true);
+
+        // Tap on the move up playlist icon button in order to move
+        // the playlist up of one position
+        await tester.tap(find.byKey(Key('move_up_playlist_button')));
+        await tester.pumpAndSettle();
+
+        playlistToSelectListTileTextWidgetFinder =
+            find.text(playlistToSelectTitle).last;
+
+        // Trigger the tooltip with a long press
+        await tester.longPress(playlistToSelectListTileTextWidgetFinder);
+
+        // Wait for the tooltip to appear
+        await tester.pumpAndSettle();
+
+        // Verify the the selected playlist text tooltip in french which
+        // contains its position
+        expect(find.text('Position de la playlist: 10'), findsOneWidget);
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
@@ -52336,7 +52460,7 @@ Playlist loadPlaylist(String playListOneName) {
 ///   1/ for executing the expect that the playlist checkbox is checked code,
 ///   2/ for tapping on  the playlist checkbox.
 /// The two boolean parameters define what this method does.
-Future<void> _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox({
+Future<Finder> _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox({
   required WidgetTester tester,
   required String playlistToSelectTitle,
   required bool verifyIfCheckboxIsChecked,
@@ -52373,6 +52497,8 @@ Future<void> _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox({
     await tester.tap(playlistToSelectListTileCheckboxWidgetFinder);
     await tester.pumpAndSettle();
   }
+
+  return playlistToSelectListTileCheckboxWidgetFinder;
 }
 
 Future<void> _onAudioPlayerViewCheckOrTapOnPlaylistCheckbox({

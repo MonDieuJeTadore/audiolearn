@@ -76,7 +76,6 @@ dependencies:
   code_builder: ^4.11.1
   shared_preferences: ^2.5.4
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -85,6 +84,16 @@ dev_dependencies:
   intl_utils: ^2.0.0
   mockito: ^5.4.4
   build_runner: ^2.3.3
+  msix: ^3.16.13
+
+msix_config:
+  display_name: AudioLearn
+  publisher_display_name: Jean-Pierre Schnyder
+  identity_name: com.schnyder.audiolearn     # use a real reverse-domain name
+  msix_version: 3.3.4.0                      # match your app version
+  logo_path: assets\icons\audiolearn.ico
+  capabilities: microphone, internetClient
+  languages: en, fr                          # add French since your app is bilingual
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -92,6 +101,7 @@ flutter:
   generate: true
   assets:
     - lib/l10n/
+    - assets\icons\audiolearn.ico
     - assets/images/
     - assets/audio/
     - assets/help/french/playlist_usage/help_content.json

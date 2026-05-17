@@ -397,15 +397,9 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
               final int parsedPlaylistNewPosition =
                   int.parse(playlistNewPosition);
 
-              if (parsedPlaylistNewPosition > 0) {
-                playlistListVMlistenFalse.moveSelectedPlaylistDown(
+                playlistListVMlistenFalse.moveSelectedPlaylistToPosition(
                   positionNumberToMove: parsedPlaylistNewPosition,
                 );
-              } else if (parsedPlaylistNewPosition < 0) {
-                playlistListVMlistenFalse.moveSelectedPlaylistUp(
-                  positionNumberToMove: parsedPlaylistNewPosition.abs(),
-                );
-              }
             });
             break;
           case PlaylistPopupMenuAction.addPositionToAudioTitle:

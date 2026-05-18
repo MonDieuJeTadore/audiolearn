@@ -968,26 +968,18 @@ class PlaylistListVM extends ChangeNotifier {
   void moveSelectedPlaylistToPosition({
     int positionNumberToMove = 1,
   }) {
-    int selectedPlaylistIndexBeforeMoving = _getSelectedPlaylistIndex();
+    int selectedPlaylistIndexBeforeMoving = _getSelectedPlaylistIndex() + 1;
 
-    if (selectedPlaylistIndexBeforeMoving != -1) {
-      _movePlaylistUp(
-        selectedPlaylistIndex: selectedPlaylistIndexBeforeMoving,
-        positionNumberToMove: positionNumberToMove,
+    if (selectedPlaylistIndexBeforeMoving > positionNumberToMove) {
+      moveSelectedPlaylistUp(
+        positionNumberToMove:
+            selectedPlaylistIndexBeforeMoving - positionNumberToMove,
       );
-      _updateAndSavePlaylistOrder();
-
-      if ((selectedPlaylistIndexBeforeMoving - _getSelectedPlaylistIndex())
-              .abs() >
-          1) {
-        _warningMessageVM.signalPlaylistMovePosition(
-          playlistTitle: _uniqueSelectedPlaylist!.title,
-          playlistPositionFrom: selectedPlaylistIndexBeforeMoving + 1,
-          playlistPositionTo: _getSelectedPlaylistIndex() + 1,
-        );
-      }
-
-      notifyListeners();
+    } else if (selectedPlaylistIndexBeforeMoving < positionNumberToMove) {
+      moveSelectedPlaylistDown(
+        positionNumberToMove:
+            positionNumberToMove - selectedPlaylistIndexBeforeMoving,
+      );
     }
   }
 
@@ -1184,7 +1176,8 @@ class PlaylistListVM extends ChangeNotifier {
     List<Playlist> selectedPlaylists = getSelectedPlaylists();
     _downloadingPlaylist = selectedPlaylists[0];
 
-    await _audioDownloadVM.downloadPlaylistAudio(playlistUrl: _downloadingPlaylist!.url);
+    await _audioDownloadVM.downloadPlaylistAudio(
+        playlistUrl: _downloadingPlaylist!.url);
 
     // After downloading the playlist audio, the _downloadedPlaylist is set to null
     _downloadingPlaylist = null;
@@ -6496,7 +6489,8 @@ class PlaylistListVM extends ChangeNotifier {
     required String fileName,
   }) {
     for (Audio audio in playlist.playableAudioLst) {
-      if (audio.audioType == AudioType.textToSpeech && audio.audioFileName == fileName  ) {
+      if (audio.audioType == AudioType.textToSpeech &&
+          audio.audioFileName == fileName) {
         return audio;
       }
     }

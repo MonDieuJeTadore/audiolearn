@@ -385,6 +385,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                     playlistListVMlistenFalse.listOfSelectablePlaylists.length,
                   ],
                   isCursorAtStart: true,
+                  maxLinesForDialogTitle: 3, // To avoid overflow if the title is in french.
                 );
               },
             ).then((resultStringLst) async {

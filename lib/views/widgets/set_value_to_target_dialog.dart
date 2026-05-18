@@ -54,6 +54,8 @@ class SetValueToTargetDialog extends StatefulWidget {
   final bool isEditableTextFieldSelected; // If true, the passed value contained
   //                                         in the TextField is selected.
 
+  final int maxLinesForDialogTitle; // The maximum number of lines for the dialog title.
+
   /// If the [passedValueFieldLabel] and the [passedValueStr] are not passed and so
   /// remains both empty, the dialog will not display the passed value field.
   ///
@@ -86,6 +88,7 @@ class SetValueToTargetDialog extends StatefulWidget {
     this.helpItemsLst = const [],
     this.areCheckboxesOnRow = true, // if false, checkboxes are on column
     this.isEditableTextFieldSelected = true,
+    this.maxLinesForDialogTitle = 2,
   }) : isValueStringUsed = passedValueFieldLabel.isNotEmpty;
 
   @override
@@ -176,7 +179,7 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
                 widget.dialogTitle,
                 style: Theme.of(context).textTheme.headlineSmall,
                 textAlign: TextAlign.center, // Centered multi lines text
-                maxLines: 2,
+                maxLines: widget.maxLinesForDialogTitle,
               ),
             ),
             if (widget.helpItemsLst.isNotEmpty)

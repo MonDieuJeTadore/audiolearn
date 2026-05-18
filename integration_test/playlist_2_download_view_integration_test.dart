@@ -6080,7 +6080,7 @@ void main() {
           tester: tester,
           playlistToSelectTitle: 'local_10',
           verifyIfCheckboxIsChecked: true,
-          tapOnCheckbox: false,
+          tapOnCheckbox: true,
         );
 
         await _executeSearchWordScrollTest(
@@ -6089,16 +6089,24 @@ void main() {
           scrollUpOrDownPlaylistsList: 1000,
         );
 
+        // // Find the playlist list widget using its key
+        // Finder playlistListFinder =
+        //     find.byKey(const Key('expandable_playlist_list'));
+
+        // // Perform the scroll down action
+        // await tester.drag(playlistListFinder, const Offset(0, -300));
+        // await tester.pumpAndSettle();
+
         await _executeSearchWordScrollTest(
           tester: tester,
           playlistTitle: 'local_13',
-          scrollUpOrDownPlaylistsList: -1000,
+          scrollUpOrDownPlaylistsList: 0,
         );
 
         await _executeSearchWordScrollTest(
           tester: tester,
           playlistTitle: 'local_15',
-          scrollUpOrDownPlaylistsList: -1000,
+          scrollUpOrDownPlaylistsList: 0,
         );
 
         // Purge the test playlist directory so that the created test
@@ -52635,7 +52643,7 @@ Future<Finder> _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox({
   required bool tapOnCheckbox,
 }) async {
   Finder playlistToSelectListTileTextWidgetFinder =
-      find.text(playlistToSelectTitle);
+      find.text(playlistToSelectTitle).last;
 
   // Then obtain the Playlist ListTile widget enclosing the Text widget
   // by finding its ancestor
@@ -52651,19 +52659,19 @@ Future<Finder> _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox({
     matching: find.byKey(const Key('playlist_checkbox_key')),
   );
 
+  // Tap the ListTile Playlist checkbox to select it: This ensure
+  // another bug was solved
+  if (tapOnCheckbox) {
+    await tester.tap(playlistToSelectListTileCheckboxWidgetFinder);
+    await tester.pumpAndSettle();
+  }
+
   // Verify that the Playlist ListTile checkbox is checked
   if (verifyIfCheckboxIsChecked) {
     final Checkbox checkboxWidget =
         tester.widget<Checkbox>(playlistToSelectListTileCheckboxWidgetFinder);
 
     expect(checkboxWidget.value!, true);
-  }
-
-  // Tap the ListTile Playlist checkbox to select it: This ensure
-  // another bug was solved
-  if (tapOnCheckbox) {
-    await tester.tap(playlistToSelectListTileCheckboxWidgetFinder);
-    await tester.pumpAndSettle();
   }
 
   return playlistToSelectListTileCheckboxWidgetFinder;

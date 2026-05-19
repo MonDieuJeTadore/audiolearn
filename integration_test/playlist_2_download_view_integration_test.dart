@@ -6642,7 +6642,7 @@ void main() {
           // Wait for the tooltip to appear
           await tester.pumpAndSettle();
 
-          // Verify the the selected playlist text tooltip in french which
+          // Verify the the selected playlist text tooltip in englishwhich
           // contains its position
           expect(find.text('Playlist position: 12'), findsOneWidget);
 
@@ -6733,7 +6733,7 @@ void main() {
           // Wait for the tooltip to appear
           await tester.pumpAndSettle();
 
-          // Verify the the selected playlist text tooltip in french which
+          // Verify the the selected playlist text tooltip in englishwhich
           // contains its position
           expect(find.text('Playlist position: 16'), findsOneWidget);
 
@@ -6823,9 +6823,281 @@ void main() {
           // Wait for the tooltip to appear
           await tester.pumpAndSettle();
 
-          // Verify the the selected playlist text tooltip in french which
+          // Verify the the selected playlist text tooltip in englishwhich
           // contains its position
           expect(find.text('Playlist position: 1'), findsOneWidget);
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
+            '''From 1 to 20 (too big) testing playlist 'Move Playlist ...' item menu in english.''',
+            (WidgetTester tester) async {
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'scrolling_playlists_test',
+            tapOnPlaylistToggleButton: false,
+          );
+
+          // First, set the application language to english
+          await IntegrationTestUtil.setApplicationLanguage(
+            tester: tester,
+            language: Language.english,
+          );
+
+          // Find the playlist list widget using its key
+          Finder playlistListFinder =
+              find.byKey(const Key('expandable_playlist_list'));
+
+          // Perform the scroll up action
+          await tester.drag(playlistListFinder, const Offset(0, 400));
+          await tester.pumpAndSettle();
+
+          const String playlistToMoveTitle = 'Jeunes pianistes extraordinaires';
+
+          await IntegrationTestUtil.typeOnPlaylistMenuItem(
+            tester: tester,
+            playlistTitle: playlistToMoveTitle,
+            playlistMenuKeyStr: 'popup_menu_move_playlist',
+          );
+
+          // Enter the position value to move the playlist to in the
+          // text field of the displayed dialog
+          await tester.enterText(
+            find.byKey(const Key('passedValueFieldTextField')),
+            '20',
+          );
+          await tester.pumpAndSettle();
+
+          // Tap on the 'Ok' button of the dialog
+          await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+          await tester.pumpAndSettle();
+
+          // Verify the warning
+          await IntegrationTestUtil.verifyAndCloseWarningDialog(
+            tester: tester,
+            warningDialogMessage:
+                "20 exceeds the playlists number (16) and so is invalid for repositioning the playlist.",
+          );
+
+          // And verify the not modified order of the playlist titles.
+
+          const List<String> playlistsTitles = [
+            "Jeunes pianistes extraordinaires",
+            "local_1",
+            "local_10",
+            "local_11",
+            "local_12",
+            "local_13",
+          ];
+
+          // Ensure that since the search icon button was
+          // incorrectly used with an invalid position value,
+          // the displayed playlist list is not modified.
+          IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+            tester: tester,
+            audioOrPlaylistTitlesOrderedLst: playlistsTitles,
+          );
+
+          // Verify the not moved playlist position
+
+          Finder playlistToSelectListTileTextWidgetFinder =
+              find.text(playlistToMoveTitle).last;
+
+          // Trigger the tooltip with a long press
+          await tester.longPress(playlistToSelectListTileTextWidgetFinder);
+
+          // Wait for the tooltip to appear
+          await tester.pumpAndSettle();
+
+          // Verify the the selected playlist text tooltip in englishwhich
+          // contains its position
+          expect(find.text('Playlist position: 16'), findsOneWidget);
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
+            '''From 5 to -1 (too small) testing playlist 'Move Playlist ...' item menu in english.''',
+            (WidgetTester tester) async {
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'scrolling_playlists_test',
+            tapOnPlaylistToggleButton: false,
+          );
+
+          // First, set the application language to english
+          await IntegrationTestUtil.setApplicationLanguage(
+            tester: tester,
+            language: Language.english,
+          );
+
+          // Find the playlist list widget using its key
+          Finder playlistListFinder =
+              find.byKey(const Key('expandable_playlist_list'));
+
+          // Perform the scroll up action
+          await tester.drag(playlistListFinder, const Offset(0, 400));
+          await tester.pumpAndSettle();
+
+          const String playlistToMoveTitle = 'local_12';
+
+          await IntegrationTestUtil.typeOnPlaylistMenuItem(
+            tester: tester,
+            playlistTitle: playlistToMoveTitle,
+            playlistMenuKeyStr: 'popup_menu_move_playlist',
+          );
+
+          // Enter the position value to move the playlist to in the
+          // text field of the displayed dialog
+          await tester.enterText(
+            find.byKey(const Key('passedValueFieldTextField')),
+            '-1',
+          );
+          await tester.pumpAndSettle();
+
+          // Tap on the 'Ok' button of the dialog
+          await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+          await tester.pumpAndSettle();
+
+          // Verify the warning
+          await IntegrationTestUtil.verifyAndCloseWarningDialog(
+            tester: tester,
+            warningDialogMessage:
+                "\"-1\" does not respect the possible playlist position (from 1 to 16).",
+          );
+
+          // And verify the not modified order of the playlist titles.
+
+          const List<String> playlistsTitles = [
+            "local_10",
+            "local_11",
+            "local_12",
+            "local_13",
+            "local_14",
+            "local_15",
+            "local_2",
+          ];
+
+          // Ensure that since the search icon button was
+          // incorrectly used with an invalid position value,
+          // the displayed playlist list is not modified.
+          IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+            tester: tester,
+            audioOrPlaylistTitlesOrderedLst: playlistsTitles,
+          );
+
+          // Verify the not moved playlist position
+
+          Finder playlistToSelectListTileTextWidgetFinder =
+              find.text(playlistToMoveTitle).last;
+
+          // Trigger the tooltip with a long press
+          await tester.longPress(playlistToSelectListTileTextWidgetFinder);
+
+          // Wait for the tooltip to appear
+          await tester.pumpAndSettle();
+
+          // Verify the the selected playlist text tooltip in englishwhich
+          // contains its position
+          expect(find.text('Playlist position: 5'), findsOneWidget);
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
+            '''From 5 to a (invalid) testing playlist 'Move Playlist ...' item menu in english.''',
+            (WidgetTester tester) async {
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'scrolling_playlists_test',
+            tapOnPlaylistToggleButton: false,
+          );
+
+          // First, set the application language to english
+          await IntegrationTestUtil.setApplicationLanguage(
+            tester: tester,
+            language: Language.english,
+          );
+
+          // Find the playlist list widget using its key
+          Finder playlistListFinder =
+              find.byKey(const Key('expandable_playlist_list'));
+
+          // Perform the scroll up action
+          await tester.drag(playlistListFinder, const Offset(0, 400));
+          await tester.pumpAndSettle();
+
+          const String playlistToMoveTitle = 'local_12';
+
+          await IntegrationTestUtil.typeOnPlaylistMenuItem(
+            tester: tester,
+            playlistTitle: playlistToMoveTitle,
+            playlistMenuKeyStr: 'popup_menu_move_playlist',
+          );
+
+          // Enter the position value to move the playlist to in the
+          // text field of the displayed dialog
+          await tester.enterText(
+            find.byKey(const Key('passedValueFieldTextField')),
+            'a',
+          );
+          await tester.pumpAndSettle();
+
+          // Tap on the 'Ok' button of the dialog
+          await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+          await tester.pumpAndSettle();
+
+          // Verify the warning
+          await IntegrationTestUtil.verifyAndCloseWarningDialog(
+            tester: tester,
+            warningDialogMessage:
+                "\"a\" does not respect the possible playlist position (from 1 to 16).",
+          );
+
+          // And verify the not modified order of the playlist titles.
+
+          const List<String> playlistsTitles = [
+            "local_10",
+            "local_11",
+            "local_12",
+            "local_13",
+            "local_14",
+            "local_15",
+            "local_2",
+          ];
+
+          // Ensure that since the search icon button was
+          // incorrectly used with an invalid position value,
+          // the displayed playlist list is not modified.
+          IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+            tester: tester,
+            audioOrPlaylistTitlesOrderedLst: playlistsTitles,
+          );
+
+          // Verify the not moved playlist position
+
+          Finder playlistToSelectListTileTextWidgetFinder =
+              find.text(playlistToMoveTitle).last;
+
+          // Trigger the tooltip with a long press
+          await tester.longPress(playlistToSelectListTileTextWidgetFinder);
+
+          // Wait for the tooltip to appear
+          await tester.pumpAndSettle();
+
+          // Verify the the selected playlist text tooltip in englishwhich
+          // contains its position
+          expect(find.text('Playlist position: 5'), findsOneWidget);
 
           // Purge the test playlist directory so that the created test
           // files are not uploaded to GitHub
@@ -6901,7 +7173,7 @@ void main() {
           // Wait for the tooltip to appear
           await tester.pumpAndSettle();
 
-          // Verify the the selected playlist text tooltip in french which
+          // Verify the the selected playlist text tooltip in englishwhich
           // contains its position
           expect(find.text('Playlist position: 10'), findsOneWidget);
 
@@ -6979,7 +7251,7 @@ void main() {
           // Wait for the tooltip to appear
           await tester.pumpAndSettle();
 
-          // Verify the the selected playlist text tooltip in french which
+          // Verify the the selected playlist text tooltip in englishwhich
           // contains its position
           expect(find.text('Playlist position: 9'), findsOneWidget);
 

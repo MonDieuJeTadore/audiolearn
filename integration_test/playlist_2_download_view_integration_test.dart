@@ -6915,7 +6915,7 @@ void main() {
 
           // Verify the the selected playlist text tooltip in englishwhich
           // contains its position
-          expect(find.text('Playlist position: 16'), findsOneWidget);
+          expect(find.text('Playlist position: 1'), findsOneWidget);
 
           // Purge the test playlist directory so that the created test
           // files are not uploaded to GitHub

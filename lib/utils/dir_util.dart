@@ -44,7 +44,7 @@ class DirUtil {
       if (isTest) {
         applicationPath = kApplicationPathWindowsTest;
       } else {
-        applicationPath = kApplicationPathWindows;
+        applicationPath = _getWindowsApplicationPath();
       }
     } else {
       if (isTest) {
@@ -60,7 +60,7 @@ class DirUtil {
 
     if (!dir.existsSync()) {
       try {
-        dir.createSync();
+        dir.createSync(recursive: true);
       } catch (e) {
         // Handle the exception, e.g., directory not created
         logger.i('Directory could not be created: $e');
@@ -79,7 +79,7 @@ class DirUtil {
       if (isTest) {
         playlistDownloadRootPath = kPlaylistDownloadRootPathWindowsTest;
       } else {
-        playlistDownloadRootPath = kPlaylistDownloadRootPathWindows;
+        playlistDownloadRootPath = _getWindowsPlaylistDownloadRootPath();
       }
     } else {
       if (isTest) {
@@ -96,7 +96,7 @@ class DirUtil {
     if (!dir.existsSync()) {
       try {
         // now create the playlist dir
-        dir.createSync();
+        dir.createSync(recursive: true);
       } catch (e) {
         // Handle the exception, e.g., directory not created
         logger.i('Directory could not be created: $e');
@@ -118,7 +118,7 @@ class DirUtil {
       if (isTest) {
         applicationPicturePath = kApplicationPicturePathWindowsTest;
       } else {
-        applicationPicturePath = kApplicationPicturePathWindows;
+        applicationPicturePath = _getWindowsApplicationPicturePath();
       }
     } else {
       if (isTest) {
@@ -134,7 +134,7 @@ class DirUtil {
 
     if (!dir.existsSync()) {
       try {
-        dir.createSync();
+        dir.createSync(recursive: true);
       } catch (e) {
         // Handle the exception, e.g., directory not created
         logger.i('Directory could not be created: $e');
@@ -142,6 +142,20 @@ class DirUtil {
     }
 
     return applicationPicturePath;
+  }
+
+  static String _getWindowsApplicationPath() {
+    final String localAppData = Platform.environment['LOCALAPPDATA'] ??
+        'C:\\Users\\Default\\AppData\\Local';
+    return '$localAppData\\audiolearn';
+  }
+
+  static String _getWindowsPlaylistDownloadRootPath() {
+    return '${_getWindowsApplicationPath()}\\$kImposedPlaylistsSubDirName';
+  }
+
+  static String _getWindowsApplicationPicturePath() {
+    return '${_getWindowsApplicationPath()}\\$kPictureDirName';
   }
 
   static String removeAudioDownloadHomePathFromPathFileName({

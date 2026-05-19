@@ -54,12 +54,6 @@ const String kPlaylistDownloadRootPathAndroidTest =
 const String kApplicationPicturePathAndroidTest =
     "/storage/emulated/0/Documents/test/audiolearn/pictures";
 
-// Used for Windows app version
-const String kApplicationPathWindows = "C:\\audiolearn";
-const String kPlaylistDownloadRootPathWindows =
-    "C:\\audiolearn\\$kImposedPlaylistsSubDirName";
-const String kApplicationPicturePathWindows = "C:\\audiolearn\\pictures";
-
 // Used for testing and debugging on Windows
 const String kApplicationPathWindowsTest =
     "C:\\development\\flutter\\audiolearn\\test\\data\\audio";

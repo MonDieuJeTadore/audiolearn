@@ -374,10 +374,9 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                 return SetValueToTargetDialog(
                   dialogTitle: AppLocalizations.of(context)!
                       .playlistPositionDefinitionTitle,
-                  passedValueFieldLabel: AppLocalizations.of(context)!
-                      .playlistPositionFieldLabel,
-                  passedValueFieldTooltip:
-                      AppLocalizations.of(context)!
+                  passedValueFieldLabel:
+                      AppLocalizations.of(context)!.playlistPositionFieldLabel,
+                  passedValueFieldTooltip: AppLocalizations.of(context)!
                       .playlistPositionFieldTooltip,
                   checkboxLabelLst: [],
                   validationFunction: validatePlaylistPositionFormat,
@@ -385,7 +384,8 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                     playlistListVMlistenFalse.listOfSelectablePlaylists.length,
                   ],
                   isCursorAtStart: true,
-                  maxLinesForDialogTitle: 3, // To avoid overflow if the title is in french.
+                  maxLinesForDialogTitle:
+                      3, // To avoid overflow if the title is in french.
                 );
               },
             ).then((resultStringLst) async {
@@ -395,12 +395,14 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
               }
 
               final String playlistNewPosition = resultStringLst[0];
-              final int parsedPlaylistNewPosition =
-                  int.parse(playlistNewPosition);
+              final int? parsedPlaylistNewPosition =
+                  int.tryParse(playlistNewPosition);
 
+              if (parsedPlaylistNewPosition != null) {
                 playlistListVMlistenFalse.moveSelectedPlaylistToPosition(
                   positionNumberToMove: parsedPlaylistNewPosition,
                 );
+              }
             });
             break;
           case PlaylistPopupMenuAction.addPositionToAudioTitle:
@@ -1577,7 +1579,9 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
 
     int? parsedPosition = int.tryParse(enteredPositionStr);
 
-    if (enteredPositionStr.isEmpty || parsedPosition == null || parsedPosition < 1) {
+    if (enteredPositionStr.isEmpty ||
+        parsedPosition == null ||
+        parsedPosition < 1) {
       return InvalidValueState
           .playlistPositionFormatInvalid; // This will prevent the dialog from closing
     } else if (parsedPosition.abs() > selectablePlaylistsNumber) {

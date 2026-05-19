@@ -46,7 +46,7 @@ const String kPlaylistDownloadRootPath =
 const String kApplicationPicturePath =
     "/storage/emulated/0/Documents/audiolearn/pictures";
 
-// Used for testing on Android
+// Used for testing on Android emulator
 const String kApplicationPathAndroidTest =
     "/storage/emulated/0/Documents/test/audiolearn";
 const String kPlaylistDownloadRootPathAndroidTest =

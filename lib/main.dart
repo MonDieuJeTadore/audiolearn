@@ -29,6 +29,14 @@ Future<void> main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure Flutter bindings are initialized.
 
+  bool isTest = true; // Must be set to false instead of true before
+  //                     generating the Android as well as the Windows
+  //                     version of the app so that the app accesses the
+  //                     correct application directory and not the test
+  //                     directory. Must also be set to false when
+  //                     debugging the application on the smartphone
+  //                     but not when debugging on the emulator.
+
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     // Without this code, 'audiolearn' is displayed at the top left
     // of the app window instead of 'AudioLearn'.
@@ -38,14 +46,6 @@ Future<void> main() async {
     );
     windowManager.waitUntilReadyToShow(windowOptions);
   }
-
-  bool isTest = true; // Must be set to false instead of true before
-  //                     generating the Android as well as the Windows
-  //                     version of the app so that the app accesses the
-  //                     correct application directory and not the test
-  //                     directory. Must also be set to false when
-  //                     debugging the application on the smartphone
-  //                     but not when debugging on the emulator.
 
   String applicationPath = '';
 

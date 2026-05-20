@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'l10n/app_localizations.dart';
 import 'package:window_size/window_size.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'constants.dart';
 import 'services/help_data_service.dart';
@@ -27,6 +28,16 @@ import 'views/screen_mixin.dart';
 Future<void> main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure Flutter bindings are initialized.
+
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    // Without this code, 'audiolearn' is displayed at the top left
+    // of the app window instead of 'AudioLearn'.
+    await windowManager.ensureInitialized();
+    WindowOptions windowOptions = const WindowOptions(
+      title: 'AudioLearn',
+    );
+    windowManager.waitUntilReadyToShow(windowOptions);
+  }
 
   bool isTest = true; // Must be set to false instead of true before
   //                     generating the Android as well as the Windows

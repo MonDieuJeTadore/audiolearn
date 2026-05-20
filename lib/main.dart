@@ -58,7 +58,6 @@ Future<void> main() async {
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     await _setWindowsAppSizeAndPosition(
       isTest: isTest,
-      // isTest: false,
     );
   }
 

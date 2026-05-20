@@ -3141,4 +3141,16 @@ class MockAppLocalizations extends AppLocalizations {
     Object maxValueStr,
   ) =>
       "\"$valueStr\" does not respect the possible playlist position (1 to $maxValueStr).";
+
+  @override
+  String get generateAndPlayAudioCommentTooltip =>
+      "Generate and play this audio comment.";
+
+  @override
+  String get editAudioCommentTooltip =>
+      "Modify the comment values and save them. THIS IS ALSO THE POSSIBILITY REINCLUDE THIS COMMENT BY SAVING IT, WITH OR WITHOUT MODIFICATION.";
+
+  @override
+  String get unincludeAudioCommentTooltip =>
+      "Avoid that this comment is included in the extraction.";
 }

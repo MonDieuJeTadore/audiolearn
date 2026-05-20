@@ -32,6 +32,19 @@ import '../../viewmodels/theme_provider_vm.dart';
 import 'help_dialog.dart';
 import 'playlist_one_selectable_dialog.dart';
 
+/// This screen allows the user to extract segments of an MP3 file based on the
+/// comments of an audio. It can be used to restore a playlist from an MP3 file
+/// in which the audios were merged and the comments were used to delimit the
+/// different audios and their segments. It can also be used to extract a single
+/// audio in music quality from its original MP3 file with all its segments defined
+/// by the comments.
+/// The user can choose to extract the segments in the same directory as the original
+/// MP3 file or in the playlist of the audio if it belongs to a playlist. The user
+/// can also choose to extract in music quality (if available) or in normal quality.
+/// When extracting multiple audios, they are always extracted in music quality if
+/// available and in the same directory as the original MP3 file. In this case, no
+/// playlist option is proposed and the user must move the extracted audios to the
+/// desired playlist by themselves if they want to.
 class AudioExtractorScreen extends StatefulWidget {
   final SettingsDataService settingsDataService;
   final Audio currentAudio;
@@ -1433,14 +1446,18 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                   key: Key('playSegmentButtonKey_$displayedIndex'),
                   onTap: onPlay,
                   borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                    width: 32,
-                    height: 32,
-                    alignment: Alignment.center,
-                    child: const Icon(
-                      Icons.play_arrow,
-                      size: 28,
-                      color: Colors.green,
+                  child: Tooltip(
+                    message: AppLocalizations.of(context)!
+                        .generateAndPlayAudioCommentTooltip,
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.play_arrow,
+                        size: 28,
+                        color: Colors.green,
+                      ),
                     ),
                   ),
                 ),
@@ -1449,13 +1466,17 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                   key: Key('editSegmentButtonKey_$displayedIndex'),
                   onTap: onEdit,
                   borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                    width: 32,
-                    height: 32,
-                    alignment: Alignment.center,
-                    child: const Icon(
-                      Icons.edit,
-                      size: 20,
+                  child: Tooltip(
+                    message: AppLocalizations.of(context)!
+                        .editAudioCommentTooltip,
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.edit,
+                        size: 20,
+                      ),
                     ),
                   ),
                 ),
@@ -1464,14 +1485,18 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                   key: Key('deleteSegmentButtonKey_$displayedIndex'),
                   onTap: onDelete,
                   borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                    width: 32,
-                    height: 32,
-                    alignment: Alignment.center,
-                    child: const Icon(
-                      Icons.delete,
-                      size: 20,
-                      color: Colors.red,
+                  child: Tooltip(
+                    message: AppLocalizations.of(context)!
+                        .unincludeAudioCommentTooltip,
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.delete,
+                        size: 20,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
                 ),

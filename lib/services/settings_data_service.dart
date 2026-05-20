@@ -56,7 +56,7 @@ class SettingsDataService {
   // language, default format of date and default theme
   final Map<SettingType, Map<dynamic, dynamic>> _settings = {
     SettingType.appTheme: {SettingType.appTheme: AppTheme.dark},
-    SettingType.language: {SettingType.language: Language.english},
+    SettingType.language: {SettingType.language: Language.french},
     SettingType.playlists: {
       Playlists.orderedTitleLst: [],
       Playlists.isMusicQualityByDefault: false,
@@ -116,7 +116,11 @@ class SettingsDataService {
 
   SettingsDataService({
     bool isTest = false,
-  })  : _isTest = isTest;
+  })  : _isTest = isTest {
+    if (isTest) {
+    _settings[SettingType.language]![SettingType.language] = Language.english;
+    }
+  }
 
   dynamic get({
     required SettingType settingType,

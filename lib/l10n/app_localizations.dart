@@ -4850,6 +4850,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Position value to move the playlist to.'**
   String get playlistPositionFieldTooltip;
+
+  /// No description provided for @generateAndPlayAudioCommentTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate and play this audio comment.'**
+  String get generateAndPlayAudioCommentTooltip;
+
+  /// No description provided for @editAudioCommentTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify the comment values and save them. THIS IS ALSO THE POSSIBILITY REINCLUDE THIS COMMENT BY SAVING IT, WITH OR WITHOUT MODIFICATION.'**
+  String get editAudioCommentTooltip;
+
+  /// No description provided for @unincludeAudioCommentTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid that this comment is included in the extraction.'**
+  String get unincludeAudioCommentTooltip;
 }
 
 class _AppLocalizationsDelegate

@@ -3052,4 +3052,16 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get playlistPositionFieldTooltip =>
       'Valeur de la position où déplacer la playlist.';
+
+  @override
+  String get generateAndPlayAudioCommentTooltip =>
+      'Générer et lire ce commentaire audio.';
+
+  @override
+  String get editAudioCommentTooltip =>
+      'Modifier les valeurs du commentaire et les enregistrer. CELA PERMET ÉGALEMENT DE RÉINCLURE CE COMMENTAIRE EN L’ENREGISTRANT, AVEC OU SANS MODIFICATION.';
+
+  @override
+  String get unincludeAudioCommentTooltip =>
+      'Empêcher que ce commentaire soit inclus dans l’extraction.';
 }

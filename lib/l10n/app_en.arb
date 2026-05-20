@@ -1294,5 +1294,8 @@
   "modifyAudioUrlButton": "Modify",
   "playlistPositionDefinitionTitle": "Playlist new Position Definition",
   "playlistPositionFieldLabel": "Position value",
-  "playlistPositionFieldTooltip": "Position value to move the playlist to."
+  "playlistPositionFieldTooltip": "Position value to move the playlist to.",
+  "generateAndPlayAudioCommentTooltip": "Generate and play this audio comment.",
+  "editAudioCommentTooltip": "Modify the comment values and save them. THIS IS ALSO THE POSSIBILITY REINCLUDE THIS COMMENT BY SAVING IT, WITH OR WITHOUT MODIFICATION.",
+  "unincludeAudioCommentTooltip": "Avoid that this comment is included in the extraction."
 }

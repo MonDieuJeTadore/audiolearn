@@ -1719,5 +1719,8 @@
   "modifyAudioUrlButton": "Modify",
   "playlistPositionDefinitionTitle": "Définition de la nouvelle position de la playlist",
   "playlistPositionFieldLabel": "Nouvelle position",
-  "playlistPositionFieldTooltip": "Valeur de la position où déplacer la playlist."
+  "playlistPositionFieldTooltip": "Valeur de la position où déplacer la playlist.",
+  "generateAndPlayAudioCommentTooltip": "Générer et lire ce commentaire audio.",
+  "editAudioCommentTooltip": "Modifier les valeurs du commentaire et les enregistrer. CELA PERMET ÉGALEMENT DE RÉINCLURE CE COMMENTAIRE EN L’ENREGISTRANT, AVEC OU SANS MODIFICATION.",
+  "unincludeAudioCommentTooltip": "Empêcher que ce commentaire soit inclus dans l’extraction."
 }

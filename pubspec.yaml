@@ -91,7 +91,7 @@ msix_config:
   publisher_display_name: Jean-Pierre Schnyder
   identity_name: com.schnyder.audiolearn     # use a real reverse-domain name
   msix_version: 3.3.4.0                      # match your app version
-  logo_path: assets\icons\audiolearn.ico
+  logo_path: assets\icons\audiolearn_multi.ico
   capabilities: microphone, internetClient
   languages: en, fr                          # add French since your app is bilingual
 
@@ -101,7 +101,7 @@ flutter:
   generate: true
   assets:
     - lib/l10n/
-    - assets\icons\audiolearn.ico
+    - assets\icons\audiolearn_multi.ico
     - assets/images/
     - assets/audio/
     - assets/help/french/playlist_usage/help_content.json

@@ -241,6 +241,11 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         // informations or nothing.
         _buildDisplayPlaylistsSaveToZipProgressionInfo(),
 
+        // displaying the estimation calculation which may take several
+        // seconds of current playlist(s) audio MP3 saving to ZIP
+        // possible duration.
+        _buildDisplayPlaylistsMp3SaveToZipDurationCalculationInfo(),
+
         // displaying the currently playlist(s) audio MP3 saved to
         // ZIP informations or nothing.
         _buildDisplayPlaylistsMp3SaveToZipProgressionInfo(),
@@ -721,6 +726,38 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
                 ),
                 const SizedBox(height: 10.0),
                 LinearProgressIndicator(), // Indeterminate progress bar
+              ],
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
+  }
+
+  /// If playlists MP3 are saved to a ZIP file, the save duration estimation is displayed.
+  /// Otherwise, nothing is displayed.
+  Consumer<PlaylistListVM>
+      _buildDisplayPlaylistsMp3SaveToZipDurationCalculationInfo() {
+    return Consumer<PlaylistListVM>(
+      builder: (context, playlistListVMlistenTrue, child) {
+        if (playlistListVMlistenTrue.isEstimatingSavingMp3Duration) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  key: const Key('estimating_saving_playlists_audio_mp3_to_zip'),
+                  AppLocalizations.of(context)!.estimatingSavingPlaylistsAudioMp3Duration,
+                  textAlign: TextAlign.center, // Centered multi lines text
+                  maxLines: 2,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10.0),
+                LinearProgressIndicator(), // Indeterminate progress bar
+                const SizedBox(height: 10.0),
               ],
             ),
           );

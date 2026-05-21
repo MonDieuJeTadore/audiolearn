@@ -3153,4 +3153,8 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get unincludeAudioCommentTooltip =>
       "Avoid that this comment is included in the extraction.";
+
+  @override
+  String get estimatingSavingPlaylistsAudioMp3Duration =>
+      "Estimating saving playlists audio files duration ...";
 }

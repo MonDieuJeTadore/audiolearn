@@ -4868,6 +4868,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Avoid that this comment is included in the extraction.'**
   String get unincludeAudioCommentTooltip;
+
+  /// No description provided for @estimatingSavingPlaylistsAudioMp3Duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimating saving audio files duration ...'**
+  String get estimatingSavingPlaylistsAudioMp3Duration;
 }
 
 class _AppLocalizationsDelegate

@@ -255,6 +255,12 @@ class PlaylistListVM extends ChangeNotifier {
   bool _isSavingPlaylists = false;
   bool get isSavingPlaylists => _isSavingPlaylists;
 
+  // Playlist(s) MP3 save duration estimation display on playlist
+  // download view fields.
+
+  bool _isEstimatingSavingMp3Duration = false;
+  bool get isEstimatingSavingMp3Duration => _isEstimatingSavingMp3Duration;
+
   // Playlist(s) MP3 save progression display on playlist
   // download view fields.
 
@@ -3869,6 +3875,9 @@ class PlaylistListVM extends ChangeNotifier {
     int savedAudiosFileSize = 0;
     double savedAudioBytesNumberToZipInOneMicroSecond = 0.0;
 
+    _isEstimatingSavingMp3Duration = true;
+    notifyListeners();
+
     // Iterate through all playlists
     for (Playlist playlist in listOfPlaylists) {
       Directory playlistDir = Directory(playlist.downloadPath);
@@ -3910,6 +3919,9 @@ class PlaylistListVM extends ChangeNotifier {
 
     // Handle edge cases
     if (savedAudiosFileSize == 0) {
+      _isEstimatingSavingMp3Duration = false;
+      notifyListeners();
+
       return Duration.zero; // No files to process
     }
 
@@ -3922,6 +3934,9 @@ class PlaylistListVM extends ChangeNotifier {
 
     _savingAudioMp3FileToZipDuration =
         Duration(seconds: evaluatedSeconds.ceil());
+
+    _isEstimatingSavingMp3Duration = false;
+    notifyListeners();
 
     return _savingAudioMp3FileToZipDuration;
   }

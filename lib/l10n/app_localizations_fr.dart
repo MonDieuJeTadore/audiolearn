@@ -3064,4 +3064,8 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get unincludeAudioCommentTooltip =>
       'Empêcher que ce commentaire soit inclus dans l’extraction.';
+
+  @override
+  String get estimatingSavingPlaylistsAudioMp3Duration =>
+      'Estimation de la durée de sauvegarde des fichiers audio ...';
 }

@@ -749,14 +749,16 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  key: const Key('estimating_saving_playlists_audio_mp3_to_zip'),
-                  AppLocalizations.of(context)!.estimatingSavingPlaylistsAudioMp3Duration,
+                  key:
+                      const Key('estimating_saving_playlists_audio_mp3_to_zip'),
+                  AppLocalizations.of(context)!
+                      .estimatingSavingPlaylistsAudioMp3Duration,
                   textAlign: TextAlign.center, // Centered multi lines text
                   maxLines: 2,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10.0),
-                LinearProgressIndicator(), // Indeterminate progress bar
+                const Center(child: CircularProgressIndicator()),
                 const SizedBox(height: 10.0),
               ],
             ),

@@ -194,6 +194,13 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
                                     key: const Key('conversionTextKey'),
                                   ),
                                   SizedBox(width: 20.0),
+                                  SizedBox(
+                                    width: 24, // taille souhaitée
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 3,
+                                    ),
+                                  ),
                                 ])
                           : Center(
                               child: Text(
@@ -817,7 +824,7 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
                 _isVoiceMan = false;
               });
             }
-            
+
             // now clicking on Enter in the field containing the text
             // to convert works since the Checkbox isn't focused anymore
             _textToConvertFocusNode.requestFocus();

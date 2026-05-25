@@ -3284,7 +3284,7 @@ abstract class AppLocalizations {
   /// No description provided for @audioDownloadFromDateTimeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Date/time {selectedAppDateFormat} hh:mm'**
+  /// **'Date/time ({selectedAppDateFormat} hh:mm)'**
   String audioDownloadFromDateTimeLabel(Object selectedAppDateFormat);
 
   /// No description provided for @audioDownloadFromDateTimeAllPlaylistsTooltip.

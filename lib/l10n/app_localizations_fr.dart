@@ -2034,7 +2034,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String audioDownloadFromDateTimeLabel(Object selectedAppDateFormat) {
-    return 'Date/heure $selectedAppDateFormat hh:mm';
+    return 'Date/heure ($selectedAppDateFormat hh:mm)';
   }
 
   @override

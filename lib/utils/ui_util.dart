@@ -46,6 +46,11 @@ class StorageUtil {
 class UiUtil {
   static Logger logger = Logger();
 
+  // Global navigator key used to access a valid BuildContext after async gaps.
+  // Avoids "This BuildContext is no longer valid" crash on Android.
+  static GlobalKey<NavigatorState> globalNavigatorKey =
+      GlobalKey<NavigatorState>();
+
   static String formatLargeSizeToKbOrMb({
     required BuildContext context,
     required int sizeInBytes,
@@ -126,7 +131,8 @@ class UiUtil {
       pathStr: targetDirectoryPath,
     );
 
-    await playlistListVMlistenFalse.saveUniquePlaylistCommentAndPictureJsonFilesToZip(
+    await playlistListVMlistenFalse
+        .saveUniquePlaylistCommentAndPictureJsonFilesToZip(
       zipTargetDir: targetDirectoryPath,
       playlist: playlist,
     );
@@ -844,7 +850,6 @@ class UiUtil {
     return translatedDateFormatStr;
   }
 
-  
   /// Method called when the user clicks on the audio list item audio title or
   /// subtitle. This switches to the AudioPlayerView screen without playing the
   /// clicked audio.
@@ -881,5 +886,4 @@ class UiUtil {
     // dragging to the AudioPlayerView screen
     onPageChangedFunction(ScreenMixin.AUDIO_PLAYER_VIEW_DRAGGABLE_INDEX);
   }
-
 }

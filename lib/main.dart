@@ -12,6 +12,7 @@ import 'package:window_manager/window_manager.dart';
 
 import 'constants.dart';
 import 'services/help_data_service.dart';
+import 'utils/ui_util.dart';
 import 'viewmodels/picture_vm.dart';
 import 'viewmodels/playlist_list_vm.dart';
 import 'viewmodels/audio_download_vm.dart';
@@ -202,6 +203,7 @@ class MainApp extends StatelessWidget with ScreenMixin {
       child: Consumer2<ThemeProviderVM, LanguageProviderVM>(
         builder: (context, themeProvider, languageProvider, child) {
           return MaterialApp(
+            navigatorKey: UiUtil.globalNavigatorKey,
             title: 'AudioLearn',
             // title: AppLocalizations.of(context)!.title,
             locale: languageProvider.currentLocale,

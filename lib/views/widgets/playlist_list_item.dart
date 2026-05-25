@@ -740,8 +740,13 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                   resultsLst[0]! as DateTime;
               Duration audioMp3SavingToZipDuration = resultsLst[1] as Duration;
 
+              // Use the global navigator context which is always valid,
+              // even after an async gap on Android.
+              final BuildContext validContext =
+                  UiUtil.globalNavigatorKey.currentContext!;
+
               showDialog<void>(
-                context: context,
+                context: validContext,
                 barrierDismissible:
                     false, // This line prevents the dialog from closing when
                 //            tapping outside the dialog

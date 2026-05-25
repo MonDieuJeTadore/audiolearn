@@ -758,7 +758,13 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10.0),
-                const Center(child: CircularProgressIndicator()),
+                SizedBox(
+                  width: 24, // taille souhaitée
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                  ),
+                ),
                 const SizedBox(height: 10.0),
               ],
             ),

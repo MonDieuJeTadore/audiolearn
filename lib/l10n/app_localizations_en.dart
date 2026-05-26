@@ -1949,7 +1949,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveUniquePlaylistCommentsAndPicturesToZipMenu =>
-      'Save the Playlist, its Comments and its Pictures to ZIP File ...';
+      'Save the Playlist, its Comments and its Pictures to ZIP File';
 
   @override
   String get saveUniquePlaylistCommentsAndPicturesToZipTooltip =>
@@ -2523,7 +2523,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get convertingDownloadedAudioToMP3 =>
-      'Converting downloaded audio to MP3 ...';
+      'Converting downloaded MP4 or WEBM to MP3 ...';
 
   @override
   String get creatingMp3 => 'Creating MP3';

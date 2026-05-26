@@ -3170,7 +3170,7 @@ abstract class AppLocalizations {
   /// No description provided for @saveUniquePlaylistCommentsAndPicturesToZipMenu.
   ///
   /// In en, this message translates to:
-  /// **'Save the Playlist, its Comments and its Pictures to ZIP File ...'**
+  /// **'Save the Playlist, its Comments and its Pictures to ZIP File'**
   String get saveUniquePlaylistCommentsAndPicturesToZipMenu;
 
   /// No description provided for @saveUniquePlaylistCommentsAndPicturesToZipTooltip.
@@ -4032,7 +4032,7 @@ abstract class AppLocalizations {
   /// No description provided for @convertingDownloadedAudioToMP3.
   ///
   /// In en, this message translates to:
-  /// **'Converting downloaded audio to MP3 ...'**
+  /// **'Converting downloaded MP4 or WEBM to MP3 ...'**
   String get convertingDownloadedAudioToMP3;
 
   /// No description provided for @creatingMp3.

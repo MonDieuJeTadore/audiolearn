@@ -1,5 +1,5 @@
 #define MyAppName "AudioLearn"
-#define MyAppVersion "3.3.72"
+#define MyAppVersion "3.4.0"
 #define MyAppPublisher "Jean-Pierre Schnyder"
 #define MyAppURL ""
 #define MyAppExeName "audiolearn.exe"
@@ -23,7 +23,7 @@ ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=yes
 MinVersion=10.0
 OutputDir=C:\Users\jpsch\Documents\AudioLearn\installer\Output
-OutputBaseFilename=AudioLearn_Setup_v{#MyAppVersion}_FR
+OutputBaseFilename=AudioLearn_Setup_FR
 SetupIconFile=C:\development\flutter\audiolearn\assets\icons\audiolearn_multi.ico
 SolidCompression=yes
 WizardStyle=modern

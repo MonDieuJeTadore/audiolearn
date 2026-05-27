@@ -4874,6 +4874,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Estimating saving audio files duration ...'**
   String get estimatingSavingPlaylistsAudioMp3Duration;
+
+  /// No description provided for @selectDirectoryWarningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Problem if selecting a directory on a smartphone:'**
+  String get selectDirectoryWarningTitle;
+
+  /// No description provided for @selectDirectoryWarningMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.'**
+  String get selectDirectoryWarningMessage;
 }
 
 class _AppLocalizationsDelegate

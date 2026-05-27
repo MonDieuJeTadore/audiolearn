@@ -1298,5 +1298,7 @@
   "generateAndPlayAudioCommentTooltip": "Generate and play this audio comment.",
   "editAudioCommentTooltip": "Modify the comment values and save them. THIS IS ALSO THE POSSIBILITY REINCLUDE THIS COMMENT BY SAVING IT, WITH OR WITHOUT MODIFICATION.",
   "unincludeAudioCommentTooltip": "Avoid that this comment is included in the extraction.",
-  "estimatingSavingPlaylistsAudioMp3Duration": "Estimating saving audio files duration ..."
+  "estimatingSavingPlaylistsAudioMp3Duration": "Estimating saving audio files duration ...",
+  "selectDirectoryWarningTitle": "Problem if selecting a directory on a smartphone:",
+  "selectDirectoryWarningMessage": "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory."
 }

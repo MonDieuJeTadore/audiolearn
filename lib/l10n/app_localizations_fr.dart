@@ -3068,4 +3068,12 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get estimatingSavingPlaylistsAudioMp3Duration =>
       'Estimation de la durée de sauvegarde des fichiers audio ...';
+
+  @override
+  String get selectDirectoryWarningTitle =>
+      'Problème lors de la sélection d’un répertoire sur un smartphone:';
+
+  @override
+  String get selectDirectoryWarningMessage =>
+      'Si les fichiers ZIP se trouvent sur votre smartphone, cliquez sur Annuler après avoir lu l’explication. Vous devez d’abord copier les fichiers ZIP dans un dossier sur votre ordinateur. L\'accès à un répertoire ne fonctionne pas via la connexion USB au téléphone, mais fonctionne correctement sur un répertoire de l’ordinateur.';
 }

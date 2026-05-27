@@ -308,6 +308,8 @@ class UiUtil {
   }) async {
     // Show dialog to let user choose
     String? userChoice = await showDialog<String>(
+      barrierDismissible: false, // This line prevents the dialog from
+      //                            closing when tapping outside it
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -354,13 +356,41 @@ class UiUtil {
     }
 
     if (userChoice == 'directory') {
-      // Select directory
+      if (Platform.isWindows) {
+        // Warn the user that directory selection does not work over MTP
+        // (phone USB connection). They must copy the ZIP files to their
+        // computer first.
+        final ConfirmAction? confirmResult = await showDialog<ConfirmAction>(
+          barrierDismissible: false, // This line prevents the dialog from
+          //                            closing when tapping outside it
+          context: context,
+          builder: (BuildContext context) {
+            return ConfirmActionDialog(
+              actionFunction:
+                  () {}, // no-op: ConfirmActionDialog pops ConfirmAction.confirm when actionFunction returns null
+              actionFunctionArgs: const [],
+              dialogTitleOne:
+                  AppLocalizations.of(context)!.selectDirectoryWarningTitle,
+              dialogContent:
+                  AppLocalizations.of(context)!.selectDirectoryWarningMessage,
+            );
+          },
+        );
+
+        if (confirmResult != ConfirmAction.confirm) {
+          return {'type': 'cancelled', 'path': ''};
+        }
+      }
+
+      // If on Windows, the user confirmed: proceed with directory picker
+
       String? directoryPath = await FilePicker.platform.getDirectoryPath();
+
       if (directoryPath != null && directoryPath.isNotEmpty) {
         return {'type': 'directory', 'path': directoryPath};
-      } else {
-        return {'type': 'cancelled', 'path': ''};
       }
+
+      return {'type': 'cancelled', 'path': ''};
     } else {
       // Select file
       try {
@@ -374,9 +404,11 @@ class UiUtil {
 
         if (result != null && result.files.isNotEmpty) {
           String? filePath = result.files.first.path;
+
           if (filePath != null && filePath.isNotEmpty) {
             // Verify the file exists
             File selectedFile = File(filePath);
+            
             if (await selectedFile.exists()) {
               return {'type': 'file', 'path': filePath};
             } else {

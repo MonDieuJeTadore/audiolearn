@@ -3157,4 +3157,12 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get estimatingSavingPlaylistsAudioMp3Duration =>
       "Estimating saving playlists audio files duration ...";
+
+  @override
+  String get selectDirectoryWarningTitle =>
+      "Problem if selecting a directory on a smartphone:";
+
+  @override
+  String get selectDirectoryWarningMessage =>
+      "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files to a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.";
 }

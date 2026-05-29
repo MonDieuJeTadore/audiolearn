@@ -8,6 +8,7 @@ import 'package:volume_controller/volume_controller.dart';
 import 'widgets/appbar_left_popup_menu.dart';
 import 'widgets/appbar_right_popup_menu.dart';
 import 'widgets/appbar_title_for_audio_player_view.dart';
+import 'package:window_manager/window_manager.dart';
 import '../l10n/app_localizations.dart';
 
 import '../constants.dart';
@@ -57,7 +58,8 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with ScreenMixin {
+class _MyHomePageState extends State<MyHomePage>
+    with ScreenMixin, WindowListener {
   int _currentIndex = 0;
 
   // _pageController is the PageView controller
@@ -100,6 +102,10 @@ class _MyHomePageState extends State<MyHomePage> with ScreenMixin {
   void initState() {
     super.initState();
 
+    if (Platform.isWindows) {
+      windowManager.addListener(this);
+    }
+
     // Asking permissions if needed once the app was launched
     _requestPermissionsIfNeeded();
 
@@ -110,7 +116,6 @@ class _MyHomePageState extends State<MyHomePage> with ScreenMixin {
       ..add(
         const AppBarTitleForAudioPlayerView(),
       );
-    // ..add(AppBarTitleForAudioExtractorView());
 
     _screenWidgetLst
       ..add(PlaylistDownloadView(
@@ -140,6 +145,10 @@ class _MyHomePageState extends State<MyHomePage> with ScreenMixin {
 
   @override
   void dispose() {
+    if (Platform.isWindows) {
+      windowManager.removeListener(this);
+    }
+
     if (_lifecycleListener != null) {
       // If the lifecycle listener is not null, dispose it
       // to avoid memory leaks.
@@ -147,6 +156,13 @@ class _MyHomePageState extends State<MyHomePage> with ScreenMixin {
     }
 
     super.dispose();
+  }
+
+  /// Called when the user clicks the window's X button.
+  @override
+  void onWindowClose() async {
+    await _restoreOriginalVolume();
+    await windowManager.destroy(); // actually close the window
   }
 
   Future<void> _requestPermissionsIfNeeded() async {

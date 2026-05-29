@@ -121,10 +121,10 @@ class _MyHomePageState extends State<MyHomePage> with ScreenMixin {
         settingsDataService: widget.settingsDataService,
         onPageChangedFunction: changePage,
       ));
-    // ..add(const AudioExtractorView());
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (Platform.isWindows && !widget.settingsDataService.isTest) {
+      // if (Platform.isWindows && !widget.settingsDataService.isTest) {
+      if (Platform.isWindows) {
         _volumeController = VolumeController.instance;
         _originalVolume = await _volumeController!.getVolume();
         _volumeController!.setVolume(kWindowsSystemVolume);
@@ -261,8 +261,7 @@ class _MyHomePageState extends State<MyHomePage> with ScreenMixin {
   }
 
   /// This method builds the PageView widget which enables to drag
-  /// to the PlaylistDownloadView, AudioPlayerView and AudioExtractorView
-  /// screens.
+  /// to the PlaylistDownloadView and the AudioPlayerView screens.
   Expanded _buildPageView(StatefulWidget screenWidget) {
     return Expanded(
       // PageView enables changing screen by dragging
@@ -281,7 +280,7 @@ class _MyHomePageState extends State<MyHomePage> with ScreenMixin {
 
   /// This method builds the row of icon buttons located at the bottom
   /// of the application. Each icon enables to drag to a specific screen:
-  /// PlaylistDownloadView, AudioPlayerView and AudioExtractorView.
+  /// PlaylistDownloadView and the AudioPlayerView.
   Row _buildBottomScreenIconButtonRow({
     required ThemeProviderVM themeProvider,
     required AudioPlayerVM audioPlayerVMlistenedFalse,

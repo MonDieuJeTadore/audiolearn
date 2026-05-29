@@ -9099,6 +9099,11 @@ void main() {
       await tester.tap(youtubePlaylistListTileLeadingMenuIconButton);
       await tester.pumpAndSettle();
 
+      await tester.drag(
+        find.byType(Material).last, // The popup menu is wrapped in Material
+        const Offset(0, -300),
+      );
+
       // Now find the update playlist popup menu item and tap on it
       Finder popupUpdatePlayableAudioListPlaylistMenuItem =
           find.byKey(const Key("popup_menu_update_playable_audio_list"));
@@ -9500,6 +9505,12 @@ void main() {
       await tester.tap(youtubePlaylistListTileLeadingMenuIconButton);
       await tester.pumpAndSettle();
 
+      await tester.drag(
+        find.byType(Material).last, // The popup menu is wrapped in Material
+        const Offset(0, -300),
+      );
+
+      await tester.pumpAndSettle();
       // Now find the update playlist popup menu item and tap on it
       final Finder popupUpdatePlayableAudioListPlaylistMenuItem =
           find.byKey(const Key("popup_menu_update_playable_audio_list"));
@@ -21266,7 +21277,8 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
     });
-    testWidgets('''Click on the SF checkbox of the playlist comment dialog in order
+    testWidgets(
+        '''Click on the SF checkbox of the playlist comment dialog in order
                to remove the impact of the applied playlist soer/filter parameters on
                the audios and their comments listed in the playlist comment dialog.''',
         (WidgetTester tester) async {

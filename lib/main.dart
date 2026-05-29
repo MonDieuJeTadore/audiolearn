@@ -42,6 +42,7 @@ Future<void> main() async {
     // Without this code, 'audiolearn' is displayed at the top left
     // of the app window instead of 'AudioLearn'.
     await windowManager.ensureInitialized();
+    windowManager.setPreventClose(true); // intercept the close button
     WindowOptions windowOptions = const WindowOptions(
       title: 'AudioLearn',
     );

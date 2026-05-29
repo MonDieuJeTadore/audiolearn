@@ -9948,9 +9948,10 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // Execute the 'Restore Playlists, Comments and Settings from Zip
           // File ...' menu
           await IntegrationTestUtil.executeRestorePlaylists(
+            tester: tester,
             doReplaceExistingPlaylists: true,
             doDeleteExistingPlaylistsNotContainedInZip: false,
-            tester: tester,
+            doNotCloseRestoreConfirmDialog: true, // since we want to verify the content of the warning dialog before closing it
           );
 
           // Verify the displayed warning confirmation dialog
@@ -10137,9 +10138,10 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // Execute the 'Restore Playlists, Comments and Settings from Zip
           // File ...' menu
           await IntegrationTestUtil.executeRestorePlaylists(
+            tester: tester,
             doReplaceExistingPlaylists: true,
             doDeleteExistingPlaylistsNotContainedInZip: false,
-            tester: tester,
+            doNotCloseRestoreConfirmDialog: true, // since we want to verify the content of the warning dialog before closing it
           );
 
           // Verify the displayed warning confirmation dialog

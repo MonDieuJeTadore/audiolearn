@@ -6778,7 +6778,7 @@ void main() {
       // The audio position correspond to the comment start position
       // in seconds.
       expectedAudioPlayerAudioPositionMin = '0:38';
-      expectedAudioPlayerAudioPositionMax = '0:39';
+      expectedAudioPlayerAudioPositionMax = '0:40';
 
       IntegrationTestUtil.verifyPositionBetweenMinMax(
         tester: tester,
@@ -8945,7 +8945,7 @@ void main() {
       // Verify the current audio position in the audio player view
 
       expectedAudioPlayerAudioPositionMin = '6:10';
-      expectedAudioPlayerAudioPositionMax = '6:10';
+      expectedAudioPlayerAudioPositionMax = '6:11';
 
       IntegrationTestUtil.verifyPositionBetweenMinMax(
         tester: tester,

@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage>
   void initState() {
     super.initState();
 
-    if (Platform.isWindows && !widget.settingsDataService.isTest) {
+    if (Platform.isWindows) {
       windowManager.addListener(this);
     }
 
@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   void dispose() {
-    if (Platform.isWindows && !widget.settingsDataService.isTest) {
+    if (Platform.isWindows) {
       windowManager.removeListener(this);
     }
 
@@ -161,10 +161,8 @@ class _MyHomePageState extends State<MyHomePage>
   /// Called when the user clicks the window's X button.
   @override
   void onWindowClose() async {
-    if (Platform.isWindows && !widget.settingsDataService.isTest) {
-      await _restoreOriginalVolume();
-      await windowManager.destroy(); // actually close the window
-    }
+    await _restoreOriginalVolume();
+    await windowManager.destroy(); // actually close the window
   }
 
   Future<void> _requestPermissionsIfNeeded() async {

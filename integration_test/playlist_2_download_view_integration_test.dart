@@ -20853,6 +20853,7 @@ void main() {
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: true,
               verifySetValueToTargetDialog: true,
+              closeRestoreConfirmDialog: false,
             );
 
             await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -21330,6 +21331,7 @@ void main() {
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: true,
               verifySetValueToTargetDialog: true,
+              closeRestoreConfirmDialog: false,
             );
 
             await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -21737,6 +21739,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: true,
+              closeRestoreConfirmDialog: false,
             );
 
             await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -21928,6 +21931,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: true,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -22154,6 +22158,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: true,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -22660,6 +22665,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: true,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -23096,6 +23102,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: true,
+              closeRestoreConfirmDialog: false,
             );
 
             await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -23295,6 +23302,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: true,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify that the audio menu button is enabled
@@ -23391,6 +23399,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -23528,6 +23537,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -23723,6 +23733,7 @@ void main() {
             doReplaceExistingPlaylists: true,
             doDeleteExistingPlaylistsNotContainedInZip: false,
             verifySetValueToTargetDialog: true,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify that the audio menu button is enabled
@@ -23899,6 +23910,7 @@ void main() {
             doReplaceExistingPlaylists: true,
             doDeleteExistingPlaylistsNotContainedInZip: false,
             verifySetValueToTargetDialog: true,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify that the audio menu button is enabled
@@ -24074,6 +24086,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify that the audio menu button is enabled
@@ -24261,6 +24274,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: true,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify that the audio menu button is enabled
@@ -24450,6 +24464,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -24487,6 +24502,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -24703,6 +24719,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -24740,6 +24757,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: true,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -24955,6 +24973,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify that the audio menu button is enabled
@@ -25081,6 +25100,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -25103,6 +25123,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -25192,6 +25213,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -25542,6 +25564,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -25893,6 +25916,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -26242,6 +26266,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -26560,6 +26585,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -26612,6 +26638,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -26707,6 +26734,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -26755,6 +26783,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -26882,6 +26911,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -26962,6 +26992,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -27084,6 +27115,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -27195,6 +27227,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -27369,6 +27402,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -27496,6 +27530,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -27643,6 +27678,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -27864,6 +27900,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -28100,6 +28137,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -28231,6 +28269,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -28388,6 +28427,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -28617,6 +28657,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -28862,6 +28903,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify that the audio menu button is enabled
@@ -28912,6 +28954,7 @@ void main() {
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
               verifySetValueToTargetDialog: true,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -29013,6 +29056,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify that the audio menu button is enabled
@@ -29063,6 +29107,7 @@ void main() {
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
               verifySetValueToTargetDialog: true,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -29195,6 +29240,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -29545,6 +29591,7 @@ void main() {
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
               verifySetValueToTargetDialog: true,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -29865,6 +29912,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -29908,6 +29956,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -29954,6 +30003,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -30062,6 +30112,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -30105,6 +30156,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -30155,6 +30207,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             await Future.delayed(const Duration(milliseconds: 500));
@@ -30327,6 +30380,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: false,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -30522,6 +30576,7 @@ void main() {
               tester: tester,
               doReplaceExistingPlaylists: true,
               doDeleteExistingPlaylistsNotContainedInZip: false,
+              closeRestoreConfirmDialog: false,
             );
 
             // Verify the displayed warning confirmation dialog
@@ -30680,6 +30735,7 @@ void main() {
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
             verifySetValueToTargetDialog: true,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -30768,6 +30824,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -30839,6 +30896,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -30988,6 +31046,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -31061,6 +31120,7 @@ void main() {
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
             verifySetValueToTargetDialog: true,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -31179,6 +31239,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -31288,6 +31349,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -31500,6 +31562,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify that the audio menu button is enabled
@@ -31626,6 +31689,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -31648,6 +31712,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            closeRestoreConfirmDialog: false,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -31725,6 +31790,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: true,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -31797,6 +31863,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -31869,6 +31936,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: true,
           doDeleteExistingPlaylistsNotContainedInZip: true,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -31941,6 +32009,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: true,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -31993,6 +32062,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -32045,6 +32115,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: true,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -32125,6 +32196,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -32218,6 +32290,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -32273,10 +32346,6 @@ void main() {
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
         );
-
-        // Close the displayed warning confirmation dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
 
         mp3RestorableZipFilePathName =
             '$kApplicationPathWindowsTest${path.separator}initial_audioLearn_mp3.zip';
@@ -32400,10 +32469,6 @@ void main() {
           doDeleteExistingPlaylistsNotContainedInZip: false,
         );
 
-        // Close the displayed warning confirmation dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
-
         String mp3RestorableZipFilePathName =
             '$kApplicationPathWindowsTest${path.separator}initial_audioLearn_mp3.zip';
 
@@ -32486,6 +32551,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -32542,6 +32608,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: true,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -32670,6 +32737,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -32770,10 +32838,6 @@ void main() {
           doDeleteExistingPlaylistsNotContainedInZip: false,
         );
 
-        // Close the displayed warning confirmation dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
-
         String mp3RestorableZipFilePathName =
             '$kApplicationPathWindowsTest${path.separator}initial_audioLearn_mp3.zip';
 
@@ -32857,6 +32921,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -32957,10 +33022,6 @@ void main() {
           doDeleteExistingPlaylistsNotContainedInZip: false,
         );
 
-        // Close the displayed warning confirmation dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
-
         String mp3RestorableZipFilePathName =
             '$kApplicationPathWindowsTest${path.separator}initial_audioLearn_mp3.zip';
 
@@ -33042,6 +33103,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -33142,10 +33204,6 @@ void main() {
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
         );
-
-        // Close the displayed warning confirmation dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
 
         // Verify the restored picture files in the application
         // pictures directory
@@ -33321,6 +33379,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -33677,6 +33736,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -33856,6 +33916,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -33962,6 +34023,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -34281,6 +34343,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -34431,6 +34494,7 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
         );
 
         // Verify the displayed warning confirmation dialog
@@ -34496,6 +34560,7 @@ void main() {
         tester: tester,
         doReplaceExistingPlaylists: true,
         doDeleteExistingPlaylistsNotContainedInZip: false,
+        closeRestoreConfirmDialog: false,
       );
 
       // Verify the displayed warning confirmation dialog
@@ -34655,6 +34720,7 @@ void main() {
         tester: tester,
         doReplaceExistingPlaylists: true,
         doDeleteExistingPlaylistsNotContainedInZip: false,
+        closeRestoreConfirmDialog: false,
       );
 
       // Verify the displayed warning confirmation dialog
@@ -34802,6 +34868,7 @@ void main() {
         tester: tester,
         doReplaceExistingPlaylists: true,
         doDeleteExistingPlaylistsNotContainedInZip: false,
+        closeRestoreConfirmDialog: false,
       );
 
       // Verify the displayed warning confirmation dialog
@@ -34870,6 +34937,19 @@ void main() {
       // Now tap on the 'A Directory with ZIPs' button
       await tester.tap(find.byKey(const Key('selectDirectoryButton')));
       await tester.pumpAndSettle();
+
+      // Verify the displayed problem confirmation dialog and
+      // close it
+      await IntegrationTestUtil.verifyConfirmActionDialog(
+        tester: tester,
+        confirmActionDialogTitle:
+            "Problem if selecting a directory on a smartphone:",
+        confirmActionDialogMessagePossibleLst: [
+          "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+        ],
+        closeDialogWithConfirmButton: true,
+        usePumpAndSettle: true,
+      );
 
       // Verify the displayed warning confirmation dialog
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
@@ -34945,6 +35025,7 @@ void main() {
         tester: tester,
         doReplaceExistingPlaylists: true,
         doDeleteExistingPlaylistsNotContainedInZip: false,
+        closeRestoreConfirmDialog: false,
       );
 
       // Verify the displayed warning confirmation dialog
@@ -35013,6 +35094,19 @@ void main() {
       // Now tap on the 'A Directory with ZIPs' button
       await tester.tap(find.byKey(const Key('selectDirectoryButton')));
       await tester.pumpAndSettle();
+
+      // Verify the displayed problem confirmation dialog and
+      // close it
+      await IntegrationTestUtil.verifyConfirmActionDialog(
+        tester: tester,
+        confirmActionDialogTitle:
+            "Problem if selecting a directory on a smartphone:",
+        confirmActionDialogMessagePossibleLst: [
+          "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+        ],
+        closeDialogWithConfirmButton: true,
+        usePumpAndSettle: true,
+      );
 
       // Verify the displayed warning confirmation dialog
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
@@ -35086,6 +35180,7 @@ void main() {
         tester: tester,
         doReplaceExistingPlaylists: true,
         doDeleteExistingPlaylistsNotContainedInZip: false,
+        closeRestoreConfirmDialog: false,
       );
 
       // Verify the displayed warning confirmation dialog
@@ -35154,6 +35249,19 @@ void main() {
       // Now tap on the 'A Directory with ZIPs' button
       await tester.tap(find.byKey(const Key('selectDirectoryButton')));
       await tester.pumpAndSettle();
+
+      // Verify the displayed problem confirmation dialog and
+      // close it
+      await IntegrationTestUtil.verifyConfirmActionDialog(
+        tester: tester,
+        confirmActionDialogTitle:
+            "Problem if selecting a directory on a smartphone:",
+        confirmActionDialogMessagePossibleLst: [
+          "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+        ],
+        closeDialogWithConfirmButton: true,
+        usePumpAndSettle: true,
+      );
 
       // Verify the displayed warning confirmation dialog
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
@@ -35248,6 +35356,19 @@ void main() {
         await tester.tap(find.byKey(const Key('selectDirectoryButton')));
         await tester.pumpAndSettle();
 
+        // Verify the displayed problem confirmation dialog and
+        // close it
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle:
+              "Problem if selecting a directory on a smartphone:",
+          confirmActionDialogMessagePossibleLst: [
+            "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
+
         // Verify the displayed warning confirmation dialog
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
@@ -35321,6 +35442,19 @@ void main() {
         // Now tap on the 'A Directory with ZIPs' button
         await tester.tap(find.byKey(const Key('selectDirectoryButton')));
         await tester.pumpAndSettle();
+
+        // Verify the displayed problem confirmation dialog and
+        // close it
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle:
+              "Problem if selecting a directory on a smartphone:",
+          confirmActionDialogMessagePossibleLst: [
+            "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
 
         // Verify the displayed warning confirmation dialog
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
@@ -35398,6 +35532,19 @@ void main() {
         // Now tap on the 'A Directory with ZIPs' button
         await tester.tap(find.byKey(const Key('selectDirectoryButton')));
         await tester.pumpAndSettle();
+
+        // Verify the displayed problem confirmation dialog and
+        // close it
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle:
+              "Problem if selecting a directory on a smartphone:",
+          confirmActionDialogMessagePossibleLst: [
+            "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
 
         // Verify the displayed warning confirmation dialog
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
@@ -35477,6 +35624,19 @@ void main() {
         // Now tap on the 'A Directory with ZIPs' button
         await tester.tap(find.byKey(const Key('selectDirectoryButton')));
         await tester.pumpAndSettle();
+
+        // Verify the displayed problem confirmation dialog and
+        // close it
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle:
+              "Problem if selecting a directory on a smartphone:",
+          confirmActionDialogMessagePossibleLst: [
+            "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
 
         // Verify the displayed warning confirmation dialog
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
@@ -51154,16 +51314,7 @@ void main() {
         await tester.tap(extractMp3ButtonFinder);
         await tester.pumpAndSettle();
 
-        await Future.delayed(const Duration(milliseconds: 1000));
-        await tester.pumpAndSettle();
-
-        // Necessary to drag down vertically to make visible the edit
-        // icon button of the 4th audio comment
-        await tester.drag(
-          find.byType(AudioExtractorScreen),
-          const Offset(
-              0, -200), // Negative value for vertical drag to scroll down
-        );
+        await Future.delayed(const Duration(milliseconds: 1500));
         await tester.pumpAndSettle();
 
         // Verify the extract comments to MP3 success dialog message
@@ -51288,11 +51439,23 @@ void main() {
         await Future.delayed(const Duration(milliseconds: 1500));
         await tester.pumpAndSettle();
 
+        // Necessary to drag down vertically the audio extractor screen
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, -600), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
         audioDurationText = tester.widget<Text>(
             find.byKey(const Key('extractedAudioDurationTextKey')));
-        expect(audioDurationText.data, '0:17.8',
-            reason:
-                'The played audio duration is not correct after the comment play speed modification.');
+
+        expect(
+          audioDurationText.data,
+          '0:17.8',
+          reason:
+              'The played audio duration is not correct after the comment play speed modification.',
+        );
 
         // Now, type on the Save Comments button
         Finder saveCommentButtonFinder =
@@ -51670,6 +51833,7 @@ Future<void> _restoreMultipleOrIndividualPlaylist({
     tester: tester,
     doReplaceExistingPlaylists: false,
     doDeleteExistingPlaylistsNotContainedInZip: false,
+    closeRestoreConfirmDialog: false,
   );
 
   await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -52204,6 +52368,14 @@ Future<void> _verifyAndPlayExtractedMp3Method({
   await tester.tap(playPauseButtonFinder);
   await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
+  // Necessary to drag down vertically to make visible the extraction
+  // playing message
+  await tester.drag(
+    find.byType(AudioExtractorScreen),
+    const Offset(0, -600), // Negative value for vertical drag to scroll down
+  );
+  await tester.pumpAndSettle();
+
   await tester.ensureVisible(find.text(extractionPlayingMessage));
   await tester.pumpAndSettle();
 
@@ -52474,6 +52646,7 @@ Future<void> _restorePaylistsAndTheirMp3({
     tester: tester,
     doReplaceExistingPlaylists: doReplaceExistingPlaylists,
     doDeleteExistingPlaylistsNotContainedInZip: doDeleteExistingPlaylists,
+    closeRestoreConfirmDialog: false,
   );
 
   if (restorePlaylistsConfirmationMessage.isNotEmpty) {
@@ -53943,6 +54116,7 @@ Future<void> _tapOnSetAudioQualityMenu({
     tester: tester,
     playlistTitle: playlistToModifyTitle,
     playlistMenuKeyStr: 'popup_menu_set_audio_quality',
+    dragToBottom: true,
   );
 
   await IntegrationTestUtil.verifySetValueToTargetDialog(

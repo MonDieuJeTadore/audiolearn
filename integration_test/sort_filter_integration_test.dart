@@ -9951,7 +9951,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             tester: tester,
             doReplaceExistingPlaylists: true,
             doDeleteExistingPlaylistsNotContainedInZip: false,
-            doNotCloseRestoreConfirmDialog: true, // since we want to verify the content of the warning dialog before closing it
+            closeRestoreConfirmDialog: true, // since we want to verify the content of the warning dialog before closing it
           );
 
           // Verify the displayed warning confirmation dialog
@@ -10141,7 +10141,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             tester: tester,
             doReplaceExistingPlaylists: true,
             doDeleteExistingPlaylistsNotContainedInZip: false,
-            doNotCloseRestoreConfirmDialog: true, // since we want to verify the content of the warning dialog before closing it
+            closeRestoreConfirmDialog: true, // since we want to verify the content of the warning dialog before closing it
           );
 
           // Verify the displayed warning confirmation dialog

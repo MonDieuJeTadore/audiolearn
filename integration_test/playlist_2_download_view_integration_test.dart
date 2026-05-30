@@ -17587,7 +17587,7 @@ void main() {
               'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
         );
 
-        expect(find.text('Date/time dd/MM/yyyy hh:mm'), findsOneWidget);
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
 
         const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
 
@@ -17734,7 +17734,7 @@ void main() {
               'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
         );
 
-        expect(find.text('Date/time dd/MM/yyyy hh:mm'), findsOneWidget);
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
 
         const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
 
@@ -17774,8 +17774,8 @@ void main() {
           tester: tester,
           confirmActionDialogTitle: "Prevision of the Save Duration",
           confirmActionDialogMessagePossibleLst: [
-            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:01.",
-            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:02."
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:00.",
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:01."
           ],
           closeDialogWithConfirmButton: true,
         );
@@ -17931,7 +17931,7 @@ void main() {
               'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
         );
 
-        expect(find.text('Date/time dd/MM/yyyy hh:mm'), findsOneWidget);
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
 
         const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
 
@@ -18348,7 +18348,7 @@ void main() {
               'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
         );
 
-        expect(find.text('Date/time dd/MM/yyyy hh:mm'), findsOneWidget);
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
 
         const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
 
@@ -18495,7 +18495,7 @@ void main() {
               'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
         );
 
-        expect(find.text('Date/time dd/MM/yyyy hh:mm'), findsOneWidget);
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
 
         const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
 
@@ -18533,8 +18533,8 @@ void main() {
           tester: tester,
           confirmActionDialogTitle: "Prevision of the Save Duration",
           confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:00.",
             "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:01.",
-            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:02.",
           ],
           closeDialogWithConfirmButton: true,
           usePumpAndSettle: true,
@@ -18645,7 +18645,7 @@ void main() {
               'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
         );
 
-        expect(find.text('Date/time dd/MM/yyyy hh:mm'), findsOneWidget);
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
 
         const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
 
@@ -38273,7 +38273,7 @@ void main() {
       Finder listFinder = find.byKey(const Key('audio_list'));
 
       // Perform the scroll action
-      await tester.drag(listFinder, const Offset(0, 400));
+      await tester.drag(listFinder, const Offset(0, 100));
       await tester.pumpAndSettle();
 
       await _deleteAudioFromPlaylist(
@@ -53588,7 +53588,7 @@ Future<void> _verifyDateFormatApplication({
   // apply this sort/filter parms
   await _selectApplyAndVerifySortFilterParms(
     tester: tester,
-    sortFilterParms: 'audio downl dur',
+    sortFilterParms: 'downl dur',
     audioSubTitles: audioSubTitlesWithAudioDownloadDuration,
   );
 
@@ -53733,7 +53733,7 @@ Future<void> _verifyDateFormatApplication({
     appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
   );
 
-  expect(find.text('Date/time $savePlaylistsAudioMp3DateFormat hh:mm'),
+  expect(find.text('Date/time ($savePlaylistsAudioMp3DateFormat hh:mm)'),
       findsOneWidget);
   expect(find.text('$savePlaylistsAudioMp3OldestDate 09:45'), findsOneWidget);
 

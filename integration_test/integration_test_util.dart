@@ -726,6 +726,7 @@ class IntegrationTestUtil {
     bool doPurgePicturesDir = false,
     bool createChapAscSfParms = false,
     bool createChapDescSfParms = false,
+    bool closeRestoreConfirmDialog = true,
   }) async {
     if (playlistTitlesToDelete.isNotEmpty) {
       // Delete the playlists which are to be deleted
@@ -805,10 +806,15 @@ class IntegrationTestUtil {
     await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
     await tester.pumpAndSettle(const Duration(seconds: 1));
 
-    if (find.byKey(const Key('warningDialogOkButton')).evaluate().isNotEmpty) {
-      // Tap on the 'OK' button of the confirmation dialog to close it
-      await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-      await tester.pumpAndSettle();
+    if (closeRestoreConfirmDialog) {
+      if (find
+          .byKey(const Key('warningDialogOkButton'))
+          .evaluate()
+          .isNotEmpty) {
+        // Tap on the 'OK' button of the confirmation dialog to close it
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
+        await tester.pumpAndSettle();
+      }
     }
 
     if (createChapAscSfParms) {
@@ -3267,17 +3273,7 @@ class IntegrationTestUtil {
           expect(find.text('Video upload date'), findsNothing);
           expect(find.text('Imported audio date time'), findsOneWidget);
           expect(find.text('Playable'), findsOneWidget);
-
-          if (videoUrl.isNotEmpty) {
-            expect(
-                find.text('Video URL'), findsOneWidget); // normally, imported
-            // audio should not have a video url but we can have some
-            // cases where it was added using the 'Add audio URL ...'
-            // audio item menu
-          } else {
-            expect(find.text('Video URL'), findsNothing);
-          }
-
+          expect(find.text('Video URL'), findsOneWidget);
           expect(find.text('Compact video description'), findsNothing);
           expect(find.text('Valid video title'), findsNothing);
 

@@ -106,6 +106,7 @@ void main() {
           doDeleteExistingPlaylistsNotContainedInZip: false,
           verifySetValueToTargetDialog: true,
           onAndroid: true,
+          closeRestoreConfirmDialog: true,
         );
 
         // Must be used on Android emulator, otherwise the confirmation
@@ -301,6 +302,7 @@ void main() {
           doDeleteExistingPlaylistsNotContainedInZip: false,
           verifySetValueToTargetDialog: true,
           onAndroid: true,
+          closeRestoreConfirmDialog: true,
         );
 
         // Must be used on Android emulator, otherwise the confirmation
@@ -475,6 +477,7 @@ void main() {
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
           onAndroid: true,
+          closeRestoreConfirmDialog: true,
         );
 
         // Must be used on Android emulator, otherwise the confirmation
@@ -605,6 +608,7 @@ void main() {
           doDeleteExistingPlaylistsNotContainedInZip: false,
           verifySetValueToTargetDialog: true,
           onAndroid: true,
+          closeRestoreConfirmDialog: true,
         );
 
         // Must be used on Android emulator, otherwise the confirmation
@@ -748,6 +752,7 @@ void main() {
           doDeleteExistingPlaylistsNotContainedInZip: false,
           verifySetValueToTargetDialog: true,
           onAndroid: true,
+          closeRestoreConfirmDialog: true,
         );
 
         // Must be used on Android emulator, otherwise the confirmation
@@ -2764,8 +2769,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -2939,8 +2943,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -3104,8 +3107,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -3265,8 +3267,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -3427,8 +3428,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -3588,8 +3588,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -3762,8 +3761,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -3937,8 +3935,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -4108,8 +4105,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -4280,8 +4276,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -4449,8 +4444,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -4607,8 +4601,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -4838,8 +4831,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -4994,8 +4986,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -5226,8 +5217,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -5383,8 +5373,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -5618,8 +5607,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -5777,8 +5765,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -6013,8 +6000,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -6171,8 +6157,7 @@ void main() {
         // In order to create the Android emulator application, execute the
         // 'Restore Playlists, Comments and Settings from Zip File ...' menu
         // without replacing the existing playlists.
-        const String priereOnePlaylistTitle =
-            'Prières 1';
+        const String priereOnePlaylistTitle = 'Prières 1';
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: false,
@@ -6186,8 +6171,7 @@ void main() {
           onAndroid: true,
         );
 
-        const String playlistToPositionAudioTitles =
-            'Prières 1';
+        const String playlistToPositionAudioTitles = 'Prières 1';
 
         await IntegrationTestUtil.typeOnPlaylistMenuItem(
           tester: tester,

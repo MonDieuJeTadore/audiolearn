@@ -106,7 +106,7 @@ void main() {
           doDeleteExistingPlaylistsNotContainedInZip: false,
           verifySetValueToTargetDialog: true,
           onAndroid: true,
-          closeRestoreConfirmDialog: true,
+          closeRestoreConfirmDialog: false,
         );
 
         // Must be used on Android emulator, otherwise the confirmation
@@ -302,7 +302,7 @@ void main() {
           doDeleteExistingPlaylistsNotContainedInZip: false,
           verifySetValueToTargetDialog: true,
           onAndroid: true,
-          closeRestoreConfirmDialog: true,
+          closeRestoreConfirmDialog: false,
         );
 
         // Must be used on Android emulator, otherwise the confirmation
@@ -477,7 +477,7 @@ void main() {
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
           onAndroid: true,
-          closeRestoreConfirmDialog: true,
+          closeRestoreConfirmDialog: false,
         );
 
         // Must be used on Android emulator, otherwise the confirmation
@@ -608,7 +608,7 @@ void main() {
           doDeleteExistingPlaylistsNotContainedInZip: false,
           verifySetValueToTargetDialog: true,
           onAndroid: true,
-          closeRestoreConfirmDialog: true,
+          closeRestoreConfirmDialog: false,
         );
 
         // Must be used on Android emulator, otherwise the confirmation
@@ -752,7 +752,7 @@ void main() {
           doDeleteExistingPlaylistsNotContainedInZip: false,
           verifySetValueToTargetDialog: true,
           onAndroid: true,
-          closeRestoreConfirmDialog: true,
+          closeRestoreConfirmDialog: false,
         );
 
         // Must be used on Android emulator, otherwise the confirmation
@@ -875,10 +875,6 @@ void main() {
           ],
           onAndroid: true,
         );
-
-        // Tap on the 'OK' button of the confirmation dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
 
         const String restorableMp3ZipFileName =
             'urgent_actus_17-12-2023_mp3_from_2025-08-12_16_29_25_on_2025-08-15_11_23_41.zip';
@@ -1085,10 +1081,6 @@ void main() {
           onAndroid: true,
         );
 
-        // Tap on the 'OK' button of the confirmation dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
-
         const String restorableMp3ZipFileName =
             'urgent_actus_17-12-2023_mp3_from_2025-08-12_16_29_25_on_2025-08-15_11_23_41.zip';
 
@@ -1239,10 +1231,6 @@ void main() {
           ],
           onAndroid: true,
         );
-
-        // Tap on the 'OK' button of the confirmation dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
 
         const String restorableMp3ZipFileName =
             'urgent_actus_17-12-2023_mp3_from_2025-08-12_16_29_25_on_2025-08-15_11_23_41.zip';
@@ -1404,10 +1392,6 @@ void main() {
           ],
           onAndroid: true,
         );
-
-        // Tap on the 'OK' button of the confirmation dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
 
         const String restorableMp3ZipFileName =
             'audioLearn_mp3_from_2025-08-12_16_29_25_on_2025-09-07_07_46_29.zip';
@@ -1596,10 +1580,6 @@ void main() {
           ],
           onAndroid: true,
         );
-
-        // Tap on the 'OK' button of the confirmation dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
 
         // First, set the application language to french
         await IntegrationTestUtil.setApplicationLanguage(
@@ -2240,10 +2220,6 @@ void main() {
           ],
           onAndroid: true,
         );
-
-        // Tap on the 'OK' button of the confirmation dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
 
         // Now unselect the 'local' playlist if it is selected
         if (await IntegrationTestUtil.isPlaylistSelected(

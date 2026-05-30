@@ -94,7 +94,7 @@ Future<void> _setWindowsAppSizeAndPosition({
     final Rect screenRect = screen.visibleFrame;
 
     // Définissez la largeur et la hauteur de votre fenêtre
-    double windowWidth = (isTest) ? 900 : 730;
+    double windowWidth = (isTest) ? 900 : 745;
     double windowHeight = (isTest) ? 1700 : 1480;
 
     // Calculez la position X pour placer la fenêtre sur le côté droit de l'écran

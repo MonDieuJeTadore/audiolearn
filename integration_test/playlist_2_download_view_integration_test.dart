@@ -54149,11 +54149,11 @@ Future<void> _tapOnDownloadURLsFromTextFileMenu({
   //                                false: set spoken quality
   bool uncheckAllCheckboxes = false, // true: uncheck all checkboxes
 }) async {
-  // Tap on the set audio quality playlist popup menu
   await IntegrationTestUtil.typeOnPlaylistMenuItem(
     tester: tester,
     playlistTitle: playlistToDownloadInTitle,
     playlistMenuKeyStr: 'popup_menu_download_video_urls_in_playlist',
+    dragToBottom: true,
   );
 
   // Check the value of the AlertDialog dialog title and check the

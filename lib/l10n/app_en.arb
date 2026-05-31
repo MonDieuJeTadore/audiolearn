@@ -389,7 +389,7 @@
     }
   },
   "appBarTitleAudioExtractor": "Extract Audio",
-  "setAudioPlaySpeedDialogTitle": "Playback Speed",
+  "setAudioPlaySpeedDialogTitle": "Playback speed",
   "setAudioPlaySpeedTooltip": "Set audios play speed.",
   "exclude": "Exclude ",
   "fullyPlayed": "fully played ",
@@ -1300,5 +1300,7 @@
   "unincludeAudioCommentTooltip": "Avoid that this comment is included in the extraction.",
   "estimatingSavingPlaylistsAudioMp3Duration": "Estimating saving audio files duration ...",
   "selectDirectoryWarningTitle": "Problem if selecting a directory on a smartphone:",
-  "selectDirectoryWarningMessage": "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory."
+  "selectDirectoryWarningMessage": "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+  "playVolumeInPercentageLabel": "Play volume in %",
+  "playVolumeInPercentageTooltip": "Defining the Windows play volume which is set when AudioLearn is started. When the application is closed, the previous play volume is restored."
 }

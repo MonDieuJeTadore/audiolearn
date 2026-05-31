@@ -748,7 +748,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appBarTitleAudioExtractor => 'Extract Audio';
 
   @override
-  String get setAudioPlaySpeedDialogTitle => 'Playback Speed';
+  String get setAudioPlaySpeedDialogTitle => 'Playback speed';
 
   @override
   String get setAudioPlaySpeedTooltip => 'Set audios play speed.';
@@ -3040,4 +3040,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get selectDirectoryWarningMessage =>
       'If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.';
+
+  @override
+  String get playVolumeInPercentageLabel => 'Play volume in %';
+
+  @override
+  String get playVolumeInPercentageTooltip =>
+      'Defining the Windows play volume which is set when AudioLearn is started. When the application is closed, the previous play volume is restored.';
 }

@@ -1350,7 +1350,7 @@ abstract class AppLocalizations {
   /// No description provided for @setAudioPlaySpeedDialogTitle.
   ///
   /// In en, this message translates to:
-  /// **'Playback Speed'**
+  /// **'Playback speed'**
   String get setAudioPlaySpeedDialogTitle;
 
   /// No description provided for @setAudioPlaySpeedTooltip.
@@ -4886,6 +4886,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.'**
   String get selectDirectoryWarningMessage;
+
+  /// No description provided for @playVolumeInPercentageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Play volume in %'**
+  String get playVolumeInPercentageLabel;
+
+  /// No description provided for @playVolumeInPercentageTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Defining the Windows play volume which is set when AudioLearn is started. When the application is closed, the previous play volume is restored.'**
+  String get playVolumeInPercentageTooltip;
 }
 
 class _AppLocalizationsDelegate

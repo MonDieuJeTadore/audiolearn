@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 const String kApplicationName = "AudioLearn";
 const String kApplicationNameForAboutView =
     "Audio Learn"; // Enables better readability
-const String kApplicationVersion = "3.4.2";
+const String kApplicationVersion = "3.4.3";
 
 enum PopupMenuButtonType {
   openSortFilterAudioDialog,
@@ -71,8 +71,7 @@ const String kPictureDirName = 'pictures';
 const String kSavedPlaylistsDirName = 'saved';
 const String kPictureAudioMapFileName = 'pictureAudioMap.json';
 
-// 0.86, Default system volume for Windows
-const double kWindowsSystemVolume = 0.55;
+const int kWindowsSystemVolume = 55;
 
 const String kOrderedPlaylistTitlesFileName = 'savedOrderedPlaylistTitles.txt';
 

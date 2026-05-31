@@ -128,10 +128,39 @@ class _MyHomePageState extends State<MyHomePage>
       ));
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Code to use during the next week since when the app is installed,
+      // the default volume is set in the settingsDataService.
+      // int? playVolumeInPercentage = widget.settingsDataService.get(
+      //     settingType: SettingType.playlists,
+      //     settingSubType: Playlists.onWindowsPlayVolumeInPercentage);
+
+      // Code to use during the next week since when the app is installed,
+      // the default volume is set in the settingsDataService.
+      // if (playVolumeInPercentage == null) {
+      //   playVolumeInPercentage = kWindowsSystemVolume;
+      //   widget.settingsDataService.set(
+      //     settingType: SettingType.playlists,
+      //     settingSubType: Playlists.onWindowsPlayVolumeInPercentage,
+      //     value: playVolumeInPercentage,
+      //   );
+      //   widget.settingsDataService.saveSettings();
+      // }
+
       if (Platform.isWindows && !widget.settingsDataService.isTest) {
         _volumeController = VolumeController.instance;
         _originalVolume = await _volumeController!.getVolume();
-        _volumeController!.setVolume(kWindowsSystemVolume);
+
+        // Code to use during the next week since when the app is installed,
+        // the default volume is set in the settingsDataService.
+        // _volumeController!.setVolume(playVolumeInPercentage / 100);
+
+        // Correct code to use after the next week since when the app is
+        // installed and the default volume is set in the settingsDataService.
+        //
+        _volumeController!.setVolume(widget.settingsDataService.get(
+                settingType: SettingType.playlists,
+                settingSubType: Playlists.onWindowsPlayVolumeInPercentage) /
+            100);
 
         _lifecycleListener = AppLifecycleListener(
           onExitRequested: () async {

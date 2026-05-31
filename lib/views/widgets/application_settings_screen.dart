@@ -5,6 +5,7 @@ import 'package:audiolearn/viewmodels/playlist_list_vm.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
+import 'package:volume_controller/volume_controller.dart';
 import '../../l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -41,6 +42,8 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
   String _applicationDialogPlaylistRootPath = '';
   final TextEditingController _mp3ZipFileSizeLimitInMbController =
       TextEditingController();
+  final TextEditingController _playVolumeInPercentageController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -64,6 +67,14 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
             )
             ?.toString() ??
         kMp3ZipFileSizeLimitInMb.toString();
+
+    _playVolumeInPercentageController.text = widget.settingsDataService
+            .get(
+              settingType: SettingType.playlists,
+              settingSubType: Playlists.onWindowsPlayVolumeInPercentage,
+            )
+            ?.toString() ??
+        kWindowsSystemVolume.toString();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _helpItemsLst = [
@@ -97,6 +108,7 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
   @override
   void dispose() {
     _mp3ZipFileSizeLimitInMbController.dispose();
+    _playVolumeInPercentageController.dispose();
 
     super.dispose();
   }
@@ -227,6 +239,32 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
                       ],
                     ),
                   ),
+                  if (Platform.isWindows) ...[
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: createFlexibleEditableRowFunction(
+                              context: context,
+                              valueTextFieldWidgetKey:
+                                  const Key('playVolumeInPercentage'),
+                              label: AppLocalizations.of(context)!
+                                  .playVolumeInPercentageLabel,
+                              labelAndTextFieldTooltip:
+                                  AppLocalizations.of(context)!
+                                      .playVolumeInPercentageTooltip,
+                              controller: _playVolumeInPercentageController,
+                              labelFlexValue: 4,
+                              editableFieldFlexValue: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]
                 ],
               ),
             ),
@@ -299,6 +337,20 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
           settingType: SettingType.playlists,
           settingSubType: Playlists.maxSavableAudioMp3FileSizeInMb,
           value: value);
+
+      int? playVolumeInPercentageValue =
+          int.tryParse(_playVolumeInPercentageController.text);
+
+      if (playVolumeInPercentageValue != null) {
+        widget.settingsDataService.set(
+          settingType: SettingType.playlists,
+          settingSubType: Playlists.onWindowsPlayVolumeInPercentage,
+          value: playVolumeInPercentageValue,
+        );
+
+        VolumeController volumeController = VolumeController.instance;
+        volumeController.setVolume(playVolumeInPercentageValue / 100);
+      }
 
       widget.settingsDataService.saveSettings();
     }
@@ -414,7 +466,7 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
         //                                     previously saved playlist title order
         //                                     which does not exist
       );
-      
+
       await widget.playlistDownloadView.playlistDownloadViewState
           .reselectCurrentPlaylist();
     }

@@ -3165,4 +3165,11 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get selectDirectoryWarningMessage =>
       "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files to a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.";
+
+  @override
+  String get playVolumeInPercentageLabel => "Play volume in %";
+
+  @override
+  String get playVolumeInPercentageTooltip =>
+      "Defining the Windows play volume which is set when AudioLearn is started. When the application is closed, the previous play volume is restored.";
 }

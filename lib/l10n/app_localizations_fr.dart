@@ -3076,4 +3076,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get selectDirectoryWarningMessage =>
       'Si les fichiers ZIP se trouvent sur votre smartphone, cliquez sur Annuler après avoir lu l’explication. Vous devez d’abord copier les fichiers ZIP dans un dossier sur votre ordinateur. L\'accès à un répertoire ne fonctionne pas via la connexion USB au téléphone, mais fonctionne correctement sur un répertoire de l’ordinateur.';
+
+  @override
+  String get playVolumeInPercentageLabel => 'Volume de lecture en %';
+
+  @override
+  String get playVolumeInPercentageTooltip =>
+      'Définit le volume de lecture Windows appliqué au démarrage d\'AudioLearn. Lorsque l\'application est fermée, le volume de lecture précédent est restauré.';
 }

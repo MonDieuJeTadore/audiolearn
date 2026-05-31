@@ -36,6 +36,7 @@ enum Playlists {
   playSpeed,
   arePlaylistsDisplayedInPlaylistDownloadView,
   maxSavableAudioMp3FileSizeInMb,
+  onWindowsPlayVolumeInPercentage,
 }
 
 enum DataLocation {
@@ -70,6 +71,7 @@ class SettingsDataService {
       // This changes when the user clicks on the playlist toggle button.
       Playlists.arePlaylistsDisplayedInPlaylistDownloadView: true,
       Playlists.maxSavableAudioMp3FileSizeInMb: kMp3ZipFileSizeLimitInMb,
+      Playlists.onWindowsPlayVolumeInPercentage: kWindowsSystemVolume,
     },
     SettingType.dataLocation: {
       DataLocation.appSettingsPath: '',

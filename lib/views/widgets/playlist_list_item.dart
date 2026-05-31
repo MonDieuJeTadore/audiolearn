@@ -238,17 +238,6 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
           ),
         ),
         PopupMenuItem<PlaylistPopupMenuAction>(
-          key: const Key('popup_menu_download_video_urls_in_playlist'),
-          value:
-              PlaylistPopupMenuAction.downloadVideoUrlsFromTextFileInPlaylist,
-          child: Tooltip(
-            message: AppLocalizations.of(context)!
-                .downloadVideoUrlsFromTextFileInPlaylistTooltip,
-            child: Text(AppLocalizations.of(context)!
-                .downloadVideoUrlsFromTextFileInPlaylist),
-          ),
-        ),
-        PopupMenuItem<PlaylistPopupMenuAction>(
           key: const Key('popup_menu_filtered_audio_actions'),
           value: PlaylistPopupMenuAction.filteredAudioActions,
           child: Text(AppLocalizations.of(context)!.filteredAudioActions),
@@ -320,6 +309,17 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                 .updatePlaylistPlayableAudioListTooltip,
             child: Text(
                 AppLocalizations.of(context)!.updatePlaylistPlayableAudioList),
+          ),
+        ),
+        PopupMenuItem<PlaylistPopupMenuAction>(
+          key: const Key('popup_menu_download_video_urls_in_playlist'),
+          value:
+              PlaylistPopupMenuAction.downloadVideoUrlsFromTextFileInPlaylist,
+          child: Tooltip(
+            message: AppLocalizations.of(context)!
+                .downloadVideoUrlsFromTextFileInPlaylistTooltip,
+            child: Text(AppLocalizations.of(context)!
+                .downloadVideoUrlsFromTextFileInPlaylist),
           ),
         ),
       ],

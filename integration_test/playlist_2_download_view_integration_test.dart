@@ -38433,7 +38433,7 @@ void main() {
       Finder listFinder = find.byKey(const Key('audio_list'));
 
       // Perform the scroll action
-      await tester.drag(listFinder, const Offset(0, 100));
+      await tester.drag(listFinder, const Offset(0, 300));
       await tester.pumpAndSettle();
 
       await _deleteAudioFromPlaylist(

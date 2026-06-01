@@ -4858,16 +4858,17 @@ class PlaylistListVM extends ChangeNotifier {
     int addedCommentJsonFilesCount = 0;
     int addedPicturesCount = 0;
     List<int> restoredNumberLst = []; // restored number returned list
+
+    // [0] is the number of modified comments,
+    // [1] is the number of added comments,
+    // [2] is the number of deleted comments,
+    // [3] is the number of added comment
     List<int> commentUpdateNumberLst = [
       0,
       0,
       0,
-      0
-    ]; // [0] is the number of modified comments,
-    //    [1] is the number of added comments,
-    //    [2] is the number of deleted comments,
-    //    [3] is the number of added comment
-    //        json file (0 or 1 for an audio).
+      0,
+    ];
 
     // Iterate through downloaded audios from the zip playlist.
     for (Audio zipAudio in zipPlaylist.downloadedAudioLst) {

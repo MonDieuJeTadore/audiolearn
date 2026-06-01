@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'dart:io';
 
 // 
+import 'package:logger/logger.dart';
 import 'package:path/path.dart' as path;
+
 
 import '../constants.dart';
 import '../utils/dir_util.dart';
@@ -115,6 +117,7 @@ class SettingsDataService {
   List<AudioSortFilterParameters>
       get searchHistoryAudioSortFilterParametersLst =>
           _searchHistoryAudioSortFilterParametersLst;
+  final Logger _logger = Logger();
 
   SettingsDataService({
     bool isTest = false,
@@ -239,7 +242,7 @@ class SettingsDataService {
               .map((element) => AudioSortFilterParameters.fromJson(element)));
         }
       } catch (e) {
-        print('Error while extracting audio sort/filter settings: $e');
+        _logger.i('Error while extracting audio sort/filter settings: $e');
       }
     }
 
@@ -325,7 +328,11 @@ class SettingsDataService {
       // time. The app will start with the default settings. When the
       // user changes the settings, the settings file will be created
       // and the settings will loaded the next time the app is started.
-      print(e.toString());
+      _logger.i(e.toString());
+    } on Exception catch (e) {
+      // Catching this exception avoids that the application can not start
+      // when the settings file is corrupted (e.g. not a valid JSON file).
+      _logger.i('Error while loading settings from file: $e');
     }
 
     if (get(

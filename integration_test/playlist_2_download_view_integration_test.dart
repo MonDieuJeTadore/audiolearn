@@ -26891,9 +26891,6 @@ void main() {
             // Install the initial version of the unique saved
             // playlist 'Prières du Maître'
 
-            // If executed on main
-            // String restorableZipFilePathName =
-            //     '$kApplicationPathWindowsTest${path.separator}Windows Prières du Maître initialization.zip';
             String restorableZipFilePathName =
                 '$kApplicationPathWindowsTest${path.separator}Windows Prières initialization.zip';
 
@@ -26918,8 +26915,6 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  // If executed on main
-                  // 'Restored 1 playlist saved individually, 3 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières du Maître initialization.zip".',
                   'Restored 1 playlist saved individually, 3 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières initialization.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
@@ -26974,8 +26969,6 @@ void main() {
             // and modified comments
 
             restorableZipFilePathName =
-                // If executed on main
-                // '$kApplicationPathWindowsTest${path.separator}Windows Prières comment restoration.zip';
                 '$kApplicationPathWindowsTest${path.separator}Windows Prières comment restoration.zip';
 
             mockFilePicker.setSelectedFiles([
@@ -26999,9 +26992,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  // If executed on main
-                  // 'Restored 0 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 1 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières du Maître comment restoration.zip".',
-                  'Restored 0 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 1 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières comment restoration.zip".',
+                 'Restored 0 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 1 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières comment restoration.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -27512,8 +27503,6 @@ void main() {
             // file which contains 1 comment
 
             restorableZipFilePathName =
-                // If executed on main
-                // '$kApplicationPathWindowsTest${path.separator}Windows Prières du Maître comment restoration.zip';
                 '$kApplicationPathWindowsTest${path.separator}local two_1_comment_1_picture.zip';
 
             mockFilePicker.setSelectedFiles([
@@ -27882,8 +27871,6 @@ void main() {
             // 1 picture json file which contains 1 picture
 
             restorableZipFilePathName =
-                // If executed on main
-                // '$kApplicationPathWindowsTest${path.separator}Windows Prières du Maître comment restoration.zip';
                 '$kApplicationPathWindowsTest${path.separator}local one and two 1_comments_1_pictures.zip';
 
             mockFilePicker.setSelectedFiles([
@@ -28251,8 +28238,6 @@ void main() {
             // file which contains 1 comment
 
             restorableZipFilePathName =
-                // If executed on main
-                // '$kApplicationPathWindowsTest${path.separator}Windows Prières du Maître comment restoration.zip';
                 '$kApplicationPathWindowsTest${path.separator}local two_deleted_and_modified_and_added_comment_deleted_and_added_picture.zip';
 
             mockFilePicker.setSelectedFiles([
@@ -28639,8 +28624,6 @@ void main() {
             // 1 picture json file which contains 1 picture
 
             restorableZipFilePathName =
-                // If executed on main
-                // '$kApplicationPathWindowsTest${path.separator}Windows Prières du Maître comment restoration.zip';
                 '$kApplicationPathWindowsTest${path.separator}local one and two deleted_and_modified_and_added_comment_deleted_and_added_picture.zip';
 
             mockFilePicker.setSelectedFiles([

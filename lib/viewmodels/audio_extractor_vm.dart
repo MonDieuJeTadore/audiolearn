@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:audiolearn/constants.dart';
 import 'package:audiolearn/services/settings_data_service.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 

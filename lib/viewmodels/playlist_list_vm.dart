@@ -4968,7 +4968,8 @@ class PlaylistListVM extends ChangeNotifier {
                   .map((segment) => segment.trim())
                   .join('/')
                   .endsWith(zipAudioCommentFilePath)) {
-            // Parse the JSON content from the archive file to get the list of comments
+            // Parse the JSON content from the archive file to get the
+            // list of comments
             String jsonContent = utf8.decode(archiveFile.content as List<int>);
             List<dynamic> jsonList = jsonDecode(jsonContent);
             zipAudioCommentsLst =

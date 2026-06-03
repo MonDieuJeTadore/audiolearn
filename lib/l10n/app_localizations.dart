@@ -1476,7 +1476,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorInPlaylistJsonFile.
   ///
   /// In en, this message translates to:
-  /// **'File \"{filePathName}\" contains an invalid data definition. Try finding the problem in order to correct it before executing again the operation.'**
+  /// **'{filePathName}.\n\nTry finding the problem in order to correct it before executing again the operation.'**
   String errorInPlaylistJsonFile(Object filePathName);
 
   /// No description provided for @updatePlaylistJsonFilesMenuTooltip.

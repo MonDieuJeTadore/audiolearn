@@ -62,6 +62,12 @@ class ClassNotSupportedByFromJsonDataServiceException implements Exception {
   }
 }
 
+/// Exception thrown when there is a problem in the format of the json
+/// file, such as a missing comma, an extra comma, a missing closing
+/// bracket, etc.
+/// 
+/// This exception is called by AudioDownloadVM.loadExistingPlaylists()
+/// and by _AudioExtractorScreenState._loadMultipleAudios().
 class ProblemInJsonFileException implements Exception {
   final String _jsonPathFileName;
 
@@ -118,6 +124,25 @@ class JsonDataService {
 
       try {
         return decodeJson(jsonStr, type);
+      } on FormatException catch (e) {
+        // Calculate line number from the character offset
+        final offset = e.offset;
+        if (offset != null) {
+          final String textBeforeOffset = jsonStr.substring(0, offset);
+          final int lineNumber = '\n'.allMatches(textBeforeOffset).length + 1;
+          final int lastNewlinePos = textBeforeOffset.lastIndexOf('\n');
+          final int columnNumber = offset - lastNewlinePos; // 1-based column
+          final String unexpectedChar =
+              offset < jsonStr.length ? jsonStr[offset] : 'EOF';
+          throw ProblemInJsonFileException(
+            jsonPathFileName:
+                'JSON format error in $jsonPathFileName at line ${lineNumber - 1} or $lineNumber, column $columnNumber, unexpected character "$unexpectedChar".\n\nException message: ${e.message}',
+          );
+        }
+        // throw ProblemInJsonFileException(
+        //   jsonPathFileName:
+        //       'JSON format error in $jsonPathFileName: ${e.message}',
+        // );
       } on StateError catch (_) {
         throw ProblemInJsonFileException(
           jsonPathFileName: jsonPathFileName,
@@ -190,6 +215,24 @@ class JsonDataService {
 
       try {
         return decodeJsonList(jsonStr, type);
+      } on FormatException catch (e) {
+        final offset = e.offset;
+        if (offset != null) {
+          final String textBeforeOffset = jsonStr.substring(0, offset);
+          final int lineNumber = '\n'.allMatches(textBeforeOffset).length + 1;
+          final int lastNewlinePos = textBeforeOffset.lastIndexOf('\n');
+          final int columnNumber = offset - lastNewlinePos; // 1-based column
+          final String unexpectedChar =
+              offset < jsonStr.length ? jsonStr[offset] : 'EOF';
+          throw ProblemInJsonFileException(
+            jsonPathFileName:
+                'JSON format error in $jsonPathFileName at line ${lineNumber - 1} or $lineNumber, column $columnNumber, unexpected character "$unexpectedChar".\n\nException message: ${e.message}',
+          );
+        }
+        throw ProblemInJsonFileException(
+          jsonPathFileName:
+              'JSON format error in $jsonPathFileName: ${e.message}',
+        );
       } on StateError {
         throw ClassNotContainedInJsonFileException(
           className: type.toString(),

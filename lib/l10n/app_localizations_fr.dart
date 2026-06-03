@@ -831,7 +831,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String errorInPlaylistJsonFile(Object filePathName) {
-    return 'Le fichier \"$filePathName\" une donnée de définition invalide. Essayez de trouver le probléme afin de le corriger avant de réexéuter l\'opération.';
+    return '$filePathName.\n\nEssayez de trouver le probléme afin de le corriger avant de réexéuter l\'opération.';
   }
 
   @override

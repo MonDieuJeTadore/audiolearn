@@ -1215,13 +1215,13 @@ Future<void> _createPlaylistDownloadView({
   final PlaylistListVM playlistListVM = PlaylistListVM(
     warningMessageVM: warningMessageVM,
     audioDownloadVM: audioDownloadVM,
-    commentVM: CommentVM(),
+    commentVM: CommentVM(isTest: true),
     pictureVM: PictureVM(
       settingsDataService: settingsDataService,
     ),
     settingsDataService: settingsDataService,
   );
-  final CommentVM commentVM = CommentVM();
+  final CommentVM commentVM = CommentVM(isTest: true);
 
   // necessary so that the playlist list of the
   // PlaylistListVM is filled. Otherwise, the

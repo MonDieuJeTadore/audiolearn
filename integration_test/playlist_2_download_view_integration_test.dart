@@ -15,7 +15,6 @@ import 'package:audiolearn/views/widgets/audio_extractor_screen.dart';
 import 'package:audiolearn/views/widgets/audio_sort_filter_dialog.dart';
 import 'package:audiolearn/views/widgets/playlist_rename_dialog.dart';
 import 'package:audiolearn/views/widgets/set_value_to_target_dialog.dart';
-import 'package:audiolearn/views/widgets/warning_message_display_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20734,7 +20733,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: mockAudioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -20750,7 +20749,7 @@ void main() {
             AudioPlayerVM audioPlayerVM = AudioPlayerVM(
               settingsDataService: settingsDataService,
               playlistListVM: playlistListVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
             );
 
             DateFormatVM dateFormatVM = DateFormatVM(
@@ -21212,7 +21211,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: mockAudioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -21228,7 +21227,7 @@ void main() {
             AudioPlayerVM audioPlayerVM = AudioPlayerVM(
               settingsDataService: settingsDataService,
               playlistListVM: playlistListVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
             );
 
             DateFormatVM dateFormatVM = DateFormatVM(
@@ -21679,7 +21678,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: mockAudioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -21695,7 +21694,7 @@ void main() {
             AudioPlayerVM audioPlayerVM = AudioPlayerVM(
               settingsDataService: settingsDataService,
               playlistListVM: playlistListVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
             );
 
             DateFormatVM dateFormatVM = DateFormatVM(
@@ -21872,7 +21871,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: mockAudioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -21888,7 +21887,7 @@ void main() {
             AudioPlayerVM audioPlayerVM = AudioPlayerVM(
               settingsDataService: settingsDataService,
               playlistListVM: playlistListVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
             );
 
             DateFormatVM dateFormatVM = DateFormatVM(
@@ -22028,7 +22027,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: mockAudioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -22044,7 +22043,7 @@ void main() {
             AudioPlayerVM audioPlayerVM = AudioPlayerVM(
               settingsDataService: settingsDataService,
               playlistListVM: playlistListVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
             );
 
             DateFormatVM dateFormatVM = DateFormatVM(
@@ -22536,7 +22535,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: mockAudioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -22552,7 +22551,7 @@ void main() {
             AudioPlayerVM audioPlayerVM = AudioPlayerVM(
               settingsDataService: settingsDataService,
               playlistListVM: playlistListVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
             );
 
             DateFormatVM dateFormatVM = DateFormatVM(
@@ -23037,7 +23036,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: mockAudioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -23053,7 +23052,7 @@ void main() {
             AudioPlayerVM audioPlayerVM = AudioPlayerVM(
               settingsDataService: settingsDataService,
               playlistListVM: playlistListVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
             );
 
             DateFormatVM dateFormatVM = DateFormatVM(
@@ -23238,7 +23237,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: mockAudioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -23254,7 +23253,7 @@ void main() {
             AudioPlayerVM audioPlayerVM = AudioPlayerVM(
               settingsDataService: settingsDataService,
               playlistListVM: playlistListVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
             );
 
             DateFormatVM dateFormatVM = DateFormatVM(
@@ -23675,7 +23674,7 @@ void main() {
           PlaylistListVM playlistListVM = PlaylistListVM(
             warningMessageVM: warningMessageVM,
             audioDownloadVM: mockAudioDownloadVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
             pictureVM: PictureVM(
               settingsDataService: settingsDataService,
             ),
@@ -23691,7 +23690,7 @@ void main() {
           AudioPlayerVM audioPlayerVM = AudioPlayerVM(
             settingsDataService: settingsDataService,
             playlistListVM: playlistListVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
           );
 
           DateFormatVM dateFormatVM = DateFormatVM(
@@ -23852,7 +23851,7 @@ void main() {
           PlaylistListVM playlistListVM = PlaylistListVM(
             warningMessageVM: warningMessageVM,
             audioDownloadVM: mockAudioDownloadVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
             pictureVM: PictureVM(
               settingsDataService: settingsDataService,
             ),
@@ -23868,7 +23867,7 @@ void main() {
           AudioPlayerVM audioPlayerVM = AudioPlayerVM(
             settingsDataService: settingsDataService,
             playlistListVM: playlistListVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
           );
 
           DateFormatVM dateFormatVM = DateFormatVM(
@@ -24029,7 +24028,7 @@ void main() {
           PlaylistListVM playlistListVM = PlaylistListVM(
             warningMessageVM: warningMessageVM,
             audioDownloadVM: mockAudioDownloadVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
             pictureVM: PictureVM(
               settingsDataService: settingsDataService,
             ),
@@ -24045,7 +24044,7 @@ void main() {
           AudioPlayerVM audioPlayerVM = AudioPlayerVM(
             settingsDataService: settingsDataService,
             playlistListVM: playlistListVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
           );
 
           DateFormatVM dateFormatVM = DateFormatVM(
@@ -24217,7 +24216,7 @@ void main() {
           PlaylistListVM playlistListVM = PlaylistListVM(
             warningMessageVM: warningMessageVM,
             audioDownloadVM: mockAudioDownloadVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
             pictureVM: PictureVM(
               settingsDataService: settingsDataService,
             ),
@@ -24233,7 +24232,7 @@ void main() {
           AudioPlayerVM audioPlayerVM = AudioPlayerVM(
             settingsDataService: settingsDataService,
             playlistListVM: playlistListVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
           );
 
           DateFormatVM dateFormatVM = DateFormatVM(
@@ -24405,7 +24404,7 @@ void main() {
           PlaylistListVM playlistListVM = PlaylistListVM(
             warningMessageVM: warningMessageVM,
             audioDownloadVM: mockAudioDownloadVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
             pictureVM: PictureVM(
               settingsDataService: settingsDataService,
             ),
@@ -24421,7 +24420,7 @@ void main() {
           AudioPlayerVM audioPlayerVM = AudioPlayerVM(
             settingsDataService: settingsDataService,
             playlistListVM: playlistListVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
           );
 
           DateFormatVM dateFormatVM = DateFormatVM(
@@ -24661,7 +24660,7 @@ void main() {
           PlaylistListVM playlistListVM = PlaylistListVM(
             warningMessageVM: warningMessageVM,
             audioDownloadVM: mockAudioDownloadVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
             pictureVM: PictureVM(
               settingsDataService: settingsDataService,
             ),
@@ -24677,7 +24676,7 @@ void main() {
           AudioPlayerVM audioPlayerVM = AudioPlayerVM(
             settingsDataService: settingsDataService,
             playlistListVM: playlistListVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
           );
 
           DateFormatVM dateFormatVM = DateFormatVM(
@@ -24916,7 +24915,7 @@ void main() {
           PlaylistListVM playlistListVM = PlaylistListVM(
             warningMessageVM: warningMessageVM,
             audioDownloadVM: mockAudioDownloadVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
             pictureVM: PictureVM(
               settingsDataService: settingsDataService,
             ),
@@ -24932,7 +24931,7 @@ void main() {
           AudioPlayerVM audioPlayerVM = AudioPlayerVM(
             settingsDataService: settingsDataService,
             playlistListVM: playlistListVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
           );
 
           DateFormatVM dateFormatVM = DateFormatVM(
@@ -25049,7 +25048,7 @@ void main() {
           PlaylistListVM playlistListVM = PlaylistListVM(
             warningMessageVM: warningMessageVM,
             audioDownloadVM: mockAudioDownloadVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
             pictureVM: PictureVM(
               settingsDataService: settingsDataService,
             ),
@@ -25065,7 +25064,7 @@ void main() {
           AudioPlayerVM audioPlayerVM = AudioPlayerVM(
             settingsDataService: settingsDataService,
             playlistListVM: playlistListVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
           );
 
           DateFormatVM dateFormatVM = DateFormatVM(
@@ -25179,7 +25178,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: audioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -25530,7 +25529,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: audioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -25882,7 +25881,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: audioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -26232,7 +26231,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: audioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -29189,7 +29188,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: audioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -29539,7 +29538,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: audioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -30312,7 +30311,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: mockAudioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -30328,7 +30327,7 @@ void main() {
             AudioPlayerVM audioPlayerVM = AudioPlayerVM(
               settingsDataService: settingsDataService,
               playlistListVM: playlistListVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
             );
 
             DateFormatVM dateFormatVM = DateFormatVM(
@@ -30508,7 +30507,7 @@ void main() {
             PlaylistListVM playlistListVM = PlaylistListVM(
               warningMessageVM: warningMessageVM,
               audioDownloadVM: mockAudioDownloadVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
               pictureVM: PictureVM(
                 settingsDataService: settingsDataService,
               ),
@@ -30524,7 +30523,7 @@ void main() {
             AudioPlayerVM audioPlayerVM = AudioPlayerVM(
               settingsDataService: settingsDataService,
               playlistListVM: playlistListVM,
-              commentVM: CommentVM(),
+              commentVM: CommentVM(isTest: true),
             );
 
             DateFormatVM dateFormatVM = DateFormatVM(
@@ -31488,7 +31487,7 @@ void main() {
           PlaylistListVM playlistListVM = PlaylistListVM(
             warningMessageVM: warningMessageVM,
             audioDownloadVM: mockAudioDownloadVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
             pictureVM: PictureVM(
               settingsDataService: settingsDataService,
             ),
@@ -31504,7 +31503,7 @@ void main() {
           AudioPlayerVM audioPlayerVM = AudioPlayerVM(
             settingsDataService: settingsDataService,
             playlistListVM: playlistListVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
           );
 
           DateFormatVM dateFormatVM = DateFormatVM(
@@ -31621,7 +31620,7 @@ void main() {
           PlaylistListVM playlistListVM = PlaylistListVM(
             warningMessageVM: warningMessageVM,
             audioDownloadVM: mockAudioDownloadVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
             pictureVM: PictureVM(
               settingsDataService: settingsDataService,
             ),
@@ -31637,7 +31636,7 @@ void main() {
           AudioPlayerVM audioPlayerVM = AudioPlayerVM(
             settingsDataService: settingsDataService,
             playlistListVM: playlistListVM,
-            commentVM: CommentVM(),
+            commentVM: CommentVM(isTest: true),
           );
 
           DateFormatVM dateFormatVM = DateFormatVM(

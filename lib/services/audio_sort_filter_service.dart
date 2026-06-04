@@ -1352,7 +1352,9 @@ class AudioSortFilterService {
     Playlist playlist = filteredAudios.first.enclosingPlaylist!;
 
     Map<String, List<Comment>> commentsMap =
-        CommentVM().getPlaylistAudioComments(
+        CommentVM(
+          isTest: _settingsDataService.isTest,
+        ).getPlaylistAudioComments(
       playlist: playlist,
     );
 

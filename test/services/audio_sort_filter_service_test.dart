@@ -11717,7 +11717,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -12678,7 +12678,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -12893,7 +12893,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -13140,7 +13140,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -13322,7 +13322,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -13462,7 +13462,7 @@ void main() {
         type: Playlist,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Map<String, List<Comment>> playlistAudiosCommentsMap =
           commentVM.getPlaylistAudioComments(
@@ -13492,7 +13492,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -13553,7 +13553,7 @@ void main() {
         type: Playlist,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Map<String, List<Comment>> playlistAudiosCommentsMap =
           commentVM.getPlaylistAudioComments(
@@ -13591,7 +13591,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -13683,7 +13683,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -13771,7 +13771,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -13836,7 +13836,7 @@ void main() {
         playlistListVM = PlaylistListVM(
           warningMessageVM: warningMessageVM,
           audioDownloadVM: audioDownloadVM,
-          commentVM: CommentVM(),
+          commentVM: CommentVM(isTest: true),
           pictureVM: PictureVM(
             settingsDataService: settingsDataService,
           ),
@@ -14407,7 +14407,7 @@ void main() {
         playlistListVM = PlaylistListVM(
           warningMessageVM: warningMessageVM,
           audioDownloadVM: audioDownloadVM,
-          commentVM: CommentVM(),
+          commentVM: CommentVM(isTest: true),
           pictureVM: PictureVM(
             settingsDataService: settingsDataService,
           ),

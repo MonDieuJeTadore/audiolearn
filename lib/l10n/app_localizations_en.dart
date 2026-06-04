@@ -827,7 +827,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String errorInPlaylistJsonFile(Object filePathName) {
-    return '$filePathName.\n\nTry finding the problem in order to correct it before executing again the operation.';
+    return '$filePathName';
   }
 
   @override

@@ -34,7 +34,7 @@ void main() {
         audioFileName: '240110-181805-Really short video 23-07-01.mp3',
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       // calling loadAudioComments in situation where comment file
       // does not exist
@@ -83,7 +83,7 @@ void main() {
             "240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       // calling loadAudioComments in situation where comment file
       // exists and has 3 comments
@@ -171,7 +171,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       // calling loadAudioComments in situation where comment file
       // exists and has 3 comments
@@ -256,7 +256,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       // calling loadAudioComments in situation where comment file
       // exists and has 3 comments
@@ -288,7 +288,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       // calling loadAudioComments in situation where comment file
       // exists and has 3 comments
@@ -408,7 +408,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Audio audio = createAudio(
         playlistTitle: 'S8 audio',
@@ -490,7 +490,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Audio audio = createAudio(
         playlistTitle: 'local_comment',
@@ -559,7 +559,7 @@ void main() {
         true,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Audio audio = createAudio(
         playlistTitle: localPlaylistTitle,
@@ -629,7 +629,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Audio audio = createAudio(
         playlistTitle: 'local_delete_comment',
@@ -690,7 +690,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       // This audio has no comment file
       Audio audio = createAudio(
@@ -751,7 +751,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Audio audio = createAudio(
         playlistTitle: 'local_delete_comment',
@@ -812,7 +812,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Audio audio = createAudio(
         playlistTitle: 'local_delete_comment',
@@ -929,7 +929,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Audio audio = createAudio(
         playlistTitle: 'local',
@@ -990,7 +990,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Audio audio = createAudio(
         playlistTitle: 'local_delete_comment',
@@ -1048,7 +1048,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Audio audio = createAudio(
         playlistTitle: 'local',
@@ -1106,7 +1106,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Audio audio = createAudio(
         playlistTitle: 'local_delete_comment',
@@ -1164,7 +1164,7 @@ void main() {
         destinationRootPath: kPlaylistDownloadRootPathWindowsTest,
       );
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(isTest: true);
 
       Audio audio = createAudio(
         playlistTitle: 'local', // contains no comment file

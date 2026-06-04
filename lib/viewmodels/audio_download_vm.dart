@@ -251,6 +251,7 @@ class AudioDownloadVM extends ChangeNotifier {
         Playlist currentPlaylist = JsonDataService.loadFromFile(
           jsonPathFileName: playlistPathFileName,
           type: Playlist,
+          isTest: _settingsDataService.isTest,
         );
 
         if (restoringPlaylistsCommentsAndSettingsJsonFilesFromZip) {
@@ -2174,7 +2175,9 @@ class AudioDownloadVM extends ChangeNotifier {
       extractedAudio,
     );
 
-    CommentVM commentVM = CommentVM();
+    CommentVM commentVM = CommentVM(
+      isTest: _settingsDataService.isTest,
+    );
     PictureVM pictureVM = PictureVM(
       settingsDataService: _settingsDataService,
     );

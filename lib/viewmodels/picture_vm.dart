@@ -195,6 +195,7 @@ class PictureVM extends ChangeNotifier {
     List<Picture> pictureLst = JsonDataService.loadListFromFile(
       jsonPathFileName: pictureJsonFilePathName,
       type: Picture,
+      isTest: _settingsDataService.isTest,
     );
 
     if (pictureLst.isEmpty) {
@@ -259,6 +260,7 @@ class PictureVM extends ChangeNotifier {
     return JsonDataService.loadListFromFile(
       jsonPathFileName: pictureJsonFilePathName,
       type: Picture,
+      isTest: _settingsDataService.isTest,
     ).length;
   }
 
@@ -418,6 +420,7 @@ class PictureVM extends ChangeNotifier {
     List<Picture> pictureLst = JsonDataService.loadListFromFile(
       jsonPathFileName: pictureJsonFilePathName,
       type: Picture,
+      isTest: _settingsDataService.isTest,
     ).map((dynamic item) => item as Picture).toList();
 
     return pictureLst;
@@ -457,7 +460,8 @@ class PictureVM extends ChangeNotifier {
   int getPlaylistAudioPictureNumber({
     required Playlist playlist,
   }) {
-    String playlistPPicturePath = "${playlist.downloadPath}${path.separator}$kPictureDirName";
+    String playlistPPicturePath =
+        "${playlist.downloadPath}${path.separator}$kPictureDirName";
 
     return DirUtil.countFilesInDir(
       directoryPath: playlistPPicturePath,
@@ -840,7 +844,7 @@ class PictureVM extends ChangeNotifier {
       );
     }
   }
-  
+
   /// Synchronizes the application picture-audio map for a single audio
   /// so that it contains associations only for the pictures listed in
   /// [currentPictures].
@@ -857,8 +861,8 @@ class PictureVM extends ChangeNotifier {
 
     final String audioKeyPrefix =
         '$playlistTitle|${DirUtil.getFileNameWithoutMp3Extension(
-          mp3FileName: audioFileName,
-        )}';
+      mp3FileName: audioFileName,
+    )}';
 
     final Set<String> validPictureFileNames =
         currentPictures.map((p) => p.fileName).toSet();
@@ -870,8 +874,7 @@ class PictureVM extends ChangeNotifier {
       final List<String> audioList =
           applicationPictureAudioMap[pictureFileName]!;
 
-      final bool containsAudio =
-          audioList.contains(audioKeyPrefix);
+      final bool containsAudio = audioList.contains(audioKeyPrefix);
 
       if (containsAudio && !validPictureFileNames.contains(pictureFileName)) {
         audioList.remove(audioKeyPrefix);

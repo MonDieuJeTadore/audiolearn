@@ -575,14 +575,10 @@ Future<void> main() async {
         destinationRootPath: kApplicationPathWindowsTest,
       );
 
-      AudioDownloadVM audioDownloadVM =
-          await IntegrationTestUtil.launchIntegrTestAppEnablingInternetAccess(
+      await IntegrationTestUtil.launchIntegrTestAppEnablingInternetAccess(
         tester: tester,
         forcedLocale: const Locale('en'),
       );
-
-      Playlist existingPlaylistBeforeNewDownload =
-          audioDownloadVM.listOfPlaylist[0];
 
       // Now selecting the existing playlist by tapping on the
       // playlist checkbox

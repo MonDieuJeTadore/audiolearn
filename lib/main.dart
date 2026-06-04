@@ -125,7 +125,9 @@ class MainApp extends StatelessWidget with ScreenMixin {
       settingsDataService: _settingsDataService,
     );
 
-    final CommentVM commentVM = CommentVM();
+    final CommentVM commentVM = CommentVM(
+      isTest: _settingsDataService.isTest,
+    );
 
     final PictureVM pictureVM = PictureVM(
       settingsDataService: _settingsDataService,

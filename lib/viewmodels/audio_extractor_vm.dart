@@ -47,7 +47,7 @@ class AudioExtractorVM extends ChangeNotifier {
     _commentsLst = commentsLst;
   }
 
-  AudioSegment? _currentSegment = null;
+  AudioSegment? _currentSegment;
   AudioSegment? get currentSegment => _currentSegment;
   set currentSegment(AudioSegment? segment) {
     _currentSegment = segment;

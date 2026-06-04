@@ -1759,14 +1759,6 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     );
   }
 
-  void _modifySearchInVideoCompactDescriptionCheckbox(bool? newValue) {
-    _searchInVideoCompactDescription = newValue!;
-
-    // now clicking on Enter works since the
-    // Checkbox is not focused anymore
-    _audioTitleSearchSentenceFocusNode.requestFocus();
-  }
-
   SizedBox _buildAudioFilterSentencesLst(
     BuildContext context,
   ) {

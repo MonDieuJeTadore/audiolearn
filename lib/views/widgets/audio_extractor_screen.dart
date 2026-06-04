@@ -478,6 +478,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
           final dynamic loaded = JsonDataService.loadFromFile(
             jsonPathFileName: _loadedCommentsFileName!,
             type: MultiAudioComments,
+            isTest: widget.settingsDataService.isTest,
           );
 
           if (loaded is MultiAudioComments) {

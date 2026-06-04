@@ -510,7 +510,7 @@
   "saveSortFilterOptionsToPlaylistDialogTitle": "Sauvegarder les paramètres de tri et de filtre \"{sortFilterParmsName}\"",
   "saveSortFilterOptionsToPlaylist": "Dans la playlist \"{title}\"",
   "saveButton": "Sauver",
-  "errorInPlaylistJsonFile": "{filePathName}.\n\nEssayez de trouver le probléme afin de le corriger avant de réexéuter l'opération.",
+  "errorInPlaylistJsonFile": "{filePathName}",
   "updatePlaylistJsonFilesMenuTooltip": "Si un ou plusieurs répertoires de playlists contenant ou non des audios ont été ajoutés ou supprimés manuellement dans le répertoire contenant les playlists de l'application ou si des audios ont été supprimés manuellement d'un ou de plusieurs répertoires de playlist, cette fonctionnalité met à jour les fichiers JSON des playlists ainsi que le fichier JSON contenant les paramètres de l'application afin de refléter les changements dans les écrans de l'application. Des répertoires de playlist localisés sur un PC peuvent également être copiés dans le répertoire contenant les playlists de l'application Android. De même, des répertoires de playlist localisés dans Android peuvent également être copiés dans le répertoire contenant les playlists de l'application PC ...",
   "updatePlaylistPlayableAudioListTooltip": "Si des audios ont été supprimés manuellement du répertoire de la playlist, cette fonctionnalité met à jour les fichiers JSON de la playlist afin de refléter les changements dans l'écran de l'application.",
   "audioPlayedInThisOrderTooltip": "Les audios sont joués dans cet ordre. Par défaut, les derniers audios téléchargés sont en bas de la liste.",

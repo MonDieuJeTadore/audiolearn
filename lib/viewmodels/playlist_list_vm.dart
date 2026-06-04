@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:archive/archive.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -6018,13 +6017,6 @@ class PlaylistListVM extends ChangeNotifier {
       rewindedAudioNumber = playlist.rewindPlayableAudioToStart(
           audioToRewindLst: audioPlayerViewAudioLst);
 
-      // Obtaining the playable audio list ordered according to the
-      // sort/filter parameters applied to the playlist download view.
-      List<Audio> playlistDownloadViewAudioLst =
-          getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
-        audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
-      );
-
       Audio currentAudioInAudioPlayableListDialog;
 
       if (playlist.audioPlayingOrder == AudioPlayingOrder.descending) {
@@ -6090,13 +6082,6 @@ class PlaylistListVM extends ChangeNotifier {
     if (filteredAudioToRewindToStart.isNotEmpty) {
       rewindedAudioNumber = playlist.rewindPlayableAudioToStart(
           audioToRewindLst: filteredAudioToRewindToStart);
-
-      // Obtaining the playable audio list ordered according to the
-      // sort/filter parameters applied to the playlist download view.
-      List<Audio> playlistDownloadViewAudioLst = filteredAudioToRewindToStart;
-      //     getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
-      //   audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
-      // );
 
       Audio currentAudioInAudioPlayableListDialog;
 

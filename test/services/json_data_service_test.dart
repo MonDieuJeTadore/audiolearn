@@ -797,35 +797,18 @@ void main() {
       }
     });
 
-    test('loadFomFile on empty file', () {
-      // Prepare a temporary file
+    test('loadFromFile on empty file', () {
       String fileName = 'temp.json';
       File tempEmptyJsonFile = File(fileName);
       tempEmptyJsonFile.writeAsStringSync("");
 
-      // Try to load a MyClass instance from the temporary file, which
-      // should throw an exception
       expect(
           () => JsonDataService.loadFromFile(
               jsonPathFileName: fileName, type: Comment),
           throwsA(predicate((e) =>
-              e is ClassNotContainedInJsonFileException &&
-              e.toString().contains(fileName))));
-    });
-    test('loadFomFile on empty file', () {
-      // Prepare a temporary file
-      String fileName = 'temp.json';
-      File tempEmptyJsonFile = File(fileName);
-      tempEmptyJsonFile.writeAsStringSync("");
-
-      // Try to load a MyClass instance from the temporary file, which
-      // should throw an exception
-      expect(
-          () => JsonDataService.loadFromFile(
-              jsonPathFileName: fileName, type: Comment),
-          throwsA(predicate((e) =>
-              e is ClassNotContainedInJsonFileException &&
-              e.toString().contains(fileName))));
+              e is ProblemInJsonFileException &&
+              e.toString().contains(fileName) &&
+              e.toString().contains('EOF'))));
     });
     test('ClassNotSupportedByToJsonDataServiceException', () {
       // Create a class not supported by JsonDataService

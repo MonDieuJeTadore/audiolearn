@@ -21,7 +21,9 @@ void main() {
         () async {
       // You must execute setup_android_unit_test.bat before test run.
 
-      CommentVM commentVM = CommentVM();
+      CommentVM commentVM = CommentVM(
+        isTest: true,
+      );
 
       Audio audio = createAudio(
         playlistTitle: 'local_delete_comment',

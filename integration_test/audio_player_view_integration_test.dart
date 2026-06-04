@@ -6571,8 +6571,6 @@ void main() {
       // Obtain the current audio position in the audio player view
       audioPlayerViewAudioPositionFinder =
           find.byKey(const Key('audioPlayerViewAudioPosition'));
-      String audioPlayerViewCurrentAudioPositionStr =
-          tester.widget<Text>(audioPlayerViewAudioPositionFinder).data!;
 
       expect(
         tester.widget<Text>(commentStartTextWidgetFinder).data!,
@@ -8427,8 +8425,6 @@ void main() {
       // Obtain the current audio position in the audio player view
       audioPlayerViewAudioPositionFinder =
           find.byKey(const Key('audioPlayerViewAudioPosition'));
-      String audioPlayerViewCurrentAudioPositionStr =
-          tester.widget<Text>(audioPlayerViewAudioPositionFinder).data!;
 
       expect(
         tester.widget<Text>(commentStartTextWidgetFinder).data!,
@@ -13284,7 +13280,7 @@ Future<void> _createCommentUnderPlaySpeed({
   ];
 
   // Verify content of each list item
-  Finder itemsFinder = IntegrationTestUtil.verifyCommentsInCommentListDialog(
+  IntegrationTestUtil.verifyCommentsInCommentListDialog(
       tester: tester,
       commentListDialogFinder: commentListDialogFinder,
       commentsNumber: 1,

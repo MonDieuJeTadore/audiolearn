@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import '../constants.dart';
 import '../models/audio.dart';
 import '../models/multi_audio_comments.dart';
 import '../models/playlist.dart';
 import '../models/comment.dart';
 import '../models/picture.dart';
 import '../models/sort_filter_parameters.dart';
+import '../utils/dir_util.dart';
+import 'settings_data_service.dart';
 
 typedef FromJsonFunction<T> = T Function(Map<String, dynamic> jsonDataMap);
 typedef ToJsonFunction<T> = Map<String, dynamic> Function(T model);
@@ -65,7 +68,7 @@ class ClassNotSupportedByFromJsonDataServiceException implements Exception {
 /// Exception thrown when there is a problem in the format of the json
 /// file, such as a missing comma, an extra comma, a missing closing
 /// bracket, etc.
-/// 
+///
 /// This exception is called by AudioDownloadVM.loadExistingPlaylists()
 /// and by _AudioExtractorScreenState._loadMultipleAudios().
 class ProblemInJsonFileException implements Exception {
@@ -118,6 +121,7 @@ class JsonDataService {
   static dynamic loadFromFile({
     required String jsonPathFileName,
     required Type type,
+    bool isTest = false,
   }) {
     if (File(jsonPathFileName).existsSync()) {
       final String jsonStr = File(jsonPathFileName).readAsStringSync();
@@ -134,9 +138,35 @@ class JsonDataService {
           final int columnNumber = offset - lastNewlinePos; // 1-based column
           final String unexpectedChar =
               offset < jsonStr.length ? jsonStr[offset] : 'EOF';
+
+          SettingsDataService settingsDataService = SettingsDataService();
+
+          settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                '${DirUtil.getApplicationPath(isTest: isTest)}${Platform.pathSeparator}$kSettingsFileName',
+          );
+          Language language = settingsDataService.get(
+            settingType: SettingType.language,
+            settingSubType: SettingType.language,
+          );
+
+          String playlistName = DirUtil.getFileNameWithoutJsonExtension(
+            jsonFileName: DirUtil.getFileNameFromPathFileName(
+              pathFileName: jsonPathFileName,
+            ),
+          );
+          String message = '';
+
+          if (language == Language.french) {
+            message =
+                "Erreur de format JSON dans $jsonPathFileName à la ligne ${lineNumber - 1} ou $lineNumber, colonne $columnNumber, caractère inattendu \"$unexpectedChar\".\n\nMessage de l'exception: ${e.message}.\n\nEssayez de trouver le probléme afin de le corriger avant de réexéuter l'opération.\n\nEnsuite, exécutez le menu \"Mettre à jour les fichiers playlist JSON ...\" afin de restaurer la playlist \"$playlistName\".";
+          } else {
+            message =
+                "JSON format error in $jsonPathFileName at line ${lineNumber - 1} or $lineNumber, column $columnNumber, unexpected character \"$unexpectedChar\".\n\nException message: ${e.message}.\n\nTry finding the problem in order to correct it before executing again the operation.\n\nThen execute the \"Update Playlist JSON Files ...\" menu in order to restore the playlist \"$playlistName\".";
+          }
+
           throw ProblemInJsonFileException(
-            jsonPathFileName:
-                'JSON format error in $jsonPathFileName at line ${lineNumber - 1} or $lineNumber, column $columnNumber, unexpected character "$unexpectedChar".\n\nException message: ${e.message}',
+            jsonPathFileName: message,
           );
         }
         // throw ProblemInJsonFileException(
@@ -205,6 +235,7 @@ class JsonDataService {
   static List<T> loadListFromFile<T>({
     required String jsonPathFileName,
     required Type type,
+    bool isTest = false,
   }) {
     if (File(jsonPathFileName).existsSync()) {
       String jsonStr = File(jsonPathFileName).readAsStringSync();
@@ -224,9 +255,30 @@ class JsonDataService {
           final int columnNumber = offset - lastNewlinePos; // 1-based column
           final String unexpectedChar =
               offset < jsonStr.length ? jsonStr[offset] : 'EOF';
+
+          SettingsDataService settingsDataService = SettingsDataService();
+
+          settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                '${DirUtil.getApplicationPath(isTest: isTest)}${Platform.pathSeparator}$kSettingsFileName',
+          );
+          Language language = settingsDataService.get(
+            settingType: SettingType.language,
+            settingSubType: SettingType.language,
+          );
+
+          String message = '';
+
+          if (language == Language.french) {
+            message =
+                "Erreur de format JSON dans $jsonPathFileName à la ligne ${lineNumber - 1} ou $lineNumber, colonne $columnNumber, caractère inattendu \"$unexpectedChar\".\n\nMessage de l'exception: ${e.message}";
+          } else {
+            message =
+                "JSON format error in $jsonPathFileName at line ${lineNumber - 1} or $lineNumber, column $columnNumber, unexpected character \"$unexpectedChar\".\n\nException message: ${e.message}";
+          }
+
           throw ProblemInJsonFileException(
-            jsonPathFileName:
-                'JSON format error in $jsonPathFileName at line ${lineNumber - 1} or $lineNumber, column $columnNumber, unexpected character "$unexpectedChar".\n\nException message: ${e.message}',
+            jsonPathFileName: message,
           );
         }
         throw ProblemInJsonFileException(

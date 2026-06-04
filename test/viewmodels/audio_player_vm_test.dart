@@ -1490,16 +1490,16 @@ Future<AudioPlayerVM> createAudioPlayerVM({
     warningMessageVM: warningMessageVM,
     settingsDataService: settingsDataService,
   );
+  final CommentVM commentVM = CommentVM(isTest: true);
   final PlaylistListVM playlistListVM = PlaylistListVM(
     warningMessageVM: warningMessageVM,
     audioDownloadVM: audioDownloadVM,
-    commentVM: CommentVM(),
+    commentVM: commentVM,
     pictureVM: PictureVM(
       settingsDataService: settingsDataService,
     ),
     settingsDataService: settingsDataService,
   );
-  final CommentVM commentVM = CommentVM();
 
   // calling getUpToDateSelectablePlaylists() loads all the
   // playlist json files from the app dir and so enables

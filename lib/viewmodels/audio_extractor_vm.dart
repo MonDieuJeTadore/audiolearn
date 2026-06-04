@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:audiolearn/constants.dart';
 import 'package:audiolearn/services/settings_data_service.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 
@@ -48,7 +47,7 @@ class AudioExtractorVM extends ChangeNotifier {
     _commentsLst = commentsLst;
   }
 
-  AudioSegment? _currentSegment = null;
+  AudioSegment? _currentSegment;
   AudioSegment? get currentSegment => _currentSegment;
   set currentSegment(AudioSegment? segment) {
     _currentSegment = segment;

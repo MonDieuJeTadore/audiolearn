@@ -61,7 +61,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -276,7 +276,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -348,7 +348,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -423,7 +423,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -495,7 +495,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -574,7 +574,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -644,7 +644,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -719,7 +719,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -791,7 +791,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -930,7 +930,7 @@ void main() {
       playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -1000,7 +1000,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -1089,7 +1089,7 @@ void main() {
         PlaylistListVM playlistListVM = PlaylistListVM(
           warningMessageVM: warningMessageVM,
           audioDownloadVM: audioDownloadVM,
-          commentVM: CommentVM(),
+          commentVM: CommentVM(isTest: true),
           pictureVM: PictureVM(
             settingsDataService: settingsDataService,
           ),
@@ -1202,7 +1202,7 @@ void main() {
         PlaylistListVM playlistListVM = PlaylistListVM(
           warningMessageVM: warningMessageVM,
           audioDownloadVM: audioDownloadVM,
-          commentVM: CommentVM(),
+          commentVM: CommentVM(isTest: true),
           pictureVM: PictureVM(
             settingsDataService: settingsDataService,
           ),
@@ -1317,7 +1317,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -1500,7 +1500,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -1713,7 +1713,7 @@ void main() {
     PlaylistListVM playlistListVM = PlaylistListVM(
       warningMessageVM: warningMessageVM,
       audioDownloadVM: audioDownloadVM,
-      commentVM: CommentVM(),
+      commentVM: CommentVM(isTest: true),
       pictureVM: PictureVM(
         settingsDataService: settingsDataService,
       ),
@@ -1842,7 +1842,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -1937,7 +1937,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -2036,7 +2036,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: PictureVM(
           settingsDataService: settingsDataService,
         ),
@@ -2168,7 +2168,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: pictureVM,
         settingsDataService: settingsDataService,
       );
@@ -2295,7 +2295,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: pictureVM,
         settingsDataService: settingsDataService,
       );
@@ -2391,7 +2391,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: pictureVM,
         settingsDataService: settingsDataService,
       );
@@ -2478,7 +2478,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: pictureVM,
         settingsDataService: settingsDataService,
       );
@@ -2565,7 +2565,7 @@ void main() {
       PlaylistListVM playlistListVM = PlaylistListVM(
         warningMessageVM: warningMessageVM,
         audioDownloadVM: audioDownloadVM,
-        commentVM: CommentVM(),
+        commentVM: CommentVM(isTest: true),
         pictureVM: pictureVM,
         settingsDataService: settingsDataService,
       );
@@ -2839,7 +2839,7 @@ Future<void> testMoveAudioAndCommentToPlaylist({
   final PlaylistListVM playlistListVM = PlaylistListVM(
     warningMessageVM: warningMessageVM,
     audioDownloadVM: audioDownloadVM,
-    commentVM: CommentVM(),
+    commentVM: CommentVM(isTest: true),
     pictureVM: PictureVM(
       settingsDataService: settingsDataService,
     ),
@@ -2855,7 +2855,7 @@ Future<void> testMoveAudioAndCommentToPlaylist({
   final AudioPlayerVM audioPlayerVM = AudioPlayerVMTestVersion(
     settingsDataService: settingsDataService,
     playlistListVM: playlistListVM,
-    commentVM: CommentVM(),
+    commentVM: CommentVM(isTest: true),
   );
 
   playlistListVM.moveAudioAndCommentAndPictureToPlaylist(

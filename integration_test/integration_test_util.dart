@@ -661,6 +661,7 @@ class IntegrationTestUtil {
     Playlist loadedSelectedPlaylist = JsonDataService.loadFromFile(
       jsonPathFileName: selectedPlaylistFilePathName,
       type: Playlist,
+      isTest: true,
     );
 
     Audio audioToModify =
@@ -1000,7 +1001,10 @@ class IntegrationTestUtil {
     }
 
     Playlist loadedPlaylist = JsonDataService.loadFromFile(
-        jsonPathFileName: playlistPathFileName, type: Playlist);
+      jsonPathFileName: playlistPathFileName,
+      type: Playlist,
+      isTest: true,
+    );
     expect(loadedPlaylist.isSelected, isSelected);
   }
 
@@ -1546,6 +1550,7 @@ class IntegrationTestUtil {
     Playlist loadedSelectedPlaylist = JsonDataService.loadFromFile(
       jsonPathFileName: selectedPlaylistFilePathName,
       type: Playlist,
+      isTest: true,
     );
 
     expect(
@@ -1820,6 +1825,7 @@ class IntegrationTestUtil {
     Playlist loadedSelectedPlaylist = JsonDataService.loadFromFile(
       jsonPathFileName: selectedPlaylistFilePathName,
       type: Playlist,
+      isTest: true,
     );
 
     expect(
@@ -1892,6 +1898,7 @@ class IntegrationTestUtil {
     Playlist loadedSelectedPlaylist = JsonDataService.loadFromFile(
       jsonPathFileName: selectedPlaylistFilePathName,
       type: Playlist,
+      isTest: true,
     );
 
     expect(
@@ -2268,6 +2275,7 @@ class IntegrationTestUtil {
         jsonPathFileName:
             "$playlistPictureJsonFilesDir${path.separator}$audioPictureJsonFileName",
         type: Picture,
+        isTest: true,
       ).map((dynamic item) => item as Picture).toList();
 
       if (verifyAudioPictureJsonFileContentLength != -1) {
@@ -2391,6 +2399,7 @@ class IntegrationTestUtil {
     List<Picture> pictureLst = JsonDataService.loadListFromFile(
       jsonPathFileName: pictureJsonFilePathName,
       type: Picture,
+      isTest: true,
     ).map((dynamic item) => item as Picture).toList();
 
     // Now verifying that the pictureLst does not contains the
@@ -2460,7 +2469,7 @@ class IntegrationTestUtil {
     final PlaylistListVM playlistListVM = PlaylistListVM(
       warningMessageVM: warningMessageVM,
       audioDownloadVM: audioDownloadVM,
-      commentVM: CommentVM(),
+      commentVM: CommentVM(isTest: true),
       pictureVM: PictureVM(
         settingsDataService: settingsDataService,
       ),
@@ -2476,7 +2485,7 @@ class IntegrationTestUtil {
     final AudioPlayerVM audioPlayerVM = AudioPlayerVM(
       settingsDataService: settingsDataService,
       playlistListVM: playlistListVM,
-      commentVM: CommentVM(),
+      commentVM: CommentVM(isTest: true),
     );
 
     final DateFormatVM dateFormatVM = DateFormatVM(
@@ -2506,7 +2515,7 @@ class IntegrationTestUtil {
           ChangeNotifierProvider(create: (_) => warningMessageVM),
           ChangeNotifierProvider(create: (_) => audioPlayerVM),
           ChangeNotifierProvider(create: (_) => dateFormatVM),
-          ChangeNotifierProvider(create: (_) => CommentVM()),
+          ChangeNotifierProvider(create: (_) => CommentVM(isTest: true)),
         ],
         child: Consumer2<ThemeProviderVM, LanguageProviderVM>(
           builder: (context, themeProvider, languageProvider, child) {
@@ -2577,7 +2586,7 @@ class IntegrationTestUtil {
           ChangeNotifierProvider(create: (_) => warningMessageVM),
           ChangeNotifierProvider(create: (_) => audioPlayerVM),
           ChangeNotifierProvider(create: (_) => dateFormatVM),
-          ChangeNotifierProvider(create: (_) => CommentVM()),
+          ChangeNotifierProvider(create: (_) => CommentVM(isTest: true)),
         ],
         child: Consumer2<ThemeProviderVM, LanguageProviderVM>(
           builder: (context, themeProvider, languageProvider, child) {
@@ -4276,7 +4285,7 @@ class IntegrationTestUtil {
     final PlaylistListVM playlistListVM = PlaylistListVM(
       warningMessageVM: warningMessageVM,
       audioDownloadVM: audioDownloadVM,
-      commentVM: CommentVM(),
+      commentVM: CommentVM(isTest: true),
       pictureVM: PictureVM(
         settingsDataService: settingsDataService,
       ),

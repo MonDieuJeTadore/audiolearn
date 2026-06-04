@@ -687,7 +687,9 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
 
         return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart';
       case SortingOption.lastCommentDateTime:
-        CommentVM commentVM = CommentVM();
+        CommentVM commentVM = CommentVM(
+          isTest: settingsDataService.isTest,
+        );
         String lastSubtitlePart;
 
         // Load comments for this audio

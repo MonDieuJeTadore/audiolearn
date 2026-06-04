@@ -65,7 +65,11 @@ class CommentVM extends ChangeNotifier {
   final ValueNotifier<Audio?> commentDialogRefreshNotifier =
       ValueNotifier<Audio?>(null);
 
-  CommentVM();
+  final bool _isTest;
+
+  CommentVM({
+    bool isTest = false,
+  }) : _isTest = isTest;
 
   @override
   void dispose() {
@@ -92,6 +96,7 @@ class CommentVM extends ChangeNotifier {
         audioFileName: audio.audioFileName,
       ),
       type: Comment,
+      isTest: _isTest,
     );
   }
 
@@ -103,6 +108,7 @@ class CommentVM extends ChangeNotifier {
     return JsonDataService.loadListFromFile(
       jsonPathFileName: commentFilePathName,
       type: Comment,
+      isTest: _isTest,
     );
   }
 
@@ -512,6 +518,7 @@ class CommentVM extends ChangeNotifier {
       List<Comment> audioCommentsLst = JsonDataService.loadListFromFile(
         jsonPathFileName: "$commentPath${path.separator}$commentFileName",
         type: Comment,
+        isTest: _isTest,
       );
 
       // Remove the file extension from the comment file name. Since the

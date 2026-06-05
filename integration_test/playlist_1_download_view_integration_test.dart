@@ -4264,8 +4264,8 @@ void main() {
       IntegrationTestUtil.verifyPositionBetweenMinMax(
         tester: tester,
         textWidgetFinder: audioPlayerViewAudioPositionFinder,
-        minPositionTimeStr: '0:03',
-        maxPositionTimeStr: '0:05',
+        minPositionTimeStr: '0:04',
+        maxPositionTimeStr: '0:06',
       );
 
       // Return to the Playlist Download View

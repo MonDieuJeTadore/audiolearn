@@ -26991,7 +26991,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                 'Restored 0 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 1 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières comment restoration.zip".',
+                  'Restored 0 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 1 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières comment restoration.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -51671,6 +51671,83 @@ void main() {
         find.byKey(const Key("popup_copy_youtube_video_url")),
         findsOneWidget,
       );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group(
+      'Error displayed if json file is invalid. The tested exception is thrown by JsonDataService.',
+      () {
+    testWidgets(
+        '''Error if settings.json format is invalid. The exception is thrown by the JsonDataService
+           loadListFromFile() method.''', (WidgetTester tester) async {
+      const String playlistTitle = "Prières 5";
+      // Purge the test playlist directory if it exists so that the
+      // playlist list is empty
+      DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+        rootPath: kApplicationPathWindowsTest,
+      );
+
+      const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+      // Copy the test initial audio data to the app dir
+      DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+        sourceRootPath:
+            "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+        destinationRootPath: kApplicationPathWindowsTest,
+      );
+
+      final String invalidAndValidDirectoryPath =
+          '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+      // Replacing the settings.json file by the invalid format
+      // settings.json file
+      DirUtil.copyFileToDirectorySync(
+        sourceFilePathName:
+            '$invalidAndValidDirectoryPath${path.separator}invalid settings.json',
+        targetDirectoryPath: kApplicationPathWindowsTest,
+        targetFileName: 'settings.json',
+        overwriteFileIfExist: true,
+      );
+
+      // final SettingsDataService settingsDataService = SettingsDataService(
+      //   isTest: true,
+      // );
+
+      // await settingsDataService.loadSettingsFromFile(
+      //     settingsJsonPathFileName:
+      //         "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+      // Starting the app with an invalid format settings.json file
+      // which wil cause an error message to be displayed
+      await app.main();
+      await tester.pumpAndSettle();
+
+      // Now verifying the warning dialog and close it
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "",// "JSON format error in $jsonPathFileName at line ${lineNumber - 1} or $lineNumber, column $columnNumber, unexpected character \"$unexpectedChar\".\n\nException message: ${e.message}.\n\nTry finding the problem in order to correct it before executing again the operation.\n\nThen execute the \"Update Playlist JSON Files ...\" menu in order to restore the playlist \"$playlistTitle\".",
+        isWarningConfirming: false,
+      );
+
+      // Replacing the invalid format settings.json file by the valid
+      // formatn settings.json file
+      DirUtil.copyFileToDirectorySync(
+        sourceFilePathName:
+            '$invalidAndValidDirectoryPath${path.separator}valid settings.json',
+        targetDirectoryPath: kApplicationPathWindowsTest,
+        targetFileName: 'settings.json',
+        overwriteFileIfExist: true,
+      );
+
+      // Restarting the app
+      await app.main();
+      await tester.pumpAndSettle();
 
       // Purge the test playlist directory so that the created test
       // files are not uploaded to GitHub

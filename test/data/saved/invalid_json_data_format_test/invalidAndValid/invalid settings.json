@@ -11,7 +11,7 @@
         "Playlists.playSpeed": "1.0",
         "Playlists.arePlaylistsDisplayedInPlaylistDownloadView": "true",
         "Playlists.maxSavableAudioMp3FileSizeInMb": "525.0",
-        "Playlists.onWindowsPlayVolumeInPercentage": "2"
+        "Playlists.onWindowsPlayVolumeInPercentage": "2",
     },
     "SettingType.dataLocation": {
         "DataLocation.appSettingsPath": "C:\\development\\flutter\\audiolearn\\test\\data\\audio",

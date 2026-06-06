@@ -169,10 +169,6 @@ class JsonDataService {
             jsonPathFileName: message,
           );
         }
-        // throw ProblemInJsonFileException(
-        //   jsonPathFileName:
-        //       'JSON format error in $jsonPathFileName: ${e.message}',
-        // );
       } on StateError catch (_) {
         throw ProblemInJsonFileException(
           jsonPathFileName: jsonPathFileName,

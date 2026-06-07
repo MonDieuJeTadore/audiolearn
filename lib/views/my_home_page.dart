@@ -97,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage>
   AppLifecycleListener? _lifecycleListener;
   double _originalVolume = 0.06;
   VolumeController? _volumeController;
+  bool _volumeRestored = false;
 
   @override
   void initState() {
@@ -187,6 +188,9 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   Future<void> _restoreOriginalVolume() async {
+    if (_volumeRestored) return; // ← avoids double call
+    _volumeRestored = true;
+
     if (Platform.isWindows && _volumeController != null) {
       await _volumeController!.setVolume(_originalVolume);
     }

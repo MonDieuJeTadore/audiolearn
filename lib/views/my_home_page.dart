@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage>
         _volumeController = VolumeController.instance;
         _originalVolume = await _volumeController!.getVolume();
 
-        // Correct code to use since when the app is installed , the
+        // Correct code to use since when the app is installed, the
         // default volume is set in the settingsDataService.
         _volumeController!.setVolume(widget.settingsDataService.get(
                 settingType: SettingType.playlists,

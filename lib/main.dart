@@ -96,11 +96,13 @@ Future<void> _setWindowsAppSizeAndPosition({
     // Définissez la largeur et la hauteur de votre fenêtre
     double windowWidth = (isTest) ? 900 : 745;
     double windowHeight = (isTest) ? 1700 : 1480;
+    double xCorrection = (isTest) ? 10 : -70; // Correction pour la marge du bord droit
+    double yCorrection = (isTest) ? 2 : 1.5; // Correction pour la marge du bord inférieur
 
     // Calculez la position X pour placer la fenêtre sur le côté droit de l'écran
-    final double posX = screenRect.right - windowWidth + 10;
+    final double posX = screenRect.right - windowWidth + xCorrection; // 50 pixels de marge du bord droit
     // Optionnellement, ajustez la position Y selon vos préférences
-    final double posY = (screenRect.height - windowHeight) / 2;
+    final double posY = (screenRect.height - windowHeight) / yCorrection;
 
     final Rect windowRect =
         Rect.fromLTWH(posX, posY, windowWidth, windowHeight);

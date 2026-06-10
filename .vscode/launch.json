@@ -2,42 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      // Does not work 
-      "name": "audiolearn (debug avec args)",
-      "type": "dart",
-      "request": "launch",
-      "program": "lib/main.dart",
-      "args": [
-        "test"
-      ]
-    },
-    {
-      "name": "audiolearn (profile mode)",
+      "name": "Debug Windows",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile",
-      "program": "lib/main.dart"
-    },
-    {
-      "name": "audiolearn (release mode)",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "release",
-      "program": "lib/main.dart"
-    },
-    {
-      "name": "Integration Tests (Android)",
-      "request": "launch",
-      "type": "dart",
-      "program": "integration_test/android_emulator_integration_test.dart",
-      "deviceId": "emulator-5554"
-    },
-    {
-      "name": "Restore Integr Tests (Android)",
-      "request": "launch",
-      "type": "dart",
-      "program": "integration_test/android_emul_restore_integr_test.dart",
-      "deviceId": "emulator-5554"
+      "deviceId": "windows",
+      "args": ["--no-pub"],
+      "preLaunchTask": "patch-windows-plugins"
     }
   ]
 }

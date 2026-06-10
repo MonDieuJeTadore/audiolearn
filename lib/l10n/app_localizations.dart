@@ -4898,6 +4898,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Defining the Windows play volume which is set when AudioLearn is started. When the application is closed, the previous play volume is restored.'**
   String get playVolumeInPercentageTooltip;
+
+  /// No description provided for @restoringPlaylistsFromZipProgression.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring playlist(s) from ZIP ...'**
+  String get restoringPlaylistsFromZipProgression;
 }
 
 class _AppLocalizationsDelegate

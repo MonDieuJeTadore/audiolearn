@@ -270,6 +270,12 @@ class PlaylistListVM extends ChangeNotifier {
   String _audioMp3SaveUniquePlaylistName = '';
   String get audioMp3SaveUniquePlaylistName => _audioMp3SaveUniquePlaylistName;
 
+  // Playlist(s) restoration progression display on playlist
+  // download view fields.
+
+  bool _isRestoringPlaylists = false;
+  bool get isRestoringPlaylists => _isRestoringPlaylists;
+
   // Playlist(s) MP3 restoration progression display on playlist
   // download view fields.
 
@@ -3998,6 +4004,9 @@ class PlaylistListVM extends ChangeNotifier {
       selectedPlaylistBeforeRestoreTitle = _uniqueSelectedPlaylist!.title;
     }
 
+    _isRestoringPlaylists = true;
+    notifyListeners();
+
     // Restoring the playlists, comments and settings json files
     // from the zip file. The dynamic list restoredInfoLst list
     // contains the list of restored playlist titles and the number
@@ -4054,6 +4063,9 @@ class PlaylistListVM extends ChangeNotifier {
                   .toInt() +
               1;
     }
+
+    _isRestoringPlaylists = false;
+    notifyListeners();
 
     // Display a confirmation message to the user.
     _warningMessageVM.confirmRestorationFromZip(

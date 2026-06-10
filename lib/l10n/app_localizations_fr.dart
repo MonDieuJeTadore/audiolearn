@@ -3083,4 +3083,8 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get playVolumeInPercentageTooltip =>
       'Définit le volume de lecture Windows appliqué au démarrage d\'AudioLearn. Lorsque l\'application est fermée, le volume de lecture précédent est restauré.';
+
+  @override
+  String get restoringPlaylistsFromZipProgression =>
+      'Restoration de playlist(s) à partir d\'un ZIP ...';
 }

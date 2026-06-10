@@ -3172,4 +3172,8 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get playVolumeInPercentageTooltip =>
       "Defining the Windows play volume which is set when AudioLearn is started. When the application is closed, the previous play volume is restored.";
+
+  @override
+  String get restoringPlaylistsFromZipProgression =>
+      "Restoring playlist(s) from ZIP ...";
 }

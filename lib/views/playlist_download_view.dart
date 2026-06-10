@@ -250,6 +250,10 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         // ZIP informations or nothing.
         _buildDisplayPlaylistsMp3SaveToZipProgressionInfo(),
 
+        // displaying the playlist(s) restoration from ZIP progression
+        // or nothing.
+        _buildDisplayPlaylistsRestoreFromZipProgressionInfo(),
+
         // displaying the currently playlist(s) audio MP3 restored
         // from ZIP informations or nothing.
         _buildDisplayPlaylistsMp3RestoreFromZipProgressionInfo(),
@@ -812,6 +816,44 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
                           .HHmmss(),
                       playlistListVMlistenTrue.numberOfCreatedZipFiles),
                 ),
+              ],
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
+  }
+
+  /// If playlists are restored from a ZIP file, the restore progression is displayed.
+  /// Otherwise, nothing is displayed.
+  Consumer<PlaylistListVM>
+      _buildDisplayPlaylistsRestoreFromZipProgressionInfo() {
+    return Consumer<PlaylistListVM>(
+      builder: (context, playlistListVMlistenTrue, child) {
+        if (playlistListVMlistenTrue.isRestoringPlaylists) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  key: const Key('restoring_playlists_audio_mp3_to_zip'),
+                  AppLocalizations.of(context)!.restoringPlaylistsFromZipProgression,
+                  textAlign: TextAlign.center, // Centered multi lines text
+                  maxLines: 2,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10.0),
+                LinearProgressIndicator(), // Indeterminate progress bar
+                // const SizedBox(height: 10.0),
+                // Text(
+                //   key: const Key('restoring_please_wait'),
+                //   AppLocalizations.of(context)!.savingApproximativeTime(
+                //       playlistListVMlistenTrue.savingAudioMp3FileToZipDuration
+                //           .HHmmss()),
+                // ),
               ],
             ),
           );

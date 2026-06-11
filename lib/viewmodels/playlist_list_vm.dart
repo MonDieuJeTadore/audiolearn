@@ -793,17 +793,6 @@ class PlaylistListVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Method used by PlaylistOneSelectedDialog to select
-  /// only one playlist to which the audio will be moved or
-  /// copied.
-  void setUniqueSelectedPlaylist({
-    Playlist? selectedPlaylist,
-  }) {
-    _uniqueSelectedPlaylist = selectedPlaylist;
-
-    notifyListeners();
-  }
-
   /// Method called by PlaylistItemWidget when the user clicks on
   /// the playlist item checkbox to select or unselect the playlist.
   ///
@@ -3933,8 +3922,8 @@ class PlaylistListVM extends ChangeNotifier {
     // Multiplying by 1200000 instead of 1000000 is due to the fact that
     // the savedAudioBytesNumberToZipInOneMicroSecond is 1.2 times too
     // big on Android.
-    double evaluatedMicroSeconds = savedAudiosFileSize /
-        savedAudioBytesNumberToZipInOneMicroSecond;
+    double evaluatedMicroSeconds =
+        savedAudiosFileSize / savedAudioBytesNumberToZipInOneMicroSecond;
 
     _savingAudioMp3FileToZipDuration =
         Duration(microseconds: evaluatedMicroSeconds.ceil());
@@ -6411,6 +6400,10 @@ class PlaylistListVM extends ChangeNotifier {
     required String sortFilterParametersAppliedName,
     required String sortFilterParametersDefaultName,
   }) {
+    // setUniqueSelectedPlaylist(
+    //   selectedPlaylist: playlist,
+    // );
+
     String selectedPlaylistAudioSortFilterParmsName =
         getSelectedPlaylistAudioSortFilterParmsNameForView(
             audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
@@ -6431,6 +6424,8 @@ class PlaylistListVM extends ChangeNotifier {
         getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
       audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
       passedAudioSortFilterParameters: audioSortFilterParameters,
+      playlist: playlist, // add or correct position to audio title ok
+      //                     even if the playlist is not selected
     );
 
     // Add numeric prefixes to playableAudioLst

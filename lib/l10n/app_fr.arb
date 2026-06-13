@@ -1144,8 +1144,20 @@
   "restorePlaylistAndCommentsFromZipTooltip": "En fonction du contenu du fichier ZIP sélectionné, restaure une ou plusieurs playlists, leurs commentaires, photos ainsi que les paramètres de l'application s'ils sont inclus dans le fichier ZIP. Les fichiers audio n'étant pas inclus dans ce fichier, ils ne sont pas restaurés.",
   "appDataCouldNotBeRestoredFromZip": "Les fichiers JSON des playlists et des commentaires ainsi que les paramètres de l'application n'ont pu être restaurés à partir d'un ZIP !",
   "deleteFilteredAudioFromPlaylistAsWell": "Supprimer les audios filtrés de la playlist également ...",
-  "deleteFilteredAudioFromPlaylistAsWellConfirmationTitle": "Supprimer les audios filtrés par le paramètre \"{sortFilterParmsName}\" de la playlist \"{playlistTitle}\" également (pourront être re-téléchargés)",
+  "deleteFilteredAudioFromPlaylistAsWellConfirmationTitle": "Supprimer les audios filtrés par le paramètre \"{sortFilterParmsName}\" de la playlist \"{playlistTitle}\" également (pourront être re-téléchargés si ils se trouvent sur la playlist Youtube)",
   "@deleteFilteredAudioFromPlaylistAsWellConfirmationTitle": {
+    "description": "Confirmation title for deleting filtered audio",
+    "placeholders": {
+      "sortFilterParmsName": {
+        "type": "Object"
+      },
+      "playlistTitle": {
+        "type": "Object"
+      }
+    }
+  },
+  "deleteFilteredAudioFromLocalPlaylistAsWellConfirmationTitle": "Supprimer les audios filtrés par le paramètre \"{sortFilterParmsName}\" de la playlist \"{playlistTitle}\" également",
+  "@deleteFilteredAudioFromLocalPlaylistAsWellConfirmationTitle": {
     "description": "Confirmation title for deleting filtered audio",
     "placeholders": {
       "sortFilterParmsName": {

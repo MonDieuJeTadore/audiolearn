@@ -1335,16 +1335,25 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                   false, // This line prevents the dialog from closing when
               //            tapping outside the dialog
               builder: (BuildContext context) {
+                Playlist selectedPlaylist =
+                    playlistListVMlistenFalse.getSelectedPlaylists()[0];
                 return ConfirmActionDialog(
                   actionFunction: deleteFilteredAudioLstFromPlaylistAsWell,
                   actionFunctionArgs: [
                     playlistListVMlistenFalse,
                   ],
-                  dialogTitleOne: AppLocalizations.of(context)!
-                      .deleteFilteredAudioFromPlaylistAsWellConfirmationTitle(
-                    selectedPlaylistAudioSortFilterParmsName,
-                    playlistListVMlistenFalse.getSelectedPlaylists()[0].title,
-                  ),
+                  dialogTitleOne: (selectedPlaylist.playlistType ==
+                          PlaylistType.youtube)
+                      ? AppLocalizations.of(context)!
+                          .deleteFilteredAudioFromPlaylistAsWellConfirmationTitle(
+                          selectedPlaylistAudioSortFilterParmsName,
+                          selectedPlaylist.title,
+                        )
+                      : AppLocalizations.of(context)!
+                          .deleteFilteredAudioFromLocalPlaylistAsWellConfirmationTitle(
+                          selectedPlaylistAudioSortFilterParmsName,
+                          selectedPlaylist.title,
+                        ),
                   dialogContent: AppLocalizations.of(context)!
                       .deleteFilteredAudioConfirmation(
                     deletedAudioNumberLst[0], // total audio number

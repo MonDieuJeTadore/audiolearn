@@ -2899,8 +2899,15 @@ abstract class AppLocalizations {
   /// Confirmation title for deleting filtered audio
   ///
   /// In en, this message translates to:
-  /// **'Delete audios filtered by \"{sortFilterParmsName}\" parms from playlist \"{playlistTitle}\" as well (will be re-downloadable)'**
+  /// **'Delete audios filtered by \"{sortFilterParmsName}\" parms from playlist \"{playlistTitle}\" as well (will be re-downloadable if located on the Youtube playlist)'**
   String deleteFilteredAudioFromPlaylistAsWellConfirmationTitle(
+      Object sortFilterParmsName, Object playlistTitle);
+
+  /// Confirmation title for deleting filtered audio
+  ///
+  /// In en, this message translates to:
+  /// **'Delete audios filtered by \"{sortFilterParmsName}\" parms from playlist \"{playlistTitle}\" as well'**
+  String deleteFilteredAudioFromLocalPlaylistAsWellConfirmationTitle(
       Object sortFilterParmsName, Object playlistTitle);
 
   /// No description provided for @redownloadFilteredAudio.

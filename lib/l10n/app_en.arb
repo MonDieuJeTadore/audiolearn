@@ -854,8 +854,16 @@
   "restorePlaylistAndCommentsFromZipTooltip": "According to the content of the selected ZIP file, restoring a unique or multiple playlists, their audio comments, pictures and, if awailable, the application settings. The audio files are not included in the ZIP file.",
   "appDataCouldNotBeRestoredFromZip": "Playlist, comment and picture JSON files as well as application settings could not be restored from ZIP.",
   "deleteFilteredAudioFromPlaylistAsWell": "Delete filtered Audios from Playlist as well ...",
-  "deleteFilteredAudioFromPlaylistAsWellConfirmationTitle": "Delete audios filtered by \"{sortFilterParmsName}\" parms from playlist \"{playlistTitle}\" as well (will be re-downloadable)",
+  "deleteFilteredAudioFromPlaylistAsWellConfirmationTitle": "Delete audios filtered by \"{sortFilterParmsName}\" parms from playlist \"{playlistTitle}\" as well (will be re-downloadable if located on the Youtube playlist)",
   "@deleteFilteredAudioFromPlaylistAsWellConfirmationTitle": {
+    "description": "Confirmation title for deleting filtered audio",
+    "placeholders": {
+      "sortFilterParmsName": {},
+      "playlistTitle": {}
+    }
+  },
+  "deleteFilteredAudioFromLocalPlaylistAsWellConfirmationTitle": "Delete audios filtered by \"{sortFilterParmsName}\" parms from playlist \"{playlistTitle}\" as well",
+  "@deleteFilteredAudioFromLocalPlaylistAsWellConfirmationTitle": {
     "description": "Confirmation title for deleting filtered audio",
     "placeholders": {
       "sortFilterParmsName": {},

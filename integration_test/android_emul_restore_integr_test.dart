@@ -1191,9 +1191,9 @@ void main() {
     });
     group('''Import audios functionality.''', () {
       testWidgets(
-          '''Importing one audio test. Verify conversion warning. Then reimporting it and verify
-          the not imported warning. Normally, the imported audios are not located in a playlist
-          directory !''', (WidgetTester tester) async {
+          '''Importing one spoken mp3 audio test. Verify conversion warning. Then reimporting it and verify
+          the not imported warning. Normally, the imported audios are not located in a playlist directory !''',
+          (WidgetTester tester) async {
         await IntegrationTestUtil.initializeAndroidApplicationAndSelectPlaylist(
           tester: tester,
           tapOnPlaylistToggleButton: false,
@@ -1213,7 +1213,7 @@ void main() {
               name: restorableZipFileName,
               path:
                   '$kApplicationPathAndroidTest$androidPathSeparator$restorableZipFileName',
-              size: 2655),
+              size: 8715),
         ]);
 
         // In order to create the Android emulator application, execute the
@@ -1341,6 +1341,157 @@ void main() {
           tester: tester,
           audioSubTitlesAcceptableLst: [
             "0:10:51.9 3.98 MB imported on ${DateFormat('dd/MM/yyyy').format(now)} at ${DateFormat('HH:mm').format(now)}",
+          ],
+          firstAudioListTileIndex: 0,
+        );
+
+        // Tap the 'Toggle List' button to redisplay the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+      });
+      testWidgets(
+          '''Importing one music mp3 audio test. Verify conversion warning. Then reimporting it and verify
+          the not imported warning. Normally, the imported audios are not located in a playlist directory !''',
+          (WidgetTester tester) async {
+        await IntegrationTestUtil.initializeAndroidApplicationAndSelectPlaylist(
+          tester: tester,
+          tapOnPlaylistToggleButton: false,
+        );
+
+        // Now initializing the application on the Android emulator using
+        // zip restoration.
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String restorableZipFileName = 'audioLearn_2026-06-13_02_52_08.zip';
+
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: restorableZipFileName,
+              path:
+                  '$kApplicationPathAndroidTest$androidPathSeparator$restorableZipFileName',
+              size: 4733),
+        ]);
+
+        // In order to create the Android emulator application, execute the
+        // 'Restore Playlists, Comments and Settings from Zip File ...' menu
+        // without replacing the existing playlists.
+        await IntegrationTestUtil.executeRestorePlaylists(
+          tester: tester,
+          doReplaceExistingPlaylists: false,
+          doDeleteExistingPlaylistsNotContainedInZip: false,
+          playlistTitlesToDelete: [
+            'Les plus belles chansons chrétiennes',
+            'S8 audio',
+            'local',
+            'urgent_actus_17-12-2023',
+          ],
+          onAndroid: true,
+        );
+
+        const String restorableMp3ZipFileName =
+            '1 music_mp3_from_2025-08-30_19_25_24_on_2025-12-19_11_05_19.zip';
+
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: restorableMp3ZipFileName,
+              path:
+                  '$kApplicationPathAndroidTest$androidPathSeparator$restorableMp3ZipFileName',
+              size: 15366672),
+        ]);
+
+        const String oneMusicPlaylistTitle = '1 music';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: oneMusicPlaylistTitle,
+          playlistMenuKeyStr:
+              'popup_menu_restore_playlist_audio_mp3_files_from_zip',
+          dragToBottom: true, // necessary if Flutter emulator is used
+        );
+
+        // Now find the 'Ok' button of the SetValueToTarget dialog
+        // and tap on it
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Now tap on the 'A single ZIP File' button
+        await tester.tap(find.byKey(const Key('selectFileButton')));
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to close the warning confirmation dialog
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
+
+        const String fileNameExt =
+            "250830-192524-Jésus, c'est le plus beau nom 23-05-15.mp3";
+        const String importedAudioTitle = "250830-192524-Jésus, c'est le plus beau nom 23-05-15";
+
+        // Setting one selected mp3 file.
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: fileNameExt,
+              path:
+                  "$kPlaylistDownloadRootPathAndroidTest${path.separator}$oneMusicPlaylistTitle${path.separator}$fileNameExt",
+              size: 155136),
+        ]);
+
+        const String localPlaylistTitle = 'local';
+        DateTime now = DateTime.now();
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: localPlaylistTitle,
+          playlistMenuKeyStr: 'popup_menu_import_audio_in_playlist',
+        );
+
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Audio(s)\n\n\"$fileNameExt\"\n\nimported to local playlist \"$localPlaylistTitle\".",
+          isWarningConfirming: true,
+        );
+
+        // Select the local playlist
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: localPlaylistTitle,
+        );
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Verifying all audio info dialog fields related of the imported audio
+        // type
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+          tester: tester,
+          audioType: AudioType.imported,
+          validVideoTitleOrAudioTitle: importedAudioTitle,
+          audioDownloadDateTimeOne:
+              "${DateFormat('dd/MM/yyyy').format(now)} ${DateFormat('HH:mm').format(now)}", // this is the imported date time
+          isAudioPlayable: true,
+          audioEnclosingPlaylistTitle: localPlaylistTitle,
+          audioDuration: '0:02:56.8',
+          audioPosition: '0:00:00.0',
+          audioState: 'Not listened',
+          lastListenDateTime: '',
+          audioFileName: fileNameExt,
+          audioFileSize: '2.94 MB',
+          isMusicQuality: true, // Is music quality
+          audioPlaySpeed: '1.0',
+          audioVolume: '50.0 %',
+          audioCommentNumber: 0,
+        );
+
+        // Verify the imported audio sub title in the selected Youtube
+        // playlist audio list
+        IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
+          tester: tester,
+          audioSubTitlesAcceptableLst: [
+            "0:02:56.8 2.94 MB imported on ${DateFormat('dd/MM/yyyy').format(now)} at ${DateFormat('HH:mm').format(now)}",
           ],
           firstAudioListTileIndex: 0,
         );

@@ -2,14 +2,10 @@
 import 'dart:io';
 import 'package:logger/logger.dart';
 
-// Android/iOS: real plugin; Windows/Desktop: stub (no-op)
-import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart'
-    if (dart.library.ffi) '../services/ffmpeg_kit_stub.dart';
-import 'package:ffmpeg_kit_flutter_new/ffprobe_kit.dart'
-    if (dart.library.ffi) '../services/ffmpeg_kit_stub.dart';
-import 'package:ffmpeg_kit_flutter_new/return_code.dart'
-    if (dart.library.ffi) '../services/ffmpeg_kit_stub.dart';
-
+// Android/iOS via plugin
+import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter_new/ffprobe_kit.dart';
+import 'package:ffmpeg_kit_flutter_new/return_code.dart';
 import 'package:path/path.dart' as path;
 
 import '../models/audio_segment.dart';

@@ -5,6 +5,8 @@ import 'package:archive/archive.dart';
 import 'package:audiolearn/constants.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:collection/collection.dart';
+import 'package:ffmpeg_kit_flutter_new/media_information.dart';
+import 'package:ffmpeg_kit_flutter_new/stream_information.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
@@ -15,14 +17,10 @@ import 'package:path/path.dart' as path;
 // youtube_explode_dart Playlist class name.
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
-// Android/iOS: real plugin; Windows/Desktop: stub (no-op)
-import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart'
-    if (dart.library.ffi) '../services/ffmpeg_kit_stub.dart';
-import 'package:ffmpeg_kit_flutter_new/return_code.dart'
-    if (dart.library.ffi) '../services/ffmpeg_kit_stub.dart';
-import 'package:ffmpeg_kit_flutter_new/ffprobe_kit.dart'
-    if (dart.library.ffi) '../services/ffmpeg_kit_stub.dart';
-    
+import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter_new/return_code.dart';
+
+import 'package:ffmpeg_kit_flutter_new/ffprobe_kit.dart';
 import '../models/text_to_mp3_audio_file.dart';
 import '../models/comment.dart';
 import '../services/settings_data_service.dart';
@@ -1943,21 +1941,31 @@ class AudioDownloadVM extends ChangeNotifier {
         notifyListeners();
 
         // 1) get attributes (bitrate, sampleRate, channels)
-        final attrs = await _getAudioAttributesWithFfprobe(
+        final AudioAttributes? attrs = await _getAudioAttributesWithFfprobe(
           filePath: tmpMp4File.path,
         );
 
         // 2) choose target bitrate (kbps string)
+
+        // bitrateBps	kbps	  	Audio quality
+        // 64000  		64 kbps		weak
+        // 96000	  	96 kbps		spoken, podcast
+        // 128000		  128 kbps	ok
+        // 192000 		192 kbps	good
+        // 256000	  	256 kbps	very good
+        // 320000		  320 kbps	excellent (MP3)
         final int? sourceBps = attrs?.bitrateBps;
+
         final int chosenKbps = _chooseTargetKbpsFromSourceBps(
           sourceBps: sourceBps,
         );
+
         final String targetBitrate = '${chosenKbps}k';
 
         // 3) choose sampleRate and channels if not known
         final int finalSampleRate = 44100;
 
-        final finalChannels = _chooseChannels(
+        final int finalChannels = _chooseChannels(
           sourceChannels: attrs?.channels,
           chosenKbps: chosenKbps,
         );
@@ -1993,7 +2001,7 @@ class AudioDownloadVM extends ChangeNotifier {
         acceptableImportedFileNames += "\"$targetMp4ToMp3FileName\",\n";
       } else {
         File targetFile =
-            File('${targetPlaylist.downloadPath}${path.separator}$fileName');
+            File("${targetPlaylist.downloadPath}${path.separator}$fileName");
 
         if (targetFile.existsSync()) {
           // the case if the imported audio file already exist in the target
@@ -2005,14 +2013,23 @@ class AudioDownloadVM extends ChangeNotifier {
 
         // Determine if the imported MP3 is music quality by probing
         // its audio attributes
-        final attrs = await _getAudioAttributesWithFfprobe(
+        final AudioAttributes? attrs = await _getAudioAttributesWithFfprobe(
           filePath: filePathName,
         );
 
         final int? sourceBps = attrs?.bitrateBps;
+
+        // bitrateBps	kbps	  	Audio quality
+        // 64000  		64 kbps		weak
+        // 96000	  	96 kbps		spoken, podcast
+        // 128000		  128 kbps	ok
+        // 192000 		192 kbps	good
+        // 256000	  	256 kbps	very good
+        // 320000		  320 kbps	excellent (MP3)
         final int chosenKbps = _chooseTargetKbpsFromSourceBps(
           sourceBps: sourceBps,
         );
+
         final int finalChannels = _chooseChannels(
           sourceChannels: attrs?.channels,
           chosenKbps: chosenKbps,
@@ -2116,8 +2133,7 @@ class AudioDownloadVM extends ChangeNotifier {
           importedFileName: mp3FileName,
         );
 
-        importedAudio.isAudioMusicQuality =
-            isImportedFileInMusicQuality;
+        importedAudio.isAudioMusicQuality = isImportedFileInMusicQuality;
 
         targetPlaylist.addImportedAudio(
           importedAudio,
@@ -2213,7 +2229,7 @@ class AudioDownloadVM extends ChangeNotifier {
     try {
       // Desktop (Windows/Linux/macOS) -> call external ffprobe binary
       if (!Platform.isAndroid && !Platform.isIOS) {
-        final result = await Process.run('ffprobe', [
+        final ProcessResult result = await Process.run('ffprobe', [
           '-v',
           'error',
           '-select_streams',
@@ -2237,12 +2253,27 @@ class AudioDownloadVM extends ChangeNotifier {
           return null;
         }
 
-        final stream = streams.first as Map<String, dynamic>;
+        final Map<String, dynamic> stream =
+            streams.first as Map<String, dynamic>;
 
+        // bitrateBps	kbps	  	Audio quality
+        // 64000  		64 kbps		weak
+        // 96000	  	96 kbps		spoken, podcast
+        // 128000		  128 kbps	ok
+        // 192000 		192 kbps	good
+        // 256000	  	256 kbps	very good
+        // 320000		  320 kbps	excellent (MP3)
         final int? bitRate = stream['bit_rate'] != null
             ? int.tryParse(stream['bit_rate'].toString())
             : null;
 
+        // sampleRate    Typical Usage
+        // 8000 Hz       Legacy telephone audio
+        // 16000 Hz      Speech and voice recognition
+        // 22050 Hz      Medium-quality audio
+        // 44100 Hz      Standard Audio CD (compact disk) quality
+        // 48000 Hz      Video, YouTube, and DVD audio
+        // 96000 Hz      Professional audio production
         final int? sampleRate = stream['sample_rate'] != null
             ? int.tryParse(stream['sample_rate'].toString())
             : null;
@@ -2257,7 +2288,8 @@ class AudioDownloadVM extends ChangeNotifier {
         final double? duration =
             durationStr != null ? double.tryParse(durationStr) : null;
 
-        // fallback: if bitrate unknown but duration available, estimate from file size
+        // fallback: if bitrate unknown but duration available,
+        // estimate from file size
         int? finalBitrate = bitRate;
 
         if ((finalBitrate == null || finalBitrate == 0) &&
@@ -2284,11 +2316,15 @@ class AudioDownloadVM extends ChangeNotifier {
         }
       });
 
-      FFprobeKit.getMediaInformationAsync(
+      // Without await, debug fails: importing a spoken mp3 will
+      // cause it to be set as music quality due to returning 128
+      // kbps bitrate in _chooseTargetKbpsFromSourceBps method
+      // when placing a breakpoint at the start of this method
+      await FFprobeKit.getMediaInformationAsync(
         filePath,
         (session) async {
           try {
-            final mediaInfo = (session).getMediaInformation();
+            final MediaInformation? mediaInfo = (session).getMediaInformation();
 
             if (mediaInfo == null) {
               if (!completer.isCompleted) {
@@ -2302,25 +2338,48 @@ class AudioDownloadVM extends ChangeNotifier {
             Map<String, dynamic>? audioStream;
 
             if (streams.isNotEmpty) {
-              for (final s in streams) {
+              for (final StreamInformation stream in streams) {
                 try {
-                  final map = Map<String, dynamic>.from(s as Map);
+                  final Map<dynamic, dynamic>? rawProperties =
+                      stream.getAllProperties();
+
+                  if (rawProperties == null) {
+                    continue;
+                  }
+
+                  final Map<String, dynamic> map = rawProperties.map(
+                    (key, value) => MapEntry(key.toString(), value),
+                  );
 
                   if ((map['codec_type']?.toString() ?? '') == 'audio') {
                     audioStream = map;
                     break;
                   }
                 } catch (_) {
-                  // ignore malformed stream
+                  // Ignore malformed stream.
                 }
               }
             }
 
+            // bitrateBps	kbps	  	Audio quality
+            // 64000	  	64 kbps		weak
+            // 96000		  96 kbps		spoken, podcast
+            // 128000	  	128 kbps	ok
+            // 192000		  192 kbps	good
+            // 256000		  256 kbps	very good
+            // 320000		  320 kbps	excellent (MP3)
             int? bitRate =
                 audioStream != null && audioStream.containsKey('bit_rate')
                     ? int.tryParse(audioStream['bit_rate'].toString())
                     : null;
 
+            // sampleRate    Typical Usage
+            // 8000 Hz       Legacy telephone audio
+            // 16000 Hz      Speech and voice recognition
+            // 22050 Hz      Medium-quality audio
+            // 44100 Hz      Standard Audio CD (compact disk) quality
+            // 48000 Hz      Video, YouTube, and DVD audio
+            // 96000 Hz      Professional audio production
             final int? sampleRate =
                 audioStream != null && audioStream.containsKey('sample_rate')
                     ? int.tryParse(audioStream['sample_rate'].toString())
@@ -2361,7 +2420,7 @@ class AudioDownloadVM extends ChangeNotifier {
         },
       );
 
-      final attrs = await completer.future;
+      final AudioAttributes? attrs = await completer.future;
       return attrs;
     } catch (e) {
       return null;
@@ -2371,6 +2430,14 @@ class AudioDownloadVM extends ChangeNotifier {
   /// Choose the target kbps given the source bitrate in bits/s.
   /// Conservative policy: do not increase quality above source.
   /// Returns integer kbps (e.g. 128).
+  ///
+  /// bitrateBps	kbps	  	Audio quality
+  /// 64000   		64 kbps		weak
+  /// 96000	    	96 kbps		spoken, podcast
+  /// 128000		  128 kbps	ok
+  /// 192000 		  192 kbps	good
+  /// 256000	  	256 kbps	very good
+  /// 320000		  320 kbps	excellent (MP3)
   int _chooseTargetKbpsFromSourceBps({
     required int? sourceBps,
     int defaultKbps = 128,

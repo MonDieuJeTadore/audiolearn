@@ -3176,4 +3176,11 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get restoringPlaylistsFromZipProgression =>
       "Restoring playlist(s) from ZIP ...";
+
+  @override
+  String deleteFilteredAudioFromLocalPlaylistAsWellConfirmationTitle(
+    Object sortFilterParmsName,
+    Object playlistTitle,
+  ) =>
+      "Delete audios filtered by \"$sortFilterParmsName\" parms from playlist \"$playlistTitle\" as well";
 }

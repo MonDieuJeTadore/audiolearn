@@ -1777,7 +1777,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String deleteFilteredAudioFromPlaylistAsWellConfirmationTitle(
       Object sortFilterParmsName, Object playlistTitle) {
-    return 'Delete audios filtered by \"$sortFilterParmsName\" parms from playlist \"$playlistTitle\" as well (will be re-downloadable)';
+    return 'Delete audios filtered by \"$sortFilterParmsName\" parms from playlist \"$playlistTitle\" as well (will be re-downloadable if located on the Youtube playlist)';
+  }
+
+  @override
+  String deleteFilteredAudioFromLocalPlaylistAsWellConfirmationTitle(
+      Object sortFilterParmsName, Object playlistTitle) {
+    return 'Delete audios filtered by \"$sortFilterParmsName\" parms from playlist \"$playlistTitle\" as well';
   }
 
   @override

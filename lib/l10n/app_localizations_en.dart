@@ -1160,13 +1160,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String audioImportedToLocalPlaylist(
       Object importedAudioFileNames, Object toPlaylistTitle) {
-    return 'Audio(s)\n\n$importedAudioFileNames\n\nimported to local playlist \"$toPlaylistTitle\".';
+    return 'Audio(s)\n\n$importedAudioFileNames\n\nimported as MP3 to local playlist \"$toPlaylistTitle\".';
   }
 
   @override
   String audioImportedToYoutubePlaylist(
       Object importedAudioFileNames, Object toPlaylistTitle) {
-    return 'Audio(s)\n\n$importedAudioFileNames\n\nimported to Youtube playlist \"$toPlaylistTitle\".';
+    return 'Audio(s)\n\n$importedAudioFileNames\n\nimported as MP3 to Youtube playlist \"$toPlaylistTitle\".';
   }
 
   @override
@@ -2571,6 +2571,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get convertingMp4ToMP3 => 'Converting imported MP4 to MP3 ...';
+
+  @override
+  String get convertingM4aToMP3 => 'Converting imported M4A to MP3 ...';
 
   @override
   String get addPositionToAudioTitleMenu =>

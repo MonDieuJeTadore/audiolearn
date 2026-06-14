@@ -2017,14 +2017,14 @@ abstract class AppLocalizations {
   /// No description provided for @audioImportedToLocalPlaylist.
   ///
   /// In en, this message translates to:
-  /// **'Audio(s)\n\n{importedAudioFileNames}\n\nimported to local playlist \"{toPlaylistTitle}\".'**
+  /// **'Audio(s)\n\n{importedAudioFileNames}\n\nimported as MP3 to local playlist \"{toPlaylistTitle}\".'**
   String audioImportedToLocalPlaylist(
       Object importedAudioFileNames, Object toPlaylistTitle);
 
   /// No description provided for @audioImportedToYoutubePlaylist.
   ///
   /// In en, this message translates to:
-  /// **'Audio(s)\n\n{importedAudioFileNames}\n\nimported to Youtube playlist \"{toPlaylistTitle}\".'**
+  /// **'Audio(s)\n\n{importedAudioFileNames}\n\nimported as MP3 to Youtube playlist \"{toPlaylistTitle}\".'**
   String audioImportedToYoutubePlaylist(
       Object importedAudioFileNames, Object toPlaylistTitle);
 
@@ -4107,6 +4107,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Converting imported MP4 to MP3 ...'**
   String get convertingMp4ToMP3;
+
+  /// No description provided for @convertingM4aToMP3.
+  ///
+  /// In en, this message translates to:
+  /// **'Converting imported M4A to MP3 ...'**
+  String get convertingM4aToMP3;
 
   /// No description provided for @addPositionToAudioTitleMenu.
   ///

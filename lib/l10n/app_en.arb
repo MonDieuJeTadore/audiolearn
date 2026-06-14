@@ -509,8 +509,8 @@
   "setPlaylistAudioPlaySpeedTooltip": "Set audio play speed for the playlist existing and next downloaded audio.",
   "audioNotImportedToLocalPlaylist": "Audio(s)\n\n{rejectedImportedAudioFileNames}\n\nNOT imported to local playlist \"{toPlaylistTitle}\" since the playlist directory already contains the audio(s).",
   "audioNotImportedToYoutubePlaylist": "Audio(s)\n\n{rejectedImportedAudioFileNames}\n\nNOT imported to Youtube playlist \"{toPlaylistTitle}\" since the playlist directory already contains the audio(s).",
-  "audioImportedToLocalPlaylist": "Audio(s)\n\n{importedAudioFileNames}\n\nimported to local playlist \"{toPlaylistTitle}\".",
-  "audioImportedToYoutubePlaylist": "Audio(s)\n\n{importedAudioFileNames}\n\nimported to Youtube playlist \"{toPlaylistTitle}\".",
+  "audioImportedToLocalPlaylist": "Audio(s)\n\n{importedAudioFileNames}\n\nimported as MP3 to local playlist \"{toPlaylistTitle}\".",
+  "audioImportedToYoutubePlaylist": "Audio(s)\n\n{importedAudioFileNames}\n\nimported as MP3 to Youtube playlist \"{toPlaylistTitle}\".",
   "imported": "imported",
   "audioImportedInfoDialogTitle": "Imported Audio Info",
   "audioTitleLabel": "Audio title",
@@ -1168,6 +1168,7 @@
     }
   },
   "convertingMp4ToMP3":"Converting imported MP4 to MP3 ...",
+  "convertingM4aToMP3":"Converting imported M4A to MP3 ...",
   "addPositionToAudioTitleMenu": "Add or correct Position to Audio Titles",
   "moveAudioToPositionMenu": "Set Audio to Position ...",
   "moveAudioToPosition": "Move Audio to Int Position",

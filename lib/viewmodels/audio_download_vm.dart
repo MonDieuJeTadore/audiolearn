@@ -32,6 +32,12 @@ import 'comment_vm.dart';
 import 'picture_vm.dart';
 import 'warning_message_vm.dart';
 
+enum ImportedAudioType {
+  mp4,
+  m4a,
+  mp3,
+}
+
 // global variables used by the AudioDownloadVM in order
 // to avoid multiple downloads of the same playlist
 List<String> downloadingPlaylistUrls = [];
@@ -163,11 +169,15 @@ class AudioDownloadVM extends ChangeNotifier {
   bool get isDownloadedAudioConvertingToMp3 =>
       _isDownloadedAudioConvertingToMp3;
 
-  // If a mp4 is imported, it must be converted to MP3. This
+  // If a mp4 or a m4a is imported, it must be converted to MP3. This
   // takes time and so the conversion progression is displayed
   // on the playlist download view.
-  bool _isImportedMp4ConvertingToMp3 = false;
-  bool get isImportedMp4ConvertingToMp3 => _isImportedMp4ConvertingToMp3;
+  bool _isImportedAudioOrVideoConvertingToMp3 = false;
+  bool get isImportedAudioOrVideoConvertingToMp3 =>
+      _isImportedAudioOrVideoConvertingToMp3;
+
+  ImportedAudioType? _importedAudioType;
+  ImportedAudioType? get importedAudioType => _importedAudioType;
 
   String _mp4ConvertingToMp3FileName = '';
   String get mp4ConvertingToMp3FileName => _mp4ConvertingToMp3FileName;
@@ -1912,19 +1922,28 @@ class AudioDownloadVM extends ChangeNotifier {
     String rejectedImportedFileNamesLst = '';
     String acceptableImportedFileNames = '';
     Map<String, bool> importedFileQualityMap = {};
-    String fileName = '';
+    String importedFileName = '';
 
     for (String filePathName in filePathNameToImportLstCopy) {
-      fileName = filePathName.split(path.separator).last;
+      importedFileName = filePathName.split(path.separator).last;
       String targetMp4ToMp3FileName = '';
 
-      final String fileNameLowerCase = fileName.toLowerCase();
-      if (fileNameLowerCase.endsWith('.mp4') ||
-          (fileNameLowerCase.endsWith('.m4a'))) {
-        File tmpMp4File = File(filePathName);
-        targetMp4ToMp3FileName = fileName.endsWith('.mp4')
-            ? fileName.replaceFirst('mp4', 'mp3')
-            : fileName.replaceFirst('m4a', 'mp3');
+      final String fileNameLowerCase = importedFileName.toLowerCase();
+
+      if (fileNameLowerCase.endsWith('.mp4')) {
+        _importedAudioType = ImportedAudioType.mp4;
+      } else if (fileNameLowerCase.endsWith('.m4a')) {
+        _importedAudioType = ImportedAudioType.m4a;
+      } else {
+        _importedAudioType = ImportedAudioType.mp3;
+      }
+
+      if (_importedAudioType == ImportedAudioType.mp4 ||
+          _importedAudioType == ImportedAudioType.m4a) {
+        File tmpMp4OrM4aFile = File(filePathName);
+        targetMp4ToMp3FileName = (_importedAudioType == ImportedAudioType.mp4)
+            ? importedFileName.replaceFirst('mp4', 'mp3')
+            : importedFileName.replaceFirst('m4a', 'mp3');
         File targetMp4ToMp3File = File(
             '${targetPlaylist.downloadPath}${path.separator}$targetMp4ToMp3FileName');
 
@@ -1936,14 +1955,14 @@ class AudioDownloadVM extends ChangeNotifier {
           continue;
         }
 
-        _mp4ConvertingToMp3FileName = fileName;
+        _mp4ConvertingToMp3FileName = importedFileName;
 
-        _isImportedMp4ConvertingToMp3 = true;
+        _isImportedAudioOrVideoConvertingToMp3 = true;
         notifyListeners();
 
         // 1) get attributes (bitrate, sampleRate, channels)
         final AudioAttributes? attrs = await _getAudioAttributesWithFfprobe(
-          filePath: tmpMp4File.path,
+          filePath: tmpMp4OrM4aFile.path,
         );
 
         // 2) choose target bitrate (kbps string)
@@ -1971,42 +1990,44 @@ class AudioDownloadVM extends ChangeNotifier {
           chosenKbps: chosenKbps,
         );
 
-        importedFileQualityMap[fileName] = _isMusicQuality(
+        importedFileQualityMap[importedFileName] = _isMusicQuality(
           bitrate: targetBitrate,
           channels: finalChannels,
         );
 
         // 4) convert
         final bool ok = await _FfmpegFacade.convertToMp3(
-          inputPath: tmpMp4File.path,
+          inputPath: tmpMp4OrM4aFile.path,
           outputPath: targetMp4ToMp3File.path,
           bitrate: targetBitrate,
           sampleRate: finalSampleRate,
           channels: finalChannels,
         );
 
-        _isImportedMp4ConvertingToMp3 = false;
+        _isImportedAudioOrVideoConvertingToMp3 = false;
         notifyListeners();
 
         if (!ok) {
           notifyDownloadError(
             errorType: ErrorType.importingMp4Error,
             errorArgOne: 'FFmpeg conversion failed',
-            errorArgTwo: fileName,
+            errorArgTwo: importedFileName,
           );
 
           return;
         }
 
-        acceptableImportedFileNames += "\"$targetMp4ToMp3FileName\",\n";
+        acceptableImportedFileNames += "\"$importedFileName\",\n";
       } else {
+        // the case if the imported audio file is a mp3 and so was
+        // not converted from mp4 or m4a to mp3
         File targetFile =
-            File("${targetPlaylist.downloadPath}${path.separator}$fileName");
+            File("${targetPlaylist.downloadPath}${path.separator}$importedFileName");
 
         if (targetFile.existsSync()) {
           // the case if the imported audio file already exist in the target
           // playlist directory
-          rejectedImportedFileNamesLst += "\"$fileName\",\n";
+          rejectedImportedFileNamesLst += "\"$importedFileName\",\n";
           filePathNameToImportLst.remove(filePathName);
           continue;
         }
@@ -2035,12 +2056,12 @@ class AudioDownloadVM extends ChangeNotifier {
           chosenKbps: chosenKbps,
         );
 
-        importedFileQualityMap[fileName] = _isMusicQuality(
+        importedFileQualityMap[importedFileName] = _isMusicQuality(
           bitrate: '${chosenKbps}k',
           channels: finalChannels,
         );
 
-        acceptableImportedFileNames += "\"$fileName\",\n";
+        acceptableImportedFileNames += "\"$importedFileName\",\n";
       }
     }
 
@@ -2380,10 +2401,10 @@ class AudioDownloadVM extends ChangeNotifier {
             // 44100 Hz      Standard Audio CD (compact disk) quality
             // 48000 Hz      Video, YouTube, and DVD audio
             // 96000 Hz      Professional audio production
-            final int? sampleRate =
-                audioStreamMap != null && audioStreamMap.containsKey('sample_rate')
-                    ? int.tryParse(audioStreamMap['sample_rate'].toString())
-                    : null;
+            final int? sampleRate = audioStreamMap != null &&
+                    audioStreamMap.containsKey('sample_rate')
+                ? int.tryParse(audioStreamMap['sample_rate'].toString())
+                : null;
 
             final int? channels =
                 audioStreamMap != null && audioStreamMap.containsKey('channels')

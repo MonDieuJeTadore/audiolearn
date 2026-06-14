@@ -1911,10 +1911,11 @@ class AudioDownloadVM extends ChangeNotifier {
     //                                                 may be modified
     String rejectedImportedFileNamesLst = '';
     String acceptableImportedFileNames = '';
-    bool isImportedFileInMusicQuality = false;
+    Map<String, bool> importedFileQuality = {};
+    String fileName = '';
 
     for (String filePathName in filePathNameToImportLstCopy) {
-      String fileName = filePathName.split(path.separator).last;
+      fileName = filePathName.split(path.separator).last;
       String targetMp4ToMp3FileName = '';
 
       final String fileNameLowerCase = fileName.toLowerCase();
@@ -1936,8 +1937,8 @@ class AudioDownloadVM extends ChangeNotifier {
         }
 
         _mp4ConvertingToMp3FileName = fileName;
-        _isImportedMp4ConvertingToMp3 = true;
 
+        _isImportedMp4ConvertingToMp3 = true;
         notifyListeners();
 
         // 1) get attributes (bitrate, sampleRate, channels)
@@ -1970,7 +1971,7 @@ class AudioDownloadVM extends ChangeNotifier {
           chosenKbps: chosenKbps,
         );
 
-        isImportedFileInMusicQuality = _isMusicQuality(
+        importedFileQuality[fileName] = _isMusicQuality(
           bitrate: targetBitrate,
           channels: finalChannels,
         );
@@ -1985,7 +1986,6 @@ class AudioDownloadVM extends ChangeNotifier {
         );
 
         _isImportedMp4ConvertingToMp3 = false;
-
         notifyListeners();
 
         if (!ok) {
@@ -2035,7 +2035,7 @@ class AudioDownloadVM extends ChangeNotifier {
           chosenKbps: chosenKbps,
         );
 
-        isImportedFileInMusicQuality = _isMusicQuality(
+        importedFileQuality[fileName] = _isMusicQuality(
           bitrate: '${chosenKbps}k',
           channels: finalChannels,
         );
@@ -2133,7 +2133,7 @@ class AudioDownloadVM extends ChangeNotifier {
           importedFileName: mp3FileName,
         );
 
-        importedAudio.isAudioMusicQuality = isImportedFileInMusicQuality;
+        importedAudio.isAudioMusicQuality = importedFileQuality[fileName]!;
 
         targetPlaylist.addImportedAudio(
           importedAudio,
@@ -3230,11 +3230,10 @@ class AudioDownloadVM extends ChangeNotifier {
     }
 
     // Transcode to MP3
-    final bool useMusicQuality = isHighQuality;
 
-    final String targetBitrate = useMusicQuality ? '192k' : '64k';
+    final String targetBitrate = isHighQuality ? '192k' : '64k';
     final int sampleRate = 44100;
-    final int channels = useMusicQuality ? 2 : 1;
+    final int channels = isHighQuality ? 2 : 1;
 
     _isAudioDownloading = false;
     _isDownloadedAudioConvertingToMp3 = true;

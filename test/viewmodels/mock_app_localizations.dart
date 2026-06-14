@@ -3183,4 +3183,7 @@ class MockAppLocalizations extends AppLocalizations {
     Object playlistTitle,
   ) =>
       "Delete audios filtered by \"$sortFilterParmsName\" parms from playlist \"$playlistTitle\" as well";
+
+  @override
+  String get convertingM4aToMP3 => "Converting imported M4A to MP3 ...";
 }

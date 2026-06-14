@@ -677,7 +677,8 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
               ]),
             ]),
           );
-        } else if (audioDownloadVMlistenTrue.isImportedMp4ConvertingToMp3) {
+        } else if (audioDownloadVMlistenTrue
+            .isImportedAudioOrVideoConvertingToMp3) {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(children: [
@@ -690,7 +691,10 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
               const SizedBox(height: 10.0),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
-                  AppLocalizations.of(context)!.convertingMp4ToMP3,
+                  (audioDownloadVMlistenTrue.importedAudioType ==
+                          ImportedAudioType.mp4)
+                      ? AppLocalizations.of(context)!.convertingMp4ToMP3
+                      : AppLocalizations.of(context)!.convertingM4aToMP3,
                 ),
                 SizedBox(width: 20.0),
                 SizedBox(
@@ -840,7 +844,8 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
               children: [
                 Text(
                   key: const Key('restoring_playlists_audio_mp3_to_zip'),
-                  AppLocalizations.of(context)!.restoringPlaylistsFromZipProgression,
+                  AppLocalizations.of(context)!
+                      .restoringPlaylistsFromZipProgression,
                   textAlign: TextAlign.center, // Centered multi lines text
                   maxLines: 2,
                   style: const TextStyle(fontWeight: FontWeight.bold),

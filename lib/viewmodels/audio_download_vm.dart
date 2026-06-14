@@ -1911,7 +1911,7 @@ class AudioDownloadVM extends ChangeNotifier {
     //                                                 may be modified
     String rejectedImportedFileNamesLst = '';
     String acceptableImportedFileNames = '';
-    Map<String, bool> importedFileQuality = {};
+    Map<String, bool> importedFileQualityMap = {};
     String fileName = '';
 
     for (String filePathName in filePathNameToImportLstCopy) {
@@ -1971,7 +1971,7 @@ class AudioDownloadVM extends ChangeNotifier {
           chosenKbps: chosenKbps,
         );
 
-        importedFileQuality[fileName] = _isMusicQuality(
+        importedFileQualityMap[fileName] = _isMusicQuality(
           bitrate: targetBitrate,
           channels: finalChannels,
         );
@@ -2035,7 +2035,7 @@ class AudioDownloadVM extends ChangeNotifier {
           chosenKbps: chosenKbps,
         );
 
-        importedFileQuality[fileName] = _isMusicQuality(
+        importedFileQualityMap[fileName] = _isMusicQuality(
           bitrate: '${chosenKbps}k',
           channels: finalChannels,
         );
@@ -2133,7 +2133,7 @@ class AudioDownloadVM extends ChangeNotifier {
           importedFileName: mp3FileName,
         );
 
-        importedAudio.isAudioMusicQuality = importedFileQuality[fileName]!;
+        importedAudio.isAudioMusicQuality = importedFileQualityMap[fileName]!;
 
         targetPlaylist.addImportedAudio(
           importedAudio,
@@ -2335,24 +2335,24 @@ class AudioDownloadVM extends ChangeNotifier {
             }
 
             final List<dynamic> streams = mediaInfo.getStreams();
-            Map<String, dynamic>? audioStream;
+            Map<String, dynamic>? audioStreamMap;
 
             if (streams.isNotEmpty) {
               for (final StreamInformation stream in streams) {
                 try {
-                  final Map<dynamic, dynamic>? rawProperties =
+                  final Map<dynamic, dynamic>? rawPropertiesMap =
                       stream.getAllProperties();
 
-                  if (rawProperties == null) {
+                  if (rawPropertiesMap == null) {
                     continue;
                   }
 
-                  final Map<String, dynamic> map = rawProperties.map(
+                  final Map<String, dynamic> map = rawPropertiesMap.map(
                     (key, value) => MapEntry(key.toString(), value),
                   );
 
                   if ((map['codec_type']?.toString() ?? '') == 'audio') {
-                    audioStream = map;
+                    audioStreamMap = map;
                     break;
                   }
                 } catch (_) {
@@ -2369,8 +2369,8 @@ class AudioDownloadVM extends ChangeNotifier {
             // 256000		  256 kbps	very good
             // 320000		  320 kbps	excellent (MP3)
             int? bitRate =
-                audioStream != null && audioStream.containsKey('bit_rate')
-                    ? int.tryParse(audioStream['bit_rate'].toString())
+                audioStreamMap != null && audioStreamMap.containsKey('bit_rate')
+                    ? int.tryParse(audioStreamMap['bit_rate'].toString())
                     : null;
 
             // sampleRate    Typical Usage
@@ -2381,13 +2381,13 @@ class AudioDownloadVM extends ChangeNotifier {
             // 48000 Hz      Video, YouTube, and DVD audio
             // 96000 Hz      Professional audio production
             final int? sampleRate =
-                audioStream != null && audioStream.containsKey('sample_rate')
-                    ? int.tryParse(audioStream['sample_rate'].toString())
+                audioStreamMap != null && audioStreamMap.containsKey('sample_rate')
+                    ? int.tryParse(audioStreamMap['sample_rate'].toString())
                     : null;
 
             final int? channels =
-                audioStream != null && audioStream.containsKey('channels')
-                    ? int.tryParse(audioStream['channels'].toString())
+                audioStreamMap != null && audioStreamMap.containsKey('channels')
+                    ? int.tryParse(audioStreamMap['channels'].toString())
                     : null;
 
             // fallback for duration
@@ -3340,14 +3340,14 @@ class AudioDownloadVM extends ChangeNotifier {
     Iterable<RegExpMatch> matches = pattern.allMatches(timeCodeSection);
 
     // Create a map to hold the time codes and chapter names.
-    Map<String, String> chapters = <String, String>{};
+    Map<String, String> chaptersMap = <String, String>{};
 
     for (var match in matches) {
       var timeCode = match.group(1)!;
       var chapterName = match.group(2)!;
-      chapters[chapterName] = timeCode;
+      chaptersMap[chapterName] = timeCode;
     }
 
-    return chapters;
+    return chaptersMap;
   }
 }

@@ -38080,7 +38080,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            "Audio(s)\n\n\"$fileName_5\"\n\nimported to local playlist \"$localPlaylistTitle\".",
+            "Audio(s)\n\n\"$fileName_5\"\n\nimported as MP3 to local playlist \"$localPlaylistTitle\".",
         isWarningConfirming: true,
       );
 
@@ -38213,7 +38213,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            "Audio(s)\n\n\"$fileName_1\",\n\"$fileName_2\",\n\"$fileName_5\"\n\nimported to local playlist \"$localPlaylistTitle\".",
+            "Audio(s)\n\n\"$fileName_1\",\n\"$fileName_2\",\n\"$fileName_5\"\n\nimported as MP3 to local playlist \"$localPlaylistTitle\".",
         isWarningConfirming: true,
       );
 
@@ -38347,7 +38347,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            "Audio(s)\n\n\"$fileName_1\",\n\"$filename2Mp3\"\n\nimported to Youtube playlist \"$targetPlaylistTitle\".",
+            "Audio(s)\n\n\"$fileName_1\",\n\"$fileName_2\"\n\nimported as MP3 to Youtube playlist \"$targetPlaylistTitle\".",
         isWarningConfirming: true,
       );
 
@@ -38398,7 +38398,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            "Audio(s)\n\n\"$filename3Mp3\",\n\"$fileName_4\",\n\"$fileName_5\",\n\"$filename6Mp3\"\n\nimported to Youtube playlist \"$targetPlaylistTitle\".",
+            "Audio(s)\n\n\"$fileName_3\",\n\"$fileName_4\",\n\"$fileName_5\",\n\"$fileName_6\"\n\nimported as MP3 to Youtube playlist \"$targetPlaylistTitle\".",
         isWarningConfirming: true,
       );
 
@@ -38411,12 +38411,12 @@ void main() {
       // Now, delete an audio and re-import the same files to verify
       // that the deleted audio import work
 
+      // Tap the 'Toggle List' button to hide the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
       // Find the audio list widget using its key
       Finder listFinder = find.byKey(const Key('audio_list'));
-
-      // Perform the scroll action
-      await tester.drag(listFinder, const Offset(0, 300));
-      await tester.pumpAndSettle();
 
       await _deleteAudioFromPlaylist(
         tester: tester,
@@ -38425,6 +38425,10 @@ void main() {
         // without the .mp3 extension since the Text widget in the ListTile
         // does not contain the extension
       );
+
+      // Tap the 'Toggle List' button to hide the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
 
       // Now, since La vraie prière mp3 audio was deleted from the playlist
       // directopy. Verify that it can be re-imported.
@@ -52947,7 +52951,7 @@ Future<void> _thirdReImport({
   await IntegrationTestUtil.verifyAndCloseWarningDialog(
     tester: tester,
     warningDialogMessage:
-        "Audio(s)\n\n\"$filename2Mp3\"\n\nimported to Youtube playlist \"$targetPlaylistTitle\".",
+        "Audio(s)\n\n\"$fileName_2\"\n\nimported as MP3 to Youtube playlist \"$targetPlaylistTitle\".",
     isWarningConfirming: true,
   );
 

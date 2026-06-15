@@ -1940,7 +1940,7 @@ class AudioDownloadVM extends ChangeNotifier {
 
       if (_importedAudioType == ImportedAudioType.mp4 ||
           _importedAudioType == ImportedAudioType.m4a) {
-        File tmpMp4OrM4aFile = File(filePathName);
+        final String mp4OrM4aFilePath = File(filePathName).path;
         targetMp4ToMp3FileName = (_importedAudioType == ImportedAudioType.mp4)
             ? importedFileName.replaceFirst('mp4', 'mp3')
             : importedFileName.replaceFirst('m4a', 'mp3');
@@ -1962,7 +1962,7 @@ class AudioDownloadVM extends ChangeNotifier {
 
         // 1) get attributes (bitrate, sampleRate, channels)
         final AudioAttributes? attrs = await _getAudioAttributesWithFfprobe(
-          filePath: tmpMp4OrM4aFile.path,
+          filePath: mp4OrM4aFilePath,
         );
 
         // 2) choose target bitrate (kbps string)
@@ -1997,7 +1997,7 @@ class AudioDownloadVM extends ChangeNotifier {
 
         // 4) convert
         final bool ok = await _FfmpegFacade.convertToMp3(
-          inputPath: tmpMp4OrM4aFile.path,
+          inputPath: mp4OrM4aFilePath,
           outputPath: targetMp4ToMp3File.path,
           bitrate: targetBitrate,
           sampleRate: finalSampleRate,

@@ -1292,7 +1292,7 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "Audio(s)\n\n\"$fileNameExt\"\n\nimported to local playlist \"$localPlaylistTitle\".",
+              "Audio(s)\n\n\"$fileNameExt\"\n\nimported as MP3 to local playlist \"$localPlaylistTitle\".",
           isWarningConfirming: true,
         );
 
@@ -1427,7 +1427,8 @@ void main() {
 
         const String fileNameExt =
             "250830-192524-Jésus, c'est le plus beau nom 23-05-15.mp3";
-        const String importedAudioTitle = "250830-192524-Jésus, c'est le plus beau nom 23-05-15";
+        const String importedAudioTitle =
+            "250830-192524-Jésus, c'est le plus beau nom 23-05-15";
 
         // Setting one selected mp3 file.
         mockFilePicker.setSelectedFiles([
@@ -1450,7 +1451,7 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "Audio(s)\n\n\"$fileNameExt\"\n\nimported to local playlist \"$localPlaylistTitle\".",
+              "Audio(s)\n\n\"$fileNameExt\"\n\nimported as MP3 to local playlist \"$localPlaylistTitle\".",
           isWarningConfirming: true,
         );
 
@@ -1624,7 +1625,7 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "Audio(s)\n\n\"$fileName_1\",\n\"$fileName_2\",\n\"$fileName_3\",\n\"$fileName_5\"\n\nimported to local playlist \"$localPlaylistTitle\".",
+              "Audio(s)\n\n\"$fileName_1\",\n\"$fileName_2\",\n\"$fileName_3\",\n\"$fileName_5\"\n\nimported as MP3 to local playlist \"$localPlaylistTitle\".",
           isWarningConfirming: true,
         );
 
@@ -1674,6 +1675,212 @@ void main() {
           tester: tester,
           warningDialogMessage:
               "Audio(s)\n\n\"$fileName_1\",\n\"$fileName_2\",\n\"$fileName_3\",\n\"$fileName_4\",\n\"$fileName_5\"\n\nNOT imported to local playlist \"$localPlaylistTitle\" since the playlist directory already contains the audio(s).",
+        );
+      });
+      testWidgets('''Audios imported in empty playlist.''',
+          (WidgetTester tester) async {
+        await IntegrationTestUtil.initializeAndroidApplicationAndSelectPlaylist(
+          tester: tester,
+          tapOnPlaylistToggleButton: false,
+        );
+
+        // Now initializing the application on the Android emulator using
+        // zip restoration.
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String restorableZipFileName = 'local empty.zip';
+
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: restorableZipFileName,
+              path:
+                  '$kApplicationPathAndroidTest$androidPathSeparator$restorableZipFileName',
+              size: 2655),
+        ]);
+
+        // In order to create the Android emulator application, execute the
+        // 'Restore Playlists, Comments and Settings from Zip File ...' menu
+        // without replacing the existing playlists.
+        await IntegrationTestUtil.executeRestorePlaylists(
+          tester: tester,
+          doReplaceExistingPlaylists: false,
+          doDeleteExistingPlaylistsNotContainedInZip: false,
+          playlistTitlesToDelete: [
+            'Les plus belles chansons chrétiennes',
+            'S8 audio',
+            'local',
+            'urgent_actus_17-12-2023',
+          ],
+          onAndroid: true,
+        );
+
+        const String localPlaylistTitle = 'local';
+
+        const String fileName_1 = "AUD-20260314-WA0001 musical.mp3";
+        const String fileName_2 = "AUD-20260314-WA0001.m4a";
+        const String fileName_3 = "La vraie prière.mp4";
+        const String fileName_4 =
+            "Robot Chef Surprises Everyone With Amazing Cooking Skills!.mp4";
+        const String fileName_5 = "Seigneur spoken.mp3";
+
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: fileName_1,
+              path:
+                  "$kPlaylistDownloadRootPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_1",
+              size: 176640),
+          PlatformFile(
+              name: fileName_2,
+              path:
+                  "$kPlaylistDownloadRootPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_2",
+              size: 183552),
+          PlatformFile(
+              name: fileName_3,
+              path:
+                  "$kPlaylistDownloadRootPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_3",
+              size: 176640),
+          PlatformFile(
+              name: fileName_4,
+              path:
+                  "$kPlaylistDownloadRootPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_4",
+              size: 15000),
+          PlatformFile(
+              name: fileName_5,
+              path:
+                  "$kPlaylistDownloadRootPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_5",
+              size: 15000),
+        ]);
+
+        DateTime importDateTime = DateTime.now();
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: localPlaylistTitle,
+          playlistMenuKeyStr: 'popup_menu_import_audio_in_playlist',
+        );
+
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Audio(s)\n\n\"$fileName_1\",\n\"$fileName_2\",\n\"$fileName_3\",\n\"$fileName_4\",\n\"$fileName_5\"\n\nimported as MP3 to local playlist \"$localPlaylistTitle\".",
+          isWarningConfirming: true,
+        );
+
+        // Verifying 5 imported audio info dialog fields
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+          tester: tester,
+          audioType: AudioType.imported,
+          validVideoTitleOrAudioTitle: fileName_1.replaceFirst('.mp3', ''),
+          audioDownloadDateTimeOne:
+              '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
+          isAudioPlayable: true,
+          audioEnclosingPlaylistTitle: localPlaylistTitle,
+          audioDuration: '0:04:03.3',
+          audioPosition: '0:00:00.0',
+          audioState: 'Not listened',
+          lastListenDateTime: '',
+          audioFileName: fileName_1,
+          audioFileSize: '5.84 MB',
+          isMusicQuality: true, // Is music quality
+          audioPlaySpeed: '1.0',
+          audioVolume: '50.0 %',
+          audioCommentNumber: 0,
+        );
+
+        String fileNameNoExt = fileName_2.replaceFirst('.m4a', '');
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+          tester: tester,
+          audioType: AudioType.imported,
+          validVideoTitleOrAudioTitle: fileNameNoExt,
+          audioDownloadDateTimeOne:
+              '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
+          isAudioPlayable: true,
+          audioEnclosingPlaylistTitle: localPlaylistTitle,
+          audioDuration: '0:04:03.0',
+          audioPosition: '0:00:00.0',
+          audioState: 'Not listened',
+          lastListenDateTime: '',
+          audioFileName: "$fileNameNoExt.mp3",
+          audioFileSize: '5.84 MB',
+          isMusicQuality: true, // Is music quality
+          audioPlaySpeed: '1.0',
+          audioVolume: '50.0 %',
+          audioCommentNumber: 0,
+        );
+
+        fileNameNoExt = fileName_3.replaceFirst('.mp4', '');
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+          tester: tester,
+          audioType: AudioType.imported,
+          validVideoTitleOrAudioTitle: fileNameNoExt,
+          audioDownloadDateTimeOne:
+              '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
+          isAudioPlayable: true,
+          audioEnclosingPlaylistTitle: localPlaylistTitle,
+          audioDuration: '0:04:44.0',
+          audioPosition: '0:00:00.0',
+          audioState: 'Not listened',
+          lastListenDateTime: '',
+          audioFileName: "$fileNameNoExt.mp3",
+          audioFileSize: '4.54 MB',
+          isMusicQuality: true, // Is music quality
+          audioPlaySpeed: '1.0',
+          audioVolume: '50.0 %',
+          audioCommentNumber: 0,
+        );
+
+        fileNameNoExt = fileName_4.replaceFirst('.mp4', '');
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+          tester: tester,
+          audioType: AudioType.imported,
+          validVideoTitleOrAudioTitle: fileNameNoExt,
+          audioDownloadDateTimeOne:
+              '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
+          isAudioPlayable: true,
+          audioEnclosingPlaylistTitle: localPlaylistTitle,
+          audioDuration: '0:02:30.1',
+          audioPosition: '0:00:00.0',
+          audioState: 'Not listened',
+          lastListenDateTime: '',
+          audioFileName: "$fileNameNoExt.mp3",
+          audioFileSize: '1.20 MB',
+          isMusicQuality: false, // Is spoken quality
+          audioPlaySpeed: '1.25',
+          audioVolume: '50.0 %',
+          audioCommentNumber: 0,
+        );
+
+        fileNameNoExt = fileName_5.replaceFirst('.mp3', '');
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+          tester: tester,
+          audioType: AudioType.imported,
+          validVideoTitleOrAudioTitle: fileNameNoExt,
+          audioDownloadDateTimeOne:
+              '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
+          isAudioPlayable: true,
+          audioEnclosingPlaylistTitle: localPlaylistTitle,
+          audioDuration: '0:00:03.4',
+          audioPosition: '0:00:00.0',
+          audioState: 'Not listened',
+          lastListenDateTime: '',
+          audioFileName: "$fileNameNoExt.mp3",
+          audioFileSize: '26.9 KB',
+          isMusicQuality: false, // Is spoken quality
+          audioPlaySpeed: '1.25',
+          audioVolume: '50.0 %',
+          audioCommentNumber: 0,
         );
       });
     });

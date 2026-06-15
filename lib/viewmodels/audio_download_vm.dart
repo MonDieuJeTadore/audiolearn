@@ -2154,7 +2154,10 @@ class AudioDownloadVM extends ChangeNotifier {
           importedFileName: mp3FileName,
         );
 
-        importedAudio.isAudioMusicQuality = importedFileQualityMap[fileName]!;
+        if (importedFileQualityMap[fileName]!) {
+          importedAudio.isAudioMusicQuality = true;
+          importedAudio.audioPlaySpeed = 1.0;
+        }
 
         targetPlaylist.addImportedAudio(
           importedAudio,

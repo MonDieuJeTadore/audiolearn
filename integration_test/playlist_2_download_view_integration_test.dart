@@ -38272,9 +38272,10 @@ void main() {
       );
     });
     testWidgets(
-        '''Import 1 mp4 video file and 1 audio mp3, both not present in the target playlist.
-           Verify the import confirmation. Then import again all the mp4/m4a/mp3 files present
-           in the source directory and verify the warning and the confirmation displayed.
+        '''Import 1 mp4, 1 m4a video files and 1 mp3 spoken file, both not present in the target
+           playlist. Verify the import confirmation. Then import again all the mp4/m4a/mp3 files
+           presentin the source directory and verify the warning and the confirmation displayed
+           as well as the imported audios information.
            
            Then, delete an audio in the target playlist as well as a mp3 converted from
            mp4 or m4a and re-import the same files to verify that the import work. Finally,
@@ -38286,9 +38287,9 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
 
-      // Copy this test data before initializing the application
-      // so that the import_audio_file_test settings.json file will
-      // be replaced by the correct one.
+      // Copy this test data before initializing the application so that
+      // the import_audio_file_test settings.json file will be replaced
+      // by the correct one present in import_audios_integr_test.
       DirUtil.copyFilesFromDirAndSubDirsToDirectory(
         sourceRootPath:
             "$kDownloadAppTestSavedDataDir${path.separator}import_audio_file_test",
@@ -38323,6 +38324,8 @@ void main() {
       const String fileName_6 = "AUD-20260314-WA0001.m4a";
       const String filename6Mp3 = "AUD-20260314-WA0001.mp3";
 
+      // First import operation
+
       mockFilePicker.setSelectedFiles([
         PlatformFile(
             name: fileName_1, // "audio learn test short video one.mp3"
@@ -38336,7 +38339,7 @@ void main() {
             size: 17689541),
       ]);
 
-      // First import operation
+      DateTime importDateTime = DateTime.now();
 
       await IntegrationTestUtil.typeOnPlaylistMenuItem(
         tester: tester,
@@ -38350,6 +38353,56 @@ void main() {
             "Audio(s)\n\n\"$fileName_1\",\n\"$fileName_2\"\n\nimported as MP3 to Youtube playlist \"$targetPlaylistTitle\".",
         isWarningConfirming: true,
       );
+
+      // Verifying 2 imported audio info dialog fields
+
+      // Tap the 'Toggle List' button to hide the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioType: AudioType.imported,
+        validVideoTitleOrAudioTitle: fileName_1.replaceFirst('.mp3', ''),
+        audioDownloadDateTimeOne:
+            '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
+        isAudioPlayable: true,
+        audioEnclosingPlaylistTitle: targetPlaylistTitle,
+        audioDuration: '0:00:18.7',
+        audioPosition: '0:00:00.0',
+        audioState: 'Not listened',
+        lastListenDateTime: '',
+        audioFileName: fileName_1,
+        audioFileSize: '143.7 KB',
+        isMusicQuality: false, // Is spoken quality
+        audioPlaySpeed: '1.25',
+        audioVolume: '50.0 %',
+        audioCommentNumber: 0,
+      );      
+      
+      String fileNameNoExt = fileName_2.replaceFirst('.mp4', '');
+
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioType: AudioType.imported,
+        validVideoTitleOrAudioTitle: fileNameNoExt,
+        audioDownloadDateTimeOne:
+            '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
+        isAudioPlayable: true,
+        audioEnclosingPlaylistTitle: targetPlaylistTitle,
+        audioDuration: '0:04:44.0',
+        audioPosition: '0:00:00.0',
+        audioState: 'Not listened',
+        lastListenDateTime: '',
+        audioFileName: "$fileNameNoExt.mp3",
+        audioFileSize: '4.54 MB',
+        isMusicQuality: true, // Is music quality
+        audioPlaySpeed: '1.0',
+        audioVolume: '50.0 %',
+        audioCommentNumber: 0,
+      );      
+
+      // Second import operation
 
       mockFilePicker = MockFilePicker();
       FilePicker.platform = mockFilePicker;
@@ -38387,7 +38440,11 @@ void main() {
             size: 35121538),
       ]);
 
-      // Second import operation
+      // Tap the 'Toggle List' button to show the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      importDateTime = DateTime.now();
 
       await IntegrationTestUtil.typeOnPlaylistMenuItem(
         tester: tester,
@@ -38395,6 +38452,7 @@ void main() {
         playlistMenuKeyStr: 'popup_menu_import_audio_in_playlist',
       );
 
+      // Verify the confirmation warning dialog for the 4 newly imported audios
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
@@ -38402,21 +38460,72 @@ void main() {
         isWarningConfirming: true,
       );
 
+      // Verify the not imported warning dialog for the 2 already existing audios
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
             "Audio(s)\n\n\"$fileName_1\",\n\"$filename2Mp3\"\n\nNOT imported to Youtube playlist \"$targetPlaylistTitle\" since the playlist directory already contains the audio(s).",
       );
 
-      // Now, delete an audio and re-import the same files to verify
-      // that the deleted audio import work
-
       // Tap the 'Toggle List' button to hide the list of playlist's.
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
+      fileNameNoExt = fileName_3.replaceFirst('.mp4', '');
+
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioType: AudioType.imported,
+        validVideoTitleOrAudioTitle: fileNameNoExt,
+        audioDownloadDateTimeOne:
+            '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
+        isAudioPlayable: true,
+        audioEnclosingPlaylistTitle: targetPlaylistTitle,
+        audioDuration: '0:02:00.1',
+        audioPosition: '0:00:00.0',
+        audioState: 'Not listened',
+        lastListenDateTime: '',
+        audioFileName: "$fileNameNoExt.mp3",
+        audioFileSize: '1.20 MB',
+        isMusicQuality: false, // Is spoken quality
+        audioPlaySpeed: '1.25',
+        audioVolume: '50.0 %',
+        audioCommentNumber: 0,
+      );      
+
       // Find the audio list widget using its key
       Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll down action
+      await tester.drag(listFinder, const Offset(0, 400));
+      await tester.pumpAndSettle();
+      
+      fileNameNoExt = fileName_6.replaceFirst('.m4a', '');
+
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioType: AudioType.imported,
+        validVideoTitleOrAudioTitle: fileNameNoExt,
+        audioDownloadDateTimeOne:
+            '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
+        isAudioPlayable: true,
+        audioEnclosingPlaylistTitle: targetPlaylistTitle,
+        audioDuration: '0:04:03.3',
+        audioPosition: '0:00:00.0',
+        audioState: 'Not listened',
+        lastListenDateTime: '',
+        audioFileName: "$fileNameNoExt.mp3",
+        audioFileSize: '5.84 MB',
+        isMusicQuality: true, // Is music quality
+        audioPlaySpeed: '1.0',
+        audioVolume: '50.0 %',
+        audioCommentNumber: 0,
+      );      
+
+      // Now, delete an audio and re-import the same files to verify
+      // that the deleted audio import work
+
+      // Find the audio list widget using its key
+      listFinder = find.byKey(const Key('audio_list'));
 
       await _deleteAudioFromPlaylist(
         tester: tester,

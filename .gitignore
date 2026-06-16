@@ -66,3 +66,5 @@ windows/flutter/generated_plugins.cmake
 *.cmake
 *.swift
 /test/data/audio__
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugins.cmake

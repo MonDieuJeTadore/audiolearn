@@ -1730,27 +1730,27 @@ void main() {
           PlatformFile(
               name: fileName_1,
               path:
-                  "$kPlaylistDownloadRootPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_1",
+                  "$kApplicationPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_1",
               size: 176640),
           PlatformFile(
               name: fileName_2,
               path:
-                  "$kPlaylistDownloadRootPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_2",
+                  "$kApplicationPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_2",
               size: 183552),
           PlatformFile(
               name: fileName_3,
               path:
-                  "$kPlaylistDownloadRootPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_3",
+                  "$kApplicationPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_3",
               size: 176640),
           PlatformFile(
               name: fileName_4,
               path:
-                  "$kPlaylistDownloadRootPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_4",
+                  "$kApplicationPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_4",
               size: 15000),
           PlatformFile(
               name: fileName_5,
               path:
-                  "$kPlaylistDownloadRootPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_5",
+                  "$kApplicationPathAndroidTest${path.separator}video_files_to_import${path.separator}$fileName_5",
               size: 15000),
         ]);
 
@@ -1770,6 +1770,12 @@ void main() {
         );
 
         // Verifying 5 imported audio info dialog fields
+
+        // Select the local playlist
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: localPlaylistTitle,
+        );
 
         // Tap the 'Toggle List' button to hide the list of playlist's.
         await tester.tap(find.byKey(const Key('playlist_toggle_button')));
@@ -1805,7 +1811,7 @@ void main() {
               '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: localPlaylistTitle,
-          audioDuration: '0:04:03.0',
+          audioDuration: '0:04:03.3',
           audioPosition: '0:00:00.0',
           audioState: 'Not listened',
           lastListenDateTime: '',
@@ -1849,7 +1855,7 @@ void main() {
               '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: localPlaylistTitle,
-          audioDuration: '0:02:30.1',
+          audioDuration: '0:02:00.1',
           audioPosition: '0:00:00.0',
           audioState: 'Not listened',
           lastListenDateTime: '',
@@ -1871,7 +1877,7 @@ void main() {
               '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: localPlaylistTitle,
-          audioDuration: '0:00:03.4',
+          audioDuration: '0:00:02.7',
           audioPosition: '0:00:00.0',
           audioState: 'Not listened',
           lastListenDateTime: '',

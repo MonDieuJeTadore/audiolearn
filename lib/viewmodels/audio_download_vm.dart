@@ -8,6 +8,7 @@ import 'package:collection/collection.dart';
 import 'package:ffmpeg_kit_flutter_new/media_information.dart';
 import 'package:ffmpeg_kit_flutter_new/stream_information.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path/path.dart' as path;
@@ -77,6 +78,13 @@ class _FfmpegFacade {
       final cmd = args.map(_q).join(' ');
       final session = await FFmpegKit.execute(cmd);
       final rc = await session.getReturnCode();
+
+      if (!ReturnCode.isSuccess(rc)) {
+        // Log the error for debugging
+        final logs = await session.getAllLogsAsString();
+        Logger().e('FFmpeg conversion failed. CMD: $cmd\nLogs: $logs');
+      }
+
       return ReturnCode.isSuccess(rc);
     } else {
       try {
@@ -2021,8 +2029,8 @@ class AudioDownloadVM extends ChangeNotifier {
       } else {
         // the case if the imported audio file is a mp3 and so was
         // not converted from mp4 or m4a to mp3
-        File targetFile =
-            File("${targetPlaylist.downloadPath}${path.separator}$importedFileName");
+        File targetFile = File(
+            "${targetPlaylist.downloadPath}${path.separator}$importedFileName");
 
         if (targetFile.existsSync()) {
           // the case if the imported audio file already exist in the target

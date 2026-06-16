@@ -39,7 +39,7 @@ dependencies:
   intl: ^0.20.2
   audioplayers: ^6.7.1
   provider: ^6.1.5
-  youtube_explode_dart: ^3.0.5
+  youtube_explode_dart: ^3.1.0
   http: ^1.4.0 # fixed audio download difficulties
   googleapis: ^16.0.0
   googleapis_auth: ^2.0.0

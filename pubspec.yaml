@@ -37,7 +37,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
-  audioplayers: ^5.2.1
+  audioplayers: 5.2.1
   provider: ^6.1.5
   youtube_explode_dart: ^3.1.0
   http: ^1.4.0 # fixed audio download difficulties
@@ -57,7 +57,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   
   connectivity_plus: ^7.0.0
-  file_picker: ^10.3.10 # newer version not working
+  file_picker: 10.3.10 # newer version not working
   matcher: ^0.12.16+1
   yaml: ^3.1.2
   archive: ^4.0.2
@@ -65,7 +65,7 @@ dependencies:
   volume_controller: ^3.4.0
   logger: ^2.6.2
   path_provider: ^2.1.5
-  ffmpeg_kit_flutter_new: ^4.1.0
+  ffmpeg_kit_flutter_new: 4.1.0
   flutter_tts: ^4.2.5
   dtd: ^4.0.0
   flutter_lints: ^6.0.0

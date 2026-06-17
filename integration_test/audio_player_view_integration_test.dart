@@ -4050,6 +4050,11 @@ void main() {
       final Finder audioPlayerViewAudioPositionFinder =
           find.byKey(const Key('audioPlayerViewAudioPosition'));
 
+      // Avoids integration test failure due to the fact that the
+      // position is 660 or 680 and not 0 !
+      await Future.delayed(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle(); // must be used !
+
       // If this test fails, try to rexecute it several times. If
       // the test continue to fail, restart your computer and
       // execute flutter clean, then flutter pub get and finally
@@ -4588,6 +4593,11 @@ void main() {
       // check the current audios changed position
       final Finder audioPlayerViewAudioPositionFinder =
           find.byKey(const Key('audioPlayerViewAudioPosition'));
+
+      // Avoids integration test failure due to the fact that the
+      // position is 660 or 680 and not 0 !
+      await Future.delayed(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle(); // must be used !
 
       // If this test fails, try to rexecute it several times. If
       // the test continue to fail, restart your computer and
@@ -8003,6 +8013,11 @@ void main() {
       expectedAudioPlayerAudioPositionMin = '5:51';
       expectedAudioPlayerAudioPositionMax = '5:52';
 
+      // Avoids integration test failure due to the fact that the
+      // position is 5510 or 5t20 and not 3000 !
+      await Future.delayed(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle(); // must be used !
+
       IntegrationTestUtil.verifyPositionBetweenMinMax(
         tester: tester,
         textWidgetFinder: audioPlayerViewAudioPositionFinder,
@@ -8942,6 +8957,11 @@ void main() {
 
       expectedAudioPlayerAudioPositionMin = '6:10';
       expectedAudioPlayerAudioPositionMax = '6:11';
+
+      // Avoids integration test failure due to the fact that the
+      // position is 3700 or 3710 and not 3000 !
+      await Future.delayed(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle(); // must be used !
 
       IntegrationTestUtil.verifyPositionBetweenMinMax(
         tester: tester,

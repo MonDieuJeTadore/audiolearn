@@ -1622,6 +1622,9 @@ void main() {
           playlistMenuKeyStr: 'popup_menu_import_audio_in_playlist',
         );
 
+        await Future.delayed(const Duration(seconds: 2));
+        await tester.pumpAndSettle(); // must be used !
+
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
@@ -1785,8 +1788,6 @@ void main() {
           tester: tester,
           audioType: AudioType.imported,
           validVideoTitleOrAudioTitle: fileName_1.replaceFirst('.mp3', ''),
-          audioDownloadDateTimeOne:
-              '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: localPlaylistTitle,
           audioDuration: '0:04:03.3',
@@ -1807,8 +1808,6 @@ void main() {
           tester: tester,
           audioType: AudioType.imported,
           validVideoTitleOrAudioTitle: fileNameNoExt,
-          audioDownloadDateTimeOne:
-              '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: localPlaylistTitle,
           audioDuration: '0:04:03.3',
@@ -1829,8 +1828,6 @@ void main() {
           tester: tester,
           audioType: AudioType.imported,
           validVideoTitleOrAudioTitle: fileNameNoExt,
-          audioDownloadDateTimeOne:
-              '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: localPlaylistTitle,
           audioDuration: '0:04:44.0',
@@ -1851,8 +1848,6 @@ void main() {
           tester: tester,
           audioType: AudioType.imported,
           validVideoTitleOrAudioTitle: fileNameNoExt,
-          audioDownloadDateTimeOne:
-              '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: localPlaylistTitle,
           audioDuration: '0:02:00.1',
@@ -1873,8 +1868,6 @@ void main() {
           tester: tester,
           audioType: AudioType.imported,
           validVideoTitleOrAudioTitle: fileNameNoExt,
-          audioDownloadDateTimeOne:
-              '${DateFormat('dd/MM/yyyy').format(importDateTime)} ${DateFormat('HH:mm').format(importDateTime)}', // this is the imported date time
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: localPlaylistTitle,
           audioDuration: '0:00:02.7',

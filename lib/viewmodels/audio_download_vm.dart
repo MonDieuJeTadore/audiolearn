@@ -866,38 +866,37 @@ class AudioDownloadVM extends ChangeNotifier {
     // downloaded audio files
     final AudioPlayer audioPlayer = AudioPlayer();
 
-    await for (yt.Video youtubeVideo
-        in _youtubeExplode!.playlists.getVideos(playlistId)) {
+    await for (final yt.Video playlistVideo
+        in _youtubeExplode!.playlists.getVideos(youtubePlaylist.id)) {
       _audioDownloadError = false;
 
-      DateTime? videoUploadDate =
-          (await _youtubeExplode!.videos.get(youtubeVideo.id.value)).uploadDate;
+      yt.Video fullVideo;
+      try {
+        fullVideo = await _youtubeExplode!.videos.get(playlistVideo.id);
+      } catch (e) {
+        notifyDownloadError(
+          errorType: ErrorType.downloadAudioYoutubeError,
+          errorArgOne: e.toString(),
+          errorArgTwo: playlistVideo.title,
+        );
+        continue;
+      }
 
-      // if the video upload date is not available, then the
-      // video upload date is set so it is not null.
-      videoUploadDate ??= DateTime(00, 1, 1);
-
-      // using youtubeVideo.description is not correct since it
-      // is empty !
-      final String videoDescription =
-          (await _youtubeExplode!.videos.get(youtubeVideo.id.value))
-              .description;
+      DateTime videoUploadDate =
+          fullVideo.uploadDate ?? fullVideo.publishDate ?? DateTime(0, 1, 1);
 
       final String compactVideoDescription = _createCompactVideoDescription(
-        videoDescription: videoDescription,
-        videoAuthor: youtubeVideo.author,
+        videoDescription: fullVideo.description,
+        videoAuthor: fullVideo.author,
       );
 
-      final String youtubeVideoChannel = youtubeVideo.author;
-      final String youtubeVideoTitle = youtubeVideo.title;
+      final String youtubeVideoChannel = fullVideo.author;
+      final String youtubeVideoTitle = fullVideo.title;
 
       final bool alreadyDownloaded = downloadedAudioOriginalVideoTitleLst
           .any((originalVideoTitle) => originalVideoTitle == youtubeVideoTitle);
 
       if (alreadyDownloaded) {
-        // avoids that the last downloaded audio download
-        // informations remain displayed until all videos referenced
-        // in the playlist have been handled.
         if (_isAudioDownloading) {
           _isAudioDownloading = false;
           notifyListeners();
@@ -924,7 +923,7 @@ class AudioDownloadVM extends ChangeNotifier {
         enclosingPlaylist: currentPlaylist,
         originalVideoTitle: youtubeVideoTitle,
         compactVideoDescription: compactVideoDescription,
-        videoUrl: youtubeVideo.url,
+        videoUrl: fullVideo.url,
         audioDownloadDateTime: DateTime.now(),
         videoUploadDate: videoUploadDate,
         audioDuration: Duration.zero, // will be set by AudioPlayer after
@@ -934,7 +933,7 @@ class AudioDownloadVM extends ChangeNotifier {
 
       try {
         final ok = await _downloadAudioFile(
-          youtubeVideoId: youtubeVideo.id,
+          youtubeVideoId: fullVideo.id,
           audio: audio,
         );
         if (!ok) {
@@ -967,7 +966,7 @@ class AudioDownloadVM extends ChangeNotifier {
 
       // should avoid that the last downloaded audio is
       // re-downloaded
-      downloadedAudioOriginalVideoTitleLst.add(audio.validVideoTitle);
+      downloadedAudioOriginalVideoTitleLst.add(audio.originalVideoTitle);
       notifyListeners();
     }
 

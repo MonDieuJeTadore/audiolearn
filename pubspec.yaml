@@ -75,6 +75,7 @@ dependencies:
   web: ^1.1.1
   code_builder: ^4.11.1
   shared_preferences: ^2.5.4
+  ffi: ^2.2.0
 
 
 dev_dependencies:

@@ -11,6 +11,7 @@ import '../models/playlist.dart';
 import '../services/json_data_service.dart';
 import '../services/settings_data_service.dart';
 import '../models/sort_filter_parameters.dart';
+import '../services/windows_sleep_prevention_service.dart';
 import '../utils/duration_expansion.dart';
 import 'comment_vm.dart';
 import 'playlist_list_vm.dart';
@@ -183,6 +184,7 @@ class AudioPlayerVM extends ChangeNotifier {
   @override
   Future<void> dispose() async {
     _cancelCommentEndTimer(); // Clean up timer
+    WindowsSleepPreventionService.allowSleep(); // Restore on app close
     await _audioPlayer.dispose(); // on main project
 
     _durationSubscription?.cancel();
@@ -688,6 +690,7 @@ class AudioPlayerVM extends ChangeNotifier {
         // end. Without this instruction, the audio slider and the
         // audio position fields remain with a value before the audio
         // end state.
+        WindowsSleepPreventionService.allowSleep(); // No next audio
         currentAudioPositionNotifier.value = _currentAudioTotalDuration;
       }
     });
@@ -852,6 +855,9 @@ class AudioPlayerVM extends ChangeNotifier {
 
       updateAndSaveCurrentAudio();
 
+      // Prevent Windows sleep during playback
+      WindowsSleepPreventionService.preventSleep();
+
       // Necessary so that the play/pause icon is updated after
       // clicking on it
       currentAudioPlayPauseNotifier.value = true; // true means the play/pause
@@ -873,6 +879,9 @@ class AudioPlayerVM extends ChangeNotifier {
     }
 
     _wasAudioPlayersStopped = true;
+
+    // Restore normal sleep behavior when paused
+    WindowsSleepPreventionService.allowSleep();
 
     // Storing the current audio position before stopping the audio
     // is necessary since after the audio is stopped, the audio
@@ -924,21 +933,21 @@ class AudioPlayerVM extends ChangeNotifier {
     // while playing and therefore may not reflect a recent seek.
     double audioPlaySpeed = _currentAudio!.audioPlaySpeed;
     int currentPositionInTenths = _currentAudioPosition.inMilliseconds ~/ 100;
-    int timeUntilEndInTenthsOfSeconds = _commentEndPositionInTenthOfSeconds - currentPositionInTenths;
+    int timeUntilEndInTenthsOfSeconds =
+        _commentEndPositionInTenthOfSeconds - currentPositionInTenths;
 
     if (audioPlaySpeed != 1.0) {
       if (audioPlaySpeed <= 1.5) {
-       timeUntilEndInTenthsOfSeconds  += 10;
+        timeUntilEndInTenthsOfSeconds += 10;
       } else if (audioPlaySpeed < 1.8) {
-       timeUntilEndInTenthsOfSeconds  += 12;
+        timeUntilEndInTenthsOfSeconds += 12;
       } else {
         timeUntilEndInTenthsOfSeconds += 15;
       }
     }
 
     timeUntilEndInTenthsOfSeconds =
-        ((timeUntilEndInTenthsOfSeconds / audioPlaySpeed)
-            .ceil());
+        ((timeUntilEndInTenthsOfSeconds / audioPlaySpeed).ceil());
 
     Duration timeUntilEnd = Duration(
       milliseconds: timeUntilEndInTenthsOfSeconds * 100,

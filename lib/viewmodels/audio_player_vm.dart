@@ -11,6 +11,7 @@ import '../models/playlist.dart';
 import '../services/json_data_service.dart';
 import '../services/settings_data_service.dart';
 import '../models/sort_filter_parameters.dart';
+import '../services/windows_sleep_prevention_service.dart';
 import '../utils/duration_expansion.dart';
 import 'comment_vm.dart';
 import 'playlist_list_vm.dart';
@@ -183,6 +184,7 @@ class AudioPlayerVM extends ChangeNotifier {
   @override
   Future<void> dispose() async {
     _cancelCommentEndTimer(); // Clean up timer
+	WindowsSleepPreventionService.allowSleep(); // Restore on app close
 
     if (_audioPlayer != null) {
       try {
@@ -890,7 +892,10 @@ class AudioPlayerVM extends ChangeNotifier {
       _currentAudio!.isPaused = false;
 
       updateAndSaveCurrentAudio();
-
+	  
+	  // Prevent Windows sleep during playback
+      WindowsSleepPreventionService.preventSleep();
+	  
       // Necessary so that the play/pause icon is updated after
       // clicking on it
       currentAudioPlayPauseNotifier.value = true; // true means the play/pause
@@ -916,6 +921,9 @@ class AudioPlayerVM extends ChangeNotifier {
     // setSource() in the playCurrentAudio() method ...
     _wasAudioPlayersStopped = true;
 
+    // Restore normal sleep behavior when paused
+    WindowsSleepPreventionService.allowSleep();
+	
     // Storing the current audio position before stopping the audio
     // is necessary since after the audio is stopped, the audio
     // position is set to 0 in the AudioPlayer.onPositionChanged

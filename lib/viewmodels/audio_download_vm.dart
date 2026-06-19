@@ -809,12 +809,14 @@ class AudioDownloadVM extends ChangeNotifier {
     _stopDownloadPressed = false;
     _youtubeExplode ??= yt.YoutubeExplode();
 
-    // get the YouTube playlist
-    String? playlistId = yt.PlaylistId.parsePlaylistId(playlistUrl);
+    // get the YouTube playlist id from the playlist url and then get
+    // the YouTube playlist
+
+    String? playlistIdStr = yt.PlaylistId.parsePlaylistId(playlistUrl);
     yt.Playlist youtubePlaylist;
 
     try {
-      youtubePlaylist = await _youtubeExplode!.playlists.get(playlistId);
+      youtubePlaylist = await _youtubeExplode!.playlists.get(playlistIdStr);
     } on SocketException catch (e) {
       notifyDownloadError(
         errorType: ErrorType.noInternet,
@@ -852,7 +854,7 @@ class AudioDownloadVM extends ChangeNotifier {
         playlistUrl: playlistUrl,
         playlistQuality: PlaylistQuality.voice,
         playlistTitle: playlistTitle,
-        playlistId: playlistId!,
+        playlistId: playlistIdStr!,
       );
     }
 
@@ -862,12 +864,14 @@ class AudioDownloadVM extends ChangeNotifier {
     final List<String> downloadedAudioOriginalVideoTitleLst =
         await _getPlaylistDownloadedAudioOriginalVideoTitleLst(
             currentPlaylist: currentPlaylist);
+
     // AudioPlayer is used to get the audio duration of the
     // downloaded audio files
     final AudioPlayer audioPlayer = AudioPlayer();
 
+    var id = youtubePlaylist.id; // more efficient
     await for (final yt.Video playlistVideo
-        in _youtubeExplode!.playlists.getVideos(youtubePlaylist.id)) {
+        in _youtubeExplode!.playlists.getVideos(id)) {
       _audioDownloadError = false;
 
       yt.Video fullVideo;

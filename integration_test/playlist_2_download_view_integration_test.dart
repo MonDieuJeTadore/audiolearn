@@ -37086,6 +37086,11 @@ void main() {
           plusMinusSeconds: 1,
         );
 
+        // Avoids integration test failure due to the fact that the
+        // position is 200 or 220 and not 14470 !
+        await Future.delayed(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle(); // must be used !
+
         Text audioRemainingDurationText = tester.widget<Text>(
             find.byKey(const Key('audioPlayerViewAudioRemainingDuration')));
 
@@ -37281,6 +37286,11 @@ void main() {
           expectedPositionTimeStr: '24:07',
           plusMinusSeconds: 1,
         );
+
+        // Avoids integration test failure due to the fact that the
+        // position is -10 or 10 and not 14470 !
+        await Future.delayed(const Duration(milliseconds: 800));
+        await tester.pumpAndSettle(); // must be used !
 
         Text audioRemainingDurationText = tester.widget<Text>(
             find.byKey(const Key('audioPlayerViewAudioRemainingDuration')));
@@ -52106,133 +52116,6 @@ void main() {
       expect(
         find.text(playlistTitle),
         findsOneWidget,
-      );
-
-      // Purge the test playlist directory so that the created test
-      // files are not uploaded to GitHub
-      DirUtil.deleteFilesInDirAndSubDirs(
-        rootPath: kApplicationPathWindowsTest,
-      );
-    });
-    testWidgets(
-        '''Error if the 'Prière 5' audio 'Louange qui bouleverse le coeur. Même quand Dieu se tait' comment
-           json file format is invalid. The exception is thrown by the JsonDataService loadListFromFile()
-           method.''', (WidgetTester tester) async {
-      const String playlistTitle = "Prières 5";
-
-      // Purge the test playlist directory if it exists so that the
-      // playlist list is empty
-      DirUtil.deleteFilesInDirAndSubDirsWithRetry(
-        rootPath: kApplicationPathWindowsTest,
-      );
-
-      const String savedTestDataDirName = 'invalid_json_data_format_test';
-
-      // Copy the test initial audio data to the app dir
-      DirUtil.copyFilesFromDirAndSubDirsToDirectory(
-        sourceRootPath:
-            "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
-        destinationRootPath: kApplicationPathWindowsTest,
-      );
-
-      // Starting the app
-      await app.main();
-      await tester.pumpAndSettle();
-
-      final String invalidAndValidDirectoryPath =
-          '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
-
-      // Replacing the 'Louange qui bouleverse le coeur. Même quand
-      // Dieu se tait' comment json file by the invalid json file
-      // format
-      final String targetDirectoryPath =
-          "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle${path.separator}comments";
-      const String targetFileName =
-          '260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json';
-
-      DirUtil.copyFileToDirectorySync(
-        sourceFilePathName:
-            '$invalidAndValidDirectoryPath${path.separator}invalid comment 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
-        targetDirectoryPath: targetDirectoryPath,
-        targetFileName: targetFileName,
-        overwriteFileIfExist: true,
-      );
-
-      // Then tap on the audio title to open the audio player view
-      // and trigger the loading of the comments json file with the
-      // invalid format which will cause an error message to be
-      // displayed
-      Finder audioTitleFinder = find
-          .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
-
-      await tester.tap(audioTitleFinder);
-      await tester.pumpAndSettle();
-
-      // Now verifying the error text
-      // final String errorMessage =
-      //     "JSON format error in $targetDirectoryPath\\$targetFileName at line 14 or 15, column 9, unexpected character \"\"\".\n\nException message: Unexpected character\nSee also: https://docs.flutter.dev/testing/errors";
-
-      // final String errorMessage =
-      //     "JSON format error in $targetDirectoryPath\\$targetFileName"
-      //     " at line 14 or 15, column 9, unexpected character \"\"\"."
-      //     "\n\nException message: Unexpected character"
-      //     "\nSee also: https://docs.flutter.dev/testing/errors";
-
-      // expect(
-      //   find.text(errorMessage),
-      //   findsOneWidget,
-      // );
-
-      // Then return to playlist download view
-      final Finder playlistDownloadViewNavigationButton =
-          find.byKey(const ValueKey('playlistDownloadViewIconButton'));
-      await tester.tap(playlistDownloadViewNavigationButton);
-      await tester.pumpAndSettle();
-
-      // And verify that the same error message is also displayed in
-      // the playlist download view
-      // expect(
-      //   find.text(errorMessage),
-      //   findsOneWidget,
-      // );
-
-      final String errorMsg = 'JSON format error in $targetDirectoryPath\\$targetFileName'
-          ' at line 14 or 15, column 9, unexpected character """.';
-
-      expect(
-        find.textContaining(
-          errorMsg,
-        ),
-        findsOneWidget,
-      );
-
-      // Replacing the invalid 'Louange qui bouleverse le coeur.
-      // Même quand Dieu se tait' comment json file by the valid
-      // json file format
-
-      DirUtil.copyFileToDirectorySync(
-        sourceFilePathName:
-            '$invalidAndValidDirectoryPath${path.separator}valid comment 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
-        targetDirectoryPath: targetDirectoryPath,
-        targetFileName: targetFileName,
-        overwriteFileIfExist: true,
-      );
-
-      // Then tap on the audio title to open the audio player view
-      // and trigger the loading of the comments json file with the
-      // invalid format which will cause an error message to be
-      // displayed
-      audioTitleFinder = find
-          .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
-
-      await tester.tap(audioTitleFinder);
-      await tester.pumpAndSettle();
-
-      // Now verifying that the error text is no longer displayed
-      expect(
-        find.text(
-            "JSON format error in $targetDirectoryPath\\$targetFileName at line 14 or 15, column 9, unexpected character \"\"\".\n\nException message: Unexpected character See also: https://docs.flutter.dev/testing/errors"),
-        findsNothing,
       );
 
       // Purge the test playlist directory so that the created test

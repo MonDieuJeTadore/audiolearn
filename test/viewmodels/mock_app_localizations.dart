@@ -1551,15 +1551,6 @@ class MockAppLocalizations extends AppLocalizations {
       "Enable playing next audio automatically ...";
 
   @override
-  String get batteryParameters => "Battery Parameters";
-
-  @override
-  String get disableBatteryOptimisation => "Disable battery optimisation ...";
-
-  @override
-  String get openBatteryOptimisationButton => "Display the battery settings";
-
-  @override
   String deleteSortFilterParmsWarningTitle(
     Object sortFilterParmsName,
     Object playlistNumber,

@@ -8,6 +8,7 @@ import 'package:audioplayers/audioplayers.dart';
 import '../constants.dart';
 import '../models/audio.dart';
 import '../models/playlist.dart';
+import '../services/android_battery_optimization_service.dart';
 import '../services/json_data_service.dart';
 import '../services/settings_data_service.dart';
 import '../models/sort_filter_parameters.dart';
@@ -691,6 +692,7 @@ class AudioPlayerVM extends ChangeNotifier {
         // audio position fields remain with a value before the audio
         // end state.
         WindowsSleepPreventionService.allowSleep(); // No next audio
+        AndroidBatteryOptimizationService.stopForegroundService();
         currentAudioPositionNotifier.value = _currentAudioTotalDuration;
       }
     });
@@ -839,6 +841,16 @@ class AudioPlayerVM extends ChangeNotifier {
         await _rewindAudioPositionBasedOnPauseDuration();
       }
 
+      // In playCurrentAudio(), before playing:
+      if (Platform.isAndroid) {
+        final isExempt = await AndroidBatteryOptimizationService
+            .isIgnoringBatteryOptimizations();
+        if (!isExempt) {
+          await AndroidBatteryOptimizationService
+              .requestIgnoreBatteryOptimizations();
+        }
+      }
+
       await _audioPlayer.play(DeviceFileSource(audioFilePathName));
       await _audioPlayer.setPlaybackRate(_currentAudio!.audioPlaySpeed);
 
@@ -857,6 +869,8 @@ class AudioPlayerVM extends ChangeNotifier {
 
       // Prevent Windows sleep during playback
       WindowsSleepPreventionService.preventSleep();
+
+      AndroidBatteryOptimizationService.startForegroundService();
 
       // Necessary so that the play/pause icon is updated after
       // clicking on it
@@ -879,6 +893,7 @@ class AudioPlayerVM extends ChangeNotifier {
     }
 
     _wasAudioPlayersStopped = true;
+    AndroidBatteryOptimizationService.stopForegroundService();
 
     // Restore normal sleep behavior when paused
     WindowsSleepPreventionService.allowSleep();

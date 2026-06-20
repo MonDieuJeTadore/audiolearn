@@ -37086,6 +37086,11 @@ void main() {
           plusMinusSeconds: 1,
         );
 
+        // Avoids integration test failure due to the fact that the
+        // position is 200 or 220 and not 14470 !
+        await Future.delayed(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle(); // must be used !
+
         Text audioRemainingDurationText = tester.widget<Text>(
             find.byKey(const Key('audioPlayerViewAudioRemainingDuration')));
 
@@ -37281,6 +37286,11 @@ void main() {
           expectedPositionTimeStr: '24:07',
           plusMinusSeconds: 1,
         );
+
+        // Avoids integration test failure due to the fact that the
+        // position is -10 or 10 and not 14470 !
+        await Future.delayed(const Duration(milliseconds: 800));
+        await tester.pumpAndSettle(); // must be used !
 
         Text audioRemainingDurationText = tester.widget<Text>(
             find.byKey(const Key('audioPlayerViewAudioRemainingDuration')));

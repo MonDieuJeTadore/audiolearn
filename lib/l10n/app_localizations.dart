@@ -2637,24 +2637,6 @@ abstract class AppLocalizations {
   /// **'Enable playing next Audio automatically ...'**
   String get appBarMenuEnableNextAudioAutoPlay;
 
-  /// No description provided for @batteryParameters.
-  ///
-  /// In en, this message translates to:
-  /// **'Battery Parameter Change'**
-  String get batteryParameters;
-
-  /// No description provided for @disableBatteryOptimisation.
-  ///
-  /// In en, this message translates to:
-  /// **'Display the battery settings in order to disable its optimization. The result is that it allows the application to automatically play the next audio in the current playlist.\n\nClick on the button below, then select the \"Battery\" option at the bottom of the list. Next, choose \"Unrestricted\" and quit the settings.'**
-  String get disableBatteryOptimisation;
-
-  /// No description provided for @openBatteryOptimisationButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Display the battery settings'**
-  String get openBatteryOptimisationButton;
-
   /// Warning message for deleting a used SF parms
   ///
   /// In en, this message translates to:

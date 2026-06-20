@@ -1633,17 +1633,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Activer la lecture automatique du prochain audio ...';
 
   @override
-  String get batteryParameters => 'Paramètre de la batterie';
-
-  @override
-  String get disableBatteryOptimisation =>
-      'Afficher le paramétre de la batterie afin d\'en désactiver l\'optimisation, ce qui permet ensuite à l\'application de jouer automatiquement l\'audio suivant dans la playlist courante.\n\nCliquez sur le bouton ci-dessous et ensuite cliquez sur l\'option \"Batterie\" au bas de la liste. Ensuite, sélectionnez \"Non restreinte\", puis sortez des paramètres.';
-
-  @override
-  String get openBatteryOptimisationButton =>
-      'Afficher le paramétre de la batterie';
-
-  @override
   String deleteSortFilterParmsWarningTitle(
       Object sortFilterParmsName, Object playlistNumber) {
     return 'ATTENTION: vous supprimez le paramètre de tri/filtre \"$sortFilterParmsName\" utilisé dans $playlistNumber playlist(s) listée(s) ci-dessous';

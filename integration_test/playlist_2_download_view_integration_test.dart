@@ -16,6 +16,7 @@ import 'package:audiolearn/views/widgets/audio_sort_filter_dialog.dart';
 import 'package:audiolearn/views/widgets/playlist_rename_dialog.dart';
 import 'package:audiolearn/views/widgets/set_value_to_target_dialog.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -26991,7 +26992,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                 'Restored 0 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 1 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières comment restoration.zip".',
+                  'Restored 0 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 1 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières comment restoration.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -37086,11 +37087,6 @@ void main() {
           plusMinusSeconds: 1,
         );
 
-        // Avoids integration test failure due to the fact that the
-        // position is 200 or 220 and not 14470 !
-        await Future.delayed(const Duration(milliseconds: 500));
-        await tester.pumpAndSettle(); // must be used !
-
         Text audioRemainingDurationText = tester.widget<Text>(
             find.byKey(const Key('audioPlayerViewAudioRemainingDuration')));
 
@@ -37286,11 +37282,6 @@ void main() {
           expectedPositionTimeStr: '24:07',
           plusMinusSeconds: 1,
         );
-
-        // Avoids integration test failure due to the fact that the
-        // position is -10 or 10 and not 14470 !
-        await Future.delayed(const Duration(milliseconds: 800));
-        await tester.pumpAndSettle(); // must be used !
 
         Text audioRemainingDurationText = tester.widget<Text>(
             find.byKey(const Key('audioPlayerViewAudioRemainingDuration')));
@@ -38388,8 +38379,8 @@ void main() {
         audioPlaySpeed: '1.25',
         audioVolume: '50.0 %',
         audioCommentNumber: 0,
-      );      
-      
+      );
+
       String fileNameNoExt = fileName_2.replaceFirst('.mp4', '');
 
       await IntegrationTestUtil.verifyAudioInfoDialog(
@@ -38410,7 +38401,7 @@ void main() {
         audioPlaySpeed: '1.0',
         audioVolume: '50.0 %',
         audioCommentNumber: 0,
-      );      
+      );
 
       // Second import operation
 
@@ -38501,14 +38492,14 @@ void main() {
         audioPlaySpeed: '1.25',
         audioVolume: '50.0 %',
         audioCommentNumber: 0,
-      );      
+      );
 
       // Find the audio list widget using its key
       Finder listFinder = find.byKey(const Key('audio_list'));
       // Perform the scroll down action
       await tester.drag(listFinder, const Offset(0, 400));
       await tester.pumpAndSettle();
-      
+
       fileNameNoExt = fileName_6.replaceFirst('.m4a', '');
 
       await IntegrationTestUtil.verifyAudioInfoDialog(
@@ -38529,7 +38520,7 @@ void main() {
         audioPlaySpeed: '1.0',
         audioVolume: '50.0 %',
         audioCommentNumber: 0,
-      );      
+      );
 
       // Now, delete an audio and re-import the same files to verify
       // that the deleted audio import work
@@ -43337,8 +43328,7 @@ void main() {
         () {
       testWidgets(
           '''Use selected playlist. Playlist item menu default "Add or correct Position to
-             Audio's Title" test.''',
-          (WidgetTester tester) async {
+             Audio's Title" test.''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -43434,8 +43424,7 @@ void main() {
           '''Use unselected playlist. Playlist item menu default "Add or correct Position to
              Audio's Title" test. This test verifies that the playlist selection is not necessary
              to position the audio titles and that the operation can be performed on an unselected
-             playlist.''',
-          (WidgetTester tester) async {
+             playlist.''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -43646,8 +43635,7 @@ void main() {
       });
       testWidgets(
           '''Use selected playlist. Playlist item menu chap desc "Add or correct Position to
-             Audio's Title" test.''',
-          (WidgetTester tester) async {
+             Audio's Title" test.''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -43758,8 +43746,7 @@ void main() {
           '''Use unselected playlist. Playlist item menu chap desc "Add or correct Position to
              Audio's Title" test. This test verifies that the playlist selection is not necessary
              to position the audio titles and that the operation can be performed on an unselected
-             playlist.''',
-          (WidgetTester tester) async {
+             playlist.''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -52033,6 +52020,688 @@ void main() {
       DirUtil.deleteFilesInDirAndSubDirs(
         rootPath: kApplicationPathWindowsTest,
       );
+    });
+  });
+  group(
+      'Error displayed if json file is invalid. The tested exception is thrown by JsonDataService.',
+      () {
+    group('Error displayed in english.', () {
+      testWidgets(
+          '''Error if 'Prière 5.json' format is invalid. The exception is thrown by the JsonDataService
+           loadFromFile() method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the Prières 5.json file by the invalid format
+        // Prières 5.json file
+        final String targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle";
+        final String targetFileName = '$playlistTitle.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid Prières 5.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Starting the app with an invalid format Prières 5.json file
+        // which will cause an error message to be displayed
+        await app.main();
+        await tester.pumpAndSettle();
+
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "JSON format error in $targetDirectoryPath\\$targetFileName at line 64 or 65, column 9, unexpected character \"}\".\n\nException message: Unexpected character.\n\nTry finding the problem in order to correct it before executing again the operation.\n\nThen execute the \"Update Playlist JSON Files ...\" menu in order to restore the playlist \"$playlistTitle\".",
+          isWarningConfirming: false,
+          tapTwiceOnOkButton:
+              true, // Tap twice on the Ok button because of the 2 displayed dialogs (error dialog and then the warning dialog
+        );
+
+        // Verify that the playlist title is not displayed in the playlist list because of the
+        // invalid format of its json file
+        expect(
+          find.text(playlistTitle),
+          findsNothing,
+        );
+
+        // Replacing the invalid format Prières 5.json file by the valid
+        // formatn Prières 5.json file
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid Prières 5.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Now execute the 'Update Playlist JSON Files'
+        // appbar menu
+        await IntegrationTestUtil.executeUpdatePlaylistJsonFiles(
+          tester: tester,
+          doRemoveDeletedAudioFiles: false,
+        );
+
+        // Verify that the playlist title is now displayed in the playlist list because the invalid
+        // format of its json file wasa corrected and the 'Update Playlist JSON Files ...' menu was
+        // executed
+        expect(
+          find.text(playlistTitle),
+          findsOneWidget,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Error 'Prière 5' audio comment of 'Louange qui bouleverse le coeur. Même quand Dieu se tait'
+           json file format is invalid. The exception is thrown by the JsonDataService loadListFromFile()
+           method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Starting the app
+        await app.main();
+        await tester.pumpAndSettle();
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the 'Louange qui bouleverse le coeur. Même quand
+        // Dieu se tait' comment json file by the invalid json file
+        // format
+        final String targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle${path.separator}comments";
+        const String targetFileName =
+            '260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid comment 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        Finder audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        // Install handler BEFORE tapping
+        final List<FlutterErrorDetails> errors = [];
+        final FlutterExceptionHandler? originalHandler = FlutterError.onError;
+        FlutterError.onError = (FlutterErrorDetails details) {
+          errors.add(details);
+        };
+
+        // NOW tap - the exception fires during this pump
+        await tester.tap(audioTitleFinder);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
+
+        // Restore handler
+        FlutterError.onError = originalHandler;
+
+        // Verify
+        expect(errors, isNotEmpty);
+        expect(
+          errors.first.exception.toString(),
+          contains(
+            'JSON format error in $targetDirectoryPath\\$targetFileName'
+            ' at line 14 or 15, column 9, unexpected character """.',
+          ),
+        );
+
+        // Replacing the invalid 'Louange qui bouleverse le coeur.
+        // Même quand Dieu se tait' comment json file by the valid
+        // json file format
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid comment 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then return to playlist download view
+        final Finder playlistDownloadViewNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(playlistDownloadViewNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        await tester.tap(audioTitleFinder);
+        await tester.pumpAndSettle();
+
+        // Now verifying that the error text is no longer displayed
+        expect(
+          find.text(
+              "JSON format error in $targetDirectoryPath\\$targetFileName at line 14 or 15, column 9, unexpected character \"\"\".\n\nException message: Unexpected character See also: https://docs.flutter.dev/testing/errors"),
+          findsNothing,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Error 'Prière 5' audio picture of 'Louange qui bouleverse le coeur. Même quand Dieu se tait'
+           json file format is invalid. The exception is thrown by the JsonDataService loadListFromFile()
+           method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Starting the app
+        await app.main();
+        await tester.pumpAndSettle();
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the 'Louange qui bouleverse le coeur. Même quand
+        // Dieu se tait' comment json file by the invalid json file
+        // format
+        final String targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle${path.separator}pictures";
+        const String targetFileName =
+            '260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid picture 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        Finder audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        // Install handler BEFORE tapping
+        final List<FlutterErrorDetails> errors = [];
+        final FlutterExceptionHandler? originalHandler = FlutterError.onError;
+        FlutterError.onError = (FlutterErrorDetails details) {
+          errors.add(details);
+        };
+
+        // NOW tap - the exception fires during this pump
+        await tester.tap(audioTitleFinder);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
+
+        // Restore handler
+        FlutterError.onError = originalHandler;
+
+        // Verify
+        expect(errors, isNotEmpty);
+        expect(
+          errors.first.exception.toString(),
+          contains(
+            'JSON format error in $targetDirectoryPath\\$targetFileName'
+            ' at line 5 or 6, column 9, unexpected character """.',
+          ),
+        );
+
+        // Replacing the invalid 'Louange qui bouleverse le coeur.
+        // Même quand Dieu se tait' comment json file by the valid
+        // json file format
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid picture 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then return to playlist download view
+        final Finder playlistDownloadViewNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(playlistDownloadViewNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        await tester.tap(audioTitleFinder);
+        await tester.pumpAndSettle();
+
+        // Now verifying that the error text is no longer displayed
+        expect(
+          find.text(
+              "JSON format error in $targetDirectoryPath\\$targetFileName at line 14 or 15, column 9, unexpected character \"\"\".\n\nException message: Unexpected character See also: https://docs.flutter.dev/testing/errors"),
+          findsNothing,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+    group('Error displayed in french.', () {
+      testWidgets(
+          '''Error if 'Prière 5.json' format is invalid. The exception is thrown by the JsonDataService
+           loadFromFile() method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the settings.json file with the english app language by
+        // the settings.json file with the french app language
+        String targetDirectoryPath =
+            "$kApplicationPathWindowsTest${path.separator}";
+        String targetFileName = 'settings.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}french settings.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Replacing the Prières 5.json file by the invalid format
+        // Prières 5.json file
+        targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle";
+        targetFileName = '$playlistTitle.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid Prières 5.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Starting the app with an invalid format Prières 5.json file
+        // which will cause an error message to be displayed
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Now verifying the warning dialog and close it
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Erreur de format JSON dans $targetDirectoryPath\\$targetFileName à la ligne 64 ou 65, colonne 9, caractère inattendu \"}\".\n\nMessage de l'exception: Unexpected character.\n\nEssayez de trouver le probléme afin de le corriger avant de réexéuter l'opération.\n\nEnsuite, exécutez le menu \"Mettre à jour les fichiers playlist JSON ...\" afin de restaurer la playlist \"$playlistTitle\".",
+          isWarningConfirming: false,
+          tapTwiceOnOkButton:
+              true, // Tap twice on the Ok button because of the 2 displayed dialogs (error dialog and then the warning dialog
+          warningTitle: 'AVERTISSEMENT',
+        );
+
+        // Verify that the playlist title is not displayed in the playlist list because of the
+        // invalid format of its json file
+        expect(
+          find.text(playlistTitle),
+          findsNothing,
+        );
+
+        // Replacing the invalid format Prières 5.json file by the valid
+        // formatn Prières 5.json file
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid Prières 5.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Now execute the 'Update Playlist JSON Files'
+        // appbar menu
+        await IntegrationTestUtil.executeUpdatePlaylistJsonFiles(
+          tester: tester,
+          doRemoveDeletedAudioFiles: false,
+        );
+
+        // Verify that the playlist title is now displayed in the playlist list because the invalid
+        // format of its json file wasa corrected and the 'Update Playlist JSON Files ...' menu was
+        // executed
+        expect(
+          find.text(playlistTitle),
+          findsOneWidget,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Error 'Prière 5' audio comment of 'Louange qui bouleverse le coeur. Même quand Dieu se tait'
+           json file format is invalid. The exception is thrown by the JsonDataService loadListFromFile()
+           method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Starting the app
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to french
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.french,
+        );
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the 'Louange qui bouleverse le coeur. Même quand
+        // Dieu se tait' comment json file by the invalid json file
+        // format
+        final String targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle${path.separator}comments";
+        const String targetFileName =
+            '260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid comment 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        Finder audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        // Install handler BEFORE tapping
+        final List<FlutterErrorDetails> errors = [];
+        final FlutterExceptionHandler? originalHandler = FlutterError.onError;
+        FlutterError.onError = (FlutterErrorDetails details) {
+          errors.add(details);
+        };
+
+        // NOW tap - the exception fires during this pump
+        await tester.tap(audioTitleFinder);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
+
+        // Restore handler
+        FlutterError.onError = originalHandler;
+
+        // Verify
+        expect(errors, isNotEmpty);
+        expect(
+          errors.first.exception.toString(),
+          contains(
+            'Erreur de format JSON dans $targetDirectoryPath\\$targetFileName'
+            ' à la ligne 14 ou 15, colonne 9, caractère inattendu """.',
+          ),
+        );
+
+        // Replacing the invalid 'Louange qui bouleverse le coeur.
+        // Même quand Dieu se tait' comment json file by the valid
+        // json file format
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid comment 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then return to playlist download view
+        final Finder playlistDownloadViewNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(playlistDownloadViewNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        await tester.tap(audioTitleFinder);
+        await tester.pumpAndSettle();
+
+        // Now verifying that the error text is no longer displayed
+        expect(
+          find.text(
+              "Erreur de format JSON dans $targetDirectoryPath\\$targetFileName à la ligne 14 ou 15, colonne 9, caractère inattendu \"\"\".\n\nMessage de l'exception: Unexpected character See also: https://docs.flutter.dev/testing/errors"),
+          findsNothing,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Error 'Prière 5' audio picture of 'Louange qui bouleverse le coeur. Même quand Dieu se tait'
+           json file format is invalid. The exception is thrown by the JsonDataService loadListFromFile()
+           method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Starting the app
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to french
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.french,
+        );
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the 'Louange qui bouleverse le coeur. Même quand
+        // Dieu se tait' comment json file by the invalid json file
+        // format
+        final String targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle${path.separator}pictures";
+        const String targetFileName =
+            '260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid picture 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        Finder audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        // Install handler BEFORE tapping
+        final List<FlutterErrorDetails> errors = [];
+        final FlutterExceptionHandler? originalHandler = FlutterError.onError;
+        FlutterError.onError = (FlutterErrorDetails details) {
+          errors.add(details);
+        };
+
+        // NOW tap - the exception fires during this pump
+        await tester.tap(audioTitleFinder);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
+
+        // Restore handler
+        FlutterError.onError = originalHandler;
+
+        // Verify
+        expect(errors, isNotEmpty);
+        expect(
+          errors.first.exception.toString(),
+          contains(
+            'Erreur de format JSON dans $targetDirectoryPath\\$targetFileName'
+            ' à la ligne 5 ou 6, colonne 9, caractère inattendu """.',
+          ),
+        );
+
+        // Replacing the invalid 'Louange qui bouleverse le coeur.
+        // Même quand Dieu se tait' comment json file by the valid
+        // json file format
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid picture 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then return to playlist download view
+        final Finder playlistDownloadViewNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(playlistDownloadViewNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        await tester.tap(audioTitleFinder);
+        await tester.pumpAndSettle();
+
+        // Now verifying that the error text is no longer displayed
+        expect(
+          find.text(
+              "Erreur de format JSON dans $targetDirectoryPath\\$targetFileName à la ligne 14 ou 15, colonne 9, caractère inattendu \"\"\".\n\nMessage de l'exception: Unexpected character See also: https://docs.flutter.dev/testing/errors"),
+          findsNothing,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
     });
   });
 }

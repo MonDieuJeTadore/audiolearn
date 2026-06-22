@@ -11,6 +11,7 @@ import '../models/sort_filter_parameters.dart';
 
 enum SettingType {
   appTheme,
+  appPosition,
   language,
   playlists,
   dataLocation,
@@ -20,6 +21,13 @@ enum SettingType {
 enum AppTheme {
   light,
   dark,
+}
+
+enum AppPosition {
+  topX,
+  topY,
+  width,
+  height,
 }
 
 enum Language {
@@ -56,6 +64,12 @@ class SettingsDataService {
   // language, default format of date and default theme
   final Map<SettingType, Map<dynamic, dynamic>> _settings = {
     SettingType.appTheme: {SettingType.appTheme: AppTheme.dark},
+    SettingType.appPosition: {
+      AppPosition.topX: 2065.0, // 1990.0 (in constructor, if isTest is true)
+      AppPosition.topY: 213.3333, // 50.0 (in constructor, if isTest is true)
+      AppPosition.width: 745.0, // 900.0 (in constructor, if isTest is true)
+      AppPosition.height: 1480.0, // 1700.0 (in constructor, if isTest is true)
+    },
     SettingType.language: {SettingType.language: Language.french},
     SettingType.playlists: {
       Playlists.orderedTitleLst: [],
@@ -121,6 +135,10 @@ class SettingsDataService {
   }) : _isTest = isTest {
     if (isTest) {
       _settings[SettingType.language]![SettingType.language] = Language.english;
+      _settings[SettingType.appPosition]![AppPosition.topX] = 1990.0;
+      _settings[SettingType.appPosition]![AppPosition.topY] = 50.0;
+      _settings[SettingType.appPosition]![AppPosition.width] = 900.0;
+      _settings[SettingType.appPosition]![AppPosition.height] = 1700.0;
     }
   }
 
@@ -281,6 +299,14 @@ class SettingsDataService {
     file.writeAsStringSync(jsonString);
   }
 
+  T? _parseEnumValue<T>(List<T> enumValues, String stringValue) {
+    try {
+      return enumValues.firstWhere((e) => e.toString() == stringValue);
+    } catch (_) {
+      return null;
+    }
+  }
+
   /// Load settings from a JSON file
   Future<void> loadSettingsFromFile({
     required String settingsJsonPathFileName,
@@ -290,8 +316,6 @@ class SettingsDataService {
 
     try {
       if (settingsJsonFileExist) {
-        // if settings json file not exist, then the default Settings values
-        // set in the Settings constructor are used ...
         final String jsonString = file.readAsStringSync();
         final Map<String, dynamic> decodedSettings = jsonDecode(jsonString);
         decodedSettings.forEach((key, value) {
@@ -308,7 +332,12 @@ class SettingsDataService {
                         AudioSortFilterParameters.fromJson(
                             audioSortFilterParameters)));
           } else {
-            final settingType = _parseEnumValue(SettingType.values, key);
+            final SettingType? settingType =
+                _parseEnumValue(SettingType.values, key);
+
+            // Unknown SettingType key from an old/future settings file — skip it
+            if (settingType == null) return;
+
             final subSettings =
                 (value as Map<String, dynamic>).map((subKey, subValue) {
               return MapEntry(
@@ -316,19 +345,21 @@ class SettingsDataService {
                 _parseJsonValue(_allSettingsKeyLst, subValue),
               );
             });
-            _settings[settingType] = subSettings;
+
+            // Merge into existing defaults rather than replacing entirely,
+            // so that new keys (e.g. appPosition sub-entries) keep their
+            // defaults when loading an old settings file which does not
+            // contain them.
+            subSettings.forEach((subKey, subValue) {
+              if (subKey == null) return; // skip unparsed keys
+              _settings[settingType]![subKey] = subValue;
+            });
           }
         });
       }
     } on PathAccessException catch (e) {
-      // the case when installing the app and running it for the first
-      // time. The app will start with the default settings. When the
-      // user changes the settings, the settings file will be created
-      // and the settings will loaded the next time the app is started.
       _logger.i(e.toString());
     } on Exception catch (e) {
-      // Catching this exception avoids that the application can not start
-      // when the settings file is corrupted (e.g. not a valid JSON file).
       _logger.i('Error while loading settings from file: $e');
     }
 
@@ -336,8 +367,6 @@ class SettingsDataService {
             settingType: SettingType.dataLocation,
             settingSubType: DataLocation.appSettingsPath)
         .isEmpty) {
-      // the case if the application is started for the first time and
-      // if the settings were not saved.
       set(
         settingType: SettingType.dataLocation,
         settingSubType: DataLocation.appSettingsPath,
@@ -351,8 +380,6 @@ class SettingsDataService {
       settingType: SettingType.dataLocation,
       settingSubType: DataLocation.playlistRootPath,
     ).isEmpty) {
-      // the case if the application is started for the first time and
-      // if the settings were not saved.
       set(
         settingType: SettingType.dataLocation,
         settingSubType: DataLocation.playlistRootPath,
@@ -491,14 +518,6 @@ class SettingsDataService {
     saveSettingsToFile(
         jsonPathFileName:
             "$applicationPath${Platform.pathSeparator}$kSettingsFileName");
-  }
-
-  T _parseEnumValue<T>(List<T> enumValues, String stringValue) {
-    T setting = enumValues[0];
-
-    setting = enumValues.firstWhere((e) => e.toString() == stringValue);
-
-    return setting;
   }
 
   /// This method is responsible for parsing a JSON value. Since the

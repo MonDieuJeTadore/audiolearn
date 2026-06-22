@@ -69,7 +69,7 @@ Future<void> main() async {
   // Now proceed with setting up the app window size and position if needed
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     await _setWindowsAppSizeAndPosition(
-      isTest: isTest,
+      settingsDataService: settingsDataService,
     );
   }
 
@@ -86,26 +86,25 @@ Future<void> main() async {
 /// If app runs on Windows, Linux or MacOS, set the app size
 /// and position.
 Future<void> _setWindowsAppSizeAndPosition({
-  required bool isTest,
+  required SettingsDataService settingsDataService,
 }) async {
   await getScreenList().then((List<Screen> screens) {
-    // Assumez que vous voulez utiliser le premier écran (principal)
-    final Screen screen = screens.first;
-    final Rect screenRect = screen.visibleFrame;
-
     // Définissez la largeur et la hauteur de votre fenêtre
-    double windowWidth = (isTest) ? 900 : 745;
-    double windowHeight = (isTest) ? 1700 : 1480;
-    double xCorrection = (isTest) ? 10 : -70; // Correction pour la marge du bord droit
-    double yCorrection = (isTest) ? 2 : 1.5; // Correction pour la marge du bord inférieur
-
-    // Calculez la position X pour placer la fenêtre sur le côté droit de l'écran
-    final double posX = screenRect.right - windowWidth + xCorrection; // 50 pixels de marge du bord droit
-    // Optionnellement, ajustez la position Y selon vos préférences
-    final double posY = (screenRect.height - windowHeight) / yCorrection;
-
+    final double posX = settingsDataService.get(
+        settingType: SettingType.appPosition,
+        settingSubType: AppPosition.topX) as double;
+    final double posY = settingsDataService.get(
+        settingType: SettingType.appPosition,
+        settingSubType: AppPosition.topY) as double;
+    final double windowWidth = settingsDataService.get(
+        settingType: SettingType.appPosition,
+        settingSubType: AppPosition.width) as double;
+    final double windowHeight = settingsDataService.get(
+        settingType: SettingType.appPosition,
+        settingSubType: AppPosition.height) as double;
     final Rect windowRect =
         Rect.fromLTWH(posX, posY, windowWidth, windowHeight);
+
     setWindowFrame(windowRect);
   });
 }

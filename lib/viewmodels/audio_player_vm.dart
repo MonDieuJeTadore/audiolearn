@@ -873,16 +873,6 @@ class AudioPlayerVM extends ChangeNotifier {
         await _rewindAudioPositionBasedOnPauseDuration();
       }
 
-      // In playCurrentAudio(), before playing:
-      if (Platform.isAndroid) {
-        final isExempt = await AndroidBatteryOptimizationService
-            .isIgnoringBatteryOptimizations();
-        if (!isExempt) {
-          await AndroidBatteryOptimizationService
-              .requestIgnoreBatteryOptimizations();
-        }
-      }
-
       await _audioPlayer!.play(DeviceFileSource(audioFilePathName));
       await _audioPlayer!.setPlaybackRate(_currentAudio!.audioPlaySpeed);
 

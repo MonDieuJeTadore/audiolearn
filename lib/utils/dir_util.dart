@@ -54,7 +54,7 @@ class DirUtil {
       }
     }
 
-    // On Android or mobile emulator,/ avoids that the application
+    // On Android or mobile emulator, avoids that the application
     // can not be run after it was installed on the smartphone
     Directory dir = Directory(applicationPath);
 

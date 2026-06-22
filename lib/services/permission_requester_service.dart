@@ -1,5 +1,7 @@
 import 'package:permission_handler/permission_handler.dart';
 
+import 'android_battery_optimization_service.dart';
+
 class PermissionRequesterService {
   /// Requires adding the lines below to the main and debug AndroidManifest.xml
   /// files in order to work on S20 - Android 13 !
@@ -18,6 +20,14 @@ class PermissionRequesterService {
       Permission.videos,
       Permission.notification
     ].request();
+
+    // Request battery optimization exemption after other permissions
+    final isExempt = await AndroidBatteryOptimizationService
+        .isIgnoringBatteryOptimizations();
+    if (!isExempt) {
+      await AndroidBatteryOptimizationService
+          .requestIgnoreBatteryOptimizations();
+    }
 
     // Vous pouvez maintenant vérifier l'état de chaque permission
     if (!statuses[Permission.storage]!.isGranted ||

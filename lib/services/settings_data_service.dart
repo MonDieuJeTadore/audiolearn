@@ -2,11 +2,8 @@
 
 import 'dart:convert';
 import 'dart:io';
-
-// 
 import 'package:logger/logger.dart';
 import 'package:path/path.dart' as path;
-
 
 import '../constants.dart';
 import '../utils/dir_util.dart';
@@ -121,9 +118,9 @@ class SettingsDataService {
 
   SettingsDataService({
     bool isTest = false,
-  })  : _isTest = isTest {
+  }) : _isTest = isTest {
     if (isTest) {
-    _settings[SettingType.language]![SettingType.language] = Language.english;
+      _settings[SettingType.language]![SettingType.language] = Language.english;
     }
   }
 

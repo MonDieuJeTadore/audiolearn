@@ -56,14 +56,6 @@ Future<void> main() async {
     isTest: isTest,
   );
 
-  // Now proceed with setting up the app window size and position if needed
-  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    await _setWindowsAppSizeAndPosition(
-      isTest: isTest,
-      // isTest: false,
-    );
-  }
-
   // Setup SettingsDataService
   final SettingsDataService settingsDataService = SettingsDataService(
     isTest: isTest,
@@ -73,6 +65,13 @@ Future<void> main() async {
     settingsJsonPathFileName:
         '$applicationPath${Platform.pathSeparator}$kSettingsFileName',
   );
+
+  // Now proceed with setting up the app window size and position if needed
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    await _setWindowsAppSizeAndPosition(
+      isTest: isTest,
+    );
+  }
 
   // Initialize HelpDataService. This must be done before using it.
   await HelpDataService().initialize();

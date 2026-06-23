@@ -89,22 +89,33 @@ Future<void> _setWindowsAppSizeAndPosition({
   required SettingsDataService settingsDataService,
 }) async {
   await getScreenList().then((List<Screen> screens) {
-    // Définissez la largeur et la hauteur de votre fenêtre
-    final double posX = settingsDataService.get(
-        settingType: SettingType.appPosition,
-        settingSubType: AppPosition.topX) as double;
-    final double posY = settingsDataService.get(
-        settingType: SettingType.appPosition,
-        settingSubType: AppPosition.topY) as double;
-    final double windowWidth = settingsDataService.get(
-        settingType: SettingType.appPosition,
-        settingSubType: AppPosition.width) as double;
-    final double windowHeight = settingsDataService.get(
-        settingType: SettingType.appPosition,
-        settingSubType: AppPosition.height) as double;
+    final Screen screen = screens.first;
+
+    // scaleFactor is the device pixel ratio, available without a
+    // Flutter context. Stored values are in physical pixels, so we
+    // divide by scaleFactor to get the logical pixels that
+    // setWindowFrame() expects.
+    final double scaleFactor = screen.scaleFactor;
+
+    final double posX = (settingsDataService.get(
+            settingType: SettingType.appPosition,
+            settingSubType: AppPosition.topX) as double) *
+        scaleFactor;
+    final double posY = (settingsDataService.get(
+            settingType: SettingType.appPosition,
+            settingSubType: AppPosition.topY) as double) *
+        scaleFactor;
+    final double windowWidth = (settingsDataService.get(
+            settingType: SettingType.appPosition,
+            settingSubType: AppPosition.width) as double) *
+        scaleFactor;
+    final double windowHeight = (settingsDataService.get(
+            settingType: SettingType.appPosition,
+            settingSubType: AppPosition.height) as double) *
+        scaleFactor;
+
     final Rect windowRect =
         Rect.fromLTWH(posX, posY, windowWidth, windowHeight);
-
     setWindowFrame(windowRect);
   });
 }

@@ -65,10 +65,10 @@ class SettingsDataService {
   final Map<SettingType, Map<dynamic, dynamic>> _settings = {
     SettingType.appTheme: {SettingType.appTheme: AppTheme.dark},
     SettingType.appPosition: {
-      AppPosition.topX: 2065.0, // 1990.0 (in constructor, if isTest is true)
-      AppPosition.topY: 213.3333, // 50.0 (in constructor, if isTest is true)
-      AppPosition.width: 745.0, // 900.0 (in constructor, if isTest is true)
-      AppPosition.height: 1480.0, // 1700.0 (in constructor, if isTest is true)
+      AppPosition.topX: 1032.5, // 1990.0 (in constructor, if isTest is true)
+      AppPosition.topY: 106.6666, // 50.0 (in constructor, if isTest is true)
+      AppPosition.width: 377.5, // 900.0 (in constructor, if isTest is true)
+      AppPosition.height: 740.0, // 1700.0 (in constructor, if isTest is true)
     },
     SettingType.language: {SettingType.language: Language.french},
     SettingType.playlists: {
@@ -100,6 +100,7 @@ class SettingsDataService {
   final List<dynamic> _allSettingsKeyLst = [
     ...SettingType.values,
     ...AppTheme.values,
+    ...AppPosition.values,
     ...Language.values,
     ...Playlists.values,
     ...DataLocation.values,
@@ -135,10 +136,10 @@ class SettingsDataService {
   }) : _isTest = isTest {
     if (isTest) {
       _settings[SettingType.language]![SettingType.language] = Language.english;
-      _settings[SettingType.appPosition]![AppPosition.topX] = 1990.0;
-      _settings[SettingType.appPosition]![AppPosition.topY] = 50.0;
-      _settings[SettingType.appPosition]![AppPosition.width] = 900.0;
-      _settings[SettingType.appPosition]![AppPosition.height] = 1700.0;
+      _settings[SettingType.appPosition]![AppPosition.topX] = 995.0;
+      _settings[SettingType.appPosition]![AppPosition.topY] = 25.0;
+      _settings[SettingType.appPosition]![AppPosition.width] = 450.0;
+      _settings[SettingType.appPosition]![AppPosition.height] = 850.0;
     }
   }
 
@@ -351,7 +352,9 @@ class SettingsDataService {
             // defaults when loading an old settings file which does not
             // contain them.
             subSettings.forEach((subKey, subValue) {
-              if (subKey == null) return; // skip unparsed keys
+              if (subKey == null) {
+                return; // skip unparsed keys
+              }
               _settings[settingType]![subKey] = subValue;
             });
           }

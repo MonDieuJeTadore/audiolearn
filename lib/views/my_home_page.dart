@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
@@ -99,6 +100,8 @@ class _MyHomePageState extends State<MyHomePage>
   VolumeController? _volumeController;
   bool _volumeRestored = false;
 
+  Timer? _saveDebounceTimer;
+
   @override
   void initState() {
     super.initState();
@@ -165,6 +168,18 @@ class _MyHomePageState extends State<MyHomePage>
     super.dispose();
   }
 
+  // Called when the user moves the window
+  @override
+  void onWindowMove() {
+    _saveWindowPositionAndSize();
+  }
+
+  // Called when the user resizes the window
+  @override
+  void onWindowResize() {
+    _saveWindowPositionAndSize();
+  }
+
   /// Called when the user clicks the window's X button.
   @override
   void onWindowClose() async {
@@ -194,6 +209,38 @@ class _MyHomePageState extends State<MyHomePage>
     if (Platform.isWindows && _volumeController != null) {
       await _volumeController!.setVolume(_originalVolume);
     }
+  }
+
+  Future<void> _saveWindowPositionAndSize() async {
+    _saveDebounceTimer?.cancel();
+    _saveDebounceTimer = Timer(const Duration(milliseconds: 500), () async {
+      final Rect frame = await windowManager.getBounds();
+      final SettingsDataService settingsDataService =
+          widget.settingsDataService;
+
+      settingsDataService.set(
+        settingType: SettingType.appPosition,
+        settingSubType: AppPosition.topX,
+        value: frame.left,
+      );
+      settingsDataService.set(
+        settingType: SettingType.appPosition,
+        settingSubType: AppPosition.topY,
+        value: frame.top,
+      );
+      settingsDataService.set(
+        settingType: SettingType.appPosition,
+        settingSubType: AppPosition.width,
+        value: frame.width,
+      );
+      settingsDataService.set(
+        settingType: SettingType.appPosition,
+        settingSubType: AppPosition.height,
+        value: frame.height,
+      );
+
+      settingsDataService.saveSettings();
+    });
   }
 
   @override

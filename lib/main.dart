@@ -97,14 +97,24 @@ Future<void> _setWindowsAppSizeAndPosition({
     // setWindowFrame() expects.
     final double scaleFactor = screen.scaleFactor;
 
-    final double posX = (settingsDataService.get(
+    double posX = (settingsDataService.get(
             settingType: SettingType.appPosition,
             settingSubType: AppPosition.topX) as double) *
         scaleFactor;
-    final double posY = (settingsDataService.get(
+
+    if (posX < 0.0) {
+      posX = 0.0; // Ensure the window is not positioned off-screen
+    }
+
+    double posY = (settingsDataService.get(
             settingType: SettingType.appPosition,
             settingSubType: AppPosition.topY) as double) *
         scaleFactor;
+
+    if (posY < 0.0) {
+      posY = 0.0; // Ensure the window is not positioned off-screen
+    }
+
     final double windowWidth = (settingsDataService.get(
             settingType: SettingType.appPosition,
             settingSubType: AppPosition.width) as double) *

@@ -92,37 +92,56 @@ Future<void> _setWindowsAppSizeAndPosition({
     final Screen screen = screens.first;
 
     // scaleFactor is the device pixel ratio, available without a
-    // Flutter context. Stored values are in physical pixels, so we
-    // divide by scaleFactor to get the logical pixels that
+    // Flutter context. Stored values are in logical pixels, so we
+    // multiply by scaleFactor to get the physical pixels that
     // setWindowFrame() expects.
     final double scaleFactor = screen.scaleFactor;
+
+    // visibleFrame is in physical pixels
+    final Rect visibleFrame = screen.visibleFrame;
 
     double posX = (settingsDataService.get(
             settingType: SettingType.appPosition,
             settingSubType: AppPosition.topX) as double) *
         scaleFactor;
 
-    if (posX < 0.0) {
-      posX = 0.0; // Ensure the window is not positioned off-screen
-    }
-
     double posY = (settingsDataService.get(
             settingType: SettingType.appPosition,
             settingSubType: AppPosition.topY) as double) *
         scaleFactor;
 
-    if (posY < 0.0) {
-      posY = 0.0; // Ensure the window is not positioned off-screen
-    }
-
     final double windowWidth = (settingsDataService.get(
             settingType: SettingType.appPosition,
             settingSubType: AppPosition.width) as double) *
         scaleFactor;
+
     final double windowHeight = (settingsDataService.get(
             settingType: SettingType.appPosition,
             settingSubType: AppPosition.height) as double) *
         scaleFactor;
+
+    // Clamp posX so the window's right edge does not exceed the
+    // screen's right edge.
+    final double maxPosX = visibleFrame.right - windowWidth;
+    if (posX > maxPosX) {
+      posX = maxPosX;
+    }
+
+    // Clamp posY so the window's bottom edge does not exceed the
+    // screen's bottom edge.
+    final double maxPosY = visibleFrame.bottom - windowHeight;
+    if (posY > maxPosY) {
+      posY = maxPosY;
+    }
+
+    // Ensure the window is not positioned off the left or top edge.
+    if (posX < visibleFrame.left) {
+      posX = visibleFrame.left;
+    }
+
+    if (posY < visibleFrame.top) {
+      posY = visibleFrame.top;
+    }
 
     final Rect windowRect =
         Rect.fromLTWH(posX, posY, windowWidth, windowHeight);

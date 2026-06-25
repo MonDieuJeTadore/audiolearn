@@ -209,7 +209,7 @@ enum WarningMessageType {
   // Comments and Pictures to Zip File' menu item located in the playlist
   // popup menu.
 
-  displayNewestAudioDownloadDateTime, // The case if the user clicks on the
+  displayLatestRestoredAudioDateTime, // The case if the user clicks on the
   // 'Get latest Audio download Date' menu item located in the appbar.
 
   savedUniquePlaylistOrAllPlaylistsAudioMp3ToZip, // The case if the user
@@ -1006,7 +1006,7 @@ class WarningMessageVM extends ChangeNotifier {
   }) {
     _newestAudioDownloadDateTime = newestAudioDownloadDateTime;
 
-    warningMessageType = WarningMessageType.displayNewestAudioDownloadDateTime;
+    warningMessageType = WarningMessageType.displayLatestRestoredAudioDateTime;
 
     // Causes the display warning message widget to be displayed.
     notifyListeners();

@@ -219,6 +219,7 @@ class UiUtil {
             .restoreAndConfirmPlaylistsAudioMp3FilesFromMultipleZips(
           zipDirectoryPath: mp3ZipDirectoryPath,
           listOfPlaylists: playlistsLst,
+          uniquePlaylistIsRestored: uniquePlaylistIsRestored,
         );
         return;
       }
@@ -256,6 +257,7 @@ class UiUtil {
             .restoreAndConfirmPlaylistsAudioMp3FilesFromMultipleZips(
           zipDirectoryPath: mp3ZipDirectoryPath,
           listOfPlaylists: playlistsLst,
+          uniquePlaylistIsRestored: uniquePlaylistIsRestored,
         );
         return;
       }

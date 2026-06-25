@@ -2223,20 +2223,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get obtainMostRecentAudioDownloadDateTimeMenu =>
-      'Get latest Audio download Date';
+      'Get the latest download Date of the multiple Playlists restored Audios ...';
 
   @override
   String get obtainMostRecentAudioDownloadDateTimeTooltip =>
-      'Finds the most recent audio download date across all playlists. Use this date when creating ZIP backups with the \'Save Playlists Audios MP3 to ZIP File(s)\' menu to ensure you capture only the newest audio files for restoring them to the current app version.';
+      'Obtain the most recent audio download date in the last multiple playlists restored audios. Use this date when creating ZIP backups with the \'Save Playlists Audios MP3 to ZIP File(s) ...\' menu to ensure you capture only the newest audio files for restoring them to the current app version.';
 
   @override
-  String get displayNewestAudioDownloadDateTimeTitle =>
-      'Latest Audio Download Date';
+  String get displayLatestRestoredAudioDateTimeTitle =>
+      'Latest download Date of restored Audios';
 
   @override
-  String displayNewestAudioDownloadDateTime(
+  String displayLatestRestoredAudioDateTime(
       Object newestAudioDownloadDateTime) {
-    return 'This is the latest audio download date/time: $newestAudioDownloadDateTime.';
+    return 'This is the latest download date/time of the multiple playlists restored audios: $newestAudioDownloadDateTime.';
   }
 
   @override

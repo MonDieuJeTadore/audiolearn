@@ -1470,23 +1470,23 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
         });
 
         return const SizedBox.shrink();
-      case WarningMessageType.displayNewestAudioDownloadDateTime:
+      case WarningMessageType.displayLatestRestoredAudioDateTime:
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          String displayNewestAudioDownloadDateTimeMessage;
+          String displayLatestRestoredAudioDateTimeMessage;
 
-          displayNewestAudioDownloadDateTimeMessage =
-              AppLocalizations.of(context)!.displayNewestAudioDownloadDateTime(
+          displayLatestRestoredAudioDateTimeMessage =
+              AppLocalizations.of(context)!.displayLatestRestoredAudioDateTime(
             _warningMessageVM.newestAudioDownloadDateTime,
           );
 
           _displayWarningDialog(
             context: _context,
-            message: displayNewestAudioDownloadDateTimeMessage,
+            message: displayLatestRestoredAudioDateTimeMessage,
             warningMessageVM: _warningMessageVM,
             themeProviderVM: themeProviderVM,
             warningMode: WarningMode.confirm,
             warningDialogTitle: AppLocalizations.of(context)!
-                .displayNewestAudioDownloadDateTimeTitle,
+                .displayLatestRestoredAudioDateTimeTitle,
           );
         });
 
@@ -1938,7 +1938,7 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
                   key: const Key('warningDialogTitle'),
                   alertDialogTitle,
                   textAlign: TextAlign.center, // Centered multi lines text
-                  maxLines: 2,
+                  maxLines: 3,
                 ),
               ),
               if (helpItemsLst.isNotEmpty)

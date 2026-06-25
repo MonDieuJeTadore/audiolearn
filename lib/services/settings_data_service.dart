@@ -44,6 +44,7 @@ enum Playlists {
   arePlaylistsDisplayedInPlaylistDownloadView,
   maxSavableAudioMp3FileSizeInMb,
   onWindowsPlayVolumeInPercentage,
+  latestGlobalRestoredAudioDate,
 }
 
 enum DataLocation {
@@ -85,6 +86,9 @@ class SettingsDataService {
       Playlists.arePlaylistsDisplayedInPlaylistDownloadView: true,
       Playlists.maxSavableAudioMp3FileSizeInMb: kMp3ZipFileSizeLimitInMb,
       Playlists.onWindowsPlayVolumeInPercentage: kWindowsSystemVolume,
+
+      // Must be set as String and not as DateTime
+      Playlists.latestGlobalRestoredAudioDate: DateTime(2000, 1, 1).toIso8601String(),
     },
     SettingType.dataLocation: {
       DataLocation.appSettingsPath: '',

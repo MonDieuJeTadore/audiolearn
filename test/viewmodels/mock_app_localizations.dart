@@ -2195,11 +2195,11 @@ class MockAppLocalizations extends AppLocalizations {
       "Finds the most recent audio download date across all playlists. Use this date when creating ZIP backups with the 'Save Playlists Audio's MP3 to ZIP File(s)' menu to ensure you capture only the newest audio files for restoring them to the current app version.";
 
   @override
-  String get displayNewestAudioDownloadDateTimeTitle =>
+  String get displayLatestRestoredAudioDateTimeTitle =>
       "Latest audio download date";
 
   @override
-  String displayNewestAudioDownloadDateTime(
+  String displayLatestRestoredAudioDateTime(
     Object newestAudioDownloadDateTime,
   ) =>
       "This is the latest audio download date/time: $newestAudioDownloadDateTime.";

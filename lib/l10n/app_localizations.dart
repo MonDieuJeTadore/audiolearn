@@ -3570,26 +3570,26 @@ abstract class AppLocalizations {
   /// No description provided for @obtainMostRecentAudioDownloadDateTimeMenu.
   ///
   /// In en, this message translates to:
-  /// **'Get latest Audio download Date'**
+  /// **'Get the latest download Date of the multiple Playlists restored Audios ...'**
   String get obtainMostRecentAudioDownloadDateTimeMenu;
 
   /// No description provided for @obtainMostRecentAudioDownloadDateTimeTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Finds the most recent audio download date across all playlists. Use this date when creating ZIP backups with the \'Save Playlists Audios MP3 to ZIP File(s)\' menu to ensure you capture only the newest audio files for restoring them to the current app version.'**
+  /// **'Obtain the most recent audio download date in the last multiple playlists restored audios. Use this date when creating ZIP backups with the \'Save Playlists Audios MP3 to ZIP File(s) ...\' menu to ensure you capture only the newest audio files for restoring them to the current app version.'**
   String get obtainMostRecentAudioDownloadDateTimeTooltip;
 
-  /// No description provided for @displayNewestAudioDownloadDateTimeTitle.
+  /// No description provided for @displayLatestRestoredAudioDateTimeTitle.
   ///
   /// In en, this message translates to:
-  /// **'Latest Audio Download Date'**
-  String get displayNewestAudioDownloadDateTimeTitle;
+  /// **'Latest download Date of restored Audios'**
+  String get displayLatestRestoredAudioDateTimeTitle;
 
-  /// No description provided for @displayNewestAudioDownloadDateTime.
+  /// No description provided for @displayLatestRestoredAudioDateTime.
   ///
   /// In en, this message translates to:
-  /// **'This is the latest audio download date/time: {newestAudioDownloadDateTime}.'**
-  String displayNewestAudioDownloadDateTime(Object newestAudioDownloadDateTime);
+  /// **'This is the latest download date/time of the multiple playlists restored audios: {newestAudioDownloadDateTime}.'**
+  String displayLatestRestoredAudioDateTime(Object newestAudioDownloadDateTime);
 
   /// No description provided for @audioTitleModificationHelpTitle.
   ///

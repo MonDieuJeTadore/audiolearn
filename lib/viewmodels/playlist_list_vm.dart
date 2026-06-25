@@ -3843,25 +3843,6 @@ class PlaylistListVM extends ChangeNotifier {
     return dateFormatVM.formatDateTime(oldestAudioDownloadDateTime);
   }
 
-  String getNewestAudioDownloadDateFormattedStr() {
-    DateTime newestAudioDownloadDateTime = DateTime(2020, 1, 1);
-
-    // Iterate through passed playlists
-    for (Playlist playlist in _listOfSelectablePlaylists) {
-      for (Audio audio in playlist.playableAudioLst) {
-        if (audio.audioDownloadDateTime.isAfter(newestAudioDownloadDateTime)) {
-          newestAudioDownloadDateTime = audio.audioDownloadDateTime;
-        }
-      }
-    }
-
-    DateFormatVM dateFormatVM = DateFormatVM(
-      settingsDataService: _settingsDataService,
-    );
-
-    return dateFormatVM.formatDateTime(newestAudioDownloadDateTime);
-  }
-
   Future<Duration> evaluateSavingAudioMp3FileToZipDuration({
     required List<Playlist> listOfPlaylists,
     required DateTime fromAudioDownloadDateTime,
@@ -5585,6 +5566,7 @@ class PlaylistListVM extends ChangeNotifier {
   ///   number of ZIP files processed (int),
   ///   list of playlist titles that received restored files (List of String's),
   ///   the maybe modified zipDirectoryPath
+  ///   the most recent download date of the restored audios
   /// ]
   Future<List<dynamic>> _restorePlaylistsAudioMp3FilesFromMultipleZips({
     required String zipDirectoryPath,
@@ -5594,6 +5576,7 @@ class PlaylistListVM extends ChangeNotifier {
     Set<String> restoredPlaylistTitlesSet = {};
     int processedZipCount = 0;
     List<dynamic> emptyDynamicLst = [0, 0, []];
+    DateTime mostRecentDownloadDate = DateTime.fromMillisecondsSinceEpoch(0);
 
     try {
       // Check if the directory exists
@@ -5724,6 +5707,11 @@ class PlaylistListVM extends ChangeNotifier {
                 continue;
               }
 
+              if (mostRecentDownloadDate
+                  .isBefore(targetAudio.audioDownloadDateTime)) {
+                mostRecentDownloadDate = targetAudio.audioDownloadDateTime;
+              }
+
               // Create the target file path
               String targetFilePath =
                   path.join(playlist.downloadPath, audioFileName);
@@ -5807,6 +5795,14 @@ class PlaylistListVM extends ChangeNotifier {
                       await audioPlayer.dispose();
                     }
 
+                    final DateTime lastCommentUpdateDateTime =
+                        lastComment.lastUpdateDateTime;
+
+                    if (mostRecentDownloadDate
+                        .isBefore(lastCommentUpdateDateTime)) {
+                      mostRecentDownloadDate = lastCommentUpdateDateTime;
+                    }
+
                     int existingAudioDurationInTenthOfSeconds =
                         (existingAudioMp3Duration.inMilliseconds / 100).round();
 
@@ -5864,6 +5860,7 @@ class PlaylistListVM extends ChangeNotifier {
         processedZipCount,
         restoredPlaylistTitlesSet.toList(),
         zipDirectoryPath,
+        mostRecentDownloadDate,
       ];
     } catch (e) {
       _logger.e('Error in restorePlaylistsAudioMp3FilesFromMultipleZips: $e');
@@ -5895,6 +5892,7 @@ class PlaylistListVM extends ChangeNotifier {
   Future<void> restoreAndConfirmPlaylistsAudioMp3FilesFromMultipleZips({
     required String zipDirectoryPath,
     required List<Playlist> listOfPlaylists,
+    required bool uniquePlaylistIsRestored,
   }) async {
     if (Platform.isAndroid) {
       zipDirectoryPath = _removeSDCardId(zipDirectoryPath);
@@ -5906,6 +5904,7 @@ class PlaylistListVM extends ChangeNotifier {
     //   number of ZIP files processed (int),
     //   list of playlist titles that received restored files (List of String's),
     //   the maybe modified zipDirectoryPath
+    //   the most recent download date of the restored audios
     // ]
     List<dynamic> resultLst =
         await _restorePlaylistsAudioMp3FilesFromMultipleZips(
@@ -5917,6 +5916,17 @@ class PlaylistListVM extends ChangeNotifier {
     int processedZipCount = resultLst[1];
     List<String> restoredPlaylistTitles =
         resultLst[2].isNotEmpty ? resultLst[2] as List<String> : [];
+    DateTime mostRecentDownloadDate = resultLst[4] as DateTime;
+
+    if (!uniquePlaylistIsRestored) {
+      // Only if the restored playlists is not individual is the latest global
+      // restored audio date updated in settings
+      _settingsDataService.set(
+        settingType: SettingType.playlists,
+        settingSubType: Playlists.latestGlobalRestoredAudioDate,
+        value: mostRecentDownloadDate.toIso8601String(),
+      );
+    }
 
     // Display confirmation message via WarningMessageVM
     _warningMessageVM.confirmRestoringAudioMp3FromMultipleZips(

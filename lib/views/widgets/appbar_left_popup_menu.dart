@@ -1024,20 +1024,23 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
             });
             break;
           case AppBarPopupMenu.obtainMostRecentAudioDownloadDateTime:
-            final PlaylistListVM playlistListVMlistenFalse =
-                Provider.of<PlaylistListVM>(
-              context,
-              listen: false,
-            );
             final WarningMessageVM warningMessageVMlistenFalse =
                 Provider.of<WarningMessageVM>(
               context,
               listen: false,
             );
 
-            String newestAudioDownloadDateFormattedStr =
-                playlistListVMlistenFalse
-                    .getNewestAudioDownloadDateFormattedStr();
+            String newestAudioDownloadDateTime = settingsDataService.get(
+              settingType: SettingType.playlists,
+              settingSubType: Playlists.latestGlobalRestoredAudioDate,
+            ) as String;
+
+            DateFormatVM dateFormatVM = DateFormatVM(
+              settingsDataService: settingsDataService,
+            );
+
+            String newestAudioDownloadDateFormattedStr = 
+                dateFormatVM.formatDateTime(DateTime.parse(newestAudioDownloadDateTime));
 
             warningMessageVMlistenFalse.displayNewestAudioDownloadDate(
               newestAudioDownloadDateTime: newestAudioDownloadDateFormattedStr,

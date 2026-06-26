@@ -37072,7 +37072,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Wait for the comment to finish playing
-        await Future.delayed(const Duration(seconds: 4));
+        await Future.delayed(const Duration(seconds: 5));
         await tester.pumpAndSettle();
 
         // Verify the audio position and remaining duration text
@@ -37268,7 +37268,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Wait for the comment to finish playing
-        await Future.delayed(const Duration(seconds: 5));
+        await Future.delayed(const Duration(seconds: 6));
         await tester.pumpAndSettle();
 
         // Verify the audio position and remaining duration text

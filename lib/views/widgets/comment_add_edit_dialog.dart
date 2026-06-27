@@ -749,6 +749,7 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                             addRemainingOneDigitTenthOfSecond: true,
                           ),
                         ],
+                        isCheckboxExclusive: false,
                         helpItemsLst: savePlaylistsMp3HelpItemsLst,
                       );
                     },
@@ -767,7 +768,33 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                           100,
                     );
 
-                    if (checkboxIndexStr == '0') {
+                    if (positionDuration.inMicroseconds == 0 &&
+                        resultStringLst.length == 3 &&
+                        resultStringLst[2] == '1') {
+                      // The case if the user emptied the position field and
+                      // checked the 'Start' or 'End' position checkbox
+                      // In this case, we set the start position to 0:00.0
+                      // and the end position to the audio duration.
+                      commentVMlistenFalse.currentCommentStartPosition =
+                          positionDuration;
+                      _comment.commentStartPositionInTenthOfSeconds =
+                          (positionDuration.inMilliseconds *
+                                  widget.commentableAudio.audioPlaySpeed /
+                                  100)
+                              .round();
+
+                      commentVMlistenFalse.currentCommentEndPosition = Duration(
+                          microseconds: (audioPlayerVMlistenFalse
+                                      .currentAudioTotalDuration
+                                      .inMicroseconds /
+                                  widget.commentableAudio.audioPlaySpeed)
+                              .round());
+                      _comment.commentEndPositionInTenthOfSeconds =
+                          (audioPlayerVMlistenFalse.currentAudioTotalDuration
+                                      .inMicroseconds /
+                                  widget.commentableAudio.audioPlaySpeed)
+                              .round();
+                    } else if (checkboxIndexStr == '0') {
                       // The case when the Comment Start Position checkbox is checked.
                       commentVMlistenFalse.currentCommentStartPosition =
                           positionDuration; // If deleted, editing the comment position no longer works
@@ -789,6 +816,7 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
 
                     // Updating the display format according to the provided position.
                     int pointPosition = positionStr.indexOf('.');
+
                     if (pointPosition != -1) {
                       // If the position contains a tenth of a second (e.g., 00:00:00.0).
                       if (positionStr.substring(pointPosition + 1) != '0') {

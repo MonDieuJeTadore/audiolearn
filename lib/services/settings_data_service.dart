@@ -66,10 +66,10 @@ class SettingsDataService {
   final Map<SettingType, Map<dynamic, dynamic>> _settings = {
     SettingType.appTheme: {SettingType.appTheme: AppTheme.dark},
     SettingType.appPosition: {
-      AppPosition.topX: 1032.5, // 1990.0 (in constructor, if isTest is true)
-      AppPosition.topY: 106.6666, // 50.0 (in constructor, if isTest is true)
-      AppPosition.width: 377.5, // 900.0 (in constructor, if isTest is true)
-      AppPosition.height: 740.0, // 1700.0 (in constructor, if isTest is true)
+      AppPosition.topX: 1032.5, // 996.0 (in constructor, if isTest is true)
+      AppPosition.topY: 106.6666, // 25.0 (in constructor, if isTest is true)
+      AppPosition.width: 377.5, // 450.0 (in constructor, if isTest is true)
+      AppPosition.height: 740.0, // 850.0 (in constructor, if isTest is true)
     },
     SettingType.language: {SettingType.language: Language.french},
     SettingType.playlists: {
@@ -140,7 +140,7 @@ class SettingsDataService {
   }) : _isTest = isTest {
     if (isTest) {
       _settings[SettingType.language]![SettingType.language] = Language.english;
-      _settings[SettingType.appPosition]![AppPosition.topX] = 995.0;
+      _settings[SettingType.appPosition]![AppPosition.topX] = 996.0;
       _settings[SettingType.appPosition]![AppPosition.topY] = 25.0;
       _settings[SettingType.appPosition]![AppPosition.width] = 450.0;
       _settings[SettingType.appPosition]![AppPosition.height] = 850.0;

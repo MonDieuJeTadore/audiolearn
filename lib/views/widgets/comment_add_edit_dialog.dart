@@ -768,6 +768,9 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                           100,
                     );
 
+                    final double audioPlaySpeed =
+                        widget.commentableAudio.audioPlaySpeed;
+
                     if (resultStringLst.length == 3 &&
                         resultStringLst[2] == '1') {
                       if (positionStr == '0:00.0') {
@@ -779,22 +782,21 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                             positionDuration;
                         _comment.commentStartPositionInTenthOfSeconds =
                             (positionDuration.inMilliseconds *
-                                    widget.commentableAudio.audioPlaySpeed /
+                                    audioPlaySpeed /
                                     100)
                                 .round();
 
-                        commentVMlistenFalse.currentCommentEndPosition =
-                            Duration(
-                                microseconds: (audioPlayerVMlistenFalse
-                                            .currentAudioTotalDuration
-                                            .inMicroseconds /
-                                        widget.commentableAudio.audioPlaySpeed)
-                                    .round());
-                        _comment.commentEndPositionInTenthOfSeconds =
+                        final int commentEndPositionInTenthOfSeconds =
                             (audioPlayerVMlistenFalse.currentAudioTotalDuration
                                         .inMicroseconds /
-                                    widget.commentableAudio.audioPlaySpeed)
+                                    audioPlaySpeed)
                                 .round();
+                        commentVMlistenFalse.currentCommentEndPosition =
+                            Duration(
+                                microseconds:
+                                    commentEndPositionInTenthOfSeconds);
+                        _comment.commentEndPositionInTenthOfSeconds =
+                            commentEndPositionInTenthOfSeconds;
                       } else {
                         // The case if the user did not empty the position
                         // field and checked the 'Start' and 'End' position
@@ -803,19 +805,15 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                         // position field
                         commentVMlistenFalse.currentCommentStartPosition =
                             positionDuration;
-                        _comment.commentStartPositionInTenthOfSeconds =
-                            (positionDuration.inMilliseconds *
-                                    widget.commentableAudio.audioPlaySpeed /
-                                    100)
-                                .round();
+                        final int positionDurationInTenthOfseconds = (positionDuration.inMilliseconds *
+                                audioPlaySpeed /
+                                100)
+                            .round();
+                        _comment.commentStartPositionInTenthOfSeconds = positionDurationInTenthOfseconds;
 
                         commentVMlistenFalse.currentCommentEndPosition =
                             positionDuration;
-                        _comment.commentEndPositionInTenthOfSeconds =
-                            (positionDuration.inMilliseconds *
-                                    widget.commentableAudio.audioPlaySpeed /
-                                    100)
-                                .round();
+                        _comment.commentEndPositionInTenthOfSeconds = positionDurationInTenthOfseconds;
                       }
                     } else if (checkboxIndexStr == '0') {
                       // The case when the Comment Start Position checkbox is checked.
@@ -823,7 +821,7 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                           positionDuration; // If deleted, editing the comment position no longer works
                       _comment.commentStartPositionInTenthOfSeconds =
                           (positionDuration.inMilliseconds *
-                                  widget.commentableAudio.audioPlaySpeed /
+                                  audioPlaySpeed /
                                   100)
                               .round();
                     } else {
@@ -832,7 +830,7 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                           positionDuration; // If deleted, editing the comment position no longer works
                       _comment.commentEndPositionInTenthOfSeconds =
                           (positionDuration.inMilliseconds *
-                                  widget.commentableAudio.audioPlaySpeed /
+                                  audioPlaySpeed /
                                   100)
                               .round();
                     }

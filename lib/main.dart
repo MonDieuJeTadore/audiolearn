@@ -123,13 +123,15 @@ Future<void> _setWindowsAppSizeAndPosition({
     // Clamp posX so the window's right edge does not exceed the
     // screen's right edge.
     final double maxPosX = visibleFrame.right - windowWidth;
+
     if (posX > maxPosX) {
-      posX = maxPosX;
+      posX = maxPosX + (6 * scaleFactor);
     }
 
     // Clamp posY so the window's bottom edge does not exceed the
     // screen's bottom edge.
     final double maxPosY = visibleFrame.bottom - windowHeight;
+    
     if (posY > maxPosY) {
       posY = maxPosY;
     }

@@ -54,7 +54,8 @@ class SetValueToTargetDialog extends StatefulWidget {
   final bool isEditableTextFieldSelected; // If true, the passed value contained
   //                                         in the TextField is selected.
 
-  final int maxLinesForDialogTitle; // The maximum number of lines for the dialog title.
+  final int
+      maxLinesForDialogTitle; // The maximum number of lines for the dialog title.
 
   /// If the [passedValueFieldLabel] and the [passedValueStr] are not passed and so
   /// remains both empty, the dialog will not display the passed value field.

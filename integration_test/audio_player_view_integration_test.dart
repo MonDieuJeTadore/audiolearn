@@ -11266,6 +11266,541 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
     });
+    testWidgets(
+        '''Fully play comment whose end = audio end and verify that the next not
+           fully played audio starts playing at the next audio play speed.
+           
+           to remove: Click on play button to finish playing the audio downloaded before
+           the last downloaded audio and start playing the partially listened
+           last downloaded audio.''', (
+      WidgetTester tester,
+    ) async {
+      const String audioPlayerSelectedPlaylistTitle = 'S8 audio';
+      const String secondDownloadedAudioTitle =
+          'Ce qui va vraiment sauver notre espèce par Jancovici et Barrau';
+      const String firstDownloadedAudioTitle =
+          '3 fois où Aurélien Barrau tire à balles réelles sur les riches';
+      const String lastDownloadedAudioTitleWithDuration =
+          "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)\n16:26";
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName:
+            'audio_player_view_first_to_last_audio_corrected_test',
+        selectedPlaylistTitle: audioPlayerSelectedPlaylistTitle,
+      );
+
+      // First, we modify the audio position of the first downloaded audio
+      // of the playlist. First, get the first downloaded audio ListTile Text
+      // widget finder and tap on it
+      final Finder
+          playlistDownloadViewFirstDownloadedAudioListTileTextWidgetFinder =
+          find.text(firstDownloadedAudioTitle);
+
+      await tester.tap(
+          playlistDownloadViewFirstDownloadedAudioListTileTextWidgetFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Tapping 5 times on the forward 1 minute icon button. Now, the first
+      // downloaded audio of the playlist is partially listened.
+      for (int i = 0; i < 5; i++) {
+        await tester
+            .tap(find.byKey(const Key('audioPlayerViewForward1mButton')));
+        await tester.pumpAndSettle();
+      }
+
+      // Playing the first downloaded audio during 1 second.
+
+      await tester.tap(find.byIcon(Icons.play_arrow));
+      Future.delayed(const Duration(seconds: 1));
+      await tester.pumpAndSettle(const Duration(milliseconds: 1500));
+
+      // Click on the pause button to stop the first downloaded audio
+      await tester.tap(find.byIcon(Icons.pause));
+      await tester.pumpAndSettle();
+
+      // Now we want to tap on the audio downloaded after the first
+      // downloaded audio of the playlist in order to start playing
+      // it.
+
+      // First, go back to the playlist download view.
+      final Finder appScreenNavigationButton =
+          find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+      await tester.tap(appScreenNavigationButton);
+      await tester.pumpAndSettle();
+
+      // Then, get the second downloaded audio ListTile Text widget
+      // finder and tap on it
+      final Finder secondDownloadedAudioListTileTextWidgetFinder =
+          find.text(secondDownloadedAudioTitle);
+
+      await tester.tap(secondDownloadedAudioListTileTextWidgetFinder);
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+      // Now we tap on the play button in order to finish
+      // playing the audio downloaded after the first downloaded
+      // audio and start playing the first downloaded audio of the
+      // playlist.
+
+      await tester.tap(find.byIcon(Icons.play_arrow));
+      await Future.delayed(const Duration(seconds: 5));
+      await tester.pumpAndSettle();
+
+      // Click on the pause button to stop the first downloaded audio
+      await tester.tap(find.byIcon(Icons.pause));
+      await tester.pumpAndSettle();
+
+      // Verify the last downloaded played audio title
+      expect(find.text(lastDownloadedAudioTitleWithDuration), findsOneWidget);
+
+      // Ensure that the bug corrected on AudioPlayerVM on 06-06-2024
+      // no longer happens. This bug impacted the application during
+      // 3 weeks before it was discovered !!!!
+      final Finder audioPlayerViewAudioPositionFinder =
+          find.byKey(const Key('audioPlayerViewAudioPosition'));
+
+      IntegrationTestUtil.verifyPositionBetweenMinMax(
+        tester: tester,
+        textWidgetFinder: audioPlayerViewAudioPositionFinder,
+        minPositionTimeStr: '16:07',
+        maxPositionTimeStr: '16:12',
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    group("Test selecting 'Start' and 'End' checkbox", () {
+      testWidgets(
+          '''Using comment position button with deleting position field and checking
+          the 'Start' and 'End' checkboxes. Clicking on 'Ok' button will set the comment
+          start position to 0:00 and set the comment end position to the audio duration
+          value.''', (WidgetTester tester) async {
+        const String youtubePlaylistTitle = 'S8 audio'; // Youtube playlist
+        const String alreadyCommentedAudioTitle =
+            "Interview de Chat GPT  - IA, intelligence, philosophie, géopolitique, post-vérité...";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'audio_comment_test',
+          selectedPlaylistTitle: youtubePlaylistTitle,
+        );
+
+        // Then, get the ListTile Text widget finder of the already commented
+        // audio and tap on it to open the AudioPlayerView
+        final Finder alreadyCommentedAudioFinder =
+            find.text(alreadyCommentedAudioTitle);
+        await tester.tap(alreadyCommentedAudioFinder);
+        await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+          tester: tester,
+          additionalMilliseconds: 1000,
+        );
+
+        // Tap on the comment icon button to open the comment add list
+        // dialog
+        final Finder commentInkWellButtonFinder = find.byKey(
+          const Key('commentsInkWellButton'),
+        );
+
+        await tester.tap(commentInkWellButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Trying to avoid unregular integration test failure
+        await Future.delayed(const Duration(milliseconds: 100));
+
+        // Tap on the comment title text to edit the comment
+        String commentTitle = 'I did not thank ChatGPT';
+
+        await tester.tap(find.text(commentTitle));
+        await tester.pumpAndSettle();
+
+        // Now tap on select position text button to open the set
+        // value to target dialog enabling to modify the comment
+        // start or end position
+
+        final Finder openDefinePositionDialogTextButtonFinder =
+            find.byKey(const Key('selectCommentPositionTextButton'));
+
+        await tester.tap(openDefinePositionDialogTextButtonFinder);
+        await tester.pumpAndSettle();
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        // Verify that the TextField is focused using its focus node
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+        expect(textField.focusNode?.hasFocus, isTrue,
+            reason: 'TextField should be focused when dialog opens');
+
+        // Now empty the position in the dialog
+        String positionTextToEnterWithTenthOfSeconds = '';
+        textField.controller!.text = positionTextToEnterWithTenthOfSeconds;
+        await tester.pumpAndSettle();
+
+        // Select the first checkbox (Start position) and the second
+        // checkbox (End position)
+        await tester.tap(find.byKey(const Key('checkbox_0_key')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('checkbox_1_key')));
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set the new start and end positions in the
+        // comment previous dialog
+
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Check the modified comment start position in the comment dialog.
+
+        Finder commentStartTextWidgetFinder =
+            find.byKey(const Key('commentStartPositionText'));
+        expect(
+          tester.widget<Text>(commentStartTextWidgetFinder).data,
+          '0:00.0',
+        );
+
+        // Check the modified comment end position in the comment dialog.
+
+        Finder commentEndTextWidgetFinder =
+            find.byKey(const Key('commentEndPositionText'));
+
+        expect(
+          tester.widget<Text>(commentEndTextWidgetFinder).data,
+          "1:17:53.7",
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Using comment position button without deleting the 1:12:48.0 value contained
+          in the position field and checking the 'Start' and 'End' checkboxes. Clicking on
+          'Ok' button will set the comment start and end positions to 1:12:48.0.''',
+          (WidgetTester tester) async {
+        const String youtubePlaylistTitle = 'S8 audio'; // Youtube playlist
+        const String alreadyCommentedAudioTitle =
+            "Interview de Chat GPT  - IA, intelligence, philosophie, géopolitique, post-vérité...";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'audio_comment_test',
+          selectedPlaylistTitle: youtubePlaylistTitle,
+        );
+
+        // Then, get the ListTile Text widget finder of the already commented
+        // audio and tap on it to open the AudioPlayerView
+        final Finder alreadyCommentedAudioFinder =
+            find.text(alreadyCommentedAudioTitle);
+        await tester.tap(alreadyCommentedAudioFinder);
+        await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+          tester: tester,
+          additionalMilliseconds: 1000,
+        );
+
+        // Tap on the comment icon button to open the comment add list
+        // dialog
+        final Finder commentInkWellButtonFinder = find.byKey(
+          const Key('commentsInkWellButton'),
+        );
+
+        await tester.tap(commentInkWellButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Trying to avoid unregular integration test failure
+        await Future.delayed(const Duration(milliseconds: 100));
+
+        // Tap on the comment title text to edit the comment
+        String commentTitle = 'I did not thank ChatGPT';
+
+        await tester.tap(find.text(commentTitle));
+        await tester.pumpAndSettle();
+
+        // Now tap on select position text button to open the set
+        // value to target dialog enabling to modify the comment
+        // start or end position
+
+        final Finder openDefinePositionDialogTextButtonFinder =
+            find.byKey(const Key('selectCommentPositionTextButton'));
+
+        await tester.tap(openDefinePositionDialogTextButtonFinder);
+        await tester.pumpAndSettle();
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        // Verify that the TextField is focused using its focus node
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+        expect(textField.focusNode?.hasFocus, isTrue,
+            reason: 'TextField should be focused when dialog opens');
+
+        // Select the first checkbox (Start position) and the second
+        // checkbox (End position)
+        await tester.tap(find.byKey(const Key('checkbox_0_key')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('checkbox_1_key')));
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set the new start and end positions in the
+        // comment previous dialog
+
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Check the modified comment start position in the comment dialog.
+
+        Finder commentStartTextWidgetFinder =
+            find.byKey(const Key('commentStartPositionText'));
+        expect(
+          tester.widget<Text>(commentStartTextWidgetFinder).data,
+          '1:12:48.0',
+        );
+
+        // Check the modified comment end position in the comment dialog.
+
+        Finder commentEndTextWidgetFinder =
+            find.byKey(const Key('commentEndPositionText'));
+
+        expect(
+          tester.widget<Text>(commentEndTextWidgetFinder).data,
+          "1:12:48.0",
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Using comment position button with entering a negative value (-1:12:48.0) in
+          the position field and checking the 'Start' and 'End' checkboxes. Clicking on
+          'Ok' button will display a warning.''', (WidgetTester tester) async {
+        const String youtubePlaylistTitle = 'S8 audio'; // Youtube playlist
+        const String alreadyCommentedAudioTitle =
+            "Interview de Chat GPT  - IA, intelligence, philosophie, géopolitique, post-vérité...";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'audio_comment_test',
+          selectedPlaylistTitle: youtubePlaylistTitle,
+        );
+
+        // Then, get the ListTile Text widget finder of the already commented
+        // audio and tap on it to open the AudioPlayerView
+        final Finder alreadyCommentedAudioFinder =
+            find.text(alreadyCommentedAudioTitle);
+        await tester.tap(alreadyCommentedAudioFinder);
+        await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+          tester: tester,
+          additionalMilliseconds: 1000,
+        );
+
+        // Tap on the comment icon button to open the comment add list
+        // dialog
+        final Finder commentInkWellButtonFinder = find.byKey(
+          const Key('commentsInkWellButton'),
+        );
+
+        await tester.tap(commentInkWellButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Trying to avoid unregular integration test failure
+        await Future.delayed(const Duration(milliseconds: 100));
+
+        // Tap on the comment title text to edit the comment
+        String commentTitle = 'I did not thank ChatGPT';
+
+        await tester.tap(find.text(commentTitle));
+        await tester.pumpAndSettle();
+
+        // Now tap on select position text button to open the set
+        // value to target dialog enabling to modify the comment
+        // start or end position
+
+        final Finder openDefinePositionDialogTextButtonFinder =
+            find.byKey(const Key('selectCommentPositionTextButton'));
+
+        await tester.tap(openDefinePositionDialogTextButtonFinder);
+        await tester.pumpAndSettle();
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        // Verify that the TextField is focused using its focus node
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+        expect(textField.focusNode?.hasFocus, isTrue,
+            reason: 'TextField should be focused when dialog opens');
+
+        String positionTextToEnterWithTenthOfSeconds = '-1:12:48.0';
+        textField.controller!.text = positionTextToEnterWithTenthOfSeconds;
+        await tester.pumpAndSettle();
+
+        // Select the first checkbox (Start position) and the second
+        // checkbox (End position)
+        await tester.tap(find.byKey(const Key('checkbox_0_key')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('checkbox_1_key')));
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to verify that a warning is displayed
+        // since the entered value is negative
+
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Since the entered position is smaller than the audio start
+        // position (0:00), a warning will be displayed
+
+        // Verify the displayed warning or confirn dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "The entered value is below the minimal value (0:00.0). Please correct it and retry ...",
+          isWarningConfirming: false,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Using comment position button with entering a value totally too big
+          (50:12:48.0) in the position field and checking the 'Start' and 'End'
+          checkboxes. Clicking on 'Ok' button will display a warning.''',
+          (WidgetTester tester) async {
+        const String youtubePlaylistTitle = 'S8 audio'; // Youtube playlist
+        const String alreadyCommentedAudioTitle =
+            "Interview de Chat GPT  - IA, intelligence, philosophie, géopolitique, post-vérité...";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'audio_comment_test',
+          selectedPlaylistTitle: youtubePlaylistTitle,
+        );
+
+        // Then, get the ListTile Text widget finder of the already commented
+        // audio and tap on it to open the AudioPlayerView
+        final Finder alreadyCommentedAudioFinder =
+            find.text(alreadyCommentedAudioTitle);
+        await tester.tap(alreadyCommentedAudioFinder);
+        await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+          tester: tester,
+          additionalMilliseconds: 1000,
+        );
+
+        // Tap on the comment icon button to open the comment add list
+        // dialog
+        final Finder commentInkWellButtonFinder = find.byKey(
+          const Key('commentsInkWellButton'),
+        );
+
+        await tester.tap(commentInkWellButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Trying to avoid unregular integration test failure
+        await Future.delayed(const Duration(milliseconds: 100));
+
+        // Tap on the comment title text to edit the comment
+        String commentTitle = 'I did not thank ChatGPT';
+
+        await tester.tap(find.text(commentTitle));
+        await tester.pumpAndSettle();
+
+        // Now tap on select position text button to open the set
+        // value to target dialog enabling to modify the comment
+        // start or end position
+
+        final Finder openDefinePositionDialogTextButtonFinder =
+            find.byKey(const Key('selectCommentPositionTextButton'));
+
+        await tester.tap(openDefinePositionDialogTextButtonFinder);
+        await tester.pumpAndSettle();
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        // Verify that the TextField is focused using its focus node
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+        expect(textField.focusNode?.hasFocus, isTrue,
+            reason: 'TextField should be focused when dialog opens');
+
+        String positionTextToEnterWithTenthOfSeconds = '50:12:48.0';
+        textField.controller!.text = positionTextToEnterWithTenthOfSeconds;
+        await tester.pumpAndSettle();
+
+        // Select the first checkbox (Start position) and the second
+        // checkbox (End position)
+        await tester.tap(find.byKey(const Key('checkbox_0_key')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('checkbox_1_key')));
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to verify that a warning is displayed
+        // since the entered value is negative
+
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Since the entered position exceeds the audio total duration,
+        // a warning will be displayed, even if no start or end checkbox
+        // was checked ...
+
+        // Verify the displayed warning or confirn dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "The entered value exceeds the maximal value (1:17:51.7). Please correct it and retry ...",
+          isWarningConfirming: false,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
     group('Tests executable only with audioplayers 6.4.0 or higher', () {
       testWidgets(
           '''Verify that after typing once on the decrease end position comment button in very short

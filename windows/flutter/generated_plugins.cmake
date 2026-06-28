@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
   connectivity_plus
+  ffmpeg_kit_flutter_new
   flutter_tts
   permission_handler_windows
   screen_retriever_windows

@@ -770,9 +770,11 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
 
                     final double audioPlaySpeed =
                         widget.commentableAudio.audioPlaySpeed;
+                    bool areStartAndEndPositionCheckboxesChecked = false;
 
                     if (resultStringLst.length == 3 &&
                         resultStringLst[2] == '1') {
+                      areStartAndEndPositionCheckboxesChecked = true;
                       if (positionStr == '0:00.0') {
                         // The case if the user emptied the position field and
                         // checked the 'Start' ând 'End' position checkboxes.
@@ -805,15 +807,18 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                         // position field
                         commentVMlistenFalse.currentCommentStartPosition =
                             positionDuration;
-                        final int positionDurationInTenthOfseconds = (positionDuration.inMilliseconds *
-                                audioPlaySpeed /
-                                100)
-                            .round();
-                        _comment.commentStartPositionInTenthOfSeconds = positionDurationInTenthOfseconds;
+                        final int positionDurationInTenthOfseconds =
+                            (positionDuration.inMilliseconds *
+                                    audioPlaySpeed /
+                                    100)
+                                .round();
+                        _comment.commentStartPositionInTenthOfSeconds =
+                            positionDurationInTenthOfseconds;
 
                         commentVMlistenFalse.currentCommentEndPosition =
                             positionDuration;
-                        _comment.commentEndPositionInTenthOfSeconds = positionDurationInTenthOfseconds;
+                        _comment.commentEndPositionInTenthOfSeconds =
+                            positionDurationInTenthOfseconds;
                       }
                     } else if (checkboxIndexStr == '0') {
                       // The case when the Comment Start Position checkbox is checked.
@@ -840,7 +845,11 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
 
                     if (pointPosition != -1) {
                       // If the position contains a tenth of a second (e.g., 00:00:00.0).
-                      if (positionStr.substring(pointPosition + 1) != '0') {
+                      if (areStartAndEndPositionCheckboxesChecked) {
+                        _commentStartPositionChangedInTenthOfSeconds = true;
+                        _commentEndPositionChangedInTenthOfSeconds = true;
+                      } else if (positionStr.substring(pointPosition + 1) !=
+                          '0') {
                         if (checkboxIndexStr == '0') {
                           _commentStartPositionChangedInTenthOfSeconds = true;
                         } else if (checkboxIndexStr == '1') {

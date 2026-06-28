@@ -17573,6 +17573,22 @@ void main() {
           language: Language.english,
         );
 
+        // Tap the appbar leading popup menu button Then, the 'Get the latest
+        // download Date of the multiple Playlists restored Audios ...' menu
+        // is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+        );
+
+        expect(
+            find.text(
+                'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+            findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
+
         // Tap the appbar leading popup menu button Then, the 'Save
         // Playlists Audio's MP3 to ZIP File' menu is selected.
         await IntegrationTestUtil.typeOnAppbarMenuItem(
@@ -17652,6 +17668,9 @@ void main() {
             contains(
                 "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}audioLearn_mp3_from_2025-07-13_14_31_25_on_"));
 
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
+
         List<String> zipLst = DirUtil.listFileNamesInDir(
           directoryPath:
               "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
@@ -17675,6 +17694,23 @@ void main() {
           zipContentLst,
           expectedZipContentLst,
         );
+
+        // Tap the appbar leading popup menu button Then, the 'Get the latest
+        // download Date of the multiple Playlists restored Audios ...' menu
+        // is selected. Sincee the audios mp3 files were saved to a zip file,
+        // the latest download date was not changed.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+        );
+
+        expect(
+            find.text(
+                'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+            findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
@@ -34686,6 +34722,22 @@ void main() {
       await app.main();
       await tester.pumpAndSettle();
 
+      // Tap the appbar leading popup menu button Then, the 'Get the latest
+      // download Date of the multiple Playlists restored Audios ...' menu
+      // is selected.
+      await IntegrationTestUtil.typeOnAppbarMenuItem(
+        tester: tester,
+        appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+      );
+
+      expect(
+          find.text(
+              'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+          findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+      await tester.pumpAndSettle();
+
       // Replace the platform instance with your mock
       MockFilePicker mockFilePicker = MockFilePicker();
       FilePicker.platform = mockFilePicker;
@@ -34714,6 +34766,22 @@ void main() {
         isWarningConfirming: true,
         warningTitle: 'CONFIRMATION',
       );
+
+      // Tap the appbar leading popup menu button Then, the 'Get the latest
+      // download Date of the multiple Playlists restored Audios ...' menu
+      // is selected.
+      await IntegrationTestUtil.typeOnAppbarMenuItem(
+        tester: tester,
+        appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+      );
+
+      expect(
+          find.text(
+              'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+          findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+      await tester.pumpAndSettle();
 
       // Now creating a 'Playable' sort filter parmeter
       // in order to hide the not playable audios. After
@@ -34800,6 +34868,22 @@ void main() {
             .length,
         4,
       );
+
+      // Tap the appbar leading popup menu button Then, the 'Get the latest
+      // download Date of the multiple Playlists restored Audios ...' menu
+      // is selected.
+      await IntegrationTestUtil.typeOnAppbarMenuItem(
+        tester: tester,
+        appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+      );
+
+      expect(
+          find.text(
+              'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+          findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+      await tester.pumpAndSettle();
 
       // Purge the test playlist directory so that the created test
       // files are not uploaded to GitHub
@@ -35484,6 +35568,22 @@ void main() {
         await app.main();
         await tester.pumpAndSettle();
 
+        // Tap the appbar leading popup menu button Then, the 'Get the latest
+        // download Date of the multiple Playlists restored Audios ...' menu
+        // is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+        );
+
+        expect(
+            find.text(
+                'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+            findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
+
         // Replace the platform instance with your mock
         MockFilePicker mockFilePicker = MockFilePicker();
         FilePicker.platform = mockFilePicker;
@@ -35536,6 +35636,22 @@ void main() {
               "Restored 24 audio(s) MP3 in 2 playlist(s) from the multiple MP3 zip files contained in dir \"$mp3RestorableZipDirectory\".",
           isWarningConfirming: true,
         );
+
+        // Tap the appbar leading popup menu button Then, the 'Get the latest
+        // download Date of the multiple Playlists restored Audios ...' menu
+        // is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+        );
+
+        expect(
+            find.text(
+                'This is the latest download date/time of the multiple playlists restored audios: 20/10/2025 07:47.'),
+            findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
@@ -54920,8 +55036,9 @@ Future<void> _verifyDateFormatApplication({
   await tester.tap(find.byKey(const Key('setValueToTargetCancelButton')));
   await tester.pumpAndSettle();
 
-  // Tap the appbar leading popup menu button Then, the
-  // 'Get last Audio download Date' menu is selected.
+  // Tap the appbar leading popup menu button Then, the 'Get the latest
+  // download Date of the multiple Playlists restored Audios ...' menu
+  // is selected.
   await IntegrationTestUtil.typeOnAppbarMenuItem(
     tester: tester,
     appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
@@ -54929,7 +55046,7 @@ Future<void> _verifyDateFormatApplication({
 
   expect(
       find.text(
-          'This is the latest audio download date/time: $latestAudioDownloadDate 16:55.'),
+          'This is the latest download date/time of the multiple playlists restored audios: $latestAudioDownloadDate 16:55.'),
       findsOneWidget);
 
   await tester.tap(find.byKey(const Key('warningDialogOkButton')));

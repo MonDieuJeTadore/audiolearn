@@ -65,7 +65,7 @@ dependencies:
   volume_controller: ^3.4.0
   logger: ^2.6.2
   path_provider: ^2.1.5
-  ffmpeg_kit_flutter_new: ^4.2.1
+  ffmpeg_kit_flutter_new: ^4.3.2
   flutter_tts: ^4.2.5
   dtd: ^4.0.0
   flutter_lints: ^6.0.0

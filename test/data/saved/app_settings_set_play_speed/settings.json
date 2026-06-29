@@ -17,7 +17,7 @@
         "Playlists.orderedTitleLst": "[local, S8 audio]",
         "Playlists.playSpeed": "1.25",
         "Playlists.maxSavableAudioMp3FileSizeInMb": "525.0",
-        "Playlists.onWindowsPlayVolumeInPercentage": "55",
+        "Playlists.onWindowsPlayVolumeInPercentage": "2",
         "Playlists.latestGlobalRestoredAudioDate": "2000-01-01T00:00:00.000"
     },
     "SettingType.dataLocation": {

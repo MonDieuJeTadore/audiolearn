@@ -1,7 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:archive/archive.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
+
 import 'package:audiolearn/models/audio.dart';
 import 'package:audiolearn/models/picture.dart';
 import 'package:audiolearn/viewmodels/audio_download_vm.dart';
@@ -15,15 +20,9 @@ import 'package:audiolearn/views/widgets/audio_extractor_screen.dart';
 import 'package:audiolearn/views/widgets/audio_sort_filter_dialog.dart';
 import 'package:audiolearn/views/widgets/playlist_rename_dialog.dart';
 import 'package:audiolearn/views/widgets/set_value_to_target_dialog.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:intl/intl.dart';
-import 'package:path/path.dart' as path;
 import 'package:audiolearn/main.dart' as app;
-
 import 'package:audiolearn/constants.dart';
 import 'package:audiolearn/models/playlist.dart';
 import 'package:audiolearn/services/json_data_service.dart';

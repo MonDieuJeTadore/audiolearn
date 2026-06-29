@@ -2474,7 +2474,7 @@ class AudioDownloadVM extends ChangeNotifier {
   /// 320000		  320 kbps	excellent (MP3)
   int _chooseTargetKbpsFromSourceBps({
     required int? sourceBps,
-    int defaultKbps = 128,
+    int defaultKbps = 64,
   }) {
     if (sourceBps == null || sourceBps <= 0) {
       return defaultKbps;

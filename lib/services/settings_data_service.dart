@@ -85,7 +85,7 @@ class SettingsDataService {
       // This changes when the user clicks on the playlist toggle button.
       Playlists.arePlaylistsDisplayedInPlaylistDownloadView: true,
       Playlists.maxSavableAudioMp3FileSizeInMb: kMp3ZipFileSizeLimitInMb,
-      Playlists.onWindowsPlayVolumeInPercentage: kWindowsSystemVolume,
+      Playlists.onWindowsPlayVolumeInPercentage: kWindowsSystemVolume, // 2 (in constructor, if isTest is true)
 
       // Must be set as String and not as DateTime
       Playlists.latestGlobalRestoredAudioDate: DateTime(2000, 1, 1).toIso8601String(),
@@ -144,6 +144,7 @@ class SettingsDataService {
       _settings[SettingType.appPosition]![AppPosition.topY] = 25.0;
       _settings[SettingType.appPosition]![AppPosition.width] = 450.0;
       _settings[SettingType.appPosition]![AppPosition.height] = 850.0;
+      _settings[SettingType.playlists]![Playlists.onWindowsPlayVolumeInPercentage] = 2;
     }
   }
 

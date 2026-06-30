@@ -705,6 +705,14 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                         false, // Prevents the dialog from closing when tapping outside.
                     context: context,
                     builder: (BuildContext context) {
+                      int correctedTotalDuration = audioPlayerVMlistenFalse
+                              .currentAudioTotalDuration.inMicroseconds -
+                          2000000;
+
+                      if (correctedTotalDuration < 0) {
+                        correctedTotalDuration = 0;
+                      }
+
                       return SetValueToTargetDialog(
                         dialogTitle:
                             AppLocalizations.of(context)!.setCommentPosition,
@@ -726,10 +734,7 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                           '0:00.0',
                           // Uses the total duration from audioPlayerVM.
                           Duration(
-                                  microseconds: ((audioPlayerVMlistenFalse
-                                                  .currentAudioTotalDuration
-                                                  .inMicroseconds -
-                                              2000000) /
+                                  microseconds: (correctedTotalDuration /
                                           widget
                                               .commentableAudio.audioPlaySpeed)
                                       .round())

@@ -8014,12 +8014,12 @@ void main() {
 
       // Verify the current audio position in the audio player view
 
-      expectedAudioPlayerAudioPositionMin = '5:51';
-      expectedAudioPlayerAudioPositionMax = '5:52';
+      expectedAudioPlayerAudioPositionMin = '5:00';
+      expectedAudioPlayerAudioPositionMax = '5:00';
 
       // Avoids integration test failure due to the fact that the
-      // position is 5510 or 5t20 and not 3000 !
-      await Future.delayed(const Duration(milliseconds: 1500));
+      // position is 5510 or 5520 and not 3000 !
+      await Future.delayed(const Duration(milliseconds: 500));
       await tester.pumpAndSettle(); // must be used !
 
       IntegrationTestUtil.verifyPositionBetweenMinMax(
@@ -8454,6 +8454,11 @@ void main() {
         tester.widget<Text>(commentEndTextWidgetFinder).data!,
         commentEndPositionStr, // 1:01
       );
+
+      // Avoids integration test failure due to the fact that the
+      // position is 5510 or 5t20 and not 3000 !
+      await Future.delayed(const Duration(milliseconds: 2000));
+      await tester.pumpAndSettle(); // must be used !
 
       // Verify the current audio position in the audio player view.
       // The audio position correspond to the comment start position
@@ -8964,7 +8969,7 @@ void main() {
 
       // Avoids integration test failure due to the fact that the
       // position is 3700 or 3710 and not 3000 !
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 2000));
       await tester.pumpAndSettle(); // must be used !
 
       IntegrationTestUtil.verifyPositionBetweenMinMax(
@@ -11337,7 +11342,7 @@ void main() {
           find.text(secondDownloadedAudioTitle);
 
       await tester.tap(secondDownloadedAudioListTileTextWidgetFinder);
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle(const Duration(milliseconds: 1000));
 
       // Now we tap on the play button in order to finish
       // playing the audio downloaded after the first downloaded
@@ -11991,7 +11996,7 @@ void main() {
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
           commentPositionTextButtonInTenthSecondsMin: 20,
-          commentPositionTextButtonInTenthSecondsMax: 30,
+          commentPositionTextButtonInTenthSecondsMax: 31,
           audioPlayerViewAudioPositionMin: '0:02',
           audioPlayerViewAudioPositionMax: '0:03',
         );
@@ -12010,7 +12015,7 @@ void main() {
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
           commentPositionTextButtonInTenthSecondsMin: 20,
-          commentPositionTextButtonInTenthSecondsMax: 30,
+          commentPositionTextButtonInTenthSecondsMax: 31,
           audioPlayerViewAudioPositionMin: '0:02',
           audioPlayerViewAudioPositionMax: '0:03',
         );

@@ -12422,7 +12422,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Tap on the Ok button to set the comment end position to
-        // 1:17:20.8
+        // 38:40
 
         await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
         await tester.pumpAndSettle();
@@ -12434,7 +12434,7 @@ void main() {
 
         expect(
           tester.widget<Text>(commentEndTextWidgetFinder).data,
-          positionTextToEnterInSeconds, // '1:17:21'
+          positionTextToEnterInSeconds, // '38:40'
         );
 
         // Verify the value of the position text button which

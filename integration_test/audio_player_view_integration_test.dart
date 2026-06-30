@@ -12200,13 +12200,13 @@ void main() {
 
         String selectCommentPositionTextOfButton =
             tester.widget<Text>(selectCommentPositionTextOfButtonFinder).data!;
-        expect(selectCommentPositionTextOfButton, '1:12:48.0');
+        expect(selectCommentPositionTextOfButton, '2:25:36.0');
 
-        // Verify that the audio position is '1:12:48'
+        // Verify that the audio position is '2:25:36'
         Finder audioPositionTextWidgetFinder =
             find.byKey(const Key('audioPlayerViewAudioPosition'));
         expect(
-            tester.widget<Text>(audioPositionTextWidgetFinder).data, '1:12:48');
+            tester.widget<Text>(audioPositionTextWidgetFinder).data, '2:25:36');
 
         // Now click on the play button to play the comment
         await tester.tap(find.byKey(const Key('playPauseIconButton')));
@@ -12222,15 +12222,15 @@ void main() {
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
-          commentPositionTextButtonInTenthSecondsMin: 46344,
-          commentPositionTextButtonInTenthSecondsMax: 46349,
-          audioPlayerViewAudioPositionMin: '1:17:14',
-          audioPlayerViewAudioPositionMax: '1:17:15',
+          commentPositionTextButtonInTenthSecondsMin: 92657,
+          commentPositionTextButtonInTenthSecondsMax: 92670,
+          audioPlayerViewAudioPositionMin: '2:34:27',
+          audioPlayerViewAudioPositionMax: '2:34:27',
         );
 
         // Now type one time on the reduce end position button to
         // set the end position to 1:17:14. This will start the audio
-        // playback at 1:17:12 and stop it at 1:17:14.
+        // playback at 1:17:06 and stop it at 1:17:14.
         Finder reduceEndPositionButtonFinder = find.byKey(
           const Key('backwardCommentEndIconButton'),
         );
@@ -12239,7 +12239,7 @@ void main() {
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
         // Wait during 2 seconds to verify that the audio is not
-        // playing after the end position of the comment which was 1:17:15
+        // playing after the end position of the comment which was 1:17:14
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
 
@@ -12248,10 +12248,10 @@ void main() {
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
-          commentPositionTextButtonInTenthSecondsMin: 46333,
-          commentPositionTextButtonInTenthSecondsMax: 46339,
-          audioPlayerViewAudioPositionMin: '1:17:13',
-          audioPlayerViewAudioPositionMax: '1:17:14',
+          commentPositionTextButtonInTenthSecondsMin: 46340,
+          commentPositionTextButtonInTenthSecondsMax: 46351,
+          audioPlayerViewAudioPositionMin: '1:17:14',
+          audioPlayerViewAudioPositionMax: '1:17:15',
         );
 
         // Now click on the play button to play the comment
@@ -12259,7 +12259,7 @@ void main() {
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
         // Wait during 2 seconds to verify that the audio is not
-        // playing after the end position of the comment which was 1:17:15
+        // playing after the end position of the comment which was 1:17:14
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
 
@@ -12268,10 +12268,10 @@ void main() {
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
-          commentPositionTextButtonInTenthSecondsMin: 46333,
-          commentPositionTextButtonInTenthSecondsMax: 46339,
-          audioPlayerViewAudioPositionMin: '1:17:13',
-          audioPlayerViewAudioPositionMax: '1:17:14',
+          commentPositionTextButtonInTenthSecondsMin: 92657,
+          commentPositionTextButtonInTenthSecondsMax: 92670,
+          audioPlayerViewAudioPositionMin: '2:34:26',
+          audioPlayerViewAudioPositionMax: '2:34:26',
         );
 
         // Now update the comment
@@ -12298,7 +12298,7 @@ void main() {
         await IntegrationTestUtil.playComment(
           tester: tester,
           gestureDetectorsFinder: gestureDetectorsFinder,
-          itemIndex: 9, // Fourth comment of the audio on IA
+          itemIndex: 4, // Fourth comment of the audio on IA
           typeOnPauseAfterPlay: false,
           maxPlayDurationSeconds: 3,
         );
@@ -12317,7 +12317,7 @@ void main() {
         await IntegrationTestUtil.playComment(
           tester: tester,
           gestureDetectorsFinder: gestureDetectorsFinder,
-          itemIndex: 9, // Fourth comment of the audio on IA
+          itemIndex: 4, // Fourth comment of the audio on IA
           typeOnPauseAfterPlay: false,
           maxPlayDurationSeconds: 3,
         );

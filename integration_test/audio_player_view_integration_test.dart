@@ -8019,7 +8019,7 @@ void main() {
 
       // Avoids integration test failure due to the fact that the
       // position is 5510 or 5520 and not 3000 !
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 1500));
       await tester.pumpAndSettle(); // must be used !
 
       IntegrationTestUtil.verifyPositionBetweenMinMax(

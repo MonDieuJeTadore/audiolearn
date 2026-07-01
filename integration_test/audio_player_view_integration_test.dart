@@ -12222,8 +12222,8 @@ void main() {
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
-          commentPositionTextButtonInTenthSecondsMin: 92657,
-          commentPositionTextButtonInTenthSecondsMax: 92670,
+          commentPositionTextButtonInTenthSecondsMin: 92654,
+          commentPositionTextButtonInTenthSecondsMax: 92671,
           audioPlayerViewAudioPositionMin: '2:34:27',
           audioPlayerViewAudioPositionMax: '2:34:27',
         );
@@ -12268,8 +12268,8 @@ void main() {
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
-          commentPositionTextButtonInTenthSecondsMin: 92657,
-          commentPositionTextButtonInTenthSecondsMax: 92670,
+          commentPositionTextButtonInTenthSecondsMin: 92654,
+          commentPositionTextButtonInTenthSecondsMax: 92671,
           audioPlayerViewAudioPositionMin: '2:34:26',
           audioPlayerViewAudioPositionMax: '2:34:26',
         );

@@ -908,10 +908,18 @@ class AudioPlayerVM extends ChangeNotifier {
     }
   }
 
-  Future<void> pause() async {
+  /// [resetCommentEndPositionInTenthOfSeconds] set to false solves playing comment whose end position correspond
+  /// to the audio duration. In this case, the comment end position is not reset to -1 and the next audio does
+  /// not start playing.
+  Future<void> pause({
+    bool resetCommentEndPositionInTenthOfSeconds = true,
+  }) async {
     // Cancel comment timer when pausing
     _cancelCommentEndTimer();
-    _commentEndPositionInTenthOfSeconds = -1;
+
+    if (resetCommentEndPositionInTenthOfSeconds) {
+      _commentEndPositionInTenthOfSeconds = -1;
+    }
 
     if (_wasAudioPlayersStopped) {
       // Avoid executing _audioPlayer!.stop() several times, which

@@ -521,7 +521,7 @@ class _CommentListAddDialogContentState
     // Skip if no comment is playing
     if (_playingComment == null) return;
 
-    final audioPlayerVM = Provider.of<AudioPlayerVM>(context, listen: false);
+    final audioPlayerVMlistenFalse = Provider.of<AudioPlayerVM>(context, listen: false);
     final currentAudio = widget.currentAudio;
     final currentAudioPosition = _positionNotifier?.value;
 
@@ -531,7 +531,7 @@ class _CommentListAddDialogContentState
     // This is the same code from your ValueListenableBuilder
     // When the current comment end position is reached, schedule a pause
     if (_playingComment != null &&
-        audioPlayerVM.isPlaying &&
+        audioPlayerVMlistenFalse.isPlaying &&
         (currentAudioPosition >=
                 Duration(
                   milliseconds:
@@ -550,7 +550,10 @@ class _CommentListAddDialogContentState
       // You cannot await here, but you can trigger an
       // action which will not block the widget tree rendering.
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        audioPlayerVM.pause();
+        audioPlayerVMlistenFalse.pause(
+          resetCommentEndPositionInTenthOfSeconds: false, // Solves playing comment
+          //                                   whose end position is audio duration
+        );
       });
     }
   }
@@ -886,8 +889,9 @@ class _CommentListAddDialogContentState
       );
 
       widgetsLst.add(
-        GestureDetector( // This GestureDetector allows to click anywhere on the comment
-        //                  item to edit the comment, not just on the title
+        GestureDetector(
+          // This GestureDetector allows to click anywhere on the comment
+          //                  item to edit the comment, not just on the title
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1032,7 +1036,10 @@ class _CommentListAddDialogContentState
                           // rendering.
                           WidgetsBinding.instance
                               .addPostFrameCallback((_) async {
-                            await audioPlayerVMlistenFalse.pause();
+                            await audioPlayerVMlistenFalse.pause(
+                              resetCommentEndPositionInTenthOfSeconds: false, // Solves playing
+                              //                   comment whose end position is audio duration
+                            );
                           });
                         }
 

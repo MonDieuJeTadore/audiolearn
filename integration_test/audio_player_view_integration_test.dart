@@ -12410,7 +12410,7 @@ void main() {
         );
 
         // Now set the position field in the dialog
-        String positionTextToEnterInSeconds = '1:17:20.8';
+        String positionTextToEnterInSeconds = '38:40';
         tester
             .widget<TextField>(setValueToTargetDialogEditTextFinder)
             .controller!
@@ -12452,13 +12452,13 @@ void main() {
 
         String selectCommentPositionTextOfButton =
             tester.widget<Text>(selectCommentPositionTextOfButtonFinder).data!;
-        expect(selectCommentPositionTextOfButton, '1:12:48.0');
+        expect(selectCommentPositionTextOfButton, '36:24.0');
 
         // Verify that the audio position is '1:12:48'
         Finder audioPositionTextWidgetFinder =
             find.byKey(const Key('audioPlayerViewAudioPosition'));
         expect(
-            tester.widget<Text>(audioPositionTextWidgetFinder).data, '1:12:48');
+            tester.widget<Text>(audioPositionTextWidgetFinder).data, '36:24');
 
         // Now click on the play button to play the comment
         await tester.tap(find.byKey(const Key('playPauseIconButton')));
@@ -12474,10 +12474,10 @@ void main() {
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
-          commentPositionTextButtonInTenthSecondsMin: 46366, // why not 46408
-          commentPositionTextButtonInTenthSecondsMax: 46392,
-          audioPlayerViewAudioPositionMin: '1:17:18',
-          audioPlayerViewAudioPositionMax: '1:17:19',
+          commentPositionTextButtonInTenthSecondsMin: 23183, // why not 46408
+          commentPositionTextButtonInTenthSecondsMax: 23199,
+          audioPlayerViewAudioPositionMin: '38:39',
+          audioPlayerViewAudioPositionMax: '38:40',
         );
 
         // Type on the left checkbox to change duration from 1 tenth
@@ -12509,10 +12509,10 @@ void main() {
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
-          commentPositionTextButtonInTenthSecondsMin: 46348,
-          commentPositionTextButtonInTenthSecondsMax: 46386,
-          audioPlayerViewAudioPositionMin: '1:17:18', // totalement illogique !
-          audioPlayerViewAudioPositionMax: '1:17:19',
+          commentPositionTextButtonInTenthSecondsMin: 23174,
+          commentPositionTextButtonInTenthSecondsMax: 23198,
+          audioPlayerViewAudioPositionMin: '38:39', // totalement illogique !
+          audioPlayerViewAudioPositionMax: '38:40',
         );
 
         // Now click on the play button to play the comment
@@ -12529,10 +12529,10 @@ void main() {
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
-          commentPositionTextButtonInTenthSecondsMin: 46348,
-          commentPositionTextButtonInTenthSecondsMax: 46386,
-          audioPlayerViewAudioPositionMin: '1:17:16', // totalement illogique !
-          audioPlayerViewAudioPositionMax: '1:17:17',
+          commentPositionTextButtonInTenthSecondsMin: 23174,
+          commentPositionTextButtonInTenthSecondsMax: 23198,
+          audioPlayerViewAudioPositionMin: '38:39', // totalement illogique !
+          audioPlayerViewAudioPositionMax: '38:40',
         );
 
         // Now update the comment
@@ -12559,7 +12559,7 @@ void main() {
         await IntegrationTestUtil.playComment(
           tester: tester,
           gestureDetectorsFinder: gestureDetectorsFinder,
-          itemIndex: 9, // Fourth comment of the audio on IA
+          itemIndex: 4, // Fourth comment of the audio on IA
           typeOnPauseAfterPlay: false,
           maxPlayDurationSeconds: 3,
         );
@@ -12578,7 +12578,7 @@ void main() {
         await IntegrationTestUtil.playComment(
           tester: tester,
           gestureDetectorsFinder: gestureDetectorsFinder,
-          itemIndex: 9, // Fourth comment of the audio on IA
+          itemIndex: 4, // Fourth comment of the audio on IA
           typeOnPauseAfterPlay: false,
           maxPlayDurationSeconds: 3,
         );

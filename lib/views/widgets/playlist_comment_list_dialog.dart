@@ -548,7 +548,10 @@ class _PlaylistCommentListDialogState extends State<PlaylistCommentListDialog>
                           // rendering.
                           WidgetsBinding.instance
                               .addPostFrameCallback((_) async {
-                            await audioPlayerVMlistenFalse.pause();
+                            await audioPlayerVMlistenFalse.pause(
+                              resetCommentEndPositionInTenthOfSeconds: false, // Solves playing
+                              //                   comment whose end position is audio duration
+                            );
                           });
                         }
 

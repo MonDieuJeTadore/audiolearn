@@ -12282,7 +12282,7 @@ void main() {
         ));
 
         // Find all the list items GestureDetector's
-        final Finder gestureDetectorsFinder = find.descendant(
+        Finder gestureDetectorsFinder = find.descendant(
             // 3 GestureDetector per comment item
             of: audioCommentsLstFinder,
             matching: find.byType(GestureDetector));
@@ -12319,6 +12319,95 @@ void main() {
         // Wait during 2 seconds to verify that the audio is not
         // playing after the end position of the comment which was 1:17:15
         await Future.delayed(const Duration(seconds: 2));
+        await tester.pumpAndSettle();
+
+        // Now close the comment list dialog
+        await tester.tap(find.byKey(const Key('closeDialogTextButton')));
+        await tester.pumpAndSettle();
+
+        // Now we go back to the PlayListDownloadView in order
+        // to open the playlist comment dialog
+        Finder playlistDownloadNavButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(playlistDownloadNavButton);
+        await tester.pumpAndSettle();
+
+        // First, open the playlist comment dialog
+        Finder playlistCommentListDialogFinder =
+            await IntegrationTestUtil.openPlaylistCommentDialog(
+          tester: tester,
+          playlistTitle: youtubePlaylistTitle,
+        );
+
+        // Now delete the 'Two' comment
+
+        await _deleteComment(
+          tester: tester,
+          commentTitle: 'Two',
+        );
+
+        // Now delete the 'Three' comment
+
+        await _deleteComment(
+          tester: tester,
+          commentTitle: 'Three',
+        );
+
+        // Now delete the 'I did not thank ChatGPT' comment
+
+        await _deleteComment(
+          tester: tester,
+          commentTitle: 'I did not thank ChatGPT',
+        );
+
+        // Find the list of comments in the playlist comment dialog
+        final Finder listFinder = find.descendant(
+            of: playlistCommentListDialogFinder,
+            matching: find.byType(ListBody));
+
+        // Find all the list items GestureDetector's
+        gestureDetectorsFinder = find.descendant(
+            // 3 GestureDetector per comment item
+            of: listFinder,
+            matching: find.byType(GestureDetector));
+
+        // Now tap on the play icon button of the unique comment of the second
+        // audio in order to play it completely
+        await IntegrationTestUtil.playComment(
+          tester: tester,
+          gestureDetectorsFinder: gestureDetectorsFinder,
+          itemIndex: 4,
+          typeOnPauseAfterPlay: false,
+          maxPlayDurationSeconds: 3,
+        );
+
+        await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+        // Wait during 2 seconds to verify that the audio is not
+        // playing after the end position of the comment which was 1:17:15
+        await Future.delayed(const Duration(seconds: 2));
+        await tester.pumpAndSettle();
+
+        // Now tap a second time on the play icon button of the fourth audio comment
+        // in order to restart playing it
+        await IntegrationTestUtil.playComment(
+          tester: tester,
+          gestureDetectorsFinder: gestureDetectorsFinder,
+          itemIndex: 4, // Fourth comment of the audio on IA
+          typeOnPauseAfterPlay: false,
+          maxPlayDurationSeconds: 3,
+        );
+
+        await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+        // Wait during 2 seconds to verify that the audio is not
+        // playing after the end position of the comment which was 1:17:15
+        await Future.delayed(const Duration(seconds: 2));
+        await tester.pumpAndSettle();
+
+        // Tap on Close text button
+        await tester.tap(
+            find.byKey(const Key('playlistCommentListCloseDialogTextButton')));
         await tester.pumpAndSettle();
 
         // Purge the test playlist directory so that the created test

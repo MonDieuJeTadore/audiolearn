@@ -11795,7 +11795,7 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "The entered value exceeds the maximal value (1:17:51.7). Please correct it and retry ...",
+              "The entered value exceeds the maximal value (1:17:53.7). Please correct it and retry ...",
           isWarningConfirming: false,
         );
 

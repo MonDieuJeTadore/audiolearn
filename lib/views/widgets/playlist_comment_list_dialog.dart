@@ -549,8 +549,9 @@ class _PlaylistCommentListDialogState extends State<PlaylistCommentListDialog>
                           WidgetsBinding.instance
                               .addPostFrameCallback((_) async {
                             await audioPlayerVMlistenFalse.pause(
-                              resetCommentEndPositionInTenthOfSeconds: false, // Solves playing
-                              //                   comment whose end position is audio duration
+                              resetCommentEndPositionInTenthOfSeconds:
+                                  false, // Solves playing comment whose
+                              //            end position is audio duration
                             );
                           });
                         }
@@ -822,7 +823,9 @@ class _PlaylistCommentListDialogState extends State<PlaylistCommentListDialog>
       rewindAudioPositionBasedOnPauseDuration: false,
       // data used by the AudioPlayerVM Timer
       commentEndPositionInTenthOfSeconds:
-          comment.commentEndPositionInTenthOfSeconds,
+          (comment.commentEndPositionInTenthOfSeconds /
+                  currentAudio.audioPlaySpeed)
+              .round(),
     );
   }
 

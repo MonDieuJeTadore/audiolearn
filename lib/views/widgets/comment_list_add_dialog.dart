@@ -521,7 +521,8 @@ class _CommentListAddDialogContentState
     // Skip if no comment is playing
     if (_playingComment == null) return;
 
-    final audioPlayerVMlistenFalse = Provider.of<AudioPlayerVM>(context, listen: false);
+    final audioPlayerVMlistenFalse =
+        Provider.of<AudioPlayerVM>(context, listen: false);
     final currentAudio = widget.currentAudio;
     final currentAudioPosition = _positionNotifier?.value;
 
@@ -551,8 +552,9 @@ class _CommentListAddDialogContentState
       // action which will not block the widget tree rendering.
       WidgetsBinding.instance.addPostFrameCallback((_) {
         audioPlayerVMlistenFalse.pause(
-          resetCommentEndPositionInTenthOfSeconds: false, // Solves playing comment
-          //                                   whose end position is audio duration
+          resetCommentEndPositionInTenthOfSeconds:
+              false, // Solves playing comment whose
+          //            end position is audio duration
         );
       });
     }
@@ -1037,8 +1039,9 @@ class _CommentListAddDialogContentState
                           WidgetsBinding.instance
                               .addPostFrameCallback((_) async {
                             await audioPlayerVMlistenFalse.pause(
-                              resetCommentEndPositionInTenthOfSeconds: false, // Solves playing
-                              //                   comment whose end position is audio duration
+                              resetCommentEndPositionInTenthOfSeconds:
+                                  false, // Solves playing comment whose
+                              //            end position is audio duration
                             );
                           });
                         }
@@ -1330,7 +1333,9 @@ class _CommentListAddDialogContentState
     await audioPlayerVMlistenFalse.playCurrentAudio(
       rewindAudioPositionBasedOnPauseDuration: false,
       commentEndPositionInTenthOfSeconds:
-          comment.commentEndPositionInTenthOfSeconds,
+          (comment.commentEndPositionInTenthOfSeconds /
+                  currentAudio.audioPlaySpeed)
+              .round(),
     );
   }
 

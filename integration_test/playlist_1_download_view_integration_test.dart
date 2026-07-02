@@ -20880,7 +20880,7 @@ void main() {
     });
     testWidgets(
         '''Delete comment in audio containing only one comment using the playlist
-                comment dialog.''', (WidgetTester tester) async {
+           comment dialog.''', (WidgetTester tester) async {
       const String youtubePlaylistTitle = 'S8 audio'; // Youtube playlist
 
       await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
@@ -20943,9 +20943,11 @@ void main() {
 
       // Now delete the 'Comment Jancovici' comment
 
+      final String commentTitle = 'Comment Jancovici';
+
       // Find the comment item in the playlist comments list dialog
       final Finder rowWithCommentFinder = find.ancestor(
-        of: find.text('Comment Jancovici'),
+        of: find.text(commentTitle),
         matching: find.byType(Row), // or whatever container widget is used
       );
       final Finder deleteCommentIconButtonFinder = find
@@ -20959,8 +20961,6 @@ void main() {
 
       // Verify the delete comment dialog title
       expect(find.text('Delete Comment'), findsOneWidget);
-
-      final String commentTitle = 'Comment Jancovici';
 
       // Verify the delete comment dialog message
       expect(find.text("Deleting comment \"$commentTitle\"."), findsOneWidget);
@@ -21279,7 +21279,7 @@ void main() {
     });
     testWidgets(
         '''Click on the SF checkbox of the playlist comment dialog in order
-               to remove the impact of the applied playlist soer/filter parameters on
+               to remove the impact of the applied playlist sort/filter parameters on
                the audios and their comments listed in the playlist comment dialog.''',
         (WidgetTester tester) async {
       const String playlistTitle = '1 long music'; // Youtube playlist

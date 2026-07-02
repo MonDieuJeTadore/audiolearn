@@ -705,14 +705,6 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                         false, // Prevents the dialog from closing when tapping outside.
                     context: context,
                     builder: (BuildContext context) {
-                      int correctedTotalDuration = audioPlayerVMlistenFalse
-                              .currentAudioTotalDuration.inMicroseconds -
-                          2000000;
-
-                      if (correctedTotalDuration < 0) {
-                        correctedTotalDuration = 0;
-                      }
-
                       return SetValueToTargetDialog(
                         dialogTitle:
                             AppLocalizations.of(context)!.setCommentPosition,
@@ -732,15 +724,6 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                           // This duration string is used if the user empties the position field
                           // and check the 'Start' position checkbox.
                           '0:00.0',
-                          // Uses the total duration from audioPlayerVM.
-                          Duration(
-                                  microseconds: (correctedTotalDuration /
-                                          widget
-                                              .commentableAudio.audioPlaySpeed)
-                                      .round())
-                              .HHmmssZeroHH(
-                            addRemainingOneDigitTenthOfSecond: true,
-                          ),
                           // This duration string is used if the user empties the position field
                           // and check the 'End' position checkbox.
                           Duration(
@@ -892,7 +875,6 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
   ///                   );
   InvalidValueState validateEnteredValueFunction(
     String minDurationStr,
-    String maxStartDurationStr,
     String maxEndDurationStr,
     String enteredTimeStr,
     bool isStartCheckBoxChecked,
@@ -900,16 +882,8 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
     int minDurationInTenthsOfSeconds =
         DateTimeUtil.convertToTenthsOfSeconds(timeString: minDurationStr);
 
-    int maxDurationInTenthsOfSeconds;
-
-    if (isStartCheckBoxChecked) {
-      maxDurationInTenthsOfSeconds = DateTimeUtil.convertToTenthsOfSeconds(
-          timeString: maxStartDurationStr);
-    } else {
-      // If the end position checkbox is checked, we use the max end duration.
-      maxDurationInTenthsOfSeconds =
-          DateTimeUtil.convertToTenthsOfSeconds(timeString: maxEndDurationStr);
-    }
+    int maxDurationInTenthsOfSeconds =
+        DateTimeUtil.convertToTenthsOfSeconds(timeString: maxEndDurationStr);
 
     int enteredTimeInTenthsOfSeconds =
         DateTimeUtil.convertToTenthsOfSeconds(timeString: enteredTimeStr);

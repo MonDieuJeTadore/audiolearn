@@ -345,7 +345,7 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
       } else if (_checkboxesLst[0]) {
         maxValueLimitStr = widget.validationFunctionArgs[1].toString();
       } else {
-        maxValueLimitStr = widget.validationFunctionArgs[2].toString();
+        maxValueLimitStr = widget.validationFunctionArgs[1].toString();
       }
     }
 

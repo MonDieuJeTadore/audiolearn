@@ -12302,7 +12302,7 @@ void main() {
         // Wait during 2 seconds to verify that the audio is not
         // playing after the end position of the comment which was 1:17:15
         await Future.delayed(const Duration(seconds: 2));
-        await tester.pumpAndSettle(const Duration(milliseconds: 1000));
+        await tester.pumpAndSettle();
 
         // Now tap a second time on the play icon button of the fourth audio comment
         // in order to restart playing it
@@ -12319,7 +12319,7 @@ void main() {
         // Wait during 2 seconds to verify that the audio is not
         // playing after the end position of the comment which was 1:17:15
         await Future.delayed(const Duration(seconds: 2));
-        await tester.pumpAndSettle(const Duration(milliseconds: 1000));
+        await tester.pumpAndSettle();
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub

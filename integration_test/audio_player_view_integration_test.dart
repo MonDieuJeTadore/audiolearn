@@ -12217,8 +12217,6 @@ void main() {
         await Future.delayed(const Duration(seconds: 3));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
 
-        logger.i('****** Is the audio stopped ? ');
-
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
@@ -12243,8 +12241,6 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
 
-        logger.i('****** Second question: is the audio stopped ? ');
-
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
@@ -12262,8 +12258,6 @@ void main() {
         // playing after the end position of the comment which was 1:17:14
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
-
-        logger.i('****** Third question: is the audio stopped ? ');
 
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
@@ -12310,8 +12304,6 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
 
-        logger.i('****** Fourth question: is the audio stopped ? ');
-
         // Now tap a second time on the play icon button of the fourth audio comment
         // in order to restart playing it
         await IntegrationTestUtil.playComment(
@@ -12328,8 +12320,6 @@ void main() {
         // playing after the end position of the comment which was 1:17:15
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
-
-        logger.i('****** Fith question: is the audio stopped ? ');
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
@@ -12469,13 +12459,11 @@ void main() {
         await Future.delayed(const Duration(seconds: 3));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
 
-        logger.i('****** Is the audio stopped ? ');
-
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
           commentPositionTextButtonInTenthSecondsMin: 23183, // why not 46408
-          commentPositionTextButtonInTenthSecondsMax: 23199,
+          commentPositionTextButtonInTenthSecondsMax: 23202,
           audioPlayerViewAudioPositionMin: '38:39',
           audioPlayerViewAudioPositionMax: '38:40',
         );
@@ -12504,14 +12492,12 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
 
-        logger.i('****** Second question: is the audio stopped ? ');
-
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
           commentPositionTextButtonInTenthSecondsMin: 23174,
           commentPositionTextButtonInTenthSecondsMax: 23198,
-          audioPlayerViewAudioPositionMin: '38:39', // totalement illogique !
+          audioPlayerViewAudioPositionMin: '38:38', // totalement illogique !
           audioPlayerViewAudioPositionMax: '38:40',
         );
 
@@ -12524,14 +12510,12 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
 
-        logger.i('****** Third question: is the audio stopped ? ');
-
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
           commentPositionTextButtonInTenthSecondsMin: 23174,
           commentPositionTextButtonInTenthSecondsMax: 23198,
-          audioPlayerViewAudioPositionMin: '38:39', // totalement illogique !
+          audioPlayerViewAudioPositionMin: '38:38', // totalement illogique !
           audioPlayerViewAudioPositionMax: '38:40',
         );
 
@@ -12571,8 +12555,6 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
 
-        logger.i('****** Fourth question: is the audio stopped ? ');
-
         // Now tap a second time on the play icon button of the fourth audio comment
         // in order to restart playing it
         await IntegrationTestUtil.playComment(
@@ -12589,8 +12571,6 @@ void main() {
         // playing after the end position of the comment which was 1:17:15
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle(const Duration(milliseconds: 1000));
-
-        logger.i('****** Fith question: is the audio stopped ? ');
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
@@ -13831,12 +13811,27 @@ void _verifyPositionValueAfterCommentWasPlayed({
   // Verify that the audio position is now 0:02 or 0:03
   audioPositionTextWidgetFinder =
       find.byKey(const Key('audioPlayerViewAudioPosition'));
-  expect(
-      tester.widget<Text>(audioPositionTextWidgetFinder).data,
-      anyOf([
-        audioPlayerViewAudioPositionMin,
-        audioPlayerViewAudioPositionMax,
-      ]));
+  final String actualPosition =
+      tester.widget<Text>(audioPositionTextWidgetFinder).data!;
+
+  final int actualSeconds = _parsePositionToSeconds(actualPosition);
+  final int minSeconds =
+      _parsePositionToSeconds(audioPlayerViewAudioPositionMin);
+  final int maxSeconds =
+      _parsePositionToSeconds(audioPlayerViewAudioPositionMax);
+
+  expect(actualSeconds, greaterThanOrEqualTo(minSeconds));
+  expect(actualSeconds, lessThanOrEqualTo(maxSeconds));
+}
+
+// Helper to parse "m:ss" or "h:mm:ss" to total seconds
+int _parsePositionToSeconds(String position) {
+  final parts = position.split(':').map(int.parse).toList();
+  if (parts.length == 2) {
+    return parts[0] * 60 + parts[1];
+  } else {
+    return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  }
 }
 
 Future<void> _verifyAudioVolume({

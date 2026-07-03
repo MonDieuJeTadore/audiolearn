@@ -14021,8 +14021,14 @@ void _verifyPositionValueAfterCommentWasPlayed({
   final int maxSeconds =
       _parsePositionToSeconds(audioPlayerViewAudioPositionMax);
 
-  expect(actualSeconds, greaterThanOrEqualTo(minSeconds));
-  expect(actualSeconds, lessThanOrEqualTo(maxSeconds));
+  expect(
+      actualSeconds,
+      inInclusiveRange(
+        minSeconds,
+        maxSeconds,
+      ),
+      reason:
+          'Real audio position text value is $actualPosition, expected between $audioPlayerViewAudioPositionMin and $audioPlayerViewAudioPositionMax');
 }
 
 // Helper to parse "m:ss" or "h:mm:ss" to total seconds

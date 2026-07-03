@@ -121,19 +121,14 @@ class IntegrationTestUtil {
     int expectedMaxPositionTenthSeconds =
         DateTimeUtil.convertToTenthsOfSeconds(timeString: maxPositionTimeStr);
 
-    IntegrationTestUtil.expectWithSuccessMessage(
-      actual: actualPositionTenthOfSeconds,
-      matcher: allOf(
-        [
-          greaterThanOrEqualTo(expectedMinPositionTenthSeconds),
-          lessThanOrEqualTo(expectedMaxPositionTenthSeconds),
-        ],
+    expect(
+      actualPositionTenthOfSeconds,
+      inInclusiveRange(
+        expectedMinPositionTenthSeconds,
+        expectedMaxPositionTenthSeconds,
       ),
       reason:
-          "Expected value between $expectedMinPositionTenthSeconds and $expectedMaxPositionTenthSeconds but obtained $actualPositionTenthOfSeconds",
-      successMessage:
-          "Acceptable position between $minPositionTimeStr and $maxPositionTimeStr is $actualPositionTimeString",
-    );
+          'Real audio position text value is $actualPositionTimeString, expected between $minPositionTimeStr and $maxPositionTimeStr');
   }
 
   /// Verify that the position displayed in the {textWidgetFinder} text

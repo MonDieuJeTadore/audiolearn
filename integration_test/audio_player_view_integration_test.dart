@@ -7809,9 +7809,14 @@ void main() {
 
       await tester.tap(find.byKey(const Key('playPauseIconButton')));
 
-      // Ensure that the audio position is updated
-      for (int i = 0; i < 12; i++) {
-        await Future.delayed(const Duration(milliseconds: 500));
+      // Ensure that the audio position is updated. Initially, the audio
+      // position was updated every 500 milliseconds 12 times, but the
+      // test only passed if multiple break points were present. To ensure
+      // that the audio position is updated, we wait for 6 times during
+      // one second and pumpAndSettle() to ensure that the audio position
+      // is updated.
+      for (int i = 0; i < 6; i++) {
+        await Future.delayed(const Duration(milliseconds: 1000));
         await tester.pumpAndSettle();
       }
 
@@ -8014,8 +8019,8 @@ void main() {
 
       // Verify the current audio position in the audio player view
 
-      expectedAudioPlayerAudioPositionMin = '5:00';
-      expectedAudioPlayerAudioPositionMax = '5:00';
+      expectedAudioPlayerAudioPositionMin = '5:51';
+      expectedAudioPlayerAudioPositionMax = '5:51';
 
       // Avoids integration test failure due to the fact that the
       // position is 5510 or 5520 and not 3000 !

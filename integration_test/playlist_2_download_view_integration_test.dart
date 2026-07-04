@@ -52819,6 +52819,117 @@ void main() {
       });
     });
   });
+  group('Rewind all Audios to Start test', () {
+    testWidgets(
+        '''On Prières 4 playlist, rewind all Audios to Start. The Chap desc sort/filter
+                   parameters is applied to the playlist.''',
+        (WidgetTester tester) async {
+      const String selectedPlaylistTitle = 'Prières 4';
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'playlist_info_test',
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        tapOnPlaylistToggleButton: false,
+      );
+
+      // Find the audio list widget using its key
+      Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll down action
+      await tester.drag(listFinder, const Offset(0, -300));
+      await tester.pumpAndSettle();
+
+      // Tap on "1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'"
+      // to open the audio player view
+      const String audioTitleToSetToEnd =
+          "1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'";
+
+      // First, find the Audio sublist ListTile Text widget
+      Finder audioTitleFinder = find.text(audioTitleToSetToEnd);
+
+      // Type on the audio title to open the audio player view
+      await tester.tap(audioTitleFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Then skip to the end of the audio to set it as fully played
+      await tester.tap(find.byKey(const Key('audioPlayerViewSkipToEndButton')));
+      await tester.pumpAndSettle();
+
+      // Now, go back to the playlist download view
+      Finder audioPlayerNavButtonFinder =
+          find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+      await tester.tap(audioPlayerNavButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Find the audio list widget using its key
+      listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll down action
+      await tester.drag(listFinder, const Offset(0, 5000));
+      await tester.pumpAndSettle();
+
+      // Tap on "1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'"
+      // to open the audio player view
+      String audioTitleToSelect =
+          "41_Dédier une ou deux heures par jour à une vraie vie spirituelle";
+
+      // First, find the Audio sublist ListTile Text widget
+      audioTitleFinder = find.text(audioTitleToSelect);
+
+      // Type on the audio title to open the audio player view
+      await tester.tap(audioTitleFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Now, go back to the playlist download view
+      audioPlayerNavButtonFinder =
+          find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+      await tester.tap(audioPlayerNavButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Execute the 'Rewind all Audios to Start' playlist menu item
+      await IntegrationTestUtil.typeOnPlaylistMenuItem(
+        tester: tester,
+        playlistTitle: selectedPlaylistTitle,
+        playlistMenuKeyStr: 'popup_menu_rewind_audio_to_start',
+      );
+
+      // Verify the displayed confirmation dialog content
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage: "41 playlist audios were repositioned to start and the first listenable audio was selected.",
+        isWarningConfirming: true,
+      );
+
+      // Find the audio list widget using its key
+      listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll down action
+      await tester.drag(listFinder, const Offset(0, -300));
+      await tester.pumpAndSettle();
+
+      // Verify that the first listenable audio is now selected
+      const String firstListenableAudioTitle =
+          "1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'";
+      const String firstListenableAudioSubTitle =
+          "0:02:39.6 2.59 MB at 502.3 KB/sec on 11/02/2025 at 09:00";
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: firstListenableAudioTitle,
+          currentAudioSubTitle: firstListenableAudioSubTitle,
+        );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
 }
 
 Future<void> verifyCommentAndReturnToPlaylistDownloadView({

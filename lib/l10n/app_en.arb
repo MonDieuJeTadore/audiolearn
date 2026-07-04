@@ -260,7 +260,7 @@
   "deletedSortFilterParameterNotExistWarning": "The sort/filter parameter you try to delete does not exist. Please define an existing sort/filter parameter and retry ...",
   "historicalSortFilterParameterWasDeletedWarning": "The historical sort/filter parameter was deleted.",
   "allHistoricalSortFilterParameterWereDeletedWarning": "All historical sort/filter parameters were deleted.",
-  "allHistoricalSortFilterParametersDeleteConfirmation": "Deleting all historical sort/filter parameters.",
+  "allHistoricalSortFilterParametersDeleteConfirmation": "Deleting all historical unamed sort/filter parameters.",
   "playlistRootPathNotExistWarning": "The defined path \"{playlistRootPath}\" does not exist. Please enter a valid playlist root path and retry ...",
   "confirmDialogTitle": "CONFIRMATION",
   "confirmSingleVideoAudioPlaylistTitle": "Confirm target playlist \"{title}\" for downloading single video audio in spoken quality.",

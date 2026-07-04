@@ -1023,7 +1023,7 @@ abstract class AppLocalizations {
   /// No description provided for @allHistoricalSortFilterParametersDeleteConfirmation.
   ///
   /// In en, this message translates to:
-  /// **'Deleting all historical sort/filter parameters.'**
+  /// **'Deleting all historical unamed sort/filter parameters.'**
   String get allHistoricalSortFilterParametersDeleteConfirmation;
 
   /// No description provided for @playlistRootPathNotExistWarning.

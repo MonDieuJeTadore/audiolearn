@@ -532,7 +532,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get allHistoricalSortFilterParametersDeleteConfirmation =>
-      'Deleting all historical sort/filter parameters.';
+      'Deleting all historical unamed sort/filter parameters.';
 
   @override
   String playlistRootPathNotExistWarning(Object playlistRootPath) {

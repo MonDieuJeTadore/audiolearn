@@ -3,10 +3,10 @@
         "SettingType.appTheme": "AppTheme.dark"
     },
     "SettingType.appPosition": {
-        "AppPosition.topX": "996.0",
-        "AppPosition.topY": "25.0",
-        "AppPosition.width": "450.0",
-        "AppPosition.height": "850.0"
+        "AppPosition.topX": "993.5",
+        "AppPosition.topY": "88.5",
+        "AppPosition.width": "383.0",
+        "AppPosition.height": "743.5"
     },
     "SettingType.language": {
         "SettingType.language": "Language.english"

@@ -535,7 +535,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get allHistoricalSortFilterParametersDeleteConfirmation =>
-      'Suppression de tous les paramètres de tri/filtre historiques.';
+      'Suppression de tous les paramètres de tri/filtre historiques non nommés.';
 
   @override
   String playlistRootPathNotExistWarning(Object playlistRootPath) {

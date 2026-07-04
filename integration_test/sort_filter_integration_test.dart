@@ -642,7 +642,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // with the expected text
           expect(find.text('Clear Sort/Filter Parameters History'),
               findsOneWidget);
-          expect(find.text('Deleting all historical sort/filter parameters.'),
+          expect(find.text('Deleting all historical unamed sort/filter parameters.'),
               findsOneWidget);
 
           // Click on the cancel button to cancel deletion
@@ -810,7 +810,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // with the expected text
           expect(find.text('Clear Sort/Filter Parameters History'),
               findsOneWidget);
-          expect(find.text('Deleting all historical sort/filter parameters.'),
+          expect(find.text('Deleting all historical unamed sort/filter parameters.'),
               findsOneWidget);
 
           // Click on the cancel button to cancel deletion
@@ -844,7 +844,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // with the expected text
           expect(find.text('Clear Sort/Filter Parameters History'),
               findsOneWidget);
-          expect(find.text('Deleting all historical sort/filter parameters.'),
+          expect(find.text('Deleting all historical unamed sort/filter parameters.'),
               findsOneWidget);
 
           // Click on the confirm button to execute deletion

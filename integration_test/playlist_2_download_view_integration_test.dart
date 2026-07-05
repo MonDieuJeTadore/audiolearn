@@ -5348,7 +5348,7 @@ void main() {
       );
     });
   });
-  group('Audio or playlists position scrolling atest', () {
+  group('Audio or playlists position scrolling test', () {
     group('Scrolling audio test', () {
       testWidgets('''Automatic scrolling audio to display current audio.''',
           (WidgetTester tester) async {
@@ -52822,7 +52822,7 @@ void main() {
   group('Rewind all Audios to Start test', () {
     testWidgets(
         '''On Prières 4 playlist, rewind all Audios to Start. The Chap desc sort/filter
-                   parameters is applied to the playlist.''',
+           parameters is applied to the playlist.''',
         (WidgetTester tester) async {
       const String selectedPlaylistTitle = 'Prières 4';
 
@@ -52899,7 +52899,8 @@ void main() {
       // Verify the displayed confirmation dialog content
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
-        warningDialogMessage: "41 playlist audios were repositioned to start and the first listenable audio was selected.",
+        warningDialogMessage:
+            "41 playlist audios were repositioned to start and the first listenable audio was selected.",
         isWarningConfirming: true,
       );
 
@@ -52915,13 +52916,13 @@ void main() {
       const String firstListenableAudioSubTitle =
           "0:02:39.6 2.59 MB at 502.3 KB/sec on 11/02/2025 at 09:00";
 
-        // Verify that the current audio is displayed with the correct
-        // title and subtitle color
-        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
-          tester: tester,
-          currentAudioTitle: firstListenableAudioTitle,
-          currentAudioSubTitle: firstListenableAudioSubTitle,
-        );
+      // Verify that the current audio is displayed with the correct
+      // title and subtitle color
+      await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+        tester: tester,
+        currentAudioTitle: firstListenableAudioTitle,
+        currentAudioSubTitle: firstListenableAudioSubTitle,
+      );
 
       // Purge the test playlist directory so that the created test
       // files are not uploaded to GitHub

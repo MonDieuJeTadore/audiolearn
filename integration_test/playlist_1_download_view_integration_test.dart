@@ -21242,7 +21242,7 @@ void main() {
       );
     });
     testWidgets('''Click on an audio title in the playlist comment dialog in
-           order to open the audio in the audio player view.''',
+                   order to open the audio in the audio player view.''',
         (WidgetTester tester) async {
       const String playlistTitle = '1 long music'; // Youtube playlist
       const String playedCommentAudioTitle =
@@ -21279,14 +21279,10 @@ void main() {
     });
     testWidgets(
         '''Click on the SF checkbox of the playlist comment dialog in order
-               to remove the impact of the applied playlist sort/filter parameters on
-               the audios and their comments listed in the playlist comment dialog.''',
+           to remove the impact of the applied playlist sort/filter parameters on
+           the audios and their comments listed in the playlist comment dialog.''',
         (WidgetTester tester) async {
       const String playlistTitle = '1 long music'; // Youtube playlist
-      const String playedCommentAudioTitle =
-          "Quand Dieu transforme l’épreuve en victoire";
-      const String playedCommentAudioTitleDuration =
-          "Quand Dieu transforme l’épreuve en victoire\n26:20";
 
       await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
         tester: tester,
@@ -21294,20 +21290,67 @@ void main() {
         selectedPlaylistTitle: playlistTitle,
       );
 
+      // Set the 'Dieu' sort/filter text in the playlist download view search text field
+
+      // Type on the Playlists button to hide the playlist view
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      await IntegrationTestUtil.selectSortFilterParmsInDropDownButton(
+        tester: tester,
+        sortFilterParmsName: 'Dieu',
+      );
+
+      // Type on the Playlists button to show the playlist view
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
       // First, open the playlist comment dialog
-      await IntegrationTestUtil.openPlaylistCommentDialog(
+      Finder playlistCommentListDialogFinder =
+          await IntegrationTestUtil.openPlaylistCommentDialog(
         tester: tester,
         playlistTitle: playlistTitle,
       );
 
-      // Tap on the first audio title to open it in the audio player view
-      await tester.tap(find.text(playedCommentAudioTitle).last);
-      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
-        tester: tester,
-      );
+      const String notFilteredAudioTitle =
+          "Glorious - Laisse-moi te parler de Jésus #louange";
+      const String filteredAudioTitle =
+          "Quand Dieu transforme l’épreuve en victoire";
 
-      // Verify audio title displayed in the audio player view
-      expect(find.text(playedCommentAudioTitleDuration), findsOneWidget);
+      // Verify audio title displayed in the playlist comment dialog
+      expect(
+          find.descendant(
+            of: playlistCommentListDialogFinder,
+            matching: find.text(notFilteredAudioTitle),
+          ),
+          findsNothing);
+      expect(
+          find.descendant(
+            of: playlistCommentListDialogFinder,
+            matching: find.text(filteredAudioTitle),
+          ),
+          findsOneWidget);
+
+      // Tap on the SF checkbox to remove the impact of the applied
+      // playlist sort/filter parameters on the listed audios and their
+      // comments in the playlist comment dialog
+      await tester
+          .tap(find.byKey(const Key('apply_SF_parms_to_comments_checkbox')));
+      await tester.pumpAndSettle();
+
+      // Verify audio titles displayed in the playlist comment dialog
+      expect(
+          find.descendant(
+            of: playlistCommentListDialogFinder,
+            matching: find.text(notFilteredAudioTitle),
+          ),
+          findsOneWidget);
+      expect(
+          find.descendant(
+            of: playlistCommentListDialogFinder,
+            matching: find.text(filteredAudioTitle),
+          ),
+          findsOneWidget);
 
       // Purge the test playlist directory so that the created test
       // files are not uploaded to GitHub

@@ -2949,6 +2949,12 @@ abstract class AppLocalizations {
   /// **'Playable'**
   String get isPlayableLabel;
 
+  /// No description provided for @isPlayableTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'The audio is not playable if its mp3 is not available !'**
+  String get isPlayableTooltip;
+
   /// No description provided for @setPlaylistAudioQuality.
   ///
   /// In en, this message translates to:

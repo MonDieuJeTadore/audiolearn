@@ -1210,6 +1210,7 @@
     }
   },
   "isPlayableLabel": "Jouable",
+  "isPlayableTooltip": "L'audio n'est pas jouable si son mp3 n'est pas disponible !",
   "setPlaylistAudioQuality": "Définir la qualité audio ...",
   "setPlaylistAudioQualityTooltip": "La qualité audio sélectionnée sera appliquée aux prochains fichiers audio téléchargés. Si la qualité audio doit être appliquée aux fichiers audio déjà téléchargés, ces fichiers doivent être supprimés \"de la playlist également\" afin qu'ils puissent être re-téléchargés avec la qualité audio modifiée.",
   "setPlaylistAudioQualityDialogTitle": "Qualité audio de la playlist",

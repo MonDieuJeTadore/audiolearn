@@ -1826,6 +1826,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get isPlayableLabel => 'Jouable';
 
   @override
+  String get isPlayableTooltip =>
+      'L\'audio n\'est pas jouable si son mp3 n\'est pas disponible !';
+
+  @override
   String get setPlaylistAudioQuality => 'Définir la qualité audio ...';
 
   @override

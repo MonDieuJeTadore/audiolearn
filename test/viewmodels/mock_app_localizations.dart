@@ -3177,4 +3177,8 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get convertingM4aToMP3 => "Converting imported M4A to MP3 ...";
+
+  @override
+  String get isPlayableTooltip =>
+      "The audio is not playable if its mp3 is not available !";
 }

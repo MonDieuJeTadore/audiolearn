@@ -899,6 +899,7 @@
     }
   },
   "isPlayableLabel": "Playable",
+  "isPlayableTooltip": "The audio is not playable if its mp3 is not available !",
   "setPlaylistAudioQuality": "Set Audio Quality ...",
   "setPlaylistAudioQualityTooltip": "The selected audio quality will be applied to the next downloaded audios. If the audio quality must be applied to the already downloaded audios, those audios must be deleted \"from playlist as well\" so that they will be redownloadable in the modified audio quality.",
   "setPlaylistAudioQualityDialogTitle": "Playlist Audio Quality",

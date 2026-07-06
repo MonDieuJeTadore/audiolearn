@@ -2601,7 +2601,10 @@ class PlaylistListVM extends ChangeNotifier {
 
       for (int i = currentAudioIndex - 1; i >= 0; i--) {
         Audio audio = sortedAndFilteredPlayableAudioLst[i];
-        if (audio.wasFullyListened()) {
+        if (audio.wasFullyListened() ||
+            !_isAudioPlayableToday(
+              audio: audio,
+            )) {
           continue;
         } else {
           return audio;
@@ -2661,6 +2664,14 @@ class PlaylistListVM extends ChangeNotifier {
     currentAudio.audioPositionSeconds = currentAudio.audioPositionSeconds + 20;
 
     return currentAudioIndex;
+  }
+
+  bool _isAudioPlayableToday({
+    required Audio audio,
+  }) {
+    DateTime today = DateTime.now();
+
+    return true;
   }
 
   /// Returns the audio contained in the playableAudioLst which

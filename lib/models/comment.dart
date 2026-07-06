@@ -2,9 +2,6 @@ import '../utils/date_time_util.dart';
 
 class Comment {
   String id;
-  setId(String newId) {
-    id = newId;
-  }
   String title;
   String content;
   int commentStartPositionInTenthOfSeconds;

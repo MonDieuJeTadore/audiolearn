@@ -1757,8 +1757,6 @@ void main() {
               size: 15000),
         ]);
 
-        DateTime importDateTime = DateTime.now();
-
         await IntegrationTestUtil.typeOnPlaylistMenuItem(
           tester: tester,
           playlistTitle: localPlaylistTitle,
@@ -2918,7 +2916,7 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "L\'audio créé par la conversion de texte en MP3\n\n\"$enteredFileNameNoExt.mp3\"\n\na été remplacé dans la playlist locale \"$unselectedLocalPlaylistTitle\".",
+              "L'audio créé par la conversion de texte en MP3\n\n\"$enteredFileNameNoExt.mp3\"\n\na été remplacé dans la playlist locale \"$unselectedLocalPlaylistTitle\".",
           isWarningConfirming: true,
         );
 

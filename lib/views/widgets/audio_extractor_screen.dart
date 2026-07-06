@@ -724,7 +724,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
           soundReductionDuration: segment.soundReductionDuration,
           deleted: segment.deleted,
         );
-        comment.setId(segment.commentId); // Preserve original comment ID
+        comment.id = segment.commentId;
         comments.add(
           comment,
         );
@@ -1468,8 +1468,8 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                   onTap: onEdit,
                   borderRadius: BorderRadius.circular(16),
                   child: Tooltip(
-                    message: AppLocalizations.of(context)!
-                        .editAudioCommentTooltip,
+                    message:
+                        AppLocalizations.of(context)!.editAudioCommentTooltip,
                     child: Container(
                       width: 32,
                       height: 32,
@@ -2211,7 +2211,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
       soundReductionDuration: duplicatedSegment.soundReductionDuration,
       deleted: false,
     );
-    duplicatedComment.setId(duplicatedSegment.commentId);
+    duplicatedComment.id = duplicatedSegment.commentId;
 
     // ✅ ADD: Update the VM's internal comments list FIRST
     audioExtractorVM.commentsLst = [
@@ -2290,7 +2290,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
       soundReductionDuration: duplicatedSegment.soundReductionDuration,
       deleted: false,
     );
-    duplicatedComment.setId(duplicatedSegment.commentId);
+    duplicatedComment.id = duplicatedSegment.commentId;
 
     // Add comment to the specific audio
     widget.commentVMlistenTrue.addComment(

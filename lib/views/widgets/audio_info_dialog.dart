@@ -113,6 +113,7 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
       context,
       listen: false,
     );
+    final bool isAudioPlayable = UiUtil.isAudioPlayable(audio: audio);
 
     return <Widget>[
       createInfoRowFunction(
@@ -137,12 +138,16 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           value: dateFormatVMlistenFalse
               .formatDateTime(audio.audioDownloadDateTime)),
       createInfoRowFunction(
-          valueTextWidgetKey: const Key('isAudioPlayableKey'),
-          context: context,
-          label: AppLocalizations.of(context)!.isPlayableLabel,
-          value: (UiUtil.isAudioPlayable(audio: audio))
-              ? AppLocalizations.of(context)!.yes
-              : AppLocalizations.of(context)!.no),
+        valueTextWidgetKey: const Key('isAudioPlayableKey'),
+        context: context,
+        label: AppLocalizations.of(context)!.isPlayableLabel,
+        value: (isAudioPlayable)
+            ? AppLocalizations.of(context)!.yes
+            : AppLocalizations.of(context)!.no,
+        infoRowTooltip: (isAudioPlayable)
+            ? ''
+            : AppLocalizations.of(context)!.isPlayableTooltip,
+      ),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),
         context: context,
@@ -285,7 +290,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
   List<Widget> _createImportedAudioInfoLines(BuildContext context) {
     CommentVM commentVMlistenFalse =
         Provider.of<CommentVM>(context, listen: false);
-
+    final bool isAudioPlayable = UiUtil.isAudioPlayable(audio: audio);
+    
     return <Widget>[
       createInfoRowFunction(
           valueTextWidgetKey: const Key('importedAudioTitleKey'),
@@ -298,12 +304,16 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           label: AppLocalizations.of(context)!.importedAudioDateTimeLabel,
           value: frenchDateTimeFormat.format(audio.audioDownloadDateTime)),
       createInfoRowFunction(
-          valueTextWidgetKey: const Key('isAudioPlayableKey'),
-          context: context,
-          label: AppLocalizations.of(context)!.isPlayableLabel,
-          value: (UiUtil.isAudioPlayable(audio: audio))
-              ? AppLocalizations.of(context)!.yes
-              : AppLocalizations.of(context)!.no),
+        valueTextWidgetKey: const Key('isAudioPlayableKey'),
+        context: context,
+        label: AppLocalizations.of(context)!.isPlayableLabel,
+        value: (isAudioPlayable)
+            ? AppLocalizations.of(context)!.yes
+            : AppLocalizations.of(context)!.no,
+        infoRowTooltip: (isAudioPlayable)
+            ? ''
+            : AppLocalizations.of(context)!.isPlayableTooltip,
+      ),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),
         context: context,
@@ -423,6 +433,7 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
   List<Widget> _createTextToSpeechAudioInfoLines(BuildContext context) {
     CommentVM commentVMlistenFalse =
         Provider.of<CommentVM>(context, listen: false);
+    final bool isAudioPlayable = UiUtil.isAudioPlayable(audio: audio);
 
     return <Widget>[
       createInfoRowFunction(
@@ -436,12 +447,16 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           label: AppLocalizations.of(context)!.convertedAudioDateTimeLabel,
           value: frenchDateTimeFormat.format(audio.audioDownloadDateTime)),
       createInfoRowFunction(
-          valueTextWidgetKey: const Key('isAudioPlayableKey'),
-          context: context,
-          label: AppLocalizations.of(context)!.isPlayableLabel,
-          value: (UiUtil.isAudioPlayable(audio: audio))
-              ? AppLocalizations.of(context)!.yes
-              : AppLocalizations.of(context)!.no),
+        valueTextWidgetKey: const Key('isAudioPlayableKey'),
+        context: context,
+        label: AppLocalizations.of(context)!.isPlayableLabel,
+        value: (isAudioPlayable)
+            ? AppLocalizations.of(context)!.yes
+            : AppLocalizations.of(context)!.no,
+        infoRowTooltip: (isAudioPlayable)
+            ? ''
+            : AppLocalizations.of(context)!.isPlayableTooltip,
+      ),
       createInfoRowFunction(
           valueTextWidgetKey: const Key('enclosingPlaylistTitleKey'),
           context: context,
@@ -554,7 +569,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
   List<Widget> _createExtractedAudioInfoLines(BuildContext context) {
     CommentVM commentVMlistenFalse =
         Provider.of<CommentVM>(context, listen: false);
-
+    final bool isAudioPlayable = UiUtil.isAudioPlayable(audio: audio);
+    
     return <Widget>[
       createInfoRowFunction(
           valueTextWidgetKey: const Key('extractedAudioTitleKey'),
@@ -567,12 +583,16 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           label: AppLocalizations.of(context)!.extractedAudioDateTimeLabel,
           value: frenchDateTimeFormat.format(audio.audioDownloadDateTime)),
       createInfoRowFunction(
-          valueTextWidgetKey: const Key('isAudioPlayableKey'),
-          context: context,
-          label: AppLocalizations.of(context)!.isPlayableLabel,
-          value: (UiUtil.isAudioPlayable(audio: audio))
-              ? AppLocalizations.of(context)!.yes
-              : AppLocalizations.of(context)!.no),
+        valueTextWidgetKey: const Key('isAudioPlayableKey'),
+        context: context,
+        label: AppLocalizations.of(context)!.isPlayableLabel,
+        value: (isAudioPlayable)
+            ? AppLocalizations.of(context)!.yes
+            : AppLocalizations.of(context)!.no,
+        infoRowTooltip: (isAudioPlayable)
+            ? ''
+            : AppLocalizations.of(context)!.isPlayableTooltip,
+      ),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),
         context: context,
@@ -704,7 +724,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
     } else {
       return Duration(
               milliseconds:
-                  ((audio.audioPositionSeconds / audio.audioPlaySpeed) * 1000).round())
+                  ((audio.audioPositionSeconds / audio.audioPlaySpeed) * 1000)
+                      .round())
           .HHmmss(
         addRemainingOneDigitTenthOfSecond: true,
       );

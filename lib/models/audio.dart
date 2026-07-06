@@ -124,6 +124,12 @@ class Audio {
 
   AudioType audioType = AudioType.downloaded;
 
+  List<int> playableOnlyOnWeekDays = []; // 1=Monday, 2=Tuesday, ..., 7=Sunday.
+  //                    If empty, the audio is playable on any day of the week.
+
+  List<int> playableOnlyOnMonthDays = []; // 1, ..., 31. If empty, the audio is
+  //                                           playable on any day of the month.
+
   Audio({
     this.youtubeVideoChannel = '',
     required this.enclosingPlaylist,
@@ -168,6 +174,8 @@ class Audio {
     required this.audioFileName,
     required this.audioFileSize,
     required this.audioType,
+    required this.playableOnlyOnWeekDays,
+    required this.playableOnlyOnMonthDays,
   });
 
   /// Returns a copy of the current Audio instance
@@ -200,6 +208,8 @@ class Audio {
       audioFileName: audioFileName,
       audioFileSize: audioFileSize,
       audioType: audioType,
+      playableOnlyOnWeekDays: playableOnlyOnWeekDays,
+      playableOnlyOnMonthDays: playableOnlyOnMonthDays,
     );
   }
 
@@ -248,6 +258,12 @@ class Audio {
             e.toString().split('.').last == (json['audioType'] ?? 'downloaded'),
         orElse: () => AudioType.downloaded,
       ),
+      playableOnlyOnWeekDays: (json['playableOnlyOnWeekDays'] != null)
+          ? List<int>.from(json['playableOnlyOnWeekDays'])
+          : [],
+      playableOnlyOnMonthDays: (json['playableOnlyOnMonthDays'] != null)
+          ? List<int>.from(json['playableOnlyOnMonthDays'])
+          : [],
     );
   }
 
@@ -284,6 +300,8 @@ class Audio {
       'audioFileName': audioFileName,
       'audioFileSize': audioFileSize,
       'audioType': audioType.toString().split('.').last,
+      'playableOnlyOnWeekDays': playableOnlyOnWeekDays,
+      'playableOnlyOnMonthDays': playableOnlyOnMonthDays,
     };
   }
 

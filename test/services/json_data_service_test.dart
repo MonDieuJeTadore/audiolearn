@@ -74,6 +74,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       // Save the Audio instance to a file
@@ -130,6 +132,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       // Save the Audio instance to a file
@@ -185,6 +189,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       // Save the Audio instance to a file
@@ -227,32 +233,35 @@ void main() {
 
       // Create an Audio instance
       Audio originalAudio = Audio.fullConstructor(
-          youtubeVideoChannel: 'one',
-          enclosingPlaylist: null,
-          movedFromPlaylistTitle: null,
-          movedToPlaylistTitle: null,
-          copiedFromPlaylistTitle: null,
-          copiedToPlaylistTitle: null,
-          extractedFromPlaylistTitle: null,
-          originalVideoTitle: 'Test Video Title',
-          compactVideoDescription: '',
-          validVideoTitle: 'Test Video Title',
-          videoUrl: 'https://www.youtube.com/watch?v=testVideoID',
-          audioDownloadDateTime: DateTime(2023, 3, 24, 20, 5, 32),
-          audioDownloadDuration: const Duration(minutes: 1, seconds: 30),
-          audioDownloadSpeed: 1000000,
-          videoUploadDate: DateTime(2023, 3, 1),
-          audioDuration: Duration.zero,
-          isAudioMusicQuality: false,
-          audioPlaySpeed: kAudioDefaultPlaySpeed,
-          audioPlayVolume: kAudioDefaultPlayVolume,
-          isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
-          isPaused: true,
-          audioPausedDateTime: null,
-          audioPositionSeconds: 0,
-          audioFileName: 'Test Video Title.mp3',
-          audioFileSize: 330000000,
-          audioType: AudioType.downloaded);
+        youtubeVideoChannel: 'one',
+        enclosingPlaylist: null,
+        movedFromPlaylistTitle: null,
+        movedToPlaylistTitle: null,
+        copiedFromPlaylistTitle: null,
+        copiedToPlaylistTitle: null,
+        extractedFromPlaylistTitle: null,
+        originalVideoTitle: 'Test Video Title',
+        compactVideoDescription: '',
+        validVideoTitle: 'Test Video Title',
+        videoUrl: 'https://www.youtube.com/watch?v=testVideoID',
+        audioDownloadDateTime: DateTime(2023, 3, 24, 20, 5, 32),
+        audioDownloadDuration: const Duration(minutes: 1, seconds: 30),
+        audioDownloadSpeed: 1000000,
+        videoUploadDate: DateTime(2023, 3, 1),
+        audioDuration: Duration.zero,
+        isAudioMusicQuality: false,
+        audioPlaySpeed: kAudioDefaultPlaySpeed,
+        audioPlayVolume: kAudioDefaultPlayVolume,
+        isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
+        isPaused: true,
+        audioPausedDateTime: null,
+        audioPositionSeconds: 0,
+        audioFileName: 'Test Video Title.mp3',
+        audioFileSize: 330000000,
+        audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
+      );
 
       // Save the Audio instance to a file
       JsonDataService.saveToFile(model: originalAudio, path: filePath);
@@ -295,32 +304,35 @@ void main() {
       DateTime now = DateTime.now();
 
       Audio audio1 = Audio.fullConstructor(
-          youtubeVideoChannel: 'one',
-          enclosingPlaylist: testPlaylist,
-          movedFromPlaylistTitle: testFromPlaylistTitle,
-          movedToPlaylistTitle: null,
-          copiedFromPlaylistTitle: null,
-          copiedToPlaylistTitle: null,
-          extractedFromPlaylistTitle: null,
-          originalVideoTitle: 'Test Video 1',
-          compactVideoDescription: 'Test Video 1 Description',
-          validVideoTitle: 'Test Video Title',
-          videoUrl: 'https://www.example.com/video-url-1',
-          audioDownloadDateTime: DateTime.now(),
-          audioDownloadDuration: const Duration(minutes: 0, seconds: 30),
-          audioDownloadSpeed: 1000000,
-          videoUploadDate: DateTime.now().subtract(const Duration(days: 10)),
-          audioDuration: const Duration(minutes: 5, seconds: 30),
-          isAudioMusicQuality: false,
-          audioPlaySpeed: kAudioDefaultPlaySpeed,
-          audioPlayVolume: kAudioDefaultPlayVolume,
-          isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
-          isPaused: true,
-          audioPausedDateTime: null,
-          audioPositionSeconds: 0,
-          audioFileName: 'Test Video Title.mp3',
-          audioFileSize: 330000000,
-          audioType: AudioType.downloaded);
+        youtubeVideoChannel: 'one',
+        enclosingPlaylist: testPlaylist,
+        movedFromPlaylistTitle: testFromPlaylistTitle,
+        movedToPlaylistTitle: null,
+        copiedFromPlaylistTitle: null,
+        copiedToPlaylistTitle: null,
+        extractedFromPlaylistTitle: null,
+        originalVideoTitle: 'Test Video 1',
+        compactVideoDescription: 'Test Video 1 Description',
+        validVideoTitle: 'Test Video Title',
+        videoUrl: 'https://www.example.com/video-url-1',
+        audioDownloadDateTime: DateTime.now(),
+        audioDownloadDuration: const Duration(minutes: 0, seconds: 30),
+        audioDownloadSpeed: 1000000,
+        videoUploadDate: DateTime.now().subtract(const Duration(days: 10)),
+        audioDuration: const Duration(minutes: 5, seconds: 30),
+        isAudioMusicQuality: false,
+        audioPlaySpeed: kAudioDefaultPlaySpeed,
+        audioPlayVolume: kAudioDefaultPlayVolume,
+        isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
+        isPaused: true,
+        audioPausedDateTime: null,
+        audioPositionSeconds: 0,
+        audioFileName: 'Test Video Title.mp3',
+        audioFileSize: 330000000,
+        audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
+      );
 
       Audio audio2 = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -349,6 +361,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       testPlaylist.downloadedAudioLst = [audio1, audio2];
@@ -398,32 +412,35 @@ void main() {
       DateTime now = DateTime.now();
 
       Audio audio1 = Audio.fullConstructor(
-          youtubeVideoChannel: 'one',
-          enclosingPlaylist: testPlaylist,
-          movedFromPlaylistTitle: testFromPlaylistTitle,
-          movedToPlaylistTitle: null,
-          copiedFromPlaylistTitle: null,
-          copiedToPlaylistTitle: null,
-          extractedFromPlaylistTitle: null,
-          originalVideoTitle: 'Test Video 1',
-          compactVideoDescription: 'Test Video 1 Description',
-          validVideoTitle: 'Test Video Title',
-          videoUrl: 'https://www.example.com/video-url-1',
-          audioDownloadDateTime: DateTime.now(),
-          audioDownloadDuration: const Duration(minutes: 0, seconds: 30),
-          audioDownloadSpeed: 1000000,
-          videoUploadDate: DateTime.now().subtract(const Duration(days: 10)),
-          audioDuration: const Duration(minutes: 5, seconds: 30),
-          isAudioMusicQuality: false,
-          audioPlaySpeed: kAudioDefaultPlaySpeed,
-          audioPlayVolume: kAudioDefaultPlayVolume,
-          isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
-          isPaused: true,
-          audioPausedDateTime: null,
-          audioPositionSeconds: 0,
-          audioFileName: 'Test Video Title.mp3',
-          audioFileSize: 330000000,
-          audioType: AudioType.downloaded);
+        youtubeVideoChannel: 'one',
+        enclosingPlaylist: testPlaylist,
+        movedFromPlaylistTitle: testFromPlaylistTitle,
+        movedToPlaylistTitle: null,
+        copiedFromPlaylistTitle: null,
+        copiedToPlaylistTitle: null,
+        extractedFromPlaylistTitle: null,
+        originalVideoTitle: 'Test Video 1',
+        compactVideoDescription: 'Test Video 1 Description',
+        validVideoTitle: 'Test Video Title',
+        videoUrl: 'https://www.example.com/video-url-1',
+        audioDownloadDateTime: DateTime.now(),
+        audioDownloadDuration: const Duration(minutes: 0, seconds: 30),
+        audioDownloadSpeed: 1000000,
+        videoUploadDate: DateTime.now().subtract(const Duration(days: 10)),
+        audioDuration: const Duration(minutes: 5, seconds: 30),
+        isAudioMusicQuality: false,
+        audioPlaySpeed: kAudioDefaultPlaySpeed,
+        audioPlayVolume: kAudioDefaultPlayVolume,
+        isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
+        isPaused: true,
+        audioPausedDateTime: null,
+        audioPositionSeconds: 0,
+        audioFileName: 'Test Video Title.mp3',
+        audioFileSize: 330000000,
+        audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
+      );
 
       Audio audio2 = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -452,6 +469,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       testPlaylist.downloadedAudioLst = [audio1, audio2];
@@ -596,6 +615,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       Audio audio2 = Audio.fullConstructor(
@@ -625,6 +646,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       testPlaylist.downloadedAudioLst = [audio1, audio2];
@@ -868,6 +891,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       // Save the Audio instance to a file
@@ -915,6 +940,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       Audio audioTwo = Audio.fullConstructor(
@@ -944,6 +971,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       // Prepare test data
@@ -1020,6 +1049,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       Audio audio2 = Audio.fullConstructor(
@@ -1049,6 +1080,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       testPlaylistOne.addDownloadedAudio(audio1);
@@ -1092,6 +1125,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       Audio audio4 = Audio.fullConstructor(
@@ -1121,6 +1156,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       testPlaylistTwo.addDownloadedAudio(audio3);

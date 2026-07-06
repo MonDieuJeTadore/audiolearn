@@ -457,8 +457,8 @@ class AudioExtractorVM extends ChangeNotifier {
 
       if (segmentIndex >= 0 &&
           segmentIndex < audioWithSegments.segments.length) {
-        final List<AudioSegment> updatedSegments =
-            List<AudioSegment>.from(audioWithSegments.segments); // Create a copy of the segments list
+        final List<AudioSegment> updatedSegments = List<AudioSegment>.from(
+            audioWithSegments.segments); // Create a copy of the segments list
         updatedSegments[segmentIndex] =
             updatedSegments[segmentIndex].copyWith(deleted: true);
         _multiAudios[audioIndex] =
@@ -877,7 +877,7 @@ class AudioExtractorVM extends ChangeNotifier {
       soundReductionDuration: defaultSegment.soundReductionDuration,
       deleted: false,
     );
-    defaultComment.setId(defaultSegment.commentId);
+    defaultComment.id = defaultSegment.commentId;
 
     // Save comment to audio's comment file
     commentVMlistenTrue.addComment(

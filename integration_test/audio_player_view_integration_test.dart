@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:logger/logger.dart';
 import 'package:matcher/matcher.dart' as matcher;
 
 import 'package:audiolearn/models/comment.dart';
@@ -31,8 +30,6 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   audioPlayerViewSortFilterIntegrationTest();
-
-  final Logger logger = Logger();
 
   group('''Play/pause/start/end tests, clicking on audio title to open
          AudioPlayerView.''', () {

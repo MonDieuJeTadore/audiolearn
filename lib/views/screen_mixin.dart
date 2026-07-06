@@ -369,6 +369,7 @@ mixin ScreenMixin {
     required BuildContext context,
     required String label,
     required String value,
+    String infoRowTooltip = '',
     bool isTextBold = false,
     bool addSizeBoxBeforeAndAfter = false,
     bool isValueSelectable = false,
@@ -380,6 +381,53 @@ mixin ScreenMixin {
           (addSizeBoxBeforeAndAfter)
               ? const SizedBox(height: 10)
               : const SizedBox.shrink(),
+          (infoRowTooltip.isNotEmpty)
+              ? Tooltip(
+                  message: infoRowTooltip,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: (isValueSelectable)
+                            ? SelectableText(
+                                label,
+                                style: TextStyle(
+                                  fontWeight: isTextBold
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                ),
+                              )
+                            : Text(
+                                label,
+                                style: TextStyle(
+                                  fontWeight: isTextBold
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                ),
+                              ),
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          child: Text(
+                            key: valueTextWidgetKey,
+                            value,
+                            style: TextStyle(
+                              fontWeight: isTextBold
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                          onTap: () {
+                            Clipboard.setData(
+                              ClipboardData(text: value),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              :
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

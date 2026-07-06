@@ -53,6 +53,8 @@ void main() {
     audioFileName: 'Test Video Title one.mp3',
     audioFileSize: 125000000,
     audioType: AudioType.downloaded,
+    playableOnlyOnWeekDays: [],
+    playableOnlyOnMonthDays: [],
   );
 
   final Audio audioTwo = Audio.fullConstructor(
@@ -83,6 +85,8 @@ void main() {
     audioFileName: 'Test Video Title two.mp3',
     audioFileSize: 70000000,
     audioType: AudioType.downloaded,
+    playableOnlyOnWeekDays: [],
+    playableOnlyOnMonthDays: [],
   );
   final Audio audioThree = Audio.fullConstructor(
     youtubeVideoChannel: 'one',
@@ -113,6 +117,8 @@ void main() {
     audioFileName: 'Test Video Title three.mp3',
     audioFileSize: 130000000,
     audioType: AudioType.downloaded,
+    playableOnlyOnWeekDays: [],
+    playableOnlyOnMonthDays: [],
   );
   final Audio audioFour = Audio.fullConstructor(
     youtubeVideoChannel: 'one',
@@ -143,6 +149,8 @@ void main() {
     audioFileName: 'Test Video Title four.mp3',
     audioFileSize: 110000000,
     audioType: AudioType.downloaded,
+    playableOnlyOnWeekDays: [],
+    playableOnlyOnMonthDays: [],
   );
 
   List<Audio> audioLst = [];
@@ -1138,6 +1146,8 @@ void main() {
           audioFileName: 'Test Video Title.mp3',
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
         final Audio apple = Audio.fullConstructor(
           youtubeVideoChannel: 'one',
@@ -1166,6 +1176,8 @@ void main() {
           audioFileName: 'Test Video Title.mp3',
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
         final Audio bananna = Audio.fullConstructor(
           youtubeVideoChannel: 'one',
@@ -1193,7 +1205,7 @@ void main() {
           audioPositionSeconds: 0,
           audioFileName: 'Test Video Title.mp3',
           audioFileSize: 330000000,
-          audioType: AudioType.imported,
+          audioType: AudioType.imported, playableOnlyOnWeekDays: [], playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -1289,6 +1301,8 @@ void main() {
               "La foi contre la peur (1_2 - Joyce Meyer -  Avoir des relations saines.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio thirdAudioTwoOfTwo = Audio.fullConstructor(
@@ -1321,6 +1335,8 @@ void main() {
               "La foi contre la peur (2_2 - Joyce Meyer -  Avoir des relations saines.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio secondAudioTwoOfTwo = Audio.fullConstructor(
@@ -1353,6 +1369,8 @@ void main() {
               "Il est temps d'être sérieux avec Dieu ! (2_2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio secondAudioOneOfTwo = Audio.fullConstructor(
@@ -1385,6 +1403,8 @@ void main() {
               "Il est temps d'être sérieux avec Dieu ! (1_2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio fourthAudio = Audio.fullConstructor(
@@ -1417,6 +1437,8 @@ void main() {
               "Laisser Dieu au contrôle - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio fifthAudio = Audio.fullConstructor(
@@ -1449,6 +1471,8 @@ void main() {
               "VOICI COMMENT ÊTRE GUIDÉ PAR LE SAINT ESPRIT _ JOYCE MEYER.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio firstAudioOneOfTwo = Audio.fullConstructor(
@@ -1481,6 +1505,8 @@ void main() {
               "Communiquer avec Dieu (1_2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio firstAudioTwoOfTwo = Audio.fullConstructor(
@@ -1513,6 +1539,8 @@ void main() {
               "Communiquer avec Dieu (2_2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -1623,6 +1651,8 @@ void main() {
               "La foi contre la peur (1-2 - Joyce Meyer -  Avoir des relations saines.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio thirdAudioTwoOfTwo = Audio.fullConstructor(
@@ -1655,6 +1685,8 @@ void main() {
               "La foi contre la peur (2-2 - Joyce Meyer -  Avoir des relations saines.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio secondAudioTwoOfTwo = Audio.fullConstructor(
@@ -1687,6 +1719,8 @@ void main() {
               "Il est temps d'être sérieux avec Dieu ! (2-2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio secondAudioOneOfTwo = Audio.fullConstructor(
@@ -1719,6 +1753,8 @@ void main() {
               "Il est temps d'être sérieux avec Dieu ! (1-2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio fourthAudio = Audio.fullConstructor(
@@ -1751,6 +1787,8 @@ void main() {
               "Laisser Dieu au contrôle - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio fifthAudio = Audio.fullConstructor(
@@ -1783,6 +1821,8 @@ void main() {
               "VOICI COMMENT ÊTRE GUIDÉ PAR LE SAINT ESPRIT _ JOYCE MEYER.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio firstAudioOneOfTwo = Audio.fullConstructor(
@@ -1815,6 +1855,8 @@ void main() {
               "Communiquer avec Dieu (1-2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio firstAudioTwoOfTwo = Audio.fullConstructor(
@@ -1847,6 +1889,8 @@ void main() {
               "Communiquer avec Dieu (2-2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -1957,6 +2001,8 @@ void main() {
               "La foi contre la peur (1/2 - Joyce Meyer -  Avoir des relations saines.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio thirdAudioTwoOfTwo = Audio.fullConstructor(
@@ -1989,6 +2035,8 @@ void main() {
               "La foi contre la peur (2/2 - Joyce Meyer -  Avoir des relations saines.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio secondAudioTwoOfTwo = Audio.fullConstructor(
@@ -2021,6 +2069,8 @@ void main() {
               "Il est temps d'être sérieux avec Dieu ! (2/2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio secondAudioOneOfTwo = Audio.fullConstructor(
@@ -2053,6 +2103,8 @@ void main() {
               "Il est temps d'être sérieux avec Dieu ! (1/2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio fourthAudio = Audio.fullConstructor(
@@ -2085,6 +2137,8 @@ void main() {
               "Laisser Dieu au contrôle - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio fifthAudio = Audio.fullConstructor(
@@ -2117,6 +2171,8 @@ void main() {
               "VOICI COMMENT ÊTRE GUIDÉ PAR LE SAINT ESPRIT _ JOYCE MEYER.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio firstAudioOneOfTwo = Audio.fullConstructor(
@@ -2149,6 +2205,8 @@ void main() {
               "Communiquer avec Dieu (1/2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio firstAudioTwoOfTwo = Audio.fullConstructor(
@@ -2181,6 +2239,8 @@ void main() {
               "Communiquer avec Dieu (2/2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -2291,6 +2351,8 @@ void main() {
               "La foi contre la peur (1:2 - Joyce Meyer -  Avoir des relations saines.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio thirdAudioTwoOfTwo = Audio.fullConstructor(
@@ -2323,6 +2385,8 @@ void main() {
               "La foi contre la peur (2:2 - Joyce Meyer -  Avoir des relations saines.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio secondAudioTwoOfTwo = Audio.fullConstructor(
@@ -2355,6 +2419,8 @@ void main() {
               "Il est temps d'être sérieux avec Dieu ! (2:2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio secondAudioOneOfTwo = Audio.fullConstructor(
@@ -2387,6 +2453,8 @@ void main() {
               "Il est temps d'être sérieux avec Dieu ! (1:2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio fourthAudio = Audio.fullConstructor(
@@ -2419,6 +2487,8 @@ void main() {
               "Laisser Dieu au contrôle - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio fifthAudio = Audio.fullConstructor(
@@ -2451,6 +2521,8 @@ void main() {
               "VOICI COMMENT ÊTRE GUIDÉ PAR LE SAINT ESPRIT _ JOYCE MEYER.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio firstAudioOneOfTwo = Audio.fullConstructor(
@@ -2483,6 +2555,8 @@ void main() {
               "Communiquer avec Dieu (1:2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio firstAudioTwoOfTwo = Audio.fullConstructor(
@@ -2515,6 +2589,8 @@ void main() {
               "Communiquer avec Dieu (2:2 - Joyce Meyer - Grandir avec Dieu.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -2729,6 +2805,8 @@ void main() {
           audioFileName: 'audioFileName',
           audioFileSize: 1,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         Audio avecPercentTitle = Audio.fullConstructor(
@@ -2758,6 +2836,8 @@ void main() {
           audioFileName: 'audioFileName',
           audioFileSize: 1,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         Audio percentTitle = Audio.fullConstructor(
@@ -2787,6 +2867,8 @@ void main() {
           audioFileName: 'audioFileName',
           audioFileSize: 1,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         Audio powerTitle = Audio.fullConstructor(
@@ -2816,6 +2898,8 @@ void main() {
           audioFileName: 'audioFileName',
           audioFileSize: 1,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         Audio amenTitle = Audio.fullConstructor(
@@ -2844,7 +2928,7 @@ void main() {
           audioPositionSeconds: 0,
           audioFileName: 'audioFileName',
           audioFileSize: 1,
-          audioType: AudioType.imported,
+          audioType: AudioType.imported, playableOnlyOnWeekDays: [], playableOnlyOnMonthDays: [],
         );
 
         Audio epicure = Audio.fullConstructor(
@@ -2874,6 +2958,8 @@ void main() {
           audioFileName: 'audioFileName',
           audioFileSize: 1,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         Audio ninetyFiveTitle = Audio.fullConstructor(
@@ -2902,7 +2988,7 @@ void main() {
           audioPositionSeconds: 0,
           audioFileName: 'audioFileName',
           audioFileSize: 1,
-          audioType: AudioType.imported,
+          audioType: AudioType.imported, playableOnlyOnWeekDays: [], playableOnlyOnMonthDays: [],
         );
 
         Audio ninetyThreeTitle = Audio.fullConstructor(
@@ -2932,6 +3018,8 @@ void main() {
           audioFileName: 'audioFileName',
           audioFileSize: 1,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         Audio ninetyFourTitle = Audio.fullConstructor(
@@ -2960,7 +3048,7 @@ void main() {
           audioPositionSeconds: 0,
           audioFileName: 'audioFileName',
           audioFileSize: 1,
-          audioType: AudioType.imported,
+          audioType: AudioType.imported, playableOnlyOnWeekDays: [], playableOnlyOnMonthDays: [],
         );
 
         Audio echapper = Audio.fullConstructor(
@@ -2990,6 +3078,8 @@ void main() {
           audioFileName: 'audioFileName',
           audioFileSize: 1,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         Audio evidentTitle = Audio.fullConstructor(
@@ -3018,7 +3108,7 @@ void main() {
           audioPositionSeconds: 0,
           audioFileName: 'audioFileName',
           audioFileSize: 1,
-          audioType: AudioType.imported,
+          audioType: AudioType.imported, playableOnlyOnWeekDays: [], playableOnlyOnMonthDays: [],
         );
 
         Audio aLireTitle = Audio.fullConstructor(
@@ -3048,6 +3138,8 @@ void main() {
           audioFileName: 'audioFileName',
           audioFileSize: 1,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         Audio nineTitle = Audio.fullConstructor(
@@ -3077,6 +3169,8 @@ void main() {
           audioFileName: 'audioFileName',
           audioFileSize: 1,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         Audio eightTitle = Audio.fullConstructor(
@@ -3106,6 +3200,8 @@ void main() {
           audioFileName: 'audioFileName',
           audioFileSize: 1,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         Audio eventuelTitle = Audio.fullConstructor(
@@ -3134,7 +3230,7 @@ void main() {
           audioDuration: const Duration(seconds: 1),
           audioFileName: 'audioFileName',
           audioFileSize: 1,
-          audioType: AudioType.imported,
+          audioType: AudioType.imported, playableOnlyOnWeekDays: [], playableOnlyOnMonthDays: [],
         );
 
         List<Audio?> audioLst = [
@@ -3270,6 +3366,8 @@ void main() {
               "Audio Et l'Univers disparaitra - Avant - propos de l'éditeur américain.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio note = Audio.fullConstructor(
@@ -3302,6 +3400,8 @@ void main() {
               "Audio Et l'Univers disparaitra - Note et remerciements de l'auteur.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_1 = Audio.fullConstructor(
@@ -3334,6 +3434,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 3_37  - Partie 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_1 = Audio.fullConstructor(
@@ -3366,6 +3468,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 4_37.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_2 = Audio.fullConstructor(
@@ -3398,6 +3502,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 5_37.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_3 = Audio.fullConstructor(
@@ -3430,6 +3536,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 6_37.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_1 = Audio.fullConstructor(
@@ -3462,6 +3570,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 10_37  - chapitre 3 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_2 = Audio.fullConstructor(
@@ -3494,6 +3604,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 11_37  - chapitre 3 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_4_1 = Audio.fullConstructor(
@@ -3526,6 +3638,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 13_37  - chapitre 4 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_5_1 = Audio.fullConstructor(
@@ -3558,6 +3672,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 16_37  - Chapitre 5 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_1 = Audio.fullConstructor(
@@ -3590,6 +3706,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 21_37  - Partie 2 chapitre 6 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_2 = Audio.fullConstructor(
@@ -3622,6 +3740,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 22_37  - chapitre 6 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_8 = Audio.fullConstructor(
@@ -3654,6 +3774,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 26_37  - chapitre 8.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_9_1 = Audio.fullConstructor(
@@ -3686,6 +3808,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 27_37  - chapitre 9 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_10 = Audio.fullConstructor(
@@ -3718,6 +3842,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 29_37  - chapitre 10.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_1 = Audio.fullConstructor(
@@ -3750,6 +3876,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 30_37  - chapitre 11 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_2 = Audio.fullConstructor(
@@ -3782,6 +3910,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 31_37  - chapitre 11 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_12 = Audio.fullConstructor(
@@ -3814,6 +3944,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 32_37  - chapitre 12.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_13 = Audio.fullConstructor(
@@ -3845,6 +3977,8 @@ void main() {
           audioFileName: "Audio Et l'Univers disparaitra de Gary Renard 33_37",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -3989,6 +4123,8 @@ void main() {
               "Audio Et l'Univers disparaitra 1-37  - Avant - propos de l'éditeur américain.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio note = Audio.fullConstructor(
@@ -4021,6 +4157,8 @@ void main() {
               "Audio Et l'Univers disparaitra 2-37  - Note et remerciements de l'auteur.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_1 = Audio.fullConstructor(
@@ -4053,6 +4191,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 3-37  - Partie 1 chapitre 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_1 = Audio.fullConstructor(
@@ -4085,6 +4225,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 4-37  - chapitre 2-1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_2 = Audio.fullConstructor(
@@ -4117,6 +4259,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 5-37  - chapitre 2 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_3 = Audio.fullConstructor(
@@ -4149,6 +4293,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 6-37  - chapitre 2 - 3.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_1 = Audio.fullConstructor(
@@ -4181,6 +4327,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 10-37  - chapitre 3 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_2 = Audio.fullConstructor(
@@ -4213,6 +4361,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 11-37  - chapitre 3 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_4_1 = Audio.fullConstructor(
@@ -4245,6 +4395,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 13-37  - chapitre 4 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_5_1 = Audio.fullConstructor(
@@ -4277,6 +4429,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 16-37  - Chapitre 5 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_1 = Audio.fullConstructor(
@@ -4309,6 +4463,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 21-37  - Partie 2 chapitre 6 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_2 = Audio.fullConstructor(
@@ -4341,6 +4497,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 22-37  - chapitre 6 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_8 = Audio.fullConstructor(
@@ -4373,6 +4531,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 26-37  - chapitre 8.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_9_1 = Audio.fullConstructor(
@@ -4405,6 +4565,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 27-37  - chapitre 9 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_10 = Audio.fullConstructor(
@@ -4437,6 +4599,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 29-37  - chapitre 10.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_1 = Audio.fullConstructor(
@@ -4469,6 +4633,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 30-37  - chapitre 11 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_2 = Audio.fullConstructor(
@@ -4501,6 +4667,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 31-37  - chapitre 11 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_12 = Audio.fullConstructor(
@@ -4533,6 +4701,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 32-37  - chapitre 12.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_13 = Audio.fullConstructor(
@@ -4565,6 +4735,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 33-37  - chapitre 13.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -4709,6 +4881,8 @@ void main() {
               "Audio Et l'Univers disparaitra 1/37  - Avant - propos de l'éditeur américain.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio note = Audio.fullConstructor(
@@ -4741,6 +4915,8 @@ void main() {
               "Audio Et l'Univers disparaitra 2/37  - Note et remerciements de l'auteur.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_1 = Audio.fullConstructor(
@@ -4773,6 +4949,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 3/37  - Partie 1 chapitre 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_1 = Audio.fullConstructor(
@@ -4805,6 +4983,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 4/37  - chapitre 2-1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_2 = Audio.fullConstructor(
@@ -4837,6 +5017,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 5/37  - chapitre 2 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_3 = Audio.fullConstructor(
@@ -4869,6 +5051,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 6/37  - chapitre 2 - 3.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_1 = Audio.fullConstructor(
@@ -4901,6 +5085,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 10/37  - chapitre 3 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_2 = Audio.fullConstructor(
@@ -4933,6 +5119,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 11/37  - chapitre 3 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_4_1 = Audio.fullConstructor(
@@ -4965,6 +5153,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 13/37  - chapitre 4 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_5_1 = Audio.fullConstructor(
@@ -4997,6 +5187,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 16/37  - Chapitre 5 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_1 = Audio.fullConstructor(
@@ -5029,6 +5221,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 21/37  - Partie 2 chapitre 6 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_2 = Audio.fullConstructor(
@@ -5061,6 +5255,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 22/37  - chapitre 6 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_8 = Audio.fullConstructor(
@@ -5093,6 +5289,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 26/37  - chapitre 8.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_9_1 = Audio.fullConstructor(
@@ -5125,6 +5323,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 27/37  - chapitre 9 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_10 = Audio.fullConstructor(
@@ -5157,6 +5357,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 29/37  - chapitre 10.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_1 = Audio.fullConstructor(
@@ -5189,6 +5391,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 30/37  - chapitre 11 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_2 = Audio.fullConstructor(
@@ -5221,6 +5425,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 31/37  - chapitre 11 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_12 = Audio.fullConstructor(
@@ -5253,6 +5459,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 32/37  - chapitre 12.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_13 = Audio.fullConstructor(
@@ -5285,6 +5493,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 33/37  - chapitre 13.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -5429,6 +5639,8 @@ void main() {
               "Audio Et l'Univers disparaitra 1:37  - Avant - propos de l'éditeur américain.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio note = Audio.fullConstructor(
@@ -5461,6 +5673,8 @@ void main() {
               "Audio Et l'Univers disparaitra 2:37  - Note et remerciements de l'auteur.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_1 = Audio.fullConstructor(
@@ -5493,6 +5707,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 3:37  - Partie 1 chapitre 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_1 = Audio.fullConstructor(
@@ -5525,6 +5741,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 4:37  - chapitre 2-1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_2 = Audio.fullConstructor(
@@ -5557,6 +5775,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 5:37  - chapitre 2 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_3 = Audio.fullConstructor(
@@ -5589,6 +5809,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 6:37  - chapitre 2 - 3.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_1 = Audio.fullConstructor(
@@ -5621,6 +5843,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 10:37  - chapitre 3 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_2 = Audio.fullConstructor(
@@ -5653,6 +5877,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 11:37  - chapitre 3 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_4_1 = Audio.fullConstructor(
@@ -5685,6 +5911,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 13:37  - chapitre 4 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_5_1 = Audio.fullConstructor(
@@ -5717,6 +5945,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 16:37  - Chapitre 5 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_1 = Audio.fullConstructor(
@@ -5749,6 +5979,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 21:37  - Partie 2 chapitre 6 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_2 = Audio.fullConstructor(
@@ -5781,6 +6013,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 22:37  - chapitre 6 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_8 = Audio.fullConstructor(
@@ -5813,6 +6047,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 26:37  - chapitre 8.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_9_1 = Audio.fullConstructor(
@@ -5845,6 +6081,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 27:37  - chapitre 9 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_10 = Audio.fullConstructor(
@@ -5877,6 +6115,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 29:37  - chapitre 10.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_1 = Audio.fullConstructor(
@@ -5909,6 +6149,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 30:37  - chapitre 11 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_2 = Audio.fullConstructor(
@@ -5941,6 +6183,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 31:37  - chapitre 11 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_12 = Audio.fullConstructor(
@@ -5973,6 +6217,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 32:37  - chapitre 12.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_13 = Audio.fullConstructor(
@@ -6005,6 +6251,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 33:37  - chapitre 13.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -6150,6 +6398,8 @@ void main() {
               "Audio Et l'Univers disparaitra 1_37  - Avant - propos de l'éditeur américain.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio note = Audio.fullConstructor(
@@ -6182,6 +6432,8 @@ void main() {
               "Audio Et l'Univers disparaitra 2_37  - Note et remerciements de l'auteur.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_1 = Audio.fullConstructor(
@@ -6214,6 +6466,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 3_37  - Partie 1 chapitre 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_1 = Audio.fullConstructor(
@@ -6246,6 +6500,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 4_37  - chapitre 2-1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_2 = Audio.fullConstructor(
@@ -6278,6 +6534,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 5_37  - chapitre 2 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_3 = Audio.fullConstructor(
@@ -6310,6 +6568,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 6_37  - chapitre 2 - 3.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_1 = Audio.fullConstructor(
@@ -6342,6 +6602,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 10_37  - chapitre 3 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_2 = Audio.fullConstructor(
@@ -6374,6 +6636,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 11_37  - chapitre 3 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_4_1 = Audio.fullConstructor(
@@ -6406,6 +6670,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 13_37  - chapitre 4 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_5_1 = Audio.fullConstructor(
@@ -6438,6 +6704,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 16_37  - Chapitre 5 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_1 = Audio.fullConstructor(
@@ -6470,6 +6738,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 21_37  - Partie 2 chapitre 6 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_2 = Audio.fullConstructor(
@@ -6502,6 +6772,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 22_37  - chapitre 6 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_8 = Audio.fullConstructor(
@@ -6534,6 +6806,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 26_37  - chapitre 8.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_9_1 = Audio.fullConstructor(
@@ -6566,6 +6840,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 27_37  - chapitre 9 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_10 = Audio.fullConstructor(
@@ -6598,6 +6874,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 29_37  - chapitre 10.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_1 = Audio.fullConstructor(
@@ -6630,6 +6908,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 30_37  - chapitre 11 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_2 = Audio.fullConstructor(
@@ -6662,6 +6942,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 31_37  - chapitre 11 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_12 = Audio.fullConstructor(
@@ -6694,6 +6976,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 32_37  - chapitre 12.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_13 = Audio.fullConstructor(
@@ -6726,6 +7010,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 33_37  - chapitre 13.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -6871,6 +7157,8 @@ void main() {
               "Audio Et l'Univers disparaitra 1-37  - Avant - propos de l'éditeur américain.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio note = Audio.fullConstructor(
@@ -6903,6 +7191,8 @@ void main() {
               "Audio Et l'Univers disparaitra 2-37  - Note et remerciements de l'auteur.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_1 = Audio.fullConstructor(
@@ -6935,6 +7225,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 3-37  - Partie 1 chapitre 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_1 = Audio.fullConstructor(
@@ -6967,6 +7259,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 4-37  - chapitre 2-1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_2 = Audio.fullConstructor(
@@ -6999,6 +7293,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 5-37  - chapitre 2 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_3 = Audio.fullConstructor(
@@ -7031,6 +7327,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 6-37  - chapitre 2 - 3.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_1 = Audio.fullConstructor(
@@ -7063,6 +7361,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 10-37  - chapitre 3 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_2 = Audio.fullConstructor(
@@ -7095,6 +7395,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 11-37  - chapitre 3 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_4_1 = Audio.fullConstructor(
@@ -7127,6 +7429,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 13-37  - chapitre 4 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_5_1 = Audio.fullConstructor(
@@ -7159,6 +7463,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 16-37  - Chapitre 5 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_1 = Audio.fullConstructor(
@@ -7191,6 +7497,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 21-37  - Partie 2 chapitre 6 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_2 = Audio.fullConstructor(
@@ -7223,6 +7531,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 22-37  - chapitre 6 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_8 = Audio.fullConstructor(
@@ -7255,6 +7565,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 26-37  - chapitre 8.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_9_1 = Audio.fullConstructor(
@@ -7287,6 +7599,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 27-37  - chapitre 9 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_10 = Audio.fullConstructor(
@@ -7319,6 +7633,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 29-37  - chapitre 10.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_1 = Audio.fullConstructor(
@@ -7351,6 +7667,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 30-37  - chapitre 11 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_2 = Audio.fullConstructor(
@@ -7383,6 +7701,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 31-37  - chapitre 11 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_12 = Audio.fullConstructor(
@@ -7415,6 +7735,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 32-37  - chapitre 12.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_13 = Audio.fullConstructor(
@@ -7447,6 +7769,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 33-37  - chapitre 13.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -7592,6 +7916,8 @@ void main() {
               "Audio Et l'Univers disparaitra 1/37  - Avant - propos de l'éditeur américain.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio note = Audio.fullConstructor(
@@ -7624,6 +7950,8 @@ void main() {
               "Audio Et l'Univers disparaitra 2/37  - Note et remerciements de l'auteur.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_1 = Audio.fullConstructor(
@@ -7656,6 +7984,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 3/37  - Partie 1 chapitre 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_1 = Audio.fullConstructor(
@@ -7688,6 +8018,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 4/37  - chapitre 2-1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_2 = Audio.fullConstructor(
@@ -7720,6 +8052,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 5/37  - chapitre 2 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_3 = Audio.fullConstructor(
@@ -7752,6 +8086,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 6/37  - chapitre 2 - 3.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_1 = Audio.fullConstructor(
@@ -7784,6 +8120,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 10/37  - chapitre 3 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_2 = Audio.fullConstructor(
@@ -7816,6 +8154,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 11/37  - chapitre 3 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_4_1 = Audio.fullConstructor(
@@ -7848,6 +8188,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 13/37  - chapitre 4 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_5_1 = Audio.fullConstructor(
@@ -7880,6 +8222,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 16/37  - Chapitre 5 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_1 = Audio.fullConstructor(
@@ -7912,6 +8256,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 21/37  - Partie 2 chapitre 6 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_2 = Audio.fullConstructor(
@@ -7944,6 +8290,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 22/37  - chapitre 6 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_8 = Audio.fullConstructor(
@@ -7976,6 +8324,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 26/37  - chapitre 8.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_9_1 = Audio.fullConstructor(
@@ -8008,6 +8358,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 27/37  - chapitre 9 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_10 = Audio.fullConstructor(
@@ -8040,6 +8392,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 29/37  - chapitre 10.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_1 = Audio.fullConstructor(
@@ -8072,6 +8426,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 30/37  - chapitre 11 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_2 = Audio.fullConstructor(
@@ -8104,6 +8460,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 31/37  - chapitre 11 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_12 = Audio.fullConstructor(
@@ -8136,6 +8494,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 32/37  - chapitre 12.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_13 = Audio.fullConstructor(
@@ -8168,6 +8528,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 33/37  - chapitre 13.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -8313,6 +8675,8 @@ void main() {
               "Audio Et l'Univers disparaitra 1:37  - Avant - propos de l'éditeur américain.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio note = Audio.fullConstructor(
@@ -8345,6 +8709,8 @@ void main() {
               "Audio Et l'Univers disparaitra 2:37  - Note et remerciements de l'auteur.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_1 = Audio.fullConstructor(
@@ -8377,6 +8743,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 3:37  - Partie 1 chapitre 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_1 = Audio.fullConstructor(
@@ -8409,6 +8777,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 4:37  - chapitre 2-1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_2 = Audio.fullConstructor(
@@ -8441,6 +8811,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 5:37  - chapitre 2 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_2_3 = Audio.fullConstructor(
@@ -8473,6 +8845,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 6:37  - chapitre 2 - 3.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_1 = Audio.fullConstructor(
@@ -8505,6 +8879,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 10:37  - chapitre 3 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_3_2 = Audio.fullConstructor(
@@ -8537,6 +8913,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 11:37  - chapitre 3 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_4_1 = Audio.fullConstructor(
@@ -8569,6 +8947,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 13:37  - chapitre 4 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_5_1 = Audio.fullConstructor(
@@ -8601,6 +8981,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 16:37  - Chapitre 5 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_1 = Audio.fullConstructor(
@@ -8633,6 +9015,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 21:37  - Partie 2 chapitre 6 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_6_2 = Audio.fullConstructor(
@@ -8665,6 +9049,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 22:37  - chapitre 6 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_8 = Audio.fullConstructor(
@@ -8697,6 +9083,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 26:37  - chapitre 8.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_9_1 = Audio.fullConstructor(
@@ -8729,6 +9117,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 27:37  - chapitre 9 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_10 = Audio.fullConstructor(
@@ -8761,6 +9151,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 29:37  - chapitre 10.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_1 = Audio.fullConstructor(
@@ -8793,6 +9185,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 30:37  - chapitre 11 - 1.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_11_2 = Audio.fullConstructor(
@@ -8825,6 +9219,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 31:37  - chapitre 11 - 2.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_12 = Audio.fullConstructor(
@@ -8857,6 +9253,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 32:37  - chapitre 12.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         final Audio chap_13 = Audio.fullConstructor(
@@ -8889,6 +9287,8 @@ void main() {
               "Audio Et l'Univers disparaitra de Gary Renard 33:37  - chapitre 13.mp3",
           audioFileSize: 330000000,
           audioType: AudioType.downloaded,
+          playableOnlyOnWeekDays: [],
+          playableOnlyOnMonthDays: [],
         );
 
         List<Audio> audioList = [
@@ -9021,6 +9421,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9050,6 +9452,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9078,6 +9482,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9107,6 +9513,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9138,6 +9546,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9169,6 +9579,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9245,6 +9657,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9274,6 +9688,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9302,6 +9718,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9331,6 +9749,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9362,6 +9782,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9393,6 +9815,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9470,6 +9894,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9499,6 +9925,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9528,6 +9956,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9557,6 +9987,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9588,6 +10020,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9619,6 +10053,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9696,6 +10132,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9725,6 +10163,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9754,6 +10194,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9783,6 +10225,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9814,6 +10258,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -9845,6 +10291,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10026,6 +10474,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10055,6 +10505,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10083,6 +10535,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10112,6 +10566,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10142,6 +10598,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10172,6 +10630,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10250,6 +10710,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10279,6 +10741,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10307,6 +10771,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10336,6 +10802,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10366,6 +10834,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10396,6 +10866,8 @@ void main() {
             copiedToPlaylistTitle: null,
             extractedFromPlaylistTitle: null,
             audioType: AudioType.downloaded,
+            playableOnlyOnWeekDays: [],
+            playableOnlyOnMonthDays: [],
             isAudioMusicQuality: false,
             isPaused: true,
             isPlayingOrPausedWithPositionBetweenAudioStartAndEnd: false,
@@ -10500,6 +10972,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio apple = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -10528,6 +11002,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio bananna = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -10556,6 +11032,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio banannaLonger = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -10584,6 +11062,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       List<Audio> audioList = [
@@ -10707,6 +11187,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio apple = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -10735,6 +11217,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio zebra3 = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -10763,6 +11247,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio bananna = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -10791,6 +11277,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio zebra2 = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -10819,6 +11307,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       List<Audio> audioList = [
@@ -10978,6 +11468,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio apple = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11006,6 +11498,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio zebra3 = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11034,6 +11528,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio bananna = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11062,6 +11558,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio zebra2 = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11090,6 +11588,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       List<Audio> audioList = [
@@ -11209,6 +11709,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio apple = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11236,7 +11738,7 @@ void main() {
         audioPositionSeconds: 0,
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
-        audioType: AudioType.imported,
+        audioType: AudioType.imported, playableOnlyOnWeekDays: [], playableOnlyOnMonthDays: [],
       );
       final Audio zebra3 = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11265,6 +11767,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio bananna = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11293,6 +11797,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       var audio2 = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11321,6 +11827,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio zebra2 = audio2;
 
@@ -11463,6 +11971,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio apple = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11491,6 +12001,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio zebra3 = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11519,6 +12031,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio bananna = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11547,6 +12061,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
       final Audio zebra2 = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
@@ -11575,6 +12091,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDays: [],
+        playableOnlyOnMonthDays: [],
       );
 
       List<Audio> audioList = [

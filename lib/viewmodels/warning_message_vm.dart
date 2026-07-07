@@ -72,6 +72,12 @@ enum WarningMessageType {
   // name proposed for renaming a picture file is the name of an existing
   // file.
 
+  invalidPlayableOnlyWeekDays, // The case if the entered playableOnlyWeekDays
+  // are invalid.
+
+  invalidPlayableOnlyMonthDays, // The case if the entered playableOnlyMonthDays
+  // are invalid.
+
   renameAudioFileConfirm, // The case if an audio file was renamed.
 
   renameAudioAndAssociatedFilesConfirm, // The case if both audio and comment
@@ -674,6 +680,34 @@ class WarningMessageVM extends ChangeNotifier {
   }) {
     _renamePictureFileNameAlreadyUsed = invalidRenameFileName;
     warningMessageType = WarningMessageType.renamePictureFileNameAlreadyUsed;
+
+    // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
+    notifyListeners();
+  }
+
+  String _invalidPlayableOnlyWeekDays = '';
+  String get invalidPlayableOnlyWeekDays =>
+      _invalidPlayableOnlyWeekDays;
+
+  void invalidPlayableOnlyWeekDaysWarning({
+    required String invalidPlayableOnlyWeekDays,
+  }) {
+    _invalidPlayableOnlyWeekDays = invalidPlayableOnlyWeekDays;
+    warningMessageType = WarningMessageType.invalidPlayableOnlyWeekDays;
+
+    // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
+    notifyListeners();
+  }
+
+  String _invalidPlayableOnlyMonthDays = '';
+  String get invalidPlayableOnlyMonthDays =>
+      _invalidPlayableOnlyMonthDays;
+
+  void invalidPlayableOnlyMonthDaysWarning({
+    required String invalidPlayableOnlyMonthDays,
+  }) {
+    _invalidPlayableOnlyMonthDays = invalidPlayableOnlyMonthDays;
+    warningMessageType = WarningMessageType.invalidPlayableOnlyMonthDays;
 
     // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
     notifyListeners();

@@ -3042,7 +3042,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get modifyAudioUrlLabel => 'URL';
 
   @override
-  String get modifyAudioUrlButton => 'Modify';
+  String get modifyAudioUrlButton => 'Modifier';
 
   @override
   String get playlistPositionDefinitionTitle =>
@@ -3089,4 +3089,63 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get restoringPlaylistsFromZipProgression =>
       'Restoration de playlist(s) à partir d\'un ZIP ...';
+
+  @override
+  String get definePlayableOnlyWeekDaysMenu =>
+      'Lister le(s) jour(s) de semaine durant lesquels l\'audio est jouable ...';
+
+  @override
+  String get definePlayableOnlyWeekDaysMenuTooltip =>
+      'Si ce n\'est pas défini, l\'audio est jouable durant n\'importe quel jour de semaine !';
+
+  @override
+  String get definePlayableOnlyMonthDaysMenu =>
+      'Lister le(s) jour(s) de mois durant lesquels l\'audio est jouable ...';
+
+  @override
+  String get definePlayableOnlyMonthDaysMenuTooltip =>
+      'Si ce n\'est pas défini, l\'audio est jouable durant n\'importe quel jour du mois !';
+
+  @override
+  String get modifyOnlyWeekDaysDialogTitle =>
+      'Jour(s) jouable(s) de la semaine';
+
+  @override
+  String get modifyOnlyWeekDaysTooltip => '';
+
+  @override
+  String get modifyOnlyWeekDaysDialogComment =>
+      'Entrer 1 pour lundi ... 7 pour dimanche. Les nombres sont séparés par une virgule.';
+
+  @override
+  String get modifyOnlyWeekDaysLabel => 'Vide ou 1 ou n entiers';
+
+  @override
+  String get modifyOnlyWeekDaysButton => 'Modifier';
+
+  @override
+  String get modifyOnlyMonthDaysDialogTitle => 'Jour(s) jouable(s) du mois';
+
+  @override
+  String get modifyOnlyMonthDaysTooltip => '';
+
+  @override
+  String get modifyOnlyMonthDaysDialogComment =>
+      'Entrer 1 --> 31. Les nombres sont séparés par une virgule.';
+
+  @override
+  String get modifyOnlyMonthDaysLabel => 'Vide ou 1 ou n entiers';
+
+  @override
+  String get modifyOnlyMonthDaysButton => 'Modifier';
+
+  @override
+  String invalidPlayableOnlyWeekDaysWarning(Object dayNumbers) {
+    return 'Jour(s) de semaine entré(s) invalide(s): \"$dayNumbers\".';
+  }
+
+  @override
+  String invalidPlayableOnlyMonthDaysWarning(Object dayNumbers) {
+    return 'Jour(s) du mois entré(s) invalide(s): \"$dayNumbers\".';
+  }
 }

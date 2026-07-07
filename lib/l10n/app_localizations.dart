@@ -4905,6 +4905,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restoring playlist(s) from ZIP ...'**
   String get restoringPlaylistsFromZipProgression;
+
+  /// No description provided for @definePlayableOnlyWeekDaysMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'List the only playable Week Day Number(s) ...'**
+  String get definePlayableOnlyWeekDaysMenu;
+
+  /// No description provided for @definePlayableOnlyWeekDaysMenuTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'If not defined, the audio is playable on every week day !'**
+  String get definePlayableOnlyWeekDaysMenuTooltip;
+
+  /// No description provided for @definePlayableOnlyMonthDaysMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'List the only playable Month Day Number(s) ...'**
+  String get definePlayableOnlyMonthDaysMenu;
+
+  /// No description provided for @definePlayableOnlyMonthDaysMenuTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'If not defined, the audio is playable on every month day !'**
+  String get definePlayableOnlyMonthDaysMenuTooltip;
+
+  /// No description provided for @modifyOnlyWeekDaysDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Playable Week Day Number(s)'**
+  String get modifyOnlyWeekDaysDialogTitle;
+
+  /// No description provided for @modifyOnlyWeekDaysTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **''**
+  String get modifyOnlyWeekDaysTooltip;
+
+  /// No description provided for @modifyOnlyWeekDaysDialogComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter 1 for monday ... 7 for sunday. Separate the numbers with a comma.'**
+  String get modifyOnlyWeekDaysDialogComment;
+
+  /// No description provided for @modifyOnlyWeekDaysLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty or int list'**
+  String get modifyOnlyWeekDaysLabel;
+
+  /// No description provided for @modifyOnlyWeekDaysButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify'**
+  String get modifyOnlyWeekDaysButton;
+
+  /// No description provided for @modifyOnlyMonthDaysDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Playable Month Day Number(s)'**
+  String get modifyOnlyMonthDaysDialogTitle;
+
+  /// No description provided for @modifyOnlyMonthDaysTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **''**
+  String get modifyOnlyMonthDaysTooltip;
+
+  /// No description provided for @modifyOnlyMonthDaysDialogComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter 1 till 31. Separate the numbers with a comma.'**
+  String get modifyOnlyMonthDaysDialogComment;
+
+  /// No description provided for @modifyOnlyMonthDaysLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty or int list'**
+  String get modifyOnlyMonthDaysLabel;
+
+  /// No description provided for @modifyOnlyMonthDaysButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify'**
+  String get modifyOnlyMonthDaysButton;
+
+  /// No description provided for @invalidPlayableOnlyWeekDaysWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid entered week day number(s): \"{dayNumbers}\".'**
+  String invalidPlayableOnlyWeekDaysWarning(Object dayNumbers);
+
+  /// No description provided for @invalidPlayableOnlyMonthDaysWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid entered month day number(s): \"{dayNumbers}\".'**
+  String invalidPlayableOnlyMonthDaysWarning(Object dayNumbers);
 }
 
 class _AppLocalizationsDelegate

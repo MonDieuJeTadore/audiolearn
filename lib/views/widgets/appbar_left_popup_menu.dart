@@ -207,6 +207,26 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                 child: Text(AppLocalizations.of(context)!.copyAudioToPlaylist),
               ),
               PopupMenuItem<AudioPopupMenuAction>(
+                key: const Key('popup_menu_define_playable_only_week_days'),
+                value: AudioPopupMenuAction.definePlayableOnlyWeekDays,
+                child: Tooltip(
+                  message: AppLocalizations.of(context)!
+                      .definePlayableOnlyWeekDaysMenuTooltip,
+                  child: Text(AppLocalizations.of(context)!
+                      .definePlayableOnlyWeekDaysMenu),
+                ),
+              ),
+              PopupMenuItem<AudioPopupMenuAction>(
+                key: const Key('popup_menu_define_playable_only_month_days'),
+                value: AudioPopupMenuAction.definePlayableOnlyMonthDays,
+                child: Tooltip(
+                  message: AppLocalizations.of(context)!
+                      .definePlayableOnlyMonthDaysMenuTooltip,
+                  child: Text(AppLocalizations.of(context)!
+                      .definePlayableOnlyMonthDaysMenu),
+                ),
+              ),
+              PopupMenuItem<AudioPopupMenuAction>(
                 key: const Key('popup_menu_delete_audio'),
                 value: AudioPopupMenuAction.deleteAudio,
                 child: Text(AppLocalizations.of(context)!.deleteAudio),
@@ -462,6 +482,36 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                     targetPlaylist: targetPlaylist,
                   );
                 });
+                break;
+              case AudioPopupMenuAction.definePlayableOnlyWeekDays:
+                await showDialog<String?>(
+                  context: context,
+                  barrierDismissible:
+                      false, // This line prevents the dialog from closing when
+                  //            tapping outside the dialog
+                  builder: (BuildContext context) {
+                    return AudioModificationDialog(
+                      audio: audio,
+                      audioModificationType:
+                          AudioModificationType.playableOnlyWeekDays,
+                    );
+                  },
+                );
+                break;
+              case AudioPopupMenuAction.definePlayableOnlyMonthDays:
+                await showDialog<String?>(
+                  context: context,
+                  barrierDismissible:
+                      false, // This line prevents the dialog from closing when
+                  //            tapping outside the dialog
+                  builder: (BuildContext context) {
+                    return AudioModificationDialog(
+                      audio: audio,
+                      audioModificationType:
+                          AudioModificationType.playableOnlyMonthDays,
+                    );
+                  },
+                );
                 break;
               case AudioPopupMenuAction.deleteAudio:
                 final Audio audioToDelete =
@@ -1039,8 +1089,8 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
               settingsDataService: settingsDataService,
             );
 
-            String newestAudioDownloadDateFormattedStr = 
-                dateFormatVM.formatDateTime(DateTime.parse(newestAudioDownloadDateTime));
+            String newestAudioDownloadDateFormattedStr = dateFormatVM
+                .formatDateTime(DateTime.parse(newestAudioDownloadDateTime));
 
             warningMessageVMlistenFalse.displayNewestAudioDownloadDate(
               newestAudioDownloadDateTime: newestAudioDownloadDateFormattedStr,

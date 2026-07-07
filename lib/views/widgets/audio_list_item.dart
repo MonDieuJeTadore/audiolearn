@@ -255,6 +255,26 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           child: Text(AppLocalizations.of(context)!.copyAudioToPlaylist),
         ),
         PopupMenuItem<AudioPopupMenuAction>(
+          key: const Key('popup_menu_define_playable_only_week_days'),
+          value: AudioPopupMenuAction.definePlayableOnlyWeekDays,
+          child: Tooltip(
+            message: AppLocalizations.of(context)!
+                .definePlayableOnlyWeekDaysMenuTooltip,
+            child: Text(
+                AppLocalizations.of(context)!.definePlayableOnlyWeekDaysMenu),
+          ),
+        ),
+        PopupMenuItem<AudioPopupMenuAction>(
+          key: const Key('popup_menu_define_playable_only_month_days'),
+          value: AudioPopupMenuAction.definePlayableOnlyMonthDays,
+          child: Tooltip(
+            message: AppLocalizations.of(context)!
+                .definePlayableOnlyMonthDaysMenuTooltip,
+            child: Text(
+                AppLocalizations.of(context)!.definePlayableOnlyMonthDaysMenu),
+          ),
+        ),
+        PopupMenuItem<AudioPopupMenuAction>(
           key: const Key('popup_menu_delete_audio'),
           value: AudioPopupMenuAction.deleteAudio,
           child: Text(AppLocalizations.of(context)!.deleteAudio),
@@ -280,10 +300,7 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           case AudioPopupMenuAction.openYoutubeVideo:
             openUrlInExternalApp(
               url: audio.videoUrl,
-              warningMessageVM: Provider.of<WarningMessageVM>(
-                context,
-                listen: false,
-              ),
+              warningMessageVM: warningMessageVM
             );
             break;
           case AudioPopupMenuAction.copyYoutubeVideoUrl:
@@ -435,10 +452,7 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
               builder: (context) => PlaylistOneSelectableDialog(
                 usedFor: PlaylistOneSelectableDialogUsedFor
                     .moveSingleAudioToPlaylist,
-                warningMessageVM: Provider.of<WarningMessageVM>(
-                  context,
-                  listen: false,
-                ),
+                warningMessageVM: warningMessageVM,
                 excludedPlaylist: audio.enclosingPlaylist!,
               ),
             ).then((resultMap) {
@@ -481,10 +495,7 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
               builder: (context) => PlaylistOneSelectableDialog(
                 usedFor: PlaylistOneSelectableDialogUsedFor
                     .copySingleAudioToPlaylist,
-                warningMessageVM: Provider.of<WarningMessageVM>(
-                  context,
-                  listen: false,
-                ),
+                warningMessageVM: warningMessageVM,
                 excludedPlaylist: audio.enclosingPlaylist!,
               ),
             ).then((resultMap) {
@@ -503,6 +514,34 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
                 targetPlaylist: targetPlaylist,
               );
             });
+            break;
+          case AudioPopupMenuAction.definePlayableOnlyWeekDays:
+            await showDialog<String?>(
+              context: context,
+              barrierDismissible:
+                  false, // This line prevents the dialog from closing when
+              //            tapping outside the dialog
+              builder: (BuildContext context) {
+                return AudioModificationDialog(
+                  audio: audio,
+                  audioModificationType: AudioModificationType.playableOnlyWeekDays,
+                );
+              },
+            );
+            break;
+          case AudioPopupMenuAction.definePlayableOnlyMonthDays:
+            await showDialog<String?>(
+              context: context,
+              barrierDismissible:
+                  false, // This line prevents the dialog from closing when
+              //            tapping outside the dialog
+              builder: (BuildContext context) {
+                return AudioModificationDialog(
+                  audio: audio,
+                  audioModificationType: AudioModificationType.playableOnlyMonthDays,
+                );
+              },
+            );
             break;
           case AudioPopupMenuAction.deleteAudio:
             final Audio audioToDelete = audio;

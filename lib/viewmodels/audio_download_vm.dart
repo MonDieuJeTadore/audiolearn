@@ -1201,6 +1201,92 @@ class AudioDownloadVM extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Method called by the AudioModificationDialog when the user clicks on the
+  /// modify button in order to modify the audio playable week days.
+  void modifyPlayableOnlyWeekDays({
+    required Audio audio,
+    required String modifiedPlayableOnlyWeekDaysStr,
+  }) {
+    Playlist enclosingPlaylist = audio.enclosingPlaylist!;
+
+    Audio playlistAudio = enclosingPlaylist.playableAudioLst.firstWhere(
+      (entry) => entry == audio,
+    );
+
+    List<int>? modifiedPlayableOnlyWeekDaysLst = _tryParseValidList(
+      listStr: modifiedPlayableOnlyWeekDaysStr,
+      minDayNumber: 1,
+      maxDayNumber: 7,
+    );
+
+    if (modifiedPlayableOnlyWeekDaysLst == null) {
+      warningMessageVM.invalidPlayableOnlyWeekDaysWarning(
+        invalidPlayableOnlyWeekDays: modifiedPlayableOnlyWeekDaysStr,
+      );
+
+      return;
+    }
+
+    playlistAudio.playableOnlyOnWeekDaysLst = modifiedPlayableOnlyWeekDaysLst;
+
+    JsonDataService.saveToFile(
+      model: enclosingPlaylist,
+      path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
+    );
+  }
+
+  /// Method called by the AudioModificationDialog when the user clicks on the
+  /// modify button in order to modify the audio playable month days.
+  void modifyPlayableOnlyMonthDays({
+    required Audio audio,
+    required String modifiedPlayableOnlyMonthDaysStr,
+  }) {
+    Playlist enclosingPlaylist = audio.enclosingPlaylist!;
+
+    Audio playlistAudio = enclosingPlaylist.playableAudioLst.firstWhere(
+      (entry) => entry == audio,
+    );
+
+    List<int>? modifiedPlayableOnlyMonthDaysLst = _tryParseValidList(
+      listStr: modifiedPlayableOnlyMonthDaysStr,
+      minDayNumber: 1,
+      maxDayNumber: 31,
+    );
+
+    if (modifiedPlayableOnlyMonthDaysLst == null) {
+      warningMessageVM.invalidPlayableOnlyMonthDaysWarning(
+        invalidPlayableOnlyMonthDays: modifiedPlayableOnlyMonthDaysStr,
+      );
+      
+      return;
+    }
+
+    playlistAudio.playableOnlyOnMonthDaysLst = modifiedPlayableOnlyMonthDaysLst;
+
+    JsonDataService.saveToFile(
+      model: enclosingPlaylist,
+      path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
+    );
+  }
+
+  List<int>? _tryParseValidList({
+    required String listStr,
+    required int minDayNumber,
+    required int maxDayNumber,
+  }) {
+    if (listStr.isEmpty) return [];
+
+    final result = <int>[];
+
+    for (final part in listStr.split(',')) {
+      final value = int.tryParse(part.trim());
+      if (value == null || value < minDayNumber || value > maxDayNumber) return null; // invalide
+      result.add(value);
+    }
+
+    return result;
+  }
+
   /// Since currently only one playlist is selectable, if the playlist
   /// selection status is changed, the playlist json file will be
   /// updated.

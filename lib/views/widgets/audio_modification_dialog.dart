@@ -163,7 +163,7 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
             AppLocalizations.of(context)!.modifyOnlyWeekDaysTooltip;
         modificationButtonStr =
             AppLocalizations.of(context)!.modifyOnlyWeekDaysButton;
-        flexibleValue = 6;
+        flexibleValue = 4;
         break;
       case AudioModificationType.playableOnlyMonthDays:
         titleStr = AppLocalizations.of(context)!.modifyOnlyMonthDaysDialogTitle;
@@ -174,7 +174,7 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
             AppLocalizations.of(context)!.modifyOnlyMonthDaysTooltip;
         modificationButtonStr =
             AppLocalizations.of(context)!.modifyOnlyMonthDaysButton;
-        flexibleValue = 6;
+        flexibleValue = 4;
         break;
     }
 

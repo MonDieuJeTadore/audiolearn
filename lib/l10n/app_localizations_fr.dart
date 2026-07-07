@@ -3115,7 +3115,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get modifyOnlyWeekDaysDialogComment =>
-      'Entrer 1 pour lundi ... 7 pour dimanche. Les nombres sont séparés par une virgule.';
+      'Entrez 1 pour lundi ... 7 pour dimanche. Les nombres sont séparés par une virgule.';
 
   @override
   String get modifyOnlyWeekDaysLabel => 'Vide ou 1 ou n entiers';
@@ -3131,7 +3131,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get modifyOnlyMonthDaysDialogComment =>
-      'Entrer 1 --> 31. Les nombres sont séparés par une virgule.';
+      'Entrez 1 --> 31. Les nombres sont séparés par une virgule.';
 
   @override
   String get modifyOnlyMonthDaysLabel => 'Vide ou 1 ou n entiers';

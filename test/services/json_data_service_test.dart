@@ -74,8 +74,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       // Save the Audio instance to a file
@@ -132,8 +132,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       // Save the Audio instance to a file
@@ -189,8 +189,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       // Save the Audio instance to a file
@@ -259,8 +259,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       // Save the Audio instance to a file
@@ -330,8 +330,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       Audio audio2 = Audio.fullConstructor(
@@ -361,8 +361,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       testPlaylist.downloadedAudioLst = [audio1, audio2];
@@ -438,8 +438,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       Audio audio2 = Audio.fullConstructor(
@@ -469,8 +469,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       testPlaylist.downloadedAudioLst = [audio1, audio2];
@@ -615,8 +615,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       Audio audio2 = Audio.fullConstructor(
@@ -646,8 +646,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       testPlaylist.downloadedAudioLst = [audio1, audio2];
@@ -891,8 +891,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       // Save the Audio instance to a file
@@ -940,8 +940,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       Audio audioTwo = Audio.fullConstructor(
@@ -971,8 +971,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       // Prepare test data
@@ -1049,8 +1049,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       Audio audio2 = Audio.fullConstructor(
@@ -1080,8 +1080,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       testPlaylistOne.addDownloadedAudio(audio1);
@@ -1125,8 +1125,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.downloaded,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       Audio audio4 = Audio.fullConstructor(
@@ -1156,8 +1156,8 @@ void main() {
         audioFileName: 'Test Video Title.mp3',
         audioFileSize: 330000000,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDays: [],
-        playableOnlyOnMonthDays: [],
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       testPlaylistTwo.addDownloadedAudio(audio3);

@@ -690,6 +690,34 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
         });
 
         return const SizedBox.shrink();
+      case WarningMessageType.invalidPlayableOnlyWeekDays:
+        String invalidWeekDays = _warningMessageVM.invalidPlayableOnlyWeekDays;
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _displayWarningDialog(
+            context: _context,
+            message: AppLocalizations.of(context)!
+                .invalidPlayableOnlyWeekDaysWarning(invalidWeekDays),
+            warningMessageVM: _warningMessageVM,
+            themeProviderVM: themeProviderVM,
+          );
+        });
+
+        return const SizedBox.shrink();
+      case WarningMessageType.invalidPlayableOnlyMonthDays:
+        String invalidMonthDays = _warningMessageVM.invalidPlayableOnlyMonthDays;
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _displayWarningDialog(
+            context: _context,
+            message: AppLocalizations.of(context)!
+                .invalidPlayableOnlyMonthDaysWarning(invalidMonthDays),
+            warningMessageVM: _warningMessageVM,
+            themeProviderVM: themeProviderVM,
+          );
+        });
+
+        return const SizedBox.shrink();
       case WarningMessageType.addRemoveSortFilterParmsToPlaylistConfirm:
         String playlistTitle = _warningMessageVM.playlistTitle;
         String sortFilterParmsName = _warningMessageVM.sortFilterParmsName;

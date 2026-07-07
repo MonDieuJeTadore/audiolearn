@@ -16,6 +16,8 @@ enum AudioModificationType {
   renameAudioFile,
   modifyAudioTitle,
   modifyAudioUrl,
+  playableOnlyWeekDays,
+  playableOnlyMonthDays,
 }
 
 /// This dialog allows the user to rename the audio file or modify its title.
@@ -64,8 +66,15 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
               widget.audio.validVideoTitle;
           break;
         case AudioModificationType.modifyAudioUrl:
+          _audioModificationTextEditingController.text = widget.audio.videoUrl;
+          break;
+        case AudioModificationType.playableOnlyWeekDays:
           _audioModificationTextEditingController.text =
-              widget.audio.videoUrl;
+              widget.audio.playableOnlyOnWeekDaysLst.join(',');
+          break;
+        case AudioModificationType.playableOnlyMonthDays:
+          _audioModificationTextEditingController.text =
+              widget.audio.playableOnlyOnMonthDaysLst.join(',');
           break;
       }
 
@@ -103,6 +112,7 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
     String labelAndTextFieldTooltipStr;
     String modificationButtonStr;
     int flexibleValue;
+    bool isInactive = false;
 
     switch (widget.audioModificationType) {
       case AudioModificationType.renameAudioFile:
@@ -113,7 +123,11 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
             AppLocalizations.of(context)!.renameAudioFileTooltip;
         modificationButtonStr =
             AppLocalizations.of(context)!.renameAudioFileButton;
-        flexibleValue = 4;
+        flexibleValue = 6;
+
+        if (_audioModificationTextEditingController.text.trim().isEmpty) {
+          isInactive = true;
+        }
         break;
       case AudioModificationType.modifyAudioTitle:
         titleStr = AppLocalizations.of(context)!.modifyAudioTitleDialogTitle;
@@ -125,16 +139,41 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
         modificationButtonStr =
             AppLocalizations.of(context)!.modifyAudioTitleButton;
         flexibleValue = 6;
+
+        if (_audioModificationTextEditingController.text.trim().isEmpty) {
+          isInactive = true;
+        }
         break;
       case AudioModificationType.modifyAudioUrl:
         titleStr = AppLocalizations.of(context)!.modifyAudioUrlDialogTitle;
-        commentStr =
-            AppLocalizations.of(context)!.modifyAudioUrlDialogComment;
+        commentStr = AppLocalizations.of(context)!.modifyAudioUrlDialogComment;
         labelStr = AppLocalizations.of(context)!.modifyAudioUrlLabel;
         labelAndTextFieldTooltipStr =
             AppLocalizations.of(context)!.modifyAudioUrlTooltip;
         modificationButtonStr =
             AppLocalizations.of(context)!.modifyAudioUrlButton;
+        flexibleValue = 6;
+        break;
+      case AudioModificationType.playableOnlyWeekDays:
+        titleStr = AppLocalizations.of(context)!.modifyOnlyWeekDaysDialogTitle;
+        commentStr =
+            AppLocalizations.of(context)!.modifyOnlyWeekDaysDialogComment;
+        labelStr = AppLocalizations.of(context)!.modifyOnlyWeekDaysLabel;
+        labelAndTextFieldTooltipStr =
+            AppLocalizations.of(context)!.modifyOnlyWeekDaysTooltip;
+        modificationButtonStr =
+            AppLocalizations.of(context)!.modifyOnlyWeekDaysButton;
+        flexibleValue = 6;
+        break;
+      case AudioModificationType.playableOnlyMonthDays:
+        titleStr = AppLocalizations.of(context)!.modifyOnlyMonthDaysDialogTitle;
+        commentStr =
+            AppLocalizations.of(context)!.modifyOnlyMonthDaysDialogComment;
+        labelStr = AppLocalizations.of(context)!.modifyOnlyMonthDaysLabel;
+        labelAndTextFieldTooltipStr =
+            AppLocalizations.of(context)!.modifyOnlyMonthDaysTooltip;
+        modificationButtonStr =
+            AppLocalizations.of(context)!.modifyOnlyMonthDaysButton;
         flexibleValue = 6;
         break;
     }
@@ -224,9 +263,7 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
             children: [
               TextButton(
                 key: const Key('audioModificationButton'),
-                onPressed: _audioModificationTextEditingController.text
-                        .trim()
-                        .isEmpty
+                onPressed: isInactive
                     ? null // This disables the button
                     : () {
                         _handleAudioModification(context);
@@ -275,6 +312,16 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
       case AudioModificationType.modifyAudioUrl:
         _modifyAudioUrl(context);
         break;
+      case AudioModificationType.playableOnlyWeekDays:
+        _modifyPlayableOnlyWeekDays(
+          context: context,
+        );
+        break;
+      case AudioModificationType.playableOnlyMonthDays:
+        _modifyPlayableOnlyMonthDays(
+          context: context,
+        );
+        break;
     }
   }
 
@@ -314,6 +361,38 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
     audioDownloadVMlistenFalse.modifyAudioUrl(
       audio: widget.audio,
       modifiedAudioUrl: audioUrl,
+    );
+  }
+
+  void _modifyPlayableOnlyWeekDays({
+    required BuildContext context,
+  }) {
+    String playableOnlyWeekDaysStr =
+        _audioModificationTextEditingController.text;
+    AudioDownloadVM audioDownloadVMlistenFalse = Provider.of<AudioDownloadVM>(
+      context,
+      listen: false,
+    );
+
+    audioDownloadVMlistenFalse.modifyPlayableOnlyWeekDays(
+      audio: widget.audio,
+      modifiedPlayableOnlyWeekDaysStr: playableOnlyWeekDaysStr,
+    );
+  }
+
+  void _modifyPlayableOnlyMonthDays({
+    required BuildContext context,
+  }) {
+    String playableOnlyMonthDaysStr =
+        _audioModificationTextEditingController.text;
+    AudioDownloadVM audioDownloadVMlistenFalse = Provider.of<AudioDownloadVM>(
+      context,
+      listen: false,
+    );
+
+    audioDownloadVMlistenFalse.modifyPlayableOnlyMonthDays(
+      audio: widget.audio,
+      modifiedPlayableOnlyMonthDaysStr: playableOnlyMonthDaysStr,
     );
   }
 }

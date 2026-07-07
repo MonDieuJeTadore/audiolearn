@@ -2627,7 +2627,10 @@ class PlaylistListVM extends ChangeNotifier {
           i <= sortedAndFilteredPlayableAudioNumber;
           i++) {
         Audio audio = sortedAndFilteredPlayableAudioLst[i];
-        if (audio.wasFullyListened()) {
+        if (audio.wasFullyListened() ||
+            !_isAudioPlayableToday(
+              audio: audio,
+            )){
           continue;
         } else {
           return audio;
@@ -2670,6 +2673,28 @@ class PlaylistListVM extends ChangeNotifier {
     required Audio audio,
   }) {
     DateTime today = DateTime.now();
+
+    List<int> audioPlayableDaysOfWeek = audio.playableOnlyOnWeekDaysLst;
+    List<int> audioPlayableDaysOfMonth = audio.playableOnlyOnMonthDaysLst;
+
+    if (audioPlayableDaysOfWeek.isEmpty && audioPlayableDaysOfMonth.isEmpty) {
+      // means the audio is playable every day
+      return true;
+    }
+
+    if (audioPlayableDaysOfWeek.isNotEmpty) {
+      int todayDayOfWeek = today.weekday; // 1=Monday, 7=Sunday
+      if (!audioPlayableDaysOfWeek.contains(todayDayOfWeek)) {
+        return false;
+      }
+    }
+
+    if (audioPlayableDaysOfMonth.isNotEmpty) {
+      int todayDayOfMonth = today.day; // 1..31
+      if (!audioPlayableDaysOfMonth.contains(todayDayOfMonth)) {
+        return false;
+      }
+    }
 
     return true;
   }

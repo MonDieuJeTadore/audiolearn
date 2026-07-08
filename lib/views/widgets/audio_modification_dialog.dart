@@ -266,9 +266,12 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
                 onPressed: isInactive
                     ? null // This disables the button
                     : () {
-                        _handleAudioModification(context);
-                        Navigator.of(context)
-                            .pop(_audioModificationTextEditingController.text);
+                        bool wasWarningDisplayed =_handleAudioModification(context);
+
+                        if (!wasWarningDisplayed) {
+                          Navigator.of(context)
+                              .pop(_audioModificationTextEditingController.text);
+                        }
                       },
                 child: Text(
                   modificationButtonStr,
@@ -301,7 +304,13 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
     );
   }
 
-  void _handleAudioModification(BuildContext context) {
+  /// Returns true if a warning was displayed, false otherwise. The warning is displayed if the user
+  /// enters an error when defining the playable only week days or month days. IIn this case, after
+  /// the warning is displayed, the audio modification dialog is not closed and the user can correct
+  /// the error. If no warning is displayed, the audio modification dialog is closed.
+  bool _handleAudioModification(BuildContext context) {
+    bool isWarningDisplayed = false;
+
     switch (widget.audioModificationType) {
       case AudioModificationType.renameAudioFile:
         _renameAudioFile(context);
@@ -313,16 +322,18 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
         _modifyAudioUrl(context);
         break;
       case AudioModificationType.playableOnlyWeekDays:
-        _modifyPlayableOnlyWeekDays(
+        isWarningDisplayed = _modifyPlayableOnlyWeekDays(
           context: context,
         );
         break;
       case AudioModificationType.playableOnlyMonthDays:
-        _modifyPlayableOnlyMonthDays(
+        isWarningDisplayed = _modifyPlayableOnlyMonthDays(
           context: context,
         );
         break;
     }
+
+    return isWarningDisplayed;
   }
 
   void _renameAudioFile(BuildContext context) {
@@ -364,7 +375,12 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
     );
   }
 
-  void _modifyPlayableOnlyWeekDays({
+  /// Returns true if a warning was displayed by the AudioDownloadVM, false otherwise. The warning
+  /// is displayed if the user enters an error when defining the playable only week days or month
+  /// days. IIn this case, after the warning is displayed, the audio modification dialog is not
+  /// closed and the user can correct the error. If no warning is displayed, the audio modification
+  /// dialog is closed.
+  bool _modifyPlayableOnlyWeekDays({
     required BuildContext context,
   }) {
     String playableOnlyWeekDaysStr =
@@ -374,13 +390,18 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
       listen: false,
     );
 
-    audioDownloadVMlistenFalse.modifyPlayableOnlyWeekDays(
+    return audioDownloadVMlistenFalse.modifyPlayableOnlyWeekDays(
       audio: widget.audio,
       modifiedPlayableOnlyWeekDaysStr: playableOnlyWeekDaysStr,
     );
   }
 
-  void _modifyPlayableOnlyMonthDays({
+  /// Returns true if a warning was displayed by the AudioDownloadVM, false otherwise. The warning
+  /// is displayed if the user enters an error when defining the playable only week days or month
+  /// days. IIn this case, after the warning is displayed, the audio modification dialog is not
+  /// closed and the user can correct the error. If no warning is displayed, the audio modification
+  /// dialog is closed.
+  bool _modifyPlayableOnlyMonthDays({
     required BuildContext context,
   }) {
     String playableOnlyMonthDaysStr =
@@ -390,7 +411,7 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
       listen: false,
     );
 
-    audioDownloadVMlistenFalse.modifyPlayableOnlyMonthDays(
+    return audioDownloadVMlistenFalse.modifyPlayableOnlyMonthDays(
       audio: widget.audio,
       modifiedPlayableOnlyMonthDaysStr: playableOnlyMonthDaysStr,
     );

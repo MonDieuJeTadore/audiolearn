@@ -1176,6 +1176,7 @@ class AudioDownloadVM extends ChangeNotifier {
       path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
     );
 
+    // Necessary, otherwise the title is not updated in the audio list
     notifyListeners();
   }
 
@@ -1201,9 +1202,14 @@ class AudioDownloadVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Method called by the AudioModificationDialog when the user clicks on the
-  /// modify button in order to modify the audio playable week days.
-  void modifyPlayableOnlyWeekDays({
+  /// Method called by the AudioModificationDialog when the user clicks on the modify button in order
+  /// to modify the audio playable week days.
+  /// 
+  /// Returns true if a warning was displayed, false otherwise. The warning is displayed if the user
+  /// enters an error when defining the playable only week days or month days. IIn this case, after
+  /// the warning is displayed, the audio modification dialog is not closed and the user can correct
+  /// the error. If no warning is displayed, the audio modification dialog is closed.
+  bool modifyPlayableOnlyWeekDays({
     required Audio audio,
     required String modifiedPlayableOnlyWeekDaysStr,
   }) {
@@ -1224,7 +1230,7 @@ class AudioDownloadVM extends ChangeNotifier {
         invalidPlayableOnlyWeekDays: modifiedPlayableOnlyWeekDaysStr,
       );
 
-      return;
+      return true;
     }
 
     playlistAudio.playableOnlyOnWeekDaysLst = modifiedPlayableOnlyWeekDaysLst;
@@ -1233,11 +1239,18 @@ class AudioDownloadVM extends ChangeNotifier {
       model: enclosingPlaylist,
       path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
     );
+
+    return false;
   }
 
-  /// Method called by the AudioModificationDialog when the user clicks on the
-  /// modify button in order to modify the audio playable month days.
-  void modifyPlayableOnlyMonthDays({
+  /// Method called by the AudioModificationDialog when the user clicks on the modify button in
+  /// order to modify the audio playable month days.
+  /// 
+  /// Returns true if a warning was displayed, false otherwise. The warning is displayed if the user
+  /// enters an error when defining the playable only week days or month days. IIn this case, after
+  /// the warning is displayed, the audio modification dialog is not closed and the user can correct
+  /// the error. If no warning is displayed, the audio modification dialog is closed.
+  bool modifyPlayableOnlyMonthDays({
     required Audio audio,
     required String modifiedPlayableOnlyMonthDaysStr,
   }) {
@@ -1258,7 +1271,7 @@ class AudioDownloadVM extends ChangeNotifier {
         invalidPlayableOnlyMonthDays: modifiedPlayableOnlyMonthDaysStr,
       );
       
-      return;
+      return true;
     }
 
     playlistAudio.playableOnlyOnMonthDaysLst = modifiedPlayableOnlyMonthDaysLst;
@@ -1267,6 +1280,8 @@ class AudioDownloadVM extends ChangeNotifier {
       model: enclosingPlaylist,
       path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
     );
+
+    return false;
   }
 
   List<int>? _tryParseValidList({

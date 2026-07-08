@@ -1153,8 +1153,6 @@ class AudioDownloadVM extends ChangeNotifier {
       model: enclosingPlaylist,
       path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
     );
-
-    notifyListeners();
   }
 
   /// Method called by the AudioModificationDialog when the user clicks on the
@@ -1198,8 +1196,6 @@ class AudioDownloadVM extends ChangeNotifier {
       model: enclosingPlaylist,
       path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
     );
-
-    notifyListeners();
   }
 
   /// Method called by the AudioModificationDialog when the user clicks on the modify button in order

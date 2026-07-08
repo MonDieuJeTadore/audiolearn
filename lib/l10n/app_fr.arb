@@ -1754,6 +1754,6 @@
   "modifyOnlyMonthDaysDialogComment": "Entrez 1 --> 31. Les nombres sont séparés par une virgule.",
   "modifyOnlyMonthDaysLabel": "Vide ou 1 ou n entiers",
   "modifyOnlyMonthDaysButton": "Modifier",
-  "invalidPlayableOnlyWeekDaysWarning": "Jour(s) de semaine entré(s) invalide(s): \"{dayNumbers}\".",
-  "invalidPlayableOnlyMonthDaysWarning": "Jour(s) du mois entré(s) invalide(s): \"{dayNumbers}\"."
+  "invalidPlayableOnlyWeekDaysWarning": "Jour(s) de semaine entré(s) invalide(s):\n\"{dayNumbers}\".",
+  "invalidPlayableOnlyMonthDaysWarning": "Jour(s) du mois entré(s) invalide(s):\n\"{dayNumbers}\"."
 }

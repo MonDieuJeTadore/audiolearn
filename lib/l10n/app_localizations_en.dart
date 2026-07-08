@@ -3105,11 +3105,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String invalidPlayableOnlyWeekDaysWarning(Object dayNumbers) {
-    return 'Invalid entered week day number(s): \"$dayNumbers\".';
+    return 'Invalid entered week day number(s):\n\"$dayNumbers\".';
   }
 
   @override
   String invalidPlayableOnlyMonthDaysWarning(Object dayNumbers) {
-    return 'Invalid entered month day number(s): \"$dayNumbers\".';
+    return 'Invalid entered month day number(s):\n\"$dayNumbers\".';
   }
 }

@@ -4993,13 +4993,13 @@ abstract class AppLocalizations {
   /// No description provided for @invalidPlayableOnlyWeekDaysWarning.
   ///
   /// In en, this message translates to:
-  /// **'Invalid entered week day number(s): \"{dayNumbers}\".'**
+  /// **'Invalid entered week day number(s):\n\"{dayNumbers}\".'**
   String invalidPlayableOnlyWeekDaysWarning(Object dayNumbers);
 
   /// No description provided for @invalidPlayableOnlyMonthDaysWarning.
   ///
   /// In en, this message translates to:
-  /// **'Invalid entered month day number(s): \"{dayNumbers}\".'**
+  /// **'Invalid entered month day number(s):\n\"{dayNumbers}\".'**
   String invalidPlayableOnlyMonthDaysWarning(Object dayNumbers);
 }
 

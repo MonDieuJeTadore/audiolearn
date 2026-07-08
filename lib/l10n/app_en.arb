@@ -1325,6 +1325,6 @@
   "modifyOnlyMonthDaysDialogComment": "Enter 1 till 31. Separate the numbers with a comma.",
   "modifyOnlyMonthDaysLabel": "Empty or int list",
   "modifyOnlyMonthDaysButton": "Modify",
-  "invalidPlayableOnlyWeekDaysWarning": "Invalid entered week day number(s): \"{dayNumbers}\".",
-  "invalidPlayableOnlyMonthDaysWarning": "Invalid entered month day number(s): \"{dayNumbers}\"."
+  "invalidPlayableOnlyWeekDaysWarning": "Invalid entered week day number(s):\n\"{dayNumbers}\".",
+  "invalidPlayableOnlyMonthDaysWarning": "Invalid entered month day number(s):\n\"{dayNumbers}\"."
 }

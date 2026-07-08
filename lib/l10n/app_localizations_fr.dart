@@ -3141,11 +3141,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String invalidPlayableOnlyWeekDaysWarning(Object dayNumbers) {
-    return 'Jour(s) de semaine entré(s) invalide(s): \"$dayNumbers\".';
+    return 'Jour(s) de semaine entré(s) invalide(s):\n\"$dayNumbers\".';
   }
 
   @override
   String invalidPlayableOnlyMonthDaysWarning(Object dayNumbers) {
-    return 'Jour(s) du mois entré(s) invalide(s): \"$dayNumbers\".';
+    return 'Jour(s) du mois entré(s) invalide(s):\n\"$dayNumbers\".';
   }
 }

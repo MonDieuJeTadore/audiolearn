@@ -3241,4 +3241,10 @@ class MockAppLocalizations extends AppLocalizations {
     Object dayNumbers,
   ) =>
       "Invalid entered month day number(s) \"$dayNumbers\".";
+
+  @override
+  String get playableOnlyWeekDaysLabel => "Playable week day number(s)";
+
+  @override
+  String get playableOnlyMonthDaysLabel => "Playable month day number(s)";
 }

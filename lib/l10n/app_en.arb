@@ -473,7 +473,7 @@
   "commentPositionTooltip": "Clearing the position field and selecting the \"Start\" checkbox will set the comment's start position to 0:00. Selecting the \"End\" checkbox will set the comment's end position to the total duration of the audio.",
   "commentPositionExplanation": "The proposed comment position corresponds to the current audio position. Modify it if needed and select to which position it must be applied. Look in help the usefulness of emptying the position field.",
   "commentPositionHelpTitle": "Quick Entry Tip",
-  "commentPositionHelpContent": "If you clear the position field and then:\n\n• Check \"Start\" and click \"Ok\", the comment start position will be set to 0:00.\n• Check \"End\" and click \"Ok\", the end position will be set to the total audio duration.\n\nThis avoids manually entering these common values.",
+  "commentPositionHelpContent": "If you clear the position field and then:\n\n• Check \"Start\" and click \"Ok\", the comment start position will be set to 0:00.\n• Check \"End\" and click \"Ok\", the end position will be set to the total audio duration.\n• If you check \"Start\" and check \"End\", the two positions will be set as described above.\n\nThis avoids manually entering these common values.",
   "commentStartPosition": "Start",
   "commentEndPosition": "End",
   "updateCommentStartEndPositionTooltip": "Update comment start or end position.",
@@ -1326,5 +1326,7 @@
   "modifyOnlyMonthDaysLabel": "Empty or int list",
   "modifyOnlyMonthDaysButton": "Modify",
   "invalidPlayableOnlyWeekDaysWarning": "Invalid entered week day number(s):\n\"{dayNumbers}\".",
-  "invalidPlayableOnlyMonthDaysWarning": "Invalid entered month day number(s):\n\"{dayNumbers}\"."
+  "invalidPlayableOnlyMonthDaysWarning": "Invalid entered month day number(s):\n\"{dayNumbers}\".",
+  "playableOnlyWeekDaysLabel": "Playable week day number(s)",
+  "playableOnlyMonthDaysLabel": "Playable month day number(s)"
 }

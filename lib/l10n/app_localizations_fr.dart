@@ -335,7 +335,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get audioDurationLabel => 'Durée audio';
 
   @override
-  String get audioFileNameLabel => 'Nom fichier audio';
+  String get audioFileNameLabel => 'Nom fichier mp3';
 
   @override
   String get audioFileSizeLabel => 'Taille fichier';
@@ -1062,7 +1062,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commentPositionHelpContent =>
-      'Si vous videz le champ de position puis:\n\n• Cochez \"Début\" et cliquez sur \"Ok\", la position de début du commentaire sera 0:00.\n• Cochez \"Fin\" et cliquez sur \"Ok\", la position de fin sera définie à la durée totale de l\'audio.\n\nCela évite de saisir manuellement ces valeurs courantes.';
+      'Si vous videz le champ de position puis:\n\n• Cochez \"Début\" et cliquez sur \"Ok\", la position de début du commentaire sera 0:00.\n• Cochez \"Fin\" et cliquez sur \"Ok\", la position de fin sera définie à la durée totale de l\'audio.\n• En cochant sur \"Début\" et sur \"Fin\", les deux positions seront définies comme décrit ci-dessus.\n\nCela évite de saisir manuellement ces valeurs courantes.';
 
   @override
   String get commentStartPosition => 'Début';
@@ -3148,4 +3148,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String invalidPlayableOnlyMonthDaysWarning(Object dayNumbers) {
     return 'Jour(s) du mois entré(s) invalide(s):\n\"$dayNumbers\".';
   }
+
+  @override
+  String get playableOnlyWeekDaysLabel => 'Jour(s) jouable(s) de la semaine';
+
+  @override
+  String get playableOnlyMonthDaysLabel => 'Jour(s) jouable(s) du mois';
 }

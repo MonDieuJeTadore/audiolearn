@@ -1055,7 +1055,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commentPositionHelpContent =>
-      'If you clear the position field and then:\n\n• Check \"Start\" and click \"Ok\", the comment start position will be set to 0:00.\n• Check \"End\" and click \"Ok\", the end position will be set to the total audio duration.\n\nThis avoids manually entering these common values.';
+      'If you clear the position field and then:\n\n• Check \"Start\" and click \"Ok\", the comment start position will be set to 0:00.\n• Check \"End\" and click \"Ok\", the end position will be set to the total audio duration.\n• If you check \"Start\" and check \"End\", the two positions will be set as described above.\n\nThis avoids manually entering these common values.';
 
   @override
   String get commentStartPosition => 'Start';
@@ -3112,4 +3112,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String invalidPlayableOnlyMonthDaysWarning(Object dayNumbers) {
     return 'Invalid entered month day number(s):\n\"$dayNumbers\".';
   }
+
+  @override
+  String get playableOnlyWeekDaysLabel => 'Playable week day number(s)';
+
+  @override
+  String get playableOnlyMonthDaysLabel => 'Playable month day number(s)';
 }

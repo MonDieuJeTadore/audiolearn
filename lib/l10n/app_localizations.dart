@@ -1858,7 +1858,7 @@ abstract class AppLocalizations {
   /// No description provided for @commentPositionHelpContent.
   ///
   /// In en, this message translates to:
-  /// **'If you clear the position field and then:\n\n• Check \"Start\" and click \"Ok\", the comment start position will be set to 0:00.\n• Check \"End\" and click \"Ok\", the end position will be set to the total audio duration.\n\nThis avoids manually entering these common values.'**
+  /// **'If you clear the position field and then:\n\n• Check \"Start\" and click \"Ok\", the comment start position will be set to 0:00.\n• Check \"End\" and click \"Ok\", the end position will be set to the total audio duration.\n• If you check \"Start\" and check \"End\", the two positions will be set as described above.\n\nThis avoids manually entering these common values.'**
   String get commentPositionHelpContent;
 
   /// No description provided for @commentStartPosition.
@@ -5001,6 +5001,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invalid entered month day number(s):\n\"{dayNumbers}\".'**
   String invalidPlayableOnlyMonthDaysWarning(Object dayNumbers);
+
+  /// No description provided for @playableOnlyWeekDaysLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Playable week day number(s)'**
+  String get playableOnlyWeekDaysLabel;
+
+  /// No description provided for @playableOnlyMonthDaysLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Playable month day number(s)'**
+  String get playableOnlyMonthDaysLabel;
 }
 
 class _AppLocalizationsDelegate

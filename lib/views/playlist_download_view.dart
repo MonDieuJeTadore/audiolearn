@@ -1586,6 +1586,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
               ),
             )
             .toList();
+            
     return dropdownMenuItems;
   }
 

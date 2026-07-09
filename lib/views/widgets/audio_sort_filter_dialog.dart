@@ -911,7 +911,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
                     //            tapping outside the dialog
                     builder: (BuildContext context) {
                       return ConfirmActionDialog(
-                        actionFunction: executeAudioSortFilterParmsDeletion,
+                        actionFunction: _executeAudioSortFilterParmsDeletion,
                         actionFunctionArgs: [
                           playlistListVMlistenFalse,
                         ],
@@ -926,7 +926,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
                     },
                   );
                 } else {
-                  executeAudioSortFilterParmsDeletion(
+                  _executeAudioSortFilterParmsDeletion(
                       playlistListVMlistenFalse);
                 }
               }
@@ -957,7 +957,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     );
   }
 
-  AudioSortFilterParameters? executeAudioSortFilterParmsDeletion(
+  AudioSortFilterParameters? _executeAudioSortFilterParmsDeletion(
     PlaylistListVM playlistListVM,
   ) {
     AudioSortFilterParameters? deletedSFparms =

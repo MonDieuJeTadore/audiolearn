@@ -37382,9 +37382,12 @@ void main() {
         await tester.tap(minimizeButtonFinder);
         await tester.pumpAndSettle();
 
-        // Wait for the comment to finish playing
-        await Future.delayed(const Duration(seconds: 7));
-        await tester.pumpAndSettle();
+        // Wait for the comment to finish playing. The code below ensures
+        // that the audio position is correctly updated
+        for (int i = 0; i < 7; i++) {
+          await Future.delayed(const Duration(milliseconds: 1000));
+          await tester.pumpAndSettle();
+        }
 
         // Verify the audio position and remaining duration text
 

@@ -930,7 +930,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
                       playlistListVMlistenFalse);
                 }
               }
-              // }
+
               Navigator.of(context).pop(['delete']);
             },
             child: Text(

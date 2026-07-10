@@ -1586,7 +1586,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
               ),
             )
             .toList();
-            
+
     return dropdownMenuItems;
   }
 
@@ -1645,16 +1645,9 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
           ).then((filterSortAudioAndParmLst) {
             if (filterSortAudioAndParmLst != null &&
                 filterSortAudioAndParmLst.isNotEmpty) {
-              // user clicked on Save or Apply or on Delete button
-              // on sort and filter dialog OPENED BY EDITING A
-              // SORT AND FILTER DROPDOWN MENU ITEM
               if (filterSortAudioAndParmLst[0] == 'delete') {
-                // user clicked on Delete button. The deleted sort
-                // filter parameters was removed from the settings
-                // in the audio sort filter dialog.
-
-                // selecting the default sort and filter
-                // parameters drop down button item
+                // In the AudioSortFilterDialog, the user clicked on the Delete button
+                // and Navigator.of(context).pop(['delete']) was executed
                 _selectedSortFilterParametersName =
                     AppLocalizations.of(context)!
                         .sortFilterParametersDefaultName;
@@ -1662,6 +1655,14 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
                   audioSortFilterParametersNamesLst.removeWhere(
                       (element) => element == audioSortFilterParametersName);
                 });
+
+                // Closes the still-open DropdownButton popup to force it to be
+                // rebuilt the next time it is opened, using the up-to-date
+                // sort/filter parameters list. OOtherwise, the deleted sort/filter
+                // parameters name would remain displayed
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                }
               } else {
                 // user clicked on Save or Apply button (the Apply button
                 // was displayed after the user deleted the sort and filter

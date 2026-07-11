@@ -1089,6 +1089,8 @@ void main() {
         audioFileName: 'Test Video Title one.mp3',
         audioFileSize: 125000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       final Audio audio_19999 = Audio.fullConstructor(
@@ -1119,6 +1121,8 @@ void main() {
         audioFileName: 'Test Video Title one.mp3',
         audioFileSize: 125000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       final Audio audio_20999 = Audio.fullConstructor(
@@ -1149,6 +1153,8 @@ void main() {
         audioFileName: 'Test Video Title one.mp3',
         audioFileSize: 125000000,
         audioType: AudioType.downloaded,
+        playableOnlyOnWeekDaysLst: [],
+        playableOnlyOnMonthDaysLst: [],
       );
 
       final List<Audio> audioLst = [

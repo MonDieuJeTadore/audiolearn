@@ -1168,7 +1168,7 @@
   "convertingMp4ToMP3":"Converting imported MP4 to MP3 ...",
   "convertingM4aToMP3":"Converting imported M4A to MP3 ...",
   "addPositionToAudioTitleMenu": "Add or correct Position to Audio Titles",
-  "moveAudioToPositionMenu": "Set Audio to Position ...",
+  "moveAudioToPositionMenu": "Move Audio to Position ...",
   "moveAudioToPosition": "Move Audio to Int Position",
   "audioIntPositionLabel": "Audio int position",
   "moveAudioToPositionButton": "Move",

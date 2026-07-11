@@ -2574,7 +2574,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Add or correct Position to Audio Titles';
 
   @override
-  String get moveAudioToPositionMenu => 'Set Audio to Position ...';
+  String get moveAudioToPositionMenu => 'Move Audio to Position ...';
 
   @override
   String get moveAudioToPosition => 'Move Audio to Int Position';

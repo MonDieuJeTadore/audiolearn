@@ -4111,7 +4111,7 @@ abstract class AppLocalizations {
   /// No description provided for @moveAudioToPositionMenu.
   ///
   /// In en, this message translates to:
-  /// **'Set Audio to Position ...'**
+  /// **'Move Audio to Position ...'**
   String get moveAudioToPositionMenu;
 
   /// No description provided for @moveAudioToPosition.

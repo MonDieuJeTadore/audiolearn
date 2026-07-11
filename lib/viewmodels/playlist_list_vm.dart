@@ -2630,7 +2630,7 @@ class PlaylistListVM extends ChangeNotifier {
         if (audio.wasFullyListened() ||
             !_isAudioPlayableToday(
               audio: audio,
-            )){
+            )) {
           continue;
         } else {
           return audio;
@@ -6575,10 +6575,17 @@ class PlaylistListVM extends ChangeNotifier {
 
     // Step 1: Add position prefix to the moved audio
 
-    final int playableAudioLstLength = playlist!.playableAudioLst.length;
-    int initialPosition = regex.firstMatch(audio.validVideoTitle) != null
-        ? int.parse(regex.firstMatch(audio.validVideoTitle)!.group(1)!)
-        : playableAudioLstLength; // If no prefix, assume it's at the end
+    int initialPosition;
+    bool isPrefixPresent = true;
+
+    if (regex.firstMatch(audio.validVideoTitle) != null) {
+      initialPosition =
+          int.parse(regex.firstMatch(audio.validVideoTitle)!.group(1)!);
+    } else {
+      isPrefixPresent = false;
+      initialPosition = playlist!
+          .playableAudioLst.length; // If no prefix, assume it's at the end
+    }
 
     String selectedPlaylistAudioSortFilterParmsName =
         getSelectedPlaylistAudioSortFilterParmsNameForView(
@@ -6605,7 +6612,7 @@ class PlaylistListVM extends ChangeNotifier {
     if (position > initialPosition) {
       position = isDescending ? ++position : position;
     } else if (position < initialPosition) {
-      if (isDescending) {
+      if (isDescending && !isPrefixPresent) {
         position = ((position - 2) <= -1) ? 0 : --position;
       } else {
         position = ((position - 2) <= -1) ? 0 : position;
@@ -6618,7 +6625,7 @@ class PlaylistListVM extends ChangeNotifier {
     audio.validVideoTitle = '${position}_$titleWithoutPrefix';
 
     addNumericPrefixesToPlaylistAudioTitles(
-      playlist: playlist,
+      playlist: playlist!,
       sortFilterParametersAppliedName: sortFilterParametersAppliedName,
       sortFilterParametersDefaultName: sortFilterParametersDefaultName,
     );

@@ -6637,9 +6637,52 @@ class PlaylistListVM extends ChangeNotifier {
         ++position;
       }
     } else {
-      // if (position > initialPosition) {
-      //   position = position;
-      // }
+      // Ascending order
+      if (!isPrefixPresent) {
+        position = ((position - 2) <= -1) ? 0 : position;
+      } else if ((position - initialPosition) == 1) {
+        // If the audio is moved to the position just after its
+        // initial position, we need to update the next audio valid
+        // video title prefix to its new position number. Otherwise,
+        // the next audio valid video title prefix will remain the
+        // same and so the audio move operation will not be applyed.
+        List<Audio> sortFilteredPlaylistPlayableAudiosLst =
+            getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
+          audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+          passedAudioSortFilterParameters: audioSortFilterParameters,
+          playlist: playlist, // add or correct position to audio title ok
+          //                     even if the playlist is not selected
+        );
+        int audioIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
+            .indexWhere((element) => element == audio);
+        Audio audioAfter =
+            sortFilteredPlaylistPlayableAudiosLst[audioIndexInSortedList + 1];
+        final String titleWithoutPrefix =
+            audioAfter.validVideoTitle.replaceFirst(regex, '');
+
+        audioAfter.validVideoTitle = '${position - 1}_$titleWithoutPrefix';
+      } else if ((position - initialPosition) == 2) {
+        // If the audio is moved to 2 positions after its initial
+        // position, we need to update the next 2 audio valid video
+        // title prefix to its new position number. Otherwise, the next
+        // audio valid video title prefix will be increased by 1 only
+        // and so the audio move operation will not be applyed correctly.
+        List<Audio> sortFilteredPlaylistPlayableAudiosLst =
+            getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
+          audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+          passedAudioSortFilterParameters: audioSortFilterParameters,
+          playlist: playlist, // add or correct position to audio title ok
+          //                     even if the playlist is not selected
+        );
+        int audioIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
+            .indexWhere((element) => element == audio);
+        Audio audioAfter =
+            sortFilteredPlaylistPlayableAudiosLst[audioIndexInSortedList + 2];
+        final String titleWithoutPrefix =
+            audioAfter.validVideoTitle.replaceFirst(regex, '');
+
+        audioAfter.validVideoTitle = '${position - 1}_$titleWithoutPrefix';
+      }
     }
 
     // Remove existing prefix if present

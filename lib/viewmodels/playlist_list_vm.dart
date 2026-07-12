@@ -6605,10 +6605,8 @@ class PlaylistListVM extends ChangeNotifier {
 
     final bool isDescending = !sortingItem.isAscending;
 
-    if (position > initialPosition) {
-      position = isDescending ? ++position : position;
-    } else if (position < initialPosition) {
-      if (isDescending) {
+    if (isDescending) {
+      if (position < initialPosition) {
         if (!isPrefixPresent || ((initialPosition - position) > 2)) {
           position = ((position - 2) <= -1) ? 0 : --position;
         } else if ((initialPosition - position) == 1) {
@@ -6635,7 +6633,13 @@ class PlaylistListVM extends ChangeNotifier {
         } else {
           position = ((position - 2) <= -1) ? 0 : position;
         }
+      } else {
+        ++position;
       }
+    } else {
+      // if (position > initialPosition) {
+      //   position = position;
+      // }
     }
 
     // Remove existing prefix if present

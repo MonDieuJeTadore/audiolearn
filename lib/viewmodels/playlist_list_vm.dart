@@ -6661,27 +6661,27 @@ class PlaylistListVM extends ChangeNotifier {
             audioAfter.validVideoTitle.replaceFirst(regex, '');
 
         audioAfter.validVideoTitle = '${position - 1}_$titleWithoutPrefix';
-      } else if ((position - initialPosition) == 2) {
+      // } else if ((position - initialPosition) == 2) {
         // If the audio is moved to 2 positions after its initial
         // position, we need to update the next 2 audio valid video
         // title prefix to its new position number. Otherwise, the next
         // audio valid video title prefix will be increased by 1 only
         // and so the audio move operation will not be applyed correctly.
-        List<Audio> sortFilteredPlaylistPlayableAudiosLst =
-            getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
-          audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
-          passedAudioSortFilterParameters: audioSortFilterParameters,
-          playlist: playlist, // add or correct position to audio title ok
-          //                     even if the playlist is not selected
-        );
-        int audioIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
-            .indexWhere((element) => element == audio);
-        Audio audioAfter =
-            sortFilteredPlaylistPlayableAudiosLst[audioIndexInSortedList + 2];
-        final String titleWithoutPrefix =
-            audioAfter.validVideoTitle.replaceFirst(regex, '');
+        // List<Audio> sortFilteredPlaylistPlayableAudiosLst =
+        //     getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
+        //   audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+        //   passedAudioSortFilterParameters: audioSortFilterParameters,
+        //   playlist: playlist, // add or correct position to audio title ok
+        //   //                     even if the playlist is not selected
+        // );
+        // int audioIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
+        //     .indexWhere((element) => element == audio);
+        // Audio audioAfter =
+        //     sortFilteredPlaylistPlayableAudiosLst[audioIndexInSortedList + 2];
+        // final String titleWithoutPrefix =
+        //     audioAfter.validVideoTitle.replaceFirst(regex, '');
 
-        audioAfter.validVideoTitle = '${position - 1}_$titleWithoutPrefix';
+        // audioAfter.validVideoTitle = '${position - 1}_$titleWithoutPrefix';
       }
     }
 

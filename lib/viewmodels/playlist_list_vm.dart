@@ -6482,31 +6482,26 @@ class PlaylistListVM extends ChangeNotifier {
         // prefix to the new position number.
         if (!regex.hasMatch(audio.validVideoTitle)) {
           audio.validVideoTitle = '${counter}_${audio.validVideoTitle}';
-          _logger.i('  [$counter] ${audio.validVideoTitle}');
         } else {
           String titleWithoutPrefix =
               audio.validVideoTitle.replaceFirst(regex, '');
           audio.validVideoTitle = '${counter}_$titleWithoutPrefix';
-          _logger
-              .i('  [$counter] ${audio.validVideoTitle} (already had prefix)');
         }
 
         counter++;
       }
     } else {
+      // Sort/filter parameter is descending
       for (Audio audio in sortFilteredPlaylistPlayableAudiosLst.reversed) {
         // Add position prefix if the audio valid video title doesn't already
         // start with a number followed by underscore. Othrwise, update the existing
         // prefix to the new position number.
         if (!regex.hasMatch(audio.validVideoTitle)) {
           audio.validVideoTitle = '${counter}_${audio.validVideoTitle}';
-          _logger.i('  [$counter] ${audio.validVideoTitle}');
         } else {
           String titleWithoutPrefix =
               audio.validVideoTitle.replaceFirst(regex, '');
           audio.validVideoTitle = '${counter}_$titleWithoutPrefix';
-          _logger
-              .i('  [$counter] ${audio.validVideoTitle} (already had prefix)');
         }
 
         counter++;
@@ -6560,12 +6555,12 @@ class PlaylistListVM extends ChangeNotifier {
   /// to the playlist and then move it to position 2, the result will be
   /// the result will be [6_A, 5_B, 4_C, 3_D, 2_NewAudio, 1_E].
   bool moveAudioToPosition({
-    required Audio audio,
-    required int position,
+    required Audio audioToMove,
+    required int positionToMoveTo,
     required String sortFilterParametersAppliedName,
     required String sortFilterParametersDefaultName,
   }) {
-    Playlist? playlist = audio.enclosingPlaylist;
+    Playlist? playlist = audioToMove.enclosingPlaylist;
 
     final RegExp regex = RegExp(r'^(\d+)_');
 
@@ -6574,9 +6569,9 @@ class PlaylistListVM extends ChangeNotifier {
     int initialPosition;
     bool isPrefixPresent = true;
 
-    if (regex.firstMatch(audio.validVideoTitle) != null) {
+    if (regex.firstMatch(audioToMove.validVideoTitle) != null) {
       initialPosition =
-          int.parse(regex.firstMatch(audio.validVideoTitle)!.group(1)!);
+          int.parse(regex.firstMatch(audioToMove.validVideoTitle)!.group(1)!);
     } else {
       isPrefixPresent = false;
       initialPosition = playlist!
@@ -6606,10 +6601,10 @@ class PlaylistListVM extends ChangeNotifier {
     final bool isDescending = !sortingItem.isAscending;
 
     if (isDescending) {
-      if (position < initialPosition) {
-        if (!isPrefixPresent || ((initialPosition - position) > 2)) {
-          position = ((position - 2) <= -1) ? 0 : --position;
-        } else if ((initialPosition - position) == 1) {
+      if (positionToMoveTo < initialPosition) {
+        if (!isPrefixPresent || ((initialPosition - positionToMoveTo) > 2)) {
+          positionToMoveTo = ((positionToMoveTo - 2) <= -1) ? 0 : --positionToMoveTo;
+        } else if ((initialPosition - positionToMoveTo) == 1) {
           // If the audio is moved to the position just before its
           // initial position, we need to update the next audio valid
           // video title prefix to its new position number. Otherwise,
@@ -6623,24 +6618,24 @@ class PlaylistListVM extends ChangeNotifier {
             //                     even if the playlist is not selected
           );
           int audioIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
-              .indexWhere((element) => element == audio);
-          Audio audioAfter =
+              .indexWhere((element) => element == audioToMove);
+          Audio firstAudioAfterAudioToMove =
               sortFilteredPlaylistPlayableAudiosLst[audioIndexInSortedList + 1];
           final String titleWithoutPrefix =
-              audioAfter.validVideoTitle.replaceFirst(regex, '');
+              firstAudioAfterAudioToMove.validVideoTitle.replaceFirst(regex, '');
 
-          audioAfter.validVideoTitle = '${position + 1}_$titleWithoutPrefix';
+          firstAudioAfterAudioToMove.validVideoTitle = '${positionToMoveTo + 1}_$titleWithoutPrefix';
         } else {
-          position = ((position - 2) <= -1) ? 0 : position;
+          positionToMoveTo = ((positionToMoveTo - 2) <= -1) ? 0 : positionToMoveTo;
         }
       } else {
-        ++position;
+        ++positionToMoveTo;
       }
     } else {
       // Ascending order
       if (!isPrefixPresent) {
-        position = ((position - 2) <= -1) ? 0 : position;
-      } else if ((position - initialPosition) == 1) {
+        positionToMoveTo = ((positionToMoveTo - 2) <= -1) ? 0 : positionToMoveTo;
+      } else if ((positionToMoveTo - initialPosition) == 1) {
         // If the audio is moved to the position just after its
         // initial position, we need to update the next audio valid
         // video title prefix to its new position number. Otherwise,
@@ -6653,15 +6648,15 @@ class PlaylistListVM extends ChangeNotifier {
           playlist: playlist, // add or correct position to audio title ok
           //                     even if the playlist is not selected
         );
-        int audioIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
-            .indexWhere((element) => element == audio);
-        Audio audioAfter =
-            sortFilteredPlaylistPlayableAudiosLst[audioIndexInSortedList + 1];
+        int audioToMoveIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
+            .indexWhere((element) => element == audioToMove);
+        Audio firstAudioAfterAudioToMove =
+            sortFilteredPlaylistPlayableAudiosLst[audioToMoveIndexInSortedList + 1];
         final String titleWithoutPrefix =
-            audioAfter.validVideoTitle.replaceFirst(regex, '');
+            firstAudioAfterAudioToMove.validVideoTitle.replaceFirst(regex, '');
 
-        audioAfter.validVideoTitle = '${position - 1}_$titleWithoutPrefix';
-      // } else if ((position - initialPosition) == 2) {
+        firstAudioAfterAudioToMove.validVideoTitle = '${positionToMoveTo - 1}_$titleWithoutPrefix';
+      } else if ((positionToMoveTo - initialPosition) == 2) {
         // If the audio is moved to 2 positions after its initial
         // position, we need to update the next 2 audio valid video
         // title prefix to its new position number. Otherwise, the next
@@ -6674,22 +6669,22 @@ class PlaylistListVM extends ChangeNotifier {
         //   playlist: playlist, // add or correct position to audio title ok
         //   //                     even if the playlist is not selected
         // );
-        // int audioIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
-        //     .indexWhere((element) => element == audio);
-        // Audio audioAfter =
-        //     sortFilteredPlaylistPlayableAudiosLst[audioIndexInSortedList + 2];
+        // int audioToMoveIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
+        //     .indexWhere((element) => element == audioToMove);
+        // Audio secondAudioAfterAudioToMove =
+        //     sortFilteredPlaylistPlayableAudiosLst[audioToMoveIndexInSortedList + 2];
         // final String titleWithoutPrefix =
-        //     audioAfter.validVideoTitle.replaceFirst(regex, '');
+        //     secondAudioAfterAudioToMove.validVideoTitle.replaceFirst(regex, '');
 
-        // audioAfter.validVideoTitle = '${position - 1}_$titleWithoutPrefix';
+        // secondAudioAfterAudioToMove.validVideoTitle = '${positionToMoveTo - 1}_$titleWithoutPrefix';
       }
     }
 
     // Remove existing prefix if present
     final String titleWithoutPrefix =
-        audio.validVideoTitle.replaceFirst(regex, '');
+        audioToMove.validVideoTitle.replaceFirst(regex, '');
 
-    audio.validVideoTitle = '${position}_$titleWithoutPrefix';
+    audioToMove.validVideoTitle = '${positionToMoveTo}_$titleWithoutPrefix';
 
     addNumericPrefixesToPlaylistAudioTitles(
       playlist: playlist!,

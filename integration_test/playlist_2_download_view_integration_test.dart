@@ -43504,7 +43504,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         final Finder listFinder = find.byKey(const Key('audio_list'));
@@ -43529,7 +43529,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         // Purge the test playlist directory so that the created test
@@ -43608,7 +43608,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         final Finder listFinder = find.byKey(const Key('audio_list'));
@@ -43633,7 +43633,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         // Purge the test playlist directory so that the created test
@@ -43717,7 +43717,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         final Finder listFinder = find.byKey(const Key('audio_list'));
@@ -43742,7 +43742,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         // Purge the test playlist directory so that the created test
@@ -43826,7 +43826,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         final Finder listFinder = find.byKey(const Key('audio_list'));
@@ -43851,7 +43851,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         // Purge the test playlist directory so that the created test
@@ -43951,7 +43951,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         final Finder listFinder = find.byKey(const Key('audio_list'));
@@ -43976,7 +43976,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         // Purge the test playlist directory so that the created test
@@ -44061,7 +44061,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         final Finder listFinder = find.byKey(const Key('audio_list'));
@@ -44086,7 +44086,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         // Purge the test playlist directory so that the created test
@@ -44172,7 +44172,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         final Finder listFinder = find.byKey(const Key('audio_list'));
@@ -44197,7 +44197,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         // Purge the test playlist directory so that the created test
@@ -44283,7 +44283,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         final Finder listFinder = find.byKey(const Key('audio_list'));
@@ -44308,7 +44308,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 2,
+          firstAudioListTileIndex: 3,
         );
 
         // Purge the test playlist directory so that the created test

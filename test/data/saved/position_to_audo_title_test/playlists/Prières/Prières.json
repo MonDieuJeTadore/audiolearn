@@ -3870,7 +3870,7 @@
     ],
     "isSelected": false,
     "currentOrPastPlayableAudioIndex": 45,
-    "audioSortFilterParmsNamePlaylistDownloadView": "Chap desc",
+    "audioSortFilterParmsNamePlaylistDownloadView": "chap desc",
     "audioSortFilterParmsNameAudioPlayerView": "Chap desc",
     "audioPlayingOrder": "ascending"
 }

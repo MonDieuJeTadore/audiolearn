@@ -45476,7 +45476,7 @@ void main() {
           );
         });
         testWidgets(
-            '''On Prières playlist, moving down from only 1 position an already positioned audio. Execute
+            '''On Prières playlist, moving down from 8_ to 7_ an already positioned audio. Execute
                the Audio item menu "Move Audio to Position". This test werefies a bug correction.''',
             (WidgetTester tester) async {
           // Purge the test playlist directory if it exists so that the
@@ -45627,7 +45627,7 @@ void main() {
           );
         });
         testWidgets(
-            '''On Prières playlist, moving down from 2 positions an already positioned audio. Execute
+            '''On Prières playlist, moving down from 9_ to 7_ an already positioned audio. Execute
                the Audio item menu "Move Audio to Position". This test werefies a bug correction.''',
             (WidgetTester tester) async {
           // Purge the test playlist directory if it exists so that the
@@ -45777,7 +45777,7 @@ void main() {
           );
         });
         testWidgets(
-            '''On Prières playlist, moving down from 3 positions an already positioned audio. Execute
+            '''On Prières playlist, moving down from 9_ to 6_ an already positioned audio. Execute
                the Audio item menu "Move Audio to Position". This test werefies a bug correction.''',
             (WidgetTester tester) async {
           // playlist list is empty
@@ -45926,7 +45926,7 @@ void main() {
           );
         });
         testWidgets(
-            '''On Prières playlist, moving up from only 1 position an already positioned audio. Execute
+            '''On Prières playlist, moving up from 4_ to 5_ already positioned audio. Execute
                the Audio item menu "Move Audio to Position". This test werefies a bug correction.''',
             (WidgetTester tester) async {
           // Purge the test playlist directory if it exists so that the
@@ -46077,7 +46077,7 @@ void main() {
           );
         });
         testWidgets(
-            '''On Prières playlist, moving up from 2 positions an already positioned audio. Execute
+            '''On Prières playlist, moving up from 4_ to 6_ an already positioned audio. Execute
                the Audio item menu "Move Audio to Position". This test werefies a bug correction.''',
             (WidgetTester tester) async {
           // Purge the test playlist directory if it exists so that the

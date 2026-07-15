@@ -45697,8 +45697,7 @@ void main() {
           // Now we want to tap the popup menu of the Audio ListTile
           // "9_Prière au Seigneur"
 
-          String audioToPositionTitle =
-              "9_Prière au Seigneur";
+          String audioToPositionTitle = "9_Prière au Seigneur";
 
           // First, find the Audio sublist ListTile Text widget
           Finder audioToPositionTitleTextWidgetFinder =
@@ -45846,8 +45845,7 @@ void main() {
           // Now we want to tap the popup menu of the Audio ListTile
           // "9_Prière au Seigneur"
 
-          String audioToPositionTitle =
-              "9_Prière au Seigneur";
+          String audioToPositionTitle = "9_Prière au Seigneur";
 
           // First, find the Audio sublist ListTile Text widget
           Finder audioToPositionTitleTextWidgetFinder =

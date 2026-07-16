@@ -1199,15 +1199,15 @@ class AudioDownloadVM extends ChangeNotifier {
   }
 
   /// Method called by the AudioModificationDialog when the user clicks on the modify button in order
-  /// to modify the audio playable week days.
+  /// to modify the audio playable every n day(s) value.
   /// 
   /// Returns true if a warning was displayed, false otherwise. The warning is displayed if the user
-  /// enters an error when defining the playable only week days or month days. IIn this case, after
-  /// the warning is displayed, the audio modification dialog is not closed and the user can correct
-  /// the error. If no warning is displayed, the audio modification dialog is closed.
-  bool modifyPlayableOnlyWeekDays({
+  /// enters an error when defining the every playable days. In this case, after the warning is displayed,
+  /// the audio modification dialog is not closed and the user can correct the error. If no warning is
+  /// displayed, the audio modification dialog is closed.
+  bool modifyPlayableEveryDaysValue({
     required Audio audio,
-    required String modifiedPlayableOnlyWeekDaysStr,
+    required String modifiedPlayableEveryDaysValueStr,
   }) {
     Playlist enclosingPlaylist = audio.enclosingPlaylist!;
 
@@ -1215,21 +1215,17 @@ class AudioDownloadVM extends ChangeNotifier {
       (entry) => entry == audio,
     );
 
-    List<int>? modifiedPlayableOnlyWeekDaysLst = _tryParseValidList(
-      listStr: modifiedPlayableOnlyWeekDaysStr,
-      minDayNumber: 1,
-      maxDayNumber: 7,
-    );
+    int modifiedPlayableOnlyWeekDaysLst = int.tryParse(modifiedPlayableEveryDaysValueStr) ?? -1;
 
-    if (modifiedPlayableOnlyWeekDaysLst == null) {
-      warningMessageVM.invalidPlayableOnlyWeekDaysWarning(
-        invalidPlayableOnlyWeekDays: modifiedPlayableOnlyWeekDaysStr,
+    if (modifiedPlayableOnlyWeekDaysLst == -1) {
+      warningMessageVM.invalidPlayableEveryNDaysWarning(
+        invalidPlayableEveryDaysValue: modifiedPlayableEveryDaysValueStr,
       );
 
       return true;
     }
 
-    playlistAudio.playableOnlyOnWeekDaysLst = modifiedPlayableOnlyWeekDaysLst;
+    playlistAudio.playableEveryNDays = modifiedPlayableOnlyWeekDaysLst;
 
     JsonDataService.saveToFile(
       model: enclosingPlaylist,
@@ -1237,65 +1233,6 @@ class AudioDownloadVM extends ChangeNotifier {
     );
 
     return false;
-  }
-
-  /// Method called by the AudioModificationDialog when the user clicks on the modify button in
-  /// order to modify the audio playable month days.
-  /// 
-  /// Returns true if a warning was displayed, false otherwise. The warning is displayed if the user
-  /// enters an error when defining the playable only week days or month days. IIn this case, after
-  /// the warning is displayed, the audio modification dialog is not closed and the user can correct
-  /// the error. If no warning is displayed, the audio modification dialog is closed.
-  bool modifyPlayableOnlyMonthDays({
-    required Audio audio,
-    required String modifiedPlayableOnlyMonthDaysStr,
-  }) {
-    Playlist enclosingPlaylist = audio.enclosingPlaylist!;
-
-    Audio playlistAudio = enclosingPlaylist.playableAudioLst.firstWhere(
-      (entry) => entry == audio,
-    );
-
-    List<int>? modifiedPlayableOnlyMonthDaysLst = _tryParseValidList(
-      listStr: modifiedPlayableOnlyMonthDaysStr,
-      minDayNumber: 1,
-      maxDayNumber: 31,
-    );
-
-    if (modifiedPlayableOnlyMonthDaysLst == null) {
-      warningMessageVM.invalidPlayableOnlyMonthDaysWarning(
-        invalidPlayableOnlyMonthDays: modifiedPlayableOnlyMonthDaysStr,
-      );
-      
-      return true;
-    }
-
-    playlistAudio.playableOnlyOnMonthDaysLst = modifiedPlayableOnlyMonthDaysLst;
-
-    JsonDataService.saveToFile(
-      model: enclosingPlaylist,
-      path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
-    );
-
-    return false;
-  }
-
-  List<int>? _tryParseValidList({
-    required String listStr,
-    required int minDayNumber,
-    required int maxDayNumber,
-  }) {
-    if (listStr.isEmpty) return [];
-
-    final result = <int>[];
-
-    for (final part in listStr.split(',')) {
-      final value = int.tryParse(part.trim());
-      if (value == null || value < minDayNumber || value > maxDayNumber) return null; // invalide
-      result.add(value);
-    }
-
-    return result;
   }
 
   /// Since currently only one playlist is selectable, if the playlist

@@ -3091,12 +3091,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Restoration de playlist(s) à partir d\'un ZIP ...';
 
   @override
-  String get definePlayableOnlyWeekDaysMenu =>
-      'Lister le(s) jour(s) de semaine durant lesquels l\'audio est jouable ...';
+  String get definePlayableEveryNDaysMenu =>
+      'Définir que l\'audio est jouable tous les n jours ...';
 
   @override
-  String get definePlayableOnlyWeekDaysMenuTooltip =>
-      'Si ce n\'est pas défini, l\'audio est jouable durant n\'importe quel jour de semaine !';
+  String get definePlayableEveryNDaysMenuTooltip =>
+      'Si ce n\'est pas défini, l\'audio est jouable chaque jour !';
 
   @override
   String get definePlayableOnlyMonthDaysMenu =>
@@ -3107,51 +3107,26 @@ class AppLocalizationsFr extends AppLocalizations {
       'Si ce n\'est pas défini, l\'audio est jouable durant n\'importe quel jour du mois !';
 
   @override
-  String get modifyOnlyWeekDaysDialogTitle =>
-      'Jour(s) jouable(s) de la semaine';
+  String get playableEveryNDays => 'Jouable tous les n jours';
 
   @override
-  String get modifyOnlyWeekDaysTooltip => '';
+  String get modifyPlayableEveryNDaysTooltip => '';
 
   @override
-  String get modifyOnlyWeekDaysDialogComment =>
-      'Entrez 1 pour lundi ... 7 pour dimanche. Les nombres sont séparés par une virgule.';
+  String get modifyPlayableEveryNDaysDialogComment =>
+      '1 est défini par défaut et indique que l\'audio est jouable tous les jours.';
 
   @override
-  String get modifyOnlyWeekDaysLabel => 'Vide ou 1 ou n entiers';
+  String get modifyPlayableEveryNDaysLabel => 'Un nombre entier: ';
 
   @override
-  String get modifyOnlyWeekDaysButton => 'Modifier';
+  String get modifyPlayableEveryNDaysButton => 'Modifier';
 
   @override
-  String get modifyOnlyMonthDaysDialogTitle => 'Jour(s) jouable(s) du mois';
-
-  @override
-  String get modifyOnlyMonthDaysTooltip => '';
-
-  @override
-  String get modifyOnlyMonthDaysDialogComment =>
-      'Entrez 1 --> 31. Les nombres sont séparés par une virgule.';
-
-  @override
-  String get modifyOnlyMonthDaysLabel => 'Vide ou 1 ou n entiers';
-
-  @override
-  String get modifyOnlyMonthDaysButton => 'Modifier';
-
-  @override
-  String invalidPlayableOnlyWeekDaysWarning(Object dayNumbers) {
-    return 'Jour(s) de semaine entré(s) invalide(s):\n\"$dayNumbers\".';
+  String invalidPlayableEveryNDaysWarning(Object dayNumber) {
+    return 'Jour jouable entré invalide: \"$dayNumber\".';
   }
 
   @override
-  String invalidPlayableOnlyMonthDaysWarning(Object dayNumbers) {
-    return 'Jour(s) du mois entré(s) invalide(s):\n\"$dayNumbers\".';
-  }
-
-  @override
-  String get playableOnlyWeekDaysLabel => 'Jour(s) jouable(s) de la semaine';
-
-  @override
-  String get playableOnlyMonthDaysLabel => 'Jour(s) jouable(s) du mois';
+  String get playableEveryNDaysLabel => 'Jouable tous les n jours';
 }

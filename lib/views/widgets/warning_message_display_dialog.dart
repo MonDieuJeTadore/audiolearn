@@ -697,21 +697,7 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
           _displayWarningDialog(
             context: _context,
             message: AppLocalizations.of(context)!
-                .invalidPlayableOnlyWeekDaysWarning(invalidWeekDays),
-            warningMessageVM: _warningMessageVM,
-            themeProviderVM: themeProviderVM,
-          );
-        });
-
-        return const SizedBox.shrink();
-      case WarningMessageType.invalidPlayableOnlyMonthDays:
-        String invalidMonthDays = _warningMessageVM.invalidPlayableOnlyMonthDays;
-
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _displayWarningDialog(
-            context: _context,
-            message: AppLocalizations.of(context)!
-                .invalidPlayableOnlyMonthDaysWarning(invalidMonthDays),
+                .invalidPlayableEveryNDaysWarning(invalidWeekDays),
             warningMessageVM: _warningMessageVM,
             themeProviderVM: themeProviderVM,
           );

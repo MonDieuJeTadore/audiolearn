@@ -1284,8 +1284,7 @@ void main() {
             "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher).mp3",
         audioFileSize: 7509275,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDaysLst: [],
-        playableOnlyOnMonthDaysLst: [],
+        playableEveryNDays: 1,
       );
 
       Audio importedAudio = targetPlaylistEmpty.playableAudioLst[0];
@@ -1421,8 +1420,7 @@ void main() {
             "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher).mp3",
         audioFileSize: 7509275,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDaysLst: [],
-        playableOnlyOnMonthDaysLst: [],
+        playableEveryNDays: 1,
       );
 
       Audio importedAudio = targetPlaylistEmpty.playableAudioLst[0];
@@ -1772,8 +1770,7 @@ void main() {
         audioFileName: "La vraie prière.mp3",
         audioFileSize: 4544188,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDaysLst: [],
-        playableOnlyOnMonthDaysLst: [],
+        playableEveryNDays: 1,
       );
 
       Audio importedAudio = targetPlaylistEmpty.playableAudioLst[0];
@@ -1905,8 +1902,7 @@ void main() {
         audioFileName: "La vraie prière.mp3",
         audioFileSize: 4544188,
         audioType: AudioType.imported,
-        playableOnlyOnWeekDaysLst: [],
-        playableOnlyOnMonthDaysLst: [],
+        playableEveryNDays: 1,
       );
 
       Audio importedAudio = targetPlaylistEmpty.playableAudioLst[0];

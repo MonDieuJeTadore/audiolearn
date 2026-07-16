@@ -2674,26 +2674,22 @@ class PlaylistListVM extends ChangeNotifier {
   }) {
     DateTime today = DateTime.now();
 
-    List<int> audioPlayableDaysOfWeek = audio.playableOnlyOnWeekDaysLst;
-    List<int> audioPlayableDaysOfMonth = audio.playableOnlyOnMonthDaysLst;
+    int audioPlayableEveryNDays = audio.playableEveryNDays;
 
-    if (audioPlayableDaysOfWeek.isEmpty && audioPlayableDaysOfMonth.isEmpty) {
+    if (audioPlayableEveryNDays == 1) {
       // means the audio is playable every day
       return true;
-    }
+    } else {
+      DateTime? audioPausedDateTime = audio.audioPausedDateTime;
 
-    if (audioPlayableDaysOfWeek.isNotEmpty) {
-      int todayDayOfWeek = today.weekday; // 1=Monday, 7=Sunday
-      if (!audioPlayableDaysOfWeek.contains(todayDayOfWeek)) {
-        return false;
+      if (audioPausedDateTime == null) {
+        // means the audio has never been played and so is playable today
+        return true;
       }
-    }
 
-    if (audioPlayableDaysOfMonth.isNotEmpty) {
-      int todayDayOfMonth = today.day; // 1..31
-      if (!audioPlayableDaysOfMonth.contains(todayDayOfMonth)) {
+      if (audioPausedDateTime.add(Duration(days: audioPlayableEveryNDays)).isAfter(today)) {
         return false;
-      }
+      } 
     }
 
     return true;

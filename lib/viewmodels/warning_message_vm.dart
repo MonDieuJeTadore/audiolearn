@@ -75,9 +75,6 @@ enum WarningMessageType {
   invalidPlayableOnlyWeekDays, // The case if the entered playableOnlyWeekDays
   // are invalid.
 
-  invalidPlayableOnlyMonthDays, // The case if the entered playableOnlyMonthDays
-  // are invalid.
-
   renameAudioFileConfirm, // The case if an audio file was renamed.
 
   renameAudioAndAssociatedFilesConfirm, // The case if both audio and comment
@@ -689,10 +686,10 @@ class WarningMessageVM extends ChangeNotifier {
   String get invalidPlayableOnlyWeekDays =>
       _invalidPlayableOnlyWeekDays;
 
-  void invalidPlayableOnlyWeekDaysWarning({
-    required String invalidPlayableOnlyWeekDays,
+  void invalidPlayableEveryNDaysWarning({
+    required String invalidPlayableEveryDaysValue,
   }) {
-    _invalidPlayableOnlyWeekDays = invalidPlayableOnlyWeekDays;
+    _invalidPlayableOnlyWeekDays = invalidPlayableEveryDaysValue;
     warningMessageType = WarningMessageType.invalidPlayableOnlyWeekDays;
 
     // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
@@ -702,16 +699,6 @@ class WarningMessageVM extends ChangeNotifier {
   String _invalidPlayableOnlyMonthDays = '';
   String get invalidPlayableOnlyMonthDays =>
       _invalidPlayableOnlyMonthDays;
-
-  void invalidPlayableOnlyMonthDaysWarning({
-    required String invalidPlayableOnlyMonthDays,
-  }) {
-    _invalidPlayableOnlyMonthDays = invalidPlayableOnlyMonthDays;
-    warningMessageType = WarningMessageType.invalidPlayableOnlyMonthDays;
-
-    // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
-    notifyListeners();
-  }
 
   String _oldFileName = '';
   String get oldFileName => _oldFileName;

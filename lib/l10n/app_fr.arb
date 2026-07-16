@@ -1746,9 +1746,11 @@
   "definePlayableOnlyMonthDaysMenuTooltip": "Si ce n'est pas défini, l'audio est jouable durant n'importe quel jour du mois !",
   "playableEveryNDays": "Jouable tous les n jours",
   "modifyPlayableEveryNDaysTooltip": "",
-  "modifyPlayableEveryNDaysDialogComment": "1 est défini par défaut et indique que l'audio est jouable tous les jours.",
+  "modifyPlayableEveryNDaysDialogComment": "1 est défini par défaut et indique que l'audio est jouable tous les jours.\nDate de dernière écoute: {lastPlayedDate}.",
   "modifyPlayableEveryNDaysLabel": "Un nombre entier: ",
   "modifyPlayableEveryNDaysButton": "Modifier",
   "invalidPlayableEveryNDaysWarning": "Jour jouable entré invalide: \"{dayNumber}\".",
-  "playableEveryNDaysLabel": "Jouable tous les n jours"
+  "playableEveryNDaysLabel": "Jouable tous les n jours",
+  "notYetPlayed": "pas encore écouté"
+
 }

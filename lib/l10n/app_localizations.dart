@@ -4945,8 +4945,8 @@ abstract class AppLocalizations {
   /// No description provided for @modifyPlayableEveryNDaysDialogComment.
   ///
   /// In en, this message translates to:
-  /// **'1 is set by default indicating that the audio is playable every day.'**
-  String get modifyPlayableEveryNDaysDialogComment;
+  /// **'1 is set by default indicating that the audio is playable every day.\nLast played date: {lastPlayedDate}.'**
+  String modifyPlayableEveryNDaysDialogComment(Object lastPlayedDate);
 
   /// No description provided for @modifyPlayableEveryNDaysLabel.
   ///
@@ -4971,6 +4971,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Playable every n day(s)'**
   String get playableEveryNDaysLabel;
+
+  /// No description provided for @notYetPlayed.
+  ///
+  /// In en, this message translates to:
+  /// **'not yet listened'**
+  String get notYetPlayed;
 }
 
 class _AppLocalizationsDelegate

@@ -3078,8 +3078,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modifyPlayableEveryNDaysTooltip => '';
 
   @override
-  String get modifyPlayableEveryNDaysDialogComment =>
-      '1 is set by default indicating that the audio is playable every day.';
+  String modifyPlayableEveryNDaysDialogComment(Object lastPlayedDate) {
+    return '1 is set by default indicating that the audio is playable every day.\nLast played date: $lastPlayedDate.';
+  }
 
   @override
   String get modifyPlayableEveryNDaysLabel => 'One integer number: ';
@@ -3094,4 +3095,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playableEveryNDaysLabel => 'Playable every n day(s)';
+
+  @override
+  String get notYetPlayed => 'not yet listened';
 }

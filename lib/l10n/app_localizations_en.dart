@@ -3056,12 +3056,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Restoring playlist(s) from ZIP ...';
 
   @override
-  String get definePlayableOnlyWeekDaysMenu =>
-      'List the only playable Week Day Number(s) ...';
+  String get definePlayableEveryNDaysMenu =>
+      'Define that the Audio is playable every n Days ...';
 
   @override
-  String get definePlayableOnlyWeekDaysMenuTooltip =>
-      'If not defined, the audio is playable on every week day !';
+  String get definePlayableEveryNDaysMenuTooltip =>
+      'If not defined, the audio is playable every day !';
 
   @override
   String get definePlayableOnlyMonthDaysMenu =>
@@ -3072,50 +3072,26 @@ class AppLocalizationsEn extends AppLocalizations {
       'If not defined, the audio is playable on every month day !';
 
   @override
-  String get modifyOnlyWeekDaysDialogTitle => 'Playable Week Day Number(s)';
+  String get playableEveryNDays => 'Playable Every n Days';
 
   @override
-  String get modifyOnlyWeekDaysTooltip => '';
+  String get modifyPlayableEveryNDaysTooltip => '';
 
   @override
-  String get modifyOnlyWeekDaysDialogComment =>
-      'Enter 1 for monday ... 7 for sunday. Separate the numbers with a comma.';
+  String get modifyPlayableEveryNDaysDialogComment =>
+      '1 is set by default indicating that the audio is playable every day.';
 
   @override
-  String get modifyOnlyWeekDaysLabel => 'Empty or int list';
+  String get modifyPlayableEveryNDaysLabel => 'One integer number: ';
 
   @override
-  String get modifyOnlyWeekDaysButton => 'Modify';
+  String get modifyPlayableEveryNDaysButton => 'Modify';
 
   @override
-  String get modifyOnlyMonthDaysDialogTitle => 'Playable Month Day Number(s)';
-
-  @override
-  String get modifyOnlyMonthDaysTooltip => '';
-
-  @override
-  String get modifyOnlyMonthDaysDialogComment =>
-      'Enter 1 till 31. Separate the numbers with a comma.';
-
-  @override
-  String get modifyOnlyMonthDaysLabel => 'Empty or int list';
-
-  @override
-  String get modifyOnlyMonthDaysButton => 'Modify';
-
-  @override
-  String invalidPlayableOnlyWeekDaysWarning(Object dayNumbers) {
-    return 'Invalid entered week day number(s):\n\"$dayNumbers\".';
+  String invalidPlayableEveryNDaysWarning(Object dayNumber) {
+    return 'Invalid entered playable day number: \"$dayNumber\".';
   }
 
   @override
-  String invalidPlayableOnlyMonthDaysWarning(Object dayNumbers) {
-    return 'Invalid entered month day number(s):\n\"$dayNumbers\".';
-  }
-
-  @override
-  String get playableOnlyWeekDaysLabel => 'Playable week day number(s)';
-
-  @override
-  String get playableOnlyMonthDaysLabel => 'Playable month day number(s)';
+  String get playableEveryNDaysLabel => 'Playable every n day(s)';
 }

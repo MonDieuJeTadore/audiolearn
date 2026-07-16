@@ -114,8 +114,7 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
       listen: false,
     );
     final bool isAudioPlayable = UiUtil.isAudioPlayable(audio: audio);
-    final String playableOnlyWeekDaysStr = audio.playableOnlyOnWeekDaysLst.join(', ');
-    final String playableOnlyMonthDaysStr = audio.playableOnlyOnMonthDaysLst.join(', ');
+    final String playableEveryNDaysStr = audio.playableEveryNDays.toString();
 
     return <Widget>[
       createInfoRowFunction(
@@ -153,16 +152,9 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
       createInfoRowFunction(
         valueTextWidgetKey: const Key('playableOnlyWeekDaysLabelKey'),
         context: context,
-        label: AppLocalizations.of(context)!.playableOnlyWeekDaysLabel,
-        value: playableOnlyWeekDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableOnlyWeekDaysMenuTooltip,
-      ),
-      createInfoRowFunction(
-        valueTextWidgetKey: const Key('playableOnlyMonthDaysLabelKey'),
-        context: context,
-        label: AppLocalizations.of(context)!.playableOnlyMonthDaysLabel,
-        value: playableOnlyMonthDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableOnlyMonthDaysMenuTooltip,
+        label: AppLocalizations.of(context)!.playableEveryNDaysLabel,
+        value: playableEveryNDaysStr,
+        infoRowTooltip: AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),
@@ -307,8 +299,7 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
     CommentVM commentVMlistenFalse =
         Provider.of<CommentVM>(context, listen: false);
     final bool isAudioPlayable = UiUtil.isAudioPlayable(audio: audio);
-    final String playableOnlyWeekDaysStr = audio.playableOnlyOnWeekDaysLst.join(', ');
-    final String playableOnlyMonthDaysStr = audio.playableOnlyOnMonthDaysLst.join(', ');
+    final String playableEveryNDaysStr = audio.playableEveryNDays.toString();
     
     return <Widget>[
       createInfoRowFunction(
@@ -335,16 +326,9 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
       createInfoRowFunction(
         valueTextWidgetKey: const Key('playableOnlyWeekDaysLabelKey'),
         context: context,
-        label: AppLocalizations.of(context)!.playableOnlyWeekDaysLabel,
-        value: playableOnlyWeekDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableOnlyWeekDaysMenuTooltip,
-      ),
-      createInfoRowFunction(
-        valueTextWidgetKey: const Key('playableOnlyMonthDaysLabelKey'),
-        context: context,
-        label: AppLocalizations.of(context)!.playableOnlyMonthDaysLabel,
-        value: playableOnlyMonthDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableOnlyMonthDaysMenuTooltip,
+        label: AppLocalizations.of(context)!.playableEveryNDaysLabel,
+        value: playableEveryNDaysStr,
+        infoRowTooltip: AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),
@@ -466,8 +450,7 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
     CommentVM commentVMlistenFalse =
         Provider.of<CommentVM>(context, listen: false);
     final bool isAudioPlayable = UiUtil.isAudioPlayable(audio: audio);
-    final String playableOnlyWeekDaysStr = audio.playableOnlyOnWeekDaysLst.join(', ');
-    final String playableOnlyMonthDaysStr = audio.playableOnlyOnMonthDaysLst.join(', ');
+    final String playableEveryNDaysStr = audio.playableEveryNDays.toString();
 
     return <Widget>[
       createInfoRowFunction(
@@ -494,16 +477,9 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
       createInfoRowFunction(
         valueTextWidgetKey: const Key('playableOnlyWeekDaysLabelKey'),
         context: context,
-        label: AppLocalizations.of(context)!.playableOnlyWeekDaysLabel,
-        value: playableOnlyWeekDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableOnlyWeekDaysMenuTooltip,
-      ),
-      createInfoRowFunction(
-        valueTextWidgetKey: const Key('playableOnlyMonthDaysLabelKey'),
-        context: context,
-        label: AppLocalizations.of(context)!.playableOnlyMonthDaysLabel,
-        value: playableOnlyMonthDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableOnlyMonthDaysMenuTooltip,
+        label: AppLocalizations.of(context)!.playableEveryNDaysLabel,
+        value: playableEveryNDaysStr,
+        infoRowTooltip: AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
       createInfoRowFunction(
           valueTextWidgetKey: const Key('enclosingPlaylistTitleKey'),
@@ -618,8 +594,7 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
     CommentVM commentVMlistenFalse =
         Provider.of<CommentVM>(context, listen: false);
     final bool isAudioPlayable = UiUtil.isAudioPlayable(audio: audio);
-    final String playableOnlyWeekDaysStr = audio.playableOnlyOnWeekDaysLst.join(', ');
-    final String playableOnlyMonthDaysStr = audio.playableOnlyOnMonthDaysLst.join(', ');
+    final String playableEveryNDaysStr = audio.playableEveryNDays.toString();
     
     return <Widget>[
       createInfoRowFunction(
@@ -646,16 +621,9 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
       createInfoRowFunction(
         valueTextWidgetKey: const Key('playableOnlyWeekDaysLabelKey'),
         context: context,
-        label: AppLocalizations.of(context)!.playableOnlyWeekDaysLabel,
-        value: playableOnlyWeekDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableOnlyWeekDaysMenuTooltip,
-      ),
-      createInfoRowFunction(
-        valueTextWidgetKey: const Key('playableOnlyMonthDaysLabelKey'),
-        context: context,
-        label: AppLocalizations.of(context)!.playableOnlyMonthDaysLabel,
-        value: playableOnlyMonthDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableOnlyMonthDaysMenuTooltip,
+        label: AppLocalizations.of(context)!.playableEveryNDaysLabel,
+        value: playableEveryNDaysStr,
+        infoRowTooltip: AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),

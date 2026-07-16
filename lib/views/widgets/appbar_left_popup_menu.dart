@@ -208,22 +208,12 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
               ),
               PopupMenuItem<AudioPopupMenuAction>(
                 key: const Key('popup_menu_define_playable_only_week_days'),
-                value: AudioPopupMenuAction.definePlayableOnlyWeekDays,
+                value: AudioPopupMenuAction.definePlayableEveryNDays,
                 child: Tooltip(
                   message: AppLocalizations.of(context)!
-                      .definePlayableOnlyWeekDaysMenuTooltip,
+                      .definePlayableEveryNDaysMenuTooltip,
                   child: Text(AppLocalizations.of(context)!
-                      .definePlayableOnlyWeekDaysMenu),
-                ),
-              ),
-              PopupMenuItem<AudioPopupMenuAction>(
-                key: const Key('popup_menu_define_playable_only_month_days'),
-                value: AudioPopupMenuAction.definePlayableOnlyMonthDays,
-                child: Tooltip(
-                  message: AppLocalizations.of(context)!
-                      .definePlayableOnlyMonthDaysMenuTooltip,
-                  child: Text(AppLocalizations.of(context)!
-                      .definePlayableOnlyMonthDaysMenu),
+                      .definePlayableEveryNDaysMenu),
                 ),
               ),
               PopupMenuItem<AudioPopupMenuAction>(
@@ -483,7 +473,7 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                   );
                 });
                 break;
-              case AudioPopupMenuAction.definePlayableOnlyWeekDays:
+              case AudioPopupMenuAction.definePlayableEveryNDays:
                 await showDialog<String?>(
                   context: context,
                   barrierDismissible:
@@ -493,22 +483,7 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                     return AudioModificationDialog(
                       audio: audio,
                       audioModificationType:
-                          AudioModificationType.playableOnlyWeekDays,
-                    );
-                  },
-                );
-                break;
-              case AudioPopupMenuAction.definePlayableOnlyMonthDays:
-                await showDialog<String?>(
-                  context: context,
-                  barrierDismissible:
-                      false, // This line prevents the dialog from closing when
-                  //            tapping outside the dialog
-                  builder: (BuildContext context) {
-                    return AudioModificationDialog(
-                      audio: audio,
-                      audioModificationType:
-                          AudioModificationType.playableOnlyMonthDays,
+                          AudioModificationType.playableEveryNDays,
                     );
                   },
                 );

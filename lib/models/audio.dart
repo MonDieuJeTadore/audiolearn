@@ -124,11 +124,7 @@ class Audio {
 
   AudioType audioType = AudioType.downloaded;
 
-  List<int> playableOnlyOnWeekDaysLst = []; // 1=Monday, 2=Tuesday, ..., 7=Sunday.
-  //                       If empty, the audio is playable on any day of the week.
-
-  List<int> playableOnlyOnMonthDaysLst = []; // 1, ..., 31. If empty, the audio is
-  //                                              playable on any day of the month.
+  int playableEveryNDays = 1;
 
   Audio({
     this.youtubeVideoChannel = '',
@@ -174,8 +170,7 @@ class Audio {
     required this.audioFileName,
     required this.audioFileSize,
     required this.audioType,
-    required this.playableOnlyOnWeekDaysLst,
-    required this.playableOnlyOnMonthDaysLst,
+    required this.playableEveryNDays,
   });
 
   /// Returns a copy of the current Audio instance
@@ -208,8 +203,7 @@ class Audio {
       audioFileName: audioFileName,
       audioFileSize: audioFileSize,
       audioType: audioType,
-      playableOnlyOnWeekDaysLst: playableOnlyOnWeekDaysLst,
-      playableOnlyOnMonthDaysLst: playableOnlyOnMonthDaysLst,
+      playableEveryNDays: playableEveryNDays,
     );
   }
 
@@ -258,12 +252,7 @@ class Audio {
             e.toString().split('.').last == (json['audioType'] ?? 'downloaded'),
         orElse: () => AudioType.downloaded,
       ),
-      playableOnlyOnWeekDaysLst: (json['playableOnlyOnWeekDays'] != null)
-          ? List<int>.from(json['playableOnlyOnWeekDays'])
-          : [],
-      playableOnlyOnMonthDaysLst: (json['playableOnlyOnMonthDays'] != null)
-          ? List<int>.from(json['playableOnlyOnMonthDays'])
-          : [],
+      playableEveryNDays: json['playableEveryNDays'] ?? 1,
     );
   }
 
@@ -300,8 +289,7 @@ class Audio {
       'audioFileName': audioFileName,
       'audioFileSize': audioFileSize,
       'audioType': audioType.toString().split('.').last,
-      'playableOnlyOnWeekDays': playableOnlyOnWeekDaysLst,
-      'playableOnlyOnMonthDays': playableOnlyOnMonthDaysLst,
+      'playableEveryNDays': playableEveryNDays,
     };
   }
 

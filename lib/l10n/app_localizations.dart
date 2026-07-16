@@ -4906,17 +4906,17 @@ abstract class AppLocalizations {
   /// **'Restoring playlist(s) from ZIP ...'**
   String get restoringPlaylistsFromZipProgression;
 
-  /// No description provided for @definePlayableOnlyWeekDaysMenu.
+  /// No description provided for @definePlayableEveryNDaysMenu.
   ///
   /// In en, this message translates to:
-  /// **'List the only playable Week Day Number(s) ...'**
-  String get definePlayableOnlyWeekDaysMenu;
+  /// **'Define that the Audio is playable every n Days ...'**
+  String get definePlayableEveryNDaysMenu;
 
-  /// No description provided for @definePlayableOnlyWeekDaysMenuTooltip.
+  /// No description provided for @definePlayableEveryNDaysMenuTooltip.
   ///
   /// In en, this message translates to:
-  /// **'If not defined, the audio is playable on every week day !'**
-  String get definePlayableOnlyWeekDaysMenuTooltip;
+  /// **'If not defined, the audio is playable every day !'**
+  String get definePlayableEveryNDaysMenuTooltip;
 
   /// No description provided for @definePlayableOnlyMonthDaysMenu.
   ///
@@ -4930,89 +4930,47 @@ abstract class AppLocalizations {
   /// **'If not defined, the audio is playable on every month day !'**
   String get definePlayableOnlyMonthDaysMenuTooltip;
 
-  /// No description provided for @modifyOnlyWeekDaysDialogTitle.
+  /// No description provided for @playableEveryNDays.
   ///
   /// In en, this message translates to:
-  /// **'Playable Week Day Number(s)'**
-  String get modifyOnlyWeekDaysDialogTitle;
+  /// **'Playable Every n Days'**
+  String get playableEveryNDays;
 
-  /// No description provided for @modifyOnlyWeekDaysTooltip.
+  /// No description provided for @modifyPlayableEveryNDaysTooltip.
   ///
   /// In en, this message translates to:
   /// **''**
-  String get modifyOnlyWeekDaysTooltip;
+  String get modifyPlayableEveryNDaysTooltip;
 
-  /// No description provided for @modifyOnlyWeekDaysDialogComment.
+  /// No description provided for @modifyPlayableEveryNDaysDialogComment.
   ///
   /// In en, this message translates to:
-  /// **'Enter 1 for monday ... 7 for sunday. Separate the numbers with a comma.'**
-  String get modifyOnlyWeekDaysDialogComment;
+  /// **'1 is set by default indicating that the audio is playable every day.'**
+  String get modifyPlayableEveryNDaysDialogComment;
 
-  /// No description provided for @modifyOnlyWeekDaysLabel.
+  /// No description provided for @modifyPlayableEveryNDaysLabel.
   ///
   /// In en, this message translates to:
-  /// **'Empty or int list'**
-  String get modifyOnlyWeekDaysLabel;
+  /// **'One integer number: '**
+  String get modifyPlayableEveryNDaysLabel;
 
-  /// No description provided for @modifyOnlyWeekDaysButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Modify'**
-  String get modifyOnlyWeekDaysButton;
-
-  /// No description provided for @modifyOnlyMonthDaysDialogTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Playable Month Day Number(s)'**
-  String get modifyOnlyMonthDaysDialogTitle;
-
-  /// No description provided for @modifyOnlyMonthDaysTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **''**
-  String get modifyOnlyMonthDaysTooltip;
-
-  /// No description provided for @modifyOnlyMonthDaysDialogComment.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter 1 till 31. Separate the numbers with a comma.'**
-  String get modifyOnlyMonthDaysDialogComment;
-
-  /// No description provided for @modifyOnlyMonthDaysLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Empty or int list'**
-  String get modifyOnlyMonthDaysLabel;
-
-  /// No description provided for @modifyOnlyMonthDaysButton.
+  /// No description provided for @modifyPlayableEveryNDaysButton.
   ///
   /// In en, this message translates to:
   /// **'Modify'**
-  String get modifyOnlyMonthDaysButton;
+  String get modifyPlayableEveryNDaysButton;
 
-  /// No description provided for @invalidPlayableOnlyWeekDaysWarning.
+  /// No description provided for @invalidPlayableEveryNDaysWarning.
   ///
   /// In en, this message translates to:
-  /// **'Invalid entered week day number(s):\n\"{dayNumbers}\".'**
-  String invalidPlayableOnlyWeekDaysWarning(Object dayNumbers);
+  /// **'Invalid entered playable day number: \"{dayNumber}\".'**
+  String invalidPlayableEveryNDaysWarning(Object dayNumber);
 
-  /// No description provided for @invalidPlayableOnlyMonthDaysWarning.
+  /// No description provided for @playableEveryNDaysLabel.
   ///
   /// In en, this message translates to:
-  /// **'Invalid entered month day number(s):\n\"{dayNumbers}\".'**
-  String invalidPlayableOnlyMonthDaysWarning(Object dayNumbers);
-
-  /// No description provided for @playableOnlyWeekDaysLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Playable week day number(s)'**
-  String get playableOnlyWeekDaysLabel;
-
-  /// No description provided for @playableOnlyMonthDaysLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Playable month day number(s)'**
-  String get playableOnlyMonthDaysLabel;
+  /// **'Playable every n day(s)'**
+  String get playableEveryNDaysLabel;
 }
 
 class _AppLocalizationsDelegate

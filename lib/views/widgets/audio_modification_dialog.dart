@@ -16,8 +16,7 @@ enum AudioModificationType {
   renameAudioFile,
   modifyAudioTitle,
   modifyAudioUrl,
-  playableOnlyWeekDays,
-  playableOnlyMonthDays,
+  playableEveryNDays,
 }
 
 /// This dialog allows the user to rename the audio file or modify its title.
@@ -68,13 +67,9 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
         case AudioModificationType.modifyAudioUrl:
           _audioModificationTextEditingController.text = widget.audio.videoUrl;
           break;
-        case AudioModificationType.playableOnlyWeekDays:
+        case AudioModificationType.playableEveryNDays:
           _audioModificationTextEditingController.text =
-              widget.audio.playableOnlyOnWeekDaysLst.join(',');
-          break;
-        case AudioModificationType.playableOnlyMonthDays:
-          _audioModificationTextEditingController.text =
-              widget.audio.playableOnlyOnMonthDaysLst.join(',');
+              widget.audio.playableEveryNDays.toString();
           break;
       }
 
@@ -154,27 +149,16 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
             AppLocalizations.of(context)!.modifyAudioUrlButton;
         flexibleValue = 6;
         break;
-      case AudioModificationType.playableOnlyWeekDays:
-        titleStr = AppLocalizations.of(context)!.modifyOnlyWeekDaysDialogTitle;
+      case AudioModificationType.playableEveryNDays:
+        titleStr = AppLocalizations.of(context)!.playableEveryNDays;
         commentStr =
-            AppLocalizations.of(context)!.modifyOnlyWeekDaysDialogComment;
-        labelStr = AppLocalizations.of(context)!.modifyOnlyWeekDaysLabel;
+            AppLocalizations.of(context)!.modifyPlayableEveryNDaysDialogComment;
+        labelStr = AppLocalizations.of(context)!.modifyPlayableEveryNDaysLabel;
         labelAndTextFieldTooltipStr =
-            AppLocalizations.of(context)!.modifyOnlyWeekDaysTooltip;
+            AppLocalizations.of(context)!.modifyPlayableEveryNDaysTooltip;
         modificationButtonStr =
-            AppLocalizations.of(context)!.modifyOnlyWeekDaysButton;
-        flexibleValue = 4;
-        break;
-      case AudioModificationType.playableOnlyMonthDays:
-        titleStr = AppLocalizations.of(context)!.modifyOnlyMonthDaysDialogTitle;
-        commentStr =
-            AppLocalizations.of(context)!.modifyOnlyMonthDaysDialogComment;
-        labelStr = AppLocalizations.of(context)!.modifyOnlyMonthDaysLabel;
-        labelAndTextFieldTooltipStr =
-            AppLocalizations.of(context)!.modifyOnlyMonthDaysTooltip;
-        modificationButtonStr =
-            AppLocalizations.of(context)!.modifyOnlyMonthDaysButton;
-        flexibleValue = 4;
+            AppLocalizations.of(context)!.modifyPlayableEveryNDaysButton;
+        flexibleValue = 1;
         break;
     }
 
@@ -321,13 +305,8 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
       case AudioModificationType.modifyAudioUrl:
         _modifyAudioUrl(context);
         break;
-      case AudioModificationType.playableOnlyWeekDays:
+      case AudioModificationType.playableEveryNDays:
         isWarningDisplayed = _modifyPlayableOnlyWeekDays(
-          context: context,
-        );
-        break;
-      case AudioModificationType.playableOnlyMonthDays:
-        isWarningDisplayed = _modifyPlayableOnlyMonthDays(
           context: context,
         );
         break;
@@ -390,30 +369,9 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
       listen: false,
     );
 
-    return audioDownloadVMlistenFalse.modifyPlayableOnlyWeekDays(
+    return audioDownloadVMlistenFalse.modifyPlayableEveryDaysValue(
       audio: widget.audio,
-      modifiedPlayableOnlyWeekDaysStr: playableOnlyWeekDaysStr,
-    );
-  }
-
-  /// Returns true if a warning was displayed by the AudioDownloadVM, false otherwise. The warning
-  /// is displayed if the user enters an error when defining the playable only week days or month
-  /// days. IIn this case, after the warning is displayed, the audio modification dialog is not
-  /// closed and the user can correct the error. If no warning is displayed, the audio modification
-  /// dialog is closed.
-  bool _modifyPlayableOnlyMonthDays({
-    required BuildContext context,
-  }) {
-    String playableOnlyMonthDaysStr =
-        _audioModificationTextEditingController.text;
-    AudioDownloadVM audioDownloadVMlistenFalse = Provider.of<AudioDownloadVM>(
-      context,
-      listen: false,
-    );
-
-    return audioDownloadVMlistenFalse.modifyPlayableOnlyMonthDays(
-      audio: widget.audio,
-      modifiedPlayableOnlyMonthDaysStr: playableOnlyMonthDaysStr,
+      modifiedPlayableEveryDaysValueStr: playableOnlyWeekDaysStr,
     );
   }
 }

@@ -4,6 +4,7 @@ import '../../l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/help_item.dart';
+import '../../viewmodels/date_format_vm.dart';
 import '../../views/screen_mixin.dart';
 import '../../constants.dart';
 import '../../models/audio.dart';
@@ -151,8 +152,20 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
         break;
       case AudioModificationType.playableEveryNDays:
         titleStr = AppLocalizations.of(context)!.playableEveryNDays;
+        DateTime? audioPausedDateTime = widget.audio.audioPausedDateTime;
+        final DateFormatVM dateFormatVMlistenFalse = Provider.of<DateFormatVM>(
+          context,
+          listen: false,
+        );
+
         commentStr =
-            AppLocalizations.of(context)!.modifyPlayableEveryNDaysDialogComment;
+            AppLocalizations.of(context)!.modifyPlayableEveryNDaysDialogComment(
+          audioPausedDateTime != null
+              ? dateFormatVMlistenFalse.formatDate(
+                  audioPausedDateTime,
+                )
+              : AppLocalizations.of(context)!.notYetPlayed,
+        );
         labelStr = AppLocalizations.of(context)!.modifyPlayableEveryNDaysLabel;
         labelAndTextFieldTooltipStr =
             AppLocalizations.of(context)!.modifyPlayableEveryNDaysTooltip;
@@ -250,11 +263,12 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
                 onPressed: isInactive
                     ? null // This disables the button
                     : () {
-                        bool wasWarningDisplayed =_handleAudioModification(context);
+                        bool wasWarningDisplayed =
+                            _handleAudioModification(context);
 
                         if (!wasWarningDisplayed) {
-                          Navigator.of(context)
-                              .pop(_audioModificationTextEditingController.text);
+                          Navigator.of(context).pop(
+                              _audioModificationTextEditingController.text);
                         }
                       },
                 child: Text(

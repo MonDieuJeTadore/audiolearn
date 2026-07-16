@@ -1317,9 +1317,10 @@
   "definePlayableOnlyMonthDaysMenuTooltip": "If not defined, the audio is playable on every month day !",
   "playableEveryNDays": "Playable Every n Days",
   "modifyPlayableEveryNDaysTooltip": "",
-  "modifyPlayableEveryNDaysDialogComment": "1 is set by default indicating that the audio is playable every day.",
+  "modifyPlayableEveryNDaysDialogComment": "1 is set by default indicating that the audio is playable every day.\nLast played date: {lastPlayedDate}.",
   "modifyPlayableEveryNDaysLabel": "One integer number: ",
   "modifyPlayableEveryNDaysButton": "Modify",
   "invalidPlayableEveryNDaysWarning": "Invalid entered playable day number: \"{dayNumber}\".",
-  "playableEveryNDaysLabel": "Playable every n day(s)"
+  "playableEveryNDaysLabel": "Playable every n day(s)",
+  "notYetPlayed": "not yet listened"
 }

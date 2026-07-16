@@ -3113,8 +3113,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get modifyPlayableEveryNDaysTooltip => '';
 
   @override
-  String get modifyPlayableEveryNDaysDialogComment =>
-      '1 est défini par défaut et indique que l\'audio est jouable tous les jours.';
+  String modifyPlayableEveryNDaysDialogComment(Object lastPlayedDate) {
+    return '1 est défini par défaut et indique que l\'audio est jouable tous les jours.\nDate de dernière écoute: $lastPlayedDate.';
+  }
 
   @override
   String get modifyPlayableEveryNDaysLabel => 'Un nombre entier: ';
@@ -3129,4 +3130,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playableEveryNDaysLabel => 'Jouable tous les n jours';
+
+  @override
+  String get notYetPlayed => 'pas encore écouté';
 }

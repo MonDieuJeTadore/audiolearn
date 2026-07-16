@@ -3205,10 +3205,6 @@ class MockAppLocalizations extends AppLocalizations {
   String get modifyPlayableEveryNDaysTooltip => "";
 
   @override
-  String get modifyPlayableEveryNDaysDialogComment =>
-      "Enter 1 for monday ... 7 for sunday. Separate the numbers with a comma.";
-
-  @override
   String get modifyPlayableEveryNDaysLabel => "Empty or int list";
 
   @override
@@ -3222,4 +3218,13 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get playableEveryNDaysLabel => "Playable week day number(s)";
+
+  @override
+  String modifyPlayableEveryNDaysDialogComment(
+    Object lastPlayedDate,
+  ) =>
+      "1 is set by default indicating that the audio is playable every day. Last played date: $lastPlayedDate.";
+
+  @override
+  String get notYetPlayed => "not yet played";
 }

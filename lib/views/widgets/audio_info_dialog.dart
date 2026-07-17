@@ -33,6 +33,10 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
 
     final ThemeProviderVM themeProviderVM =
         Provider.of<ThemeProviderVM>(context); // by default, listen is true
+    final DateFormatVM dateFormatVMlistenFalse = Provider.of<DateFormatVM>(
+      context,
+      listen: false,
+    );
 
     return KeyboardListener(
       // Using FocusNode to enable clicking on Enter to close
@@ -71,16 +75,20 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           child: ListBody(
             children: switch (audio.audioType) {
               AudioType.downloaded => _createDownloadedAudioInfoLines(
-                  context,
+                  context: context,
+                  dateFormatVMlistenFalse: dateFormatVMlistenFalse,
                 ),
               AudioType.imported => _createImportedAudioInfoLines(
-                  context,
+                  context: context,
+                  dateFormatVMlistenFalse: dateFormatVMlistenFalse,
                 ),
               AudioType.textToSpeech => _createTextToSpeechAudioInfoLines(
-                  context,
+                  context: context,
+                  dateFormatVMlistenFalse: dateFormatVMlistenFalse,
                 ),
               AudioType.extracted => _createExtractedAudioInfoLines(
-                  context,
+                  context: context,
+                  dateFormatVMlistenFalse: dateFormatVMlistenFalse,
                 ),
             },
           ),
@@ -104,12 +112,11 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
   }
 
   /// Creates the list of audio information lines for downloaded audio.
-  List<Widget> _createDownloadedAudioInfoLines(BuildContext context) {
+  List<Widget> _createDownloadedAudioInfoLines({
+    required BuildContext context,
+    required DateFormatVM dateFormatVMlistenFalse,
+  }) {
     final CommentVM commentVMlistenFalse = Provider.of<CommentVM>(
-      context,
-      listen: false,
-    );
-    final DateFormatVM dateFormatVMlistenFalse = Provider.of<DateFormatVM>(
       context,
       listen: false,
     );
@@ -154,7 +161,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
         context: context,
         label: AppLocalizations.of(context)!.playableEveryNDaysLabel,
         value: playableEveryNDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
+        infoRowTooltip:
+            AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),
@@ -253,7 +261,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           context: context,
           label: AppLocalizations.of(context)!.audioPausedDateTimeLabel,
           value: (audio.audioPausedDateTime != null)
-              ? frenchDateTimeFormat.format(audio.audioPausedDateTime!)
+              ? dateFormatVMlistenFalse
+                  .formatDateTime(audio.audioPausedDateTime!)
               : ''),
       createInfoRowFunction(
           valueTextWidgetKey: const Key('audioFileNameKey'),
@@ -295,12 +304,15 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
   }
 
   /// Creates the list of audio information lines for imported audio.
-  List<Widget> _createImportedAudioInfoLines(BuildContext context) {
+  List<Widget> _createImportedAudioInfoLines({
+    required BuildContext context,
+    required DateFormatVM dateFormatVMlistenFalse,
+  }) {
     CommentVM commentVMlistenFalse =
         Provider.of<CommentVM>(context, listen: false);
     final bool isAudioPlayable = UiUtil.isAudioPlayable(audio: audio);
     final String playableEveryNDaysStr = audio.playableEveryNDays.toString();
-    
+
     return <Widget>[
       createInfoRowFunction(
           valueTextWidgetKey: const Key('importedAudioTitleKey'),
@@ -311,7 +323,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           valueTextWidgetKey: const Key('importedAudioDateTimeKey'),
           context: context,
           label: AppLocalizations.of(context)!.importedAudioDateTimeLabel,
-          value: frenchDateTimeFormat.format(audio.audioDownloadDateTime)),
+          value: dateFormatVMlistenFalse
+              .formatDateTime(audio.audioDownloadDateTime)),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('isAudioPlayableKey'),
         context: context,
@@ -328,7 +341,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
         context: context,
         label: AppLocalizations.of(context)!.playableEveryNDaysLabel,
         value: playableEveryNDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
+        infoRowTooltip:
+            AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),
@@ -404,7 +418,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           context: context,
           label: AppLocalizations.of(context)!.audioPausedDateTimeLabel,
           value: (audio.audioPausedDateTime != null)
-              ? frenchDateTimeFormat.format(audio.audioPausedDateTime!)
+              ? dateFormatVMlistenFalse
+                  .formatDateTime(audio.audioPausedDateTime!)
               : ''),
       createInfoRowFunction(
           valueTextWidgetKey: const Key('audioFileNameKey'),
@@ -446,7 +461,10 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
   }
 
   /// Creates the list of audio information lines for text to speech audio.
-  List<Widget> _createTextToSpeechAudioInfoLines(BuildContext context) {
+  List<Widget> _createTextToSpeechAudioInfoLines({
+    required BuildContext context,
+    required DateFormatVM dateFormatVMlistenFalse,
+  }) {
     CommentVM commentVMlistenFalse =
         Provider.of<CommentVM>(context, listen: false);
     final bool isAudioPlayable = UiUtil.isAudioPlayable(audio: audio);
@@ -462,7 +480,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           valueTextWidgetKey: const Key('convertedAudioDateTimeKey'),
           context: context,
           label: AppLocalizations.of(context)!.convertedAudioDateTimeLabel,
-          value: frenchDateTimeFormat.format(audio.audioDownloadDateTime)),
+          value: dateFormatVMlistenFalse
+              .formatDateTime(audio.audioDownloadDateTime)),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('isAudioPlayableKey'),
         context: context,
@@ -479,7 +498,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
         context: context,
         label: AppLocalizations.of(context)!.playableEveryNDaysLabel,
         value: playableEveryNDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
+        infoRowTooltip:
+            AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
       createInfoRowFunction(
           valueTextWidgetKey: const Key('enclosingPlaylistTitleKey'),
@@ -548,7 +568,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           context: context,
           label: AppLocalizations.of(context)!.audioPausedDateTimeLabel,
           value: (audio.audioPausedDateTime != null)
-              ? frenchDateTimeFormat.format(audio.audioPausedDateTime!)
+              ? dateFormatVMlistenFalse
+                  .formatDateTime(audio.audioPausedDateTime!)
               : ''),
       createInfoRowFunction(
           valueTextWidgetKey: const Key('audioFileNameKey'),
@@ -590,12 +611,15 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
   }
 
   /// Creates the list of audio information lines for extracted audio.
-  List<Widget> _createExtractedAudioInfoLines(BuildContext context) {
+  List<Widget> _createExtractedAudioInfoLines({
+    required BuildContext context,
+    required DateFormatVM dateFormatVMlistenFalse,
+  }) {
     CommentVM commentVMlistenFalse =
         Provider.of<CommentVM>(context, listen: false);
     final bool isAudioPlayable = UiUtil.isAudioPlayable(audio: audio);
     final String playableEveryNDaysStr = audio.playableEveryNDays.toString();
-    
+
     return <Widget>[
       createInfoRowFunction(
           valueTextWidgetKey: const Key('extractedAudioTitleKey'),
@@ -606,7 +630,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           valueTextWidgetKey: const Key('extractedAudioDateTimeKey'),
           context: context,
           label: AppLocalizations.of(context)!.extractedAudioDateTimeLabel,
-          value: frenchDateTimeFormat.format(audio.audioDownloadDateTime)),
+          value: dateFormatVMlistenFalse
+              .formatDateTime(audio.audioDownloadDateTime)),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('isAudioPlayableKey'),
         context: context,
@@ -623,7 +648,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
         context: context,
         label: AppLocalizations.of(context)!.playableEveryNDaysLabel,
         value: playableEveryNDaysStr,
-        infoRowTooltip: AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
+        infoRowTooltip:
+            AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),
@@ -699,7 +725,8 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           context: context,
           label: AppLocalizations.of(context)!.audioPausedDateTimeLabel,
           value: (audio.audioPausedDateTime != null)
-              ? frenchDateTimeFormat.format(audio.audioPausedDateTime!)
+              ? dateFormatVMlistenFalse
+                  .formatDateTime(audio.audioPausedDateTime!)
               : ''),
       createInfoRowFunction(
           valueTextWidgetKey: const Key('audioFileNameKey'),

@@ -45993,7 +45993,8 @@ void main() {
           // Now we want to tap the popup menu of the Audio ListTile
           // "6_Glorious - Laisse-moi te parler de Jesus #louange"
 
-          String audioToPositionTitle = "7_Musique chrétienne en français La vraie prière";
+          String audioToPositionTitle =
+              "7_Musique chrétienne en français La vraie prière";
 
           // First, find the Audio sublist ListTile Text widget
           Finder audioToPositionTitleTextWidgetFinder =
@@ -46142,7 +46143,8 @@ void main() {
           // Now we want to tap the popup menu of the Audio ListTile
           // "6_Glorious - Laisse-moi te parler de Jesus #louange"
 
-          String audioToPositionTitle = "6_Glorious - Laisse-moi te parler de Jesus #louange";
+          String audioToPositionTitle =
+              "6_Glorious - Laisse-moi te parler de Jesus #louange";
 
           // First, find the Audio sublist ListTile Text widget
           Finder audioToPositionTitleTextWidgetFinder =
@@ -46223,8 +46225,7 @@ void main() {
         testWidgets(
             '''On Prières playlist, moving down from 9_ to 6_ an already positioned audio. Execute
                the Audio item menu "Move Audio to Position". Then move 6_ to 3_. This shows an incredible
-               bug since 6_ is moved to 2_.''',
-            (WidgetTester tester) async {
+               bug since 6_ is moved to 2_.''', (WidgetTester tester) async {
           // playlist list is empty
           DirUtil.deleteFilesInDirAndSubDirs(
             rootPath: kApplicationPathWindowsTest,
@@ -46362,8 +46363,6 @@ void main() {
             audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
             firstAudioListTileIndex: 0,
           );
-
-
 
           // Now we want to tap the popup menu of the Audio ListTile
           // "6_Prière au Seigneur"
@@ -56161,64 +56160,13 @@ Future<void> _verifyDateFormatApplication({
   // "Jancovici m'explique l’importance des ordres de grandeur
   // face au changement climatique",
 
-  const String audioTitle =
-      "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique";
-
-  // First, find the Audio sublist ListTile Text widget
-  Finder targetAudioListTileTextWidgetFinder = find.text(audioTitle);
-
-  // Then obtain the Audio ListTile widget enclosing the Text widget by
-  // finding its ancestor
-  Finder targetAudioListTileWidgetFinder = find.ancestor(
-    of: targetAudioListTileTextWidgetFinder,
-    matching: find.byType(ListTile),
+  await _verifyAudioInfoDialogDateFormat(
+    tester: tester,
+    audioTitle:
+        "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+    videoUploadDate: videoUploadDate,
+    audioDownloadDateTime: audioDownloadDateTime,
   );
-
-  // Now find the leading menu icon button of the Audio ListTile and tap
-  // on it
-  Finder targetAudioListTileLeadingMenuIconButton = find.descendant(
-    of: targetAudioListTileWidgetFinder,
-    matching: find.byIcon(Icons.menu),
-  );
-
-  // Tap the leading menu icon button to open the popup menu
-  await tester.tap(targetAudioListTileLeadingMenuIconButton);
-  await tester.pumpAndSettle();
-
-  // Now find the popup menu item and tap on it
-  final Finder popupDisplayAudioInfoMenuItemFinder =
-      find.byKey(const Key("popup_menu_display_audio_info"));
-
-  await tester.tap(popupDisplayAudioInfoMenuItemFinder);
-  await tester.pumpAndSettle();
-
-  // Now verifying the display audio info audio copied dialog
-  // elements
-
-  // Verify the video upload date of the audio
-
-  final Text videoUploadDateTextWidget =
-      tester.widget<Text>(find.byKey(const Key('videoUploadDateKey')));
-
-  expect(
-    videoUploadDateTextWidget.data,
-    videoUploadDate,
-  );
-
-  // Verify the audio download date time of the audio
-
-  final Text audioDownloadDateTimeTextWidget =
-      tester.widget<Text>(find.byKey(const Key('audioDownloadDateTimeKey')));
-
-  expect(
-    audioDownloadDateTimeTextWidget.data,
-    audioDownloadDateTime,
-  );
-
-  // Now find the close button of the audio info dialog
-  // and tap on it
-  await tester.tap(find.byKey(const Key('audio_info_close_button_key')));
-  await tester.pumpAndSettle();
 
   // Tap the 'Toggle List' button to display the list of playlist's.
   await tester.tap(find.byKey(const Key('playlist_toggle_button')));
@@ -56347,18 +56295,19 @@ Future<void> _verifyDateFormatApplication({
   // Verifying the comment date format
 
   // First, find the Audio sublist ListTile Text widget
-  targetAudioListTileTextWidgetFinder = find.text(audioTitle);
+  Finder targetAudioListTileTextWidgetFinder = find.text(
+      "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique");
 
   // Then obtain the Audio ListTile widget enclosing the Text widget by
   // finding its ancestor
-  targetAudioListTileWidgetFinder = find.ancestor(
+  Finder targetAudioListTileWidgetFinder = find.ancestor(
     of: targetAudioListTileTextWidgetFinder,
     matching: find.byType(ListTile),
   );
 
   // Now find the leading menu icon button of the Audio ListTile and tap
   // on it
-  targetAudioListTileLeadingMenuIconButton = find.descendant(
+  Finder targetAudioListTileLeadingMenuIconButton = find.descendant(
     of: targetAudioListTileWidgetFinder,
     matching: find.byIcon(Icons.menu),
   );
@@ -56446,6 +56395,86 @@ Future<void> _verifyDateFormatApplication({
       findsOneWidget);
 
   await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+  await tester.pumpAndSettle();
+}
+
+Future<void> _verifyAudioInfoDialogDateFormat({
+  required WidgetTester tester,
+  required String audioTitle,
+  String videoUploadDate = '',
+  String audioDownloadDateTime = '',
+  String audioPausedDateTime = '',
+}) async {
+  // First, find the Audio sublist ListTile Text widget
+  Finder targetAudioListTileTextWidgetFinder = find.text(audioTitle);
+
+  // Then obtain the Audio ListTile widget enclosing the Text widget by
+  // finding its ancestor
+  Finder targetAudioListTileWidgetFinder = find.ancestor(
+    of: targetAudioListTileTextWidgetFinder,
+    matching: find.byType(ListTile),
+  );
+
+  // Now find the leading menu icon button of the Audio ListTile and tap
+  // on it
+  Finder targetAudioListTileLeadingMenuIconButton = find.descendant(
+    of: targetAudioListTileWidgetFinder,
+    matching: find.byIcon(Icons.menu),
+  );
+
+  // Tap the leading menu icon button to open the popup menu
+  await tester.tap(targetAudioListTileLeadingMenuIconButton);
+  await tester.pumpAndSettle();
+
+  // Now find the popup menu item and tap on it
+  final Finder popupDisplayAudioInfoMenuItemFinder =
+      find.byKey(const Key("popup_menu_display_audio_info"));
+
+  await tester.tap(popupDisplayAudioInfoMenuItemFinder);
+  await tester.pumpAndSettle();
+
+  // Now verifying the display audio info audio copied dialog
+  // elements
+
+  // Verify the video upload date of the audio if not empty
+
+  if (videoUploadDate.isNotEmpty) {
+    final Text videoUploadDateTextWidget =
+        tester.widget<Text>(find.byKey(const Key('videoUploadDateKey')));
+
+    expect(
+      videoUploadDateTextWidget.data,
+      videoUploadDate,
+    );
+  }
+
+  // Verify the audio download date time of the audio if not empty
+
+  if (audioDownloadDateTime.isNotEmpty) {
+    final Text audioDownloadDateTimeTextWidget =
+        tester.widget<Text>(find.byKey(const Key('audioDownloadDateTimeKey')));
+
+    expect(
+      audioDownloadDateTimeTextWidget.data,
+      audioDownloadDateTime,
+    );
+  }
+
+  // Verify the audio paused date time of the audio if not empty
+
+  if (audioPausedDateTime.isNotEmpty) {
+    final Text audioPausedDateTimeTextWidget =
+        tester.widget<Text>(find.byKey(const Key('lastListenDateTimeKey')));
+
+    expect(
+      audioPausedDateTimeTextWidget.data,
+      audioPausedDateTime,
+    );
+  }
+
+  // Now find the close button of the audio info dialog
+  // and tap on it
+  await tester.tap(find.byKey(const Key('audio_info_close_button_key')));
   await tester.pumpAndSettle();
 }
 

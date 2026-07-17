@@ -4720,6 +4720,7 @@ void main() {
         playlistTitle: youtubePlaylistTitle,
         videoUploadDate: "12/06/2022",
         audioDownloadDateTime: "08/01/2024 16:35",
+        audioPausedDateTime: "19/08/2024 14:46",
         playlistLastDownloadDateTime: "07/09/2025 16:55",
         commentCreationDate: '12/10/24',
         commentUpdateDate: '01/11/24',
@@ -4808,6 +4809,7 @@ void main() {
         playlistTitle: youtubePlaylistTitle,
         videoUploadDate: "06/12/2022",
         audioDownloadDateTime: "01/08/2024 16:35",
+        audioPausedDateTime: "08/19/2024 14:46",
         playlistLastDownloadDateTime: "09/07/2025 16:55",
         commentCreationDate: '10/12/24',
         commentUpdateDate: '11/01/24',
@@ -4896,6 +4898,7 @@ void main() {
         playlistTitle: youtubePlaylistTitle,
         videoUploadDate: "2022/06/12",
         audioDownloadDateTime: "2024/01/08 16:35",
+        audioPausedDateTime: "2024/08/19 14:46",
         playlistLastDownloadDateTime: "2025/09/07 16:55",
         commentCreationDate: '24/10/12',
         commentUpdateDate: '24/11/01',
@@ -4984,6 +4987,7 @@ void main() {
         playlistTitle: youtubePlaylistTitle,
         videoUploadDate: "12/06/2022",
         audioDownloadDateTime: "08/01/2024 16:35",
+        audioPausedDateTime: "19/08/2024 14:46",
         playlistLastDownloadDateTime: "07/09/2025 16:55",
         commentCreationDate: '12/10/24',
         commentUpdateDate: '01/11/24',
@@ -5102,6 +5106,7 @@ void main() {
         playlistTitle: youtubePlaylistTitle,
         videoUploadDate: "06/12/2022",
         audioDownloadDateTime: "01/08/2024 16:35",
+        audioPausedDateTime: "08/19/2024 14:46",
         playlistLastDownloadDateTime: "09/07/2025 16:55",
         commentCreationDate: '10/12/24',
         commentUpdateDate: '11/01/24',
@@ -5217,6 +5222,7 @@ void main() {
         playlistTitle: youtubePlaylistTitle,
         videoUploadDate: "2022/06/12",
         audioDownloadDateTime: "2024/01/08 16:35",
+        audioPausedDateTime: "2024/08/19 14:46",
         playlistLastDownloadDateTime: "2025/09/07 16:55",
         commentCreationDate: '24/10/12',
         commentUpdateDate: '24/11/01',
@@ -5332,6 +5338,7 @@ void main() {
         playlistTitle: youtubePlaylistTitle,
         videoUploadDate: "12/06/2022",
         audioDownloadDateTime: "08/01/2024 16:35",
+        audioPausedDateTime: "19/08/2024 14:46",
         playlistLastDownloadDateTime: "07/09/2025 16:55",
         commentCreationDate: '12/10/24',
         commentUpdateDate: '01/11/24',
@@ -56143,6 +56150,7 @@ Future<void> _verifyDateFormatApplication({
   required String playlistTitle,
   required String videoUploadDate,
   required audioDownloadDateTime,
+  String audioPausedDateTime = '',
   required String playlistLastDownloadDateTime,
   required String commentCreationDate,
   required String commentUpdateDate,
@@ -56167,6 +56175,15 @@ Future<void> _verifyDateFormatApplication({
     videoUploadDate: videoUploadDate,
     audioDownloadDateTime: audioDownloadDateTime,
   );
+
+  if (audioPausedDateTime.isNotEmpty) {
+    await _verifyAudioInfoDialogDateFormat(
+      tester: tester,
+      audioTitle:
+          "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
+      audioPausedDateTime: audioPausedDateTime,
+    );
+  }
 
   // Tap the 'Toggle List' button to display the list of playlist's.
   await tester.tap(find.byKey(const Key('playlist_toggle_button')));

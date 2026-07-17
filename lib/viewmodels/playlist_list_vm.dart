@@ -2676,7 +2676,7 @@ class PlaylistListVM extends ChangeNotifier {
 
     int audioPlayableEveryNDays = audio.playableEveryNDays;
 
-    if (audioPlayableEveryNDays == 1) {
+    if (audioPlayableEveryNDays <= 1) {
       // means the audio is playable every day
       return true;
     } else {
@@ -2687,12 +2687,23 @@ class PlaylistListVM extends ChangeNotifier {
         return true;
       }
 
-      if (audioPausedDateTime.add(Duration(days: audioPlayableEveryNDays)).isAfter(today)) {
-        return false;
-      } 
-    }
+      DateTime audioPausedDateOnly = DateTime(
+        audioPausedDateTime.year,
+        audioPausedDateTime.month,
+        audioPausedDateTime.day,
+      );
 
-    return true;
+      DateTime todayDateOnly = DateTime(
+        today.year,
+        today.month,
+        today.day,
+      );
+
+      int daysSincePaused =
+          todayDateOnly.difference(audioPausedDateOnly).inDays;
+
+      return daysSincePaused >= audioPlayableEveryNDays;
+    }
   }
 
   /// Returns the audio contained in the playableAudioLst which
@@ -6599,7 +6610,8 @@ class PlaylistListVM extends ChangeNotifier {
     if (isDescending) {
       if (positionToMoveTo < initialPosition) {
         if (!isPrefixPresent || ((initialPosition - positionToMoveTo) > 2)) {
-          positionToMoveTo = ((positionToMoveTo - 2) <= -1) ? 0 : --positionToMoveTo;
+          positionToMoveTo =
+              ((positionToMoveTo - 2) <= -1) ? 0 : --positionToMoveTo;
         } else if ((initialPosition - positionToMoveTo) == 1) {
           // If the audio is moved to the position just before its
           // initial position, we need to update the next audio valid
@@ -6617,12 +6629,15 @@ class PlaylistListVM extends ChangeNotifier {
               .indexWhere((element) => element == audioToMove);
           Audio firstAudioAfterAudioToMove =
               sortFilteredPlaylistPlayableAudiosLst[audioIndexInSortedList + 1];
-          final String titleWithoutPrefix =
-              firstAudioAfterAudioToMove.validVideoTitle.replaceFirst(regex, '');
+          final String titleWithoutPrefix = firstAudioAfterAudioToMove
+              .validVideoTitle
+              .replaceFirst(regex, '');
 
-          firstAudioAfterAudioToMove.validVideoTitle = '${positionToMoveTo + 1}_$titleWithoutPrefix';
+          firstAudioAfterAudioToMove.validVideoTitle =
+              '${positionToMoveTo + 1}_$titleWithoutPrefix';
         } else {
-          positionToMoveTo = ((positionToMoveTo - 2) <= -1) ? 0 : positionToMoveTo;
+          positionToMoveTo =
+              ((positionToMoveTo - 2) <= -1) ? 0 : positionToMoveTo;
         }
       } else {
         ++positionToMoveTo;
@@ -6630,7 +6645,8 @@ class PlaylistListVM extends ChangeNotifier {
     } else {
       // Ascending order
       if (!isPrefixPresent) {
-        positionToMoveTo = ((positionToMoveTo - 2) <= -1) ? 0 : positionToMoveTo;
+        positionToMoveTo =
+            ((positionToMoveTo - 2) <= -1) ? 0 : positionToMoveTo;
       } else if ((positionToMoveTo - initialPosition) == 1) {
         // If the audio is moved to the position just after its
         // initial position, we need to update the next audio valid
@@ -6647,11 +6663,13 @@ class PlaylistListVM extends ChangeNotifier {
         int audioToMoveIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
             .indexWhere((element) => element == audioToMove);
         Audio firstAudioAfterAudioToMove =
-            sortFilteredPlaylistPlayableAudiosLst[audioToMoveIndexInSortedList + 1];
+            sortFilteredPlaylistPlayableAudiosLst[
+                audioToMoveIndexInSortedList + 1];
         final String titleWithoutPrefix =
             firstAudioAfterAudioToMove.validVideoTitle.replaceFirst(regex, '');
 
-        firstAudioAfterAudioToMove.validVideoTitle = '${positionToMoveTo - 1}_$titleWithoutPrefix';
+        firstAudioAfterAudioToMove.validVideoTitle =
+            '${positionToMoveTo - 1}_$titleWithoutPrefix';
       } else if ((positionToMoveTo - initialPosition) == 2) {
         // If the audio is moved to 2 positions after its initial
         // position, we need to update the next 2 audio valid video
@@ -6669,18 +6687,22 @@ class PlaylistListVM extends ChangeNotifier {
             .indexWhere((element) => element == audioToMove);
 
         Audio secondAudioAfterAudioToMove =
-            sortFilteredPlaylistPlayableAudiosLst[audioToMoveIndexInSortedList + 2];
+            sortFilteredPlaylistPlayableAudiosLst[
+                audioToMoveIndexInSortedList + 2];
         String titleWithoutPrefix =
             secondAudioAfterAudioToMove.validVideoTitle.replaceFirst(regex, '');
 
-        secondAudioAfterAudioToMove.validVideoTitle = '${positionToMoveTo - 1}_$titleWithoutPrefix';
+        secondAudioAfterAudioToMove.validVideoTitle =
+            '${positionToMoveTo - 1}_$titleWithoutPrefix';
 
         Audio firstAudioAfterAudioToMove =
-            sortFilteredPlaylistPlayableAudiosLst[audioToMoveIndexInSortedList + 1];
+            sortFilteredPlaylistPlayableAudiosLst[
+                audioToMoveIndexInSortedList + 1];
         titleWithoutPrefix =
             firstAudioAfterAudioToMove.validVideoTitle.replaceFirst(regex, '');
 
-        firstAudioAfterAudioToMove.validVideoTitle = '${positionToMoveTo - 2}_$titleWithoutPrefix';
+        firstAudioAfterAudioToMove.validVideoTitle =
+            '${positionToMoveTo - 2}_$titleWithoutPrefix';
       }
     }
 

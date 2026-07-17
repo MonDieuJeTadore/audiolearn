@@ -13,6 +13,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "3 fois où Aurélien Barrau tire à balles réelles sur les riches",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nPour changer le système : ...\n\nPasser à, Frantz Fanon, Description à, étape à, écologique. Fait, Frantz Fanon.",
             "validVideoTitle": "3 fois où Aurélien Barrau tire à balles réelles sur les riches",
@@ -31,7 +32,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094522-3 fois où Aurélien Barrau tire à balles réelles sur les riches 23-12-23.mp3",
             "audioFileSize": 3231615,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -39,6 +41,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nSite shift project : https://theshiftproject.org/ ...\n\nSources Janco, Description à",
             "validVideoTitle": "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
@@ -57,7 +60,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094526-Ce qui va vraiment sauver notre espèce par Jancovici et Barrau 23-09-23.mp3",
             "audioFileSize": 2370022,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -65,6 +69,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "L'argument anti-nuke qui m'inquiète le plus par Y.Rousselet",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nCarte réacteurs nucléaires français : https://www.irsn.fr/savoir-comprendre/surete/parc-reacteurs-nucleaires-francais ...\n\nSources Yannick, Rousselet TV, Description à",
             "validVideoTitle": "L'argument anti-nuke qui m'inquiète le plus par Y.Rousselet",
@@ -83,7 +88,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094529-L'argument anti-nuke qui m'inquiète le plus par Y.Rousselet 23-09-19.mp3",
             "audioFileSize": 3600062,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -91,6 +97,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nChanger de banque: https://www.lanef.com/ https://change-de-banque.org/particulier/ ...\n\nSources Gaël, Julien Lefournier, Thomas Porcher, Description à",
             "validVideoTitle": "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
@@ -109,7 +116,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094534-3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher) 23-12-01.mp3",
             "audioFileSize": 7509275,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -117,6 +125,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Janco démolit le débat nucléaire/renouvelable",
             "compactVideoDescription": "Éthique et tac\n\n«Dans tous les cas, les efforts à faire seront titanesques.»\n\nMerci aux médias qui permettent à Jancovici de s’exprimer. Mention spéciale à Elucid qui est un média que j’adore, je vous invite vraiment à aller visionner leurs interviews, elles sont passionnantes :https://www.youtube.com/@ElucidMedia  ...\n\nDescription à, Kazakhstan, Canada,, Australie, Niger.",
             "validVideoTitle": "Janco démolit le débat nucléaire_renouvelable",
@@ -135,7 +144,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094538-Janco démolit le débat nucléaire_renouvelable 23-05-19.mp3",
             "audioFileSize": 5938781,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -143,6 +153,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "La croissance -  Le Maire VS Janco",
             "compactVideoDescription": "Éthique et tac\n\nSoutenez Éthique et tac : https://fr.tipeee.com/ethique-et-tac/ \n\n« Fier de ce que fait la France » ?! 🤓 ...\n\nJean Marc",
             "validVideoTitle": "La croissance -  Le Maire VS Janco",
@@ -161,7 +172,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094543-La croissance -  Le Maire VS Janco 22-02-10.mp3",
             "audioFileSize": 1741561,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -169,6 +181,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Les limites de l'agriculture présente et future par Jancovici",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nDécouvrir le PTEF : https://theshiftproject.org/article/ptef-livre-et-site-web/ ...\n\nPasser à, Sources Jancovici, Description à",
             "validVideoTitle": "Les limites de l'agriculture présente et future par Jancovici",
@@ -187,7 +200,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094547-Les limites de l'agriculture présente et future par Jancovici 23-12-20.mp3",
             "audioFileSize": 5615638,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -195,6 +209,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "15 minutes de Janco pour retourner un climatosceptique",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nCalculer son empreinte bancaire en 3 clics (banques françaises) : https://www.oxfamfrance.org/climat-et-energie/calculez-lempreinte-carbone-de-votre-compte-bancaire/ ...\n\nAbonnez-vous à, Sources Janco, Description à",
             "validVideoTitle": "15 minutes de Janco pour retourner un climatosceptique",
@@ -213,7 +228,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094552-15 minutes de Janco pour retourner un climatosceptique 23-10-01.mp3",
             "audioFileSize": 5323139,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -221,6 +237,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "3 fois où Jancovici recadre un plateau",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nCalculer son empreinte bancaire : https://riftapp.fr/ ...\n\nRadio Mont, Description à, Joseph Fourier.",
             "validVideoTitle": "3 fois où Jancovici recadre un plateau",
@@ -239,7 +256,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094556-3 fois où Jancovici recadre un plateau 23-09-26.mp3",
             "audioFileSize": 8203230,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -247,6 +265,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Comment garantir son indépendance financière par Jancovici",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nPour changer le système : ...\n\nPasser à, Sources Jancovici, à CentraleSupélec, Description à",
             "validVideoTitle": "Comment garantir son indépendance financière par Jancovici",
@@ -265,7 +284,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094600-Comment garantir son indépendance financière par Jancovici 23-12-17.mp3",
             "audioFileSize": 7155655,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -273,6 +293,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "3 fois où Jancovici taille un short aux financiers qu'il a devant lui",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nChanger de banque: https://www.lanef.com/ https://change-de-banque.org/particulier/ ...\n\nPasser à, Paris Finance, Finance Durables, James Finance, Docteur Carbone, Forward Thinking, Series à, Description à",
             "validVideoTitle": "3 fois où Jancovici taille un short aux financiers qu'il a devant lui",
@@ -291,7 +312,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094604-3 fois où Jancovici taille un short aux financiers qu'il a devant lui 23-11-12.mp3",
             "audioFileSize": 6540352,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -299,6 +321,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "La surpopulation mondiale par Jancovici et Barrau",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nChanger de banque: https://www.lanef.com/ https://change-de-banque.org/particulier/ ...\n\nPasser à, Sources Jancovici, Hugo Décrypte, Description à",
             "validVideoTitle": "La surpopulation mondiale par Jancovici et Barrau",
@@ -317,7 +340,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "231226-094608-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3",
             "audioFileSize": 2793874,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -325,6 +349,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": "local",
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Les besoins artificiels par R.Keucheyan",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nLivre \"Les besoins artificiels\" de Keucheyan https://www.editionsladecouverte.fr/les_besoins_artificiels-9782355221262 ...\n\nPasser à, Source France, Description à",
             "validVideoTitle": "Les besoins artificiels par R.Keucheyan",
@@ -343,7 +368,8 @@
             "audioPositionSeconds": 1145,
             "audioFileName": "240107-094520-Les besoins artificiels par R.Keucheyan 24-01-05.mp3",
             "audioFileSize": 6978832,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -351,6 +377,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Une leçon magistrale d'Emma Haziza destinée à nos chers industriels",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nPour changer le système : ...\n\nPasser à, Sources Haziza, Description à",
             "validVideoTitle": "Une leçon magistrale d'Emma Haziza destinée à nos chers industriels",
@@ -369,7 +396,8 @@
             "audioPositionSeconds": 792,
             "audioFileName": "240107-094525-Une leçon magistrale d'Emma Haziza destinée à nos chers industriels 23-12-16.mp3",
             "audioFileSize": 4831286,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -377,6 +405,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
             "compactVideoDescription": "Julien Besse\n\nSi concept de résilience est aujourd'hui entré dans le vocabulaire courant - tout comme Freud en son temps a fait entrer des concepts comme celui de l'inconscient dans notre quotidien - c'est à Boris Cyrulnik que nous le devons. S'il l'a popularisé et développé il n'est pas à l'origine de ce concept, mais alors d'où vient ce dernier ? Comment la résilience se manifeste-elle après un traumatisme et comment favoriser son émergence ? Réponse à toutes ces questions avec Boris Cyrulnik.\n\n#résilience #traumatisme #Cyrulnik ...\n\nLes Nourritures",
             "validVideoTitle": "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
@@ -395,7 +424,8 @@
             "audioPositionSeconds": 819,
             "audioFileName": "240107-094528-Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik 23-09-10.mp3",
             "audioFileSize": 4993799,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -403,6 +433,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "La résilience insulaire par Fiona Roche",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nS'abonner à la chaîne Ré·Génération Caraïbes https://www.youtube.com/@regenerationcaraibes ...\n\nPasser à, Source Fiona, Description à, équitables. C'est",
             "validVideoTitle": "La résilience insulaire par Fiona Roche",
@@ -421,7 +452,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "240107-094546-La résilience insulaire par Fiona Roche,. 24-01-03.mp3",
             "audioFileSize": 4968240,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -429,6 +461,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
             "compactVideoDescription": "Matthieu Stefani\n\nGénération Do It Yourself - Un podcast de Matthieu Stefani \n\nExtrait de l'épisode : \"263 - Jean-Marc Jancovici - Carbone 4 - Décroissance, nucléaire, innovation : agir sous la contrainte ou par cas de conscience ?\" ...\n\nPour Jean-Marc, Cet épisode, Grâce à, Shift Project,, ère. Que, Apple Podcasts, Amazon Music",
             "validVideoTitle": "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
@@ -447,7 +480,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
             "audioFileSize": 2373715,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -455,6 +489,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "La surpopulation mondiale par Jancovici et Barrau",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nChanger de banque: https://www.lanef.com/ https://change-de-banque.org/particulier/ ...\n\nPasser à, Sources Jancovici, Hugo Décrypte, Description à",
             "validVideoTitle": "La surpopulation mondiale par Jancovici et Barrau",
@@ -473,7 +508,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3",
             "audioFileSize": 2793874,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -481,6 +517,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Prière au Seigneur",
             "compactVideoDescription": "",
             "validVideoTitle": "Prière au Seigneur",
@@ -499,7 +536,8 @@
             "audioPositionSeconds": 4,
             "audioFileName": "Prière au Seigneur.mp3",
             "audioFileSize": 311616,
-            "audioType": "imported"
+            "audioType": "imported",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -507,6 +545,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "essai de conversion",
             "compactVideoDescription": "",
             "validVideoTitle": "essai de conversion",
@@ -525,7 +564,36 @@
             "audioPositionSeconds": 3,
             "audioFileName": "essai de conversion.mp3",
             "audioFileSize": 55872,
-            "audioType": "textToSpeech"
+            "audioType": "textToSpeech",
+            "playableEveryNDays": 1
+        },
+        {
+            "youtubeVideoChannel": "",
+            "movedFromPlaylistTitle": null,
+            "movedToPlaylistTitle": null,
+            "copiedFromPlaylistTitle": "temp",
+            "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": "S8 audio",
+            "originalVideoTitle": "240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12",
+            "compactVideoDescription": "",
+            "validVideoTitle": "Jancovici short comment extraction",
+            "videoUrl": "https://www.youtube.com/watch?v=4wR9hWduhuQ",
+            "audioDownloadDateTime": "2026-07-17T16:17:09.342885",
+            "audioDownloadDurationMs": 0,
+            "audioDownloadSpeed": 0,
+            "videoUploadDate": "2026-07-17T16:17:09.342885",
+            "audioDurationMs": 37500,
+            "isAudioMusicQuality": false,
+            "audioPlaySpeed": 1.0,
+            "audioPlayVolume": 0.5,
+            "isPlayingOrPausedWithPositionBetweenAudioStartAndEnd": false,
+            "isPaused": true,
+            "audioPausedDateTime": "2026-07-17T16:20:27.116780",
+            "audioPositionSeconds": 37,
+            "audioFileName": "Jancovici short comment extraction.mp3",
+            "audioFileSize": 300555,
+            "audioType": "extracted",
+            "playableEveryNDays": 1
         }
     ],
     "playableAudioLst": [
@@ -533,8 +601,37 @@
             "youtubeVideoChannel": "",
             "movedFromPlaylistTitle": null,
             "movedToPlaylistTitle": null,
+            "copiedFromPlaylistTitle": "temp",
+            "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": "S8 audio",
+            "originalVideoTitle": "240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12",
+            "compactVideoDescription": "",
+            "validVideoTitle": "Jancovici short comment extraction",
+            "videoUrl": "https://www.youtube.com/watch?v=4wR9hWduhuQ",
+            "audioDownloadDateTime": "2026-07-17T16:17:09.342885",
+            "audioDownloadDurationMs": 0,
+            "audioDownloadSpeed": 0,
+            "videoUploadDate": "2026-07-17T16:17:09.342885",
+            "audioDurationMs": 37500,
+            "isAudioMusicQuality": false,
+            "audioPlaySpeed": 1.0,
+            "audioPlayVolume": 0.5,
+            "isPlayingOrPausedWithPositionBetweenAudioStartAndEnd": false,
+            "isPaused": true,
+            "audioPausedDateTime": "2026-07-17T16:20:27.116780",
+            "audioPositionSeconds": 37,
+            "audioFileName": "Jancovici short comment extraction.mp3",
+            "audioFileSize": 300555,
+            "audioType": "extracted",
+            "playableEveryNDays": 1
+        },
+        {
+            "youtubeVideoChannel": "",
+            "movedFromPlaylistTitle": null,
+            "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "essai de conversion",
             "compactVideoDescription": "",
             "validVideoTitle": "essai de conversion",
@@ -553,7 +650,8 @@
             "audioPositionSeconds": 3,
             "audioFileName": "essai de conversion.mp3",
             "audioFileSize": 55872,
-            "audioType": "textToSpeech"
+            "audioType": "textToSpeech",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -561,6 +659,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": null,
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Prière au Seigneur",
             "compactVideoDescription": "",
             "validVideoTitle": "Prière au Seigneur",
@@ -579,7 +678,8 @@
             "audioPositionSeconds": 4,
             "audioFileName": "Prière au Seigneur.mp3",
             "audioFileSize": 311616,
-            "audioType": "imported"
+            "audioType": "imported",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -587,6 +687,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": "local",
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
             "compactVideoDescription": "Matthieu Stefani\n\nGénération Do It Yourself - Un podcast de Matthieu Stefani \n\nExtrait de l'épisode : \"263 - Jean-Marc Jancovici - Carbone 4 - Décroissance, nucléaire, innovation : agir sous la contrainte ou par cas de conscience ?\" ...\n\nPour Jean-Marc, Cet épisode, Grâce à, Shift Project,, ère. Que, Apple Podcasts, Amazon Music",
             "validVideoTitle": "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
@@ -605,7 +706,8 @@
             "audioPositionSeconds": 0,
             "audioFileName": "240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
             "audioFileSize": 2373715,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -613,6 +715,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": "Local_2_audios",
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
             "compactVideoDescription": "Julien Besse\n\nSi concept de résilience est aujourd'hui entré dans le vocabulaire courant - tout comme Freud en son temps a fait entrer des concepts comme celui de l'inconscient dans notre quotidien - c'est à Boris Cyrulnik que nous le devons. S'il l'a popularisé et développé il n'est pas à l'origine de ce concept, mais alors d'où vient ce dernier ? Comment la résilience se manifeste-elle après un traumatisme et comment favoriser son émergence ? Réponse à toutes ces questions avec Boris Cyrulnik.\n\n#résilience #traumatisme #Cyrulnik ...\n\nLes Nourritures",
             "validVideoTitle": "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
@@ -631,7 +734,8 @@
             "audioPositionSeconds": 815,
             "audioFileName": "240107-094528-Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik 23-09-10.mp3",
             "audioFileSize": 4993799,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -639,6 +743,7 @@
             "movedToPlaylistTitle": null,
             "copiedFromPlaylistTitle": null,
             "copiedToPlaylistTitle": "local",
+            "extractedFromPlaylistTitle": null,
             "originalVideoTitle": "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
             "compactVideoDescription": "Éthique et tac\n\nRéduire la qualité de la vidéo.\n\nSite shift project : https://theshiftproject.org/ ...\n\nSources Janco, Description à",
             "validVideoTitle": "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
@@ -657,11 +762,12 @@
             "audioPositionSeconds": 351,
             "audioFileName": "231226-094526-Ce qui va vraiment sauver notre espèce par Jancovici et Barrau 23-09-23.mp3",
             "audioFileSize": 2370022,
-            "audioType": "downloaded"
+            "audioType": "downloaded",
+            "playableEveryNDays": 1
         }
     ],
     "isSelected": true,
-    "currentOrPastPlayableAudioIndex": 2,
+    "currentOrPastPlayableAudioIndex": 3,
     "audioSortFilterParmsNamePlaylistDownloadView": "",
     "audioSortFilterParmsNameAudioPlayerView": "",
     "audioPlayingOrder": "ascending"

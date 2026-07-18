@@ -165,6 +165,14 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
             AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
       createInfoRowFunction(
+          valueTextWidgetKey: const Key('lastListenDateTimeKey'),
+          context: context,
+          label: AppLocalizations.of(context)!.audioPausedDateTimeLabel,
+          value: (audio.audioPausedDateTime != null)
+              ? dateFormatVMlistenFalse
+                  .formatDateTime(audio.audioPausedDateTime!)
+              : ''),
+      createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),
         context: context,
         label: AppLocalizations.of(context)!.videoUrlLabel,
@@ -257,14 +265,6 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
             audio: audio,
           )),
       createInfoRowFunction(
-          valueTextWidgetKey: const Key('lastListenDateTimeKey'),
-          context: context,
-          label: AppLocalizations.of(context)!.audioPausedDateTimeLabel,
-          value: (audio.audioPausedDateTime != null)
-              ? dateFormatVMlistenFalse
-                  .formatDateTime(audio.audioPausedDateTime!)
-              : ''),
-      createInfoRowFunction(
           valueTextWidgetKey: const Key('audioFileNameKey'),
           context: context,
           label: AppLocalizations.of(context)!.audioFileNameLabel,
@@ -345,6 +345,14 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
             AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
       createInfoRowFunction(
+          valueTextWidgetKey: const Key('lastListenDateTimeKey'),
+          context: context,
+          label: AppLocalizations.of(context)!.audioPausedDateTimeLabel,
+          value: (audio.audioPausedDateTime != null)
+              ? dateFormatVMlistenFalse
+                  .formatDateTime(audio.audioPausedDateTime!)
+              : ''),
+      createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),
         context: context,
         label: AppLocalizations.of(context)!.videoUrlLabel,
@@ -413,14 +421,6 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
             context: context,
             audio: audio,
           )),
-      createInfoRowFunction(
-          valueTextWidgetKey: const Key('lastListenDateTimeKey'),
-          context: context,
-          label: AppLocalizations.of(context)!.audioPausedDateTimeLabel,
-          value: (audio.audioPausedDateTime != null)
-              ? dateFormatVMlistenFalse
-                  .formatDateTime(audio.audioPausedDateTime!)
-              : ''),
       createInfoRowFunction(
           valueTextWidgetKey: const Key('audioFileNameKey'),
           context: context,
@@ -502,6 +502,14 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
             AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
       createInfoRowFunction(
+          valueTextWidgetKey: const Key('lastListenDateTimeKey'),
+          context: context,
+          label: AppLocalizations.of(context)!.audioPausedDateTimeLabel,
+          value: (audio.audioPausedDateTime != null)
+              ? dateFormatVMlistenFalse
+                  .formatDateTime(audio.audioPausedDateTime!)
+              : ''),
+      createInfoRowFunction(
           valueTextWidgetKey: const Key('enclosingPlaylistTitleKey'),
           context: context,
           label: AppLocalizations.of(context)!.enclosingPlaylistLabel,
@@ -563,14 +571,6 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
             context: context,
             audio: audio,
           )),
-      createInfoRowFunction(
-          valueTextWidgetKey: const Key('lastListenDateTimeKey'),
-          context: context,
-          label: AppLocalizations.of(context)!.audioPausedDateTimeLabel,
-          value: (audio.audioPausedDateTime != null)
-              ? dateFormatVMlistenFalse
-                  .formatDateTime(audio.audioPausedDateTime!)
-              : ''),
       createInfoRowFunction(
           valueTextWidgetKey: const Key('audioFileNameKey'),
           context: context,
@@ -651,6 +651,14 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
         infoRowTooltip:
             AppLocalizations.of(context)!.definePlayableEveryNDaysMenuTooltip,
       ),
+      createInfoRowFunction(
+          valueTextWidgetKey: const Key('lastListenDateTimeKey'),
+          context: context,
+          label: AppLocalizations.of(context)!.audioPausedDateTimeLabel,
+          value: (audio.audioPausedDateTime != null)
+              ? dateFormatVMlistenFalse
+                  .formatDateTime(audio.audioPausedDateTime!)
+              : ''),
       createInfoRowFunction(
         valueTextWidgetKey: const Key('videoUrlKey'),
         context: context,

@@ -56175,6 +56175,9 @@ Future<void> _verifyDateFormatApplication({
   required String videoUploadDate,
   required audioDownloadDateTime,
   String audioPausedDateTime = '',
+  String importedAudioDateTime = '',
+  String convertedAudioDateTime = '',
+  String extractedAudioDateTime = '',
   required String playlistLastDownloadDateTime,
   required String commentCreationDate,
   required String commentUpdateDate,
@@ -56195,16 +56198,48 @@ Future<void> _verifyDateFormatApplication({
   await _verifyAudioInfoDialogDateFormat(
     tester: tester,
     audioTitle:
+        // Downloaded audio not yet listened
         "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
     videoUploadDate: videoUploadDate,
     audioDownloadDateTime: audioDownloadDateTime,
   );
 
-  if (audioPausedDateTime.isNotEmpty) {
+  if (audioPausedDateTime.isNotEmpty &&
+      importedAudioDateTime.isEmpty &&
+      convertedAudioDateTime.isEmpty &&
+      extractedAudioDateTime.isEmpty) {
     await _verifyAudioInfoDialogDateFormat(
       tester: tester,
+      // Downloaded audio already listened
       audioTitle: "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
-      audioPausedDateTime: audioPausedDateTime,
+      audioPausedDateTime: audioPausedDateTime, // Last listened date/time
+    );
+  }
+
+  if (importedAudioDateTime.isNotEmpty) {
+    await _verifyAudioInfoDialogDateFormat(
+      tester: tester,
+      audioTitle: "Prière au Seigneur", // Imported audio
+      importedAudioDateTime: importedAudioDateTime,
+      audioPausedDateTime: audioPausedDateTime, // Last listened date/time
+    );
+  }
+
+  if (convertedAudioDateTime.isNotEmpty) {
+    await _verifyAudioInfoDialogDateFormat(
+      tester: tester,
+      audioTitle: "essai de conversion", // Converted audio
+      convertedAudioDateTime: convertedAudioDateTime,
+      audioPausedDateTime: audioPausedDateTime, // Last listened date/time
+    );
+  }
+
+  if (extractedAudioDateTime.isNotEmpty) {
+    await _verifyAudioInfoDialogDateFormat(
+      tester: tester,
+      audioTitle: "Jancovici short comment extraction", // Extracted audio
+      extractedAudioDateTime: extractedAudioDateTime,
+      audioPausedDateTime: audioPausedDateTime, // Last listened date/time
     );
   }
 
@@ -56444,9 +56479,9 @@ Future<void> _verifyAudioInfoDialogDateFormat({
   String videoUploadDate = '',
   String audioDownloadDateTime = '',
   String audioPausedDateTime = '', // Last listened date/time
-  String extractedAudioDateTime = '',
-  String convertedAudioDateTime = '',
   String importedAudioDateTime = '',
+  String convertedAudioDateTime = '',
+  String extractedAudioDateTime = '',
 }) async {
   // First, find the Audio sublist ListTile Text widget
   Finder targetAudioListTileTextWidgetFinder = find.text(audioTitle);

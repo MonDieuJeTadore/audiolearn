@@ -1215,9 +1215,9 @@ class AudioDownloadVM extends ChangeNotifier {
       (entry) => entry == audio,
     );
 
-    int modifiedPlayableOnlyWeekDaysLst = int.tryParse(modifiedPlayableEveryDaysValueStr) ?? -1;
+    int modifiedPlayableEveryDaysValue = int.tryParse(modifiedPlayableEveryDaysValueStr) ?? -1;
 
-    if (modifiedPlayableOnlyWeekDaysLst == -1) {
+    if (modifiedPlayableEveryDaysValue < 1) {
       warningMessageVM.invalidPlayableEveryNDaysWarning(
         invalidPlayableEveryDaysValue: modifiedPlayableEveryDaysValueStr,
       );
@@ -1225,7 +1225,7 @@ class AudioDownloadVM extends ChangeNotifier {
       return true;
     }
 
-    playlistAudio.playableEveryNDays = modifiedPlayableOnlyWeekDaysLst;
+    playlistAudio.playableEveryNDays = modifiedPlayableEveryDaysValue;
 
     JsonDataService.saveToFile(
       model: enclosingPlaylist,

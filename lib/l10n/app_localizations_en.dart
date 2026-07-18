@@ -3090,7 +3090,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String invalidPlayableEveryNDaysWarning(Object dayNumber) {
-    return 'Invalid entered playable day number: \"$dayNumber\".';
+    return 'Invalid entered every playable day number: \"$dayNumber\".';
   }
 
   @override

@@ -4963,7 +4963,7 @@ abstract class AppLocalizations {
   /// No description provided for @invalidPlayableEveryNDaysWarning.
   ///
   /// In en, this message translates to:
-  /// **'Invalid entered playable day number: \"{dayNumber}\".'**
+  /// **'Invalid entered every playable day number: \"{dayNumber}\".'**
   String invalidPlayableEveryNDaysWarning(Object dayNumber);
 
   /// No description provided for @playableEveryNDaysLabel.

@@ -1749,8 +1749,7 @@
   "modifyPlayableEveryNDaysDialogComment": "1 est défini par défaut et indique que l'audio est jouable tous les jours.\nDate de dernière écoute: {lastPlayedDate}.",
   "modifyPlayableEveryNDaysLabel": "Un nombre entier: ",
   "modifyPlayableEveryNDaysButton": "Modifier",
-  "invalidPlayableEveryNDaysWarning": "Jour jouable entré invalide: \"{dayNumber}\".",
+  "invalidPlayableEveryNDaysWarning": "Nombre de jours entre deux lectures invalide : \"{dayNumber}\".",
   "playableEveryNDaysLabel": "Jouable tous les n jours",
   "notYetPlayed": "pas encore écouté"
-
 }

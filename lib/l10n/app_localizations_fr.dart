@@ -3125,7 +3125,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String invalidPlayableEveryNDaysWarning(Object dayNumber) {
-    return 'Jour jouable entré invalide: \"$dayNumber\".';
+    return 'Nombre de jours entre deux lectures invalide : \"$dayNumber\".';
   }
 
   @override

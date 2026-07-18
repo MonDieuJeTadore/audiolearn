@@ -320,14 +320,16 @@ class _MyHomePageState extends State<MyHomePage>
         actions: appBarApplicationActionLst,
       ),
       resizeToAvoidBottomInset: true,
-      body: Column(
-        children: [
-          _buildPageView(_screenWidgetLst[_currentIndex]),
-          _buildBottomScreenIconButtonRow(
-            themeProvider: themeProviderVMlistenTrue,
-            audioPlayerVMlistenedFalse: audioPlayerVMlistenFalse,
-          ),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildPageView(_screenWidgetLst[_currentIndex]),
+            _buildBottomScreenIconButtonRow(
+              themeProvider: themeProviderVMlistenTrue,
+              audioPlayerVMlistenedFalse: audioPlayerVMlistenFalse,
+            ),
+          ],
+        ),
       ),
     );
   }

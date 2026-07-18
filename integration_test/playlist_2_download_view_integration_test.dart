@@ -4726,7 +4726,13 @@ void main() {
         playlistTitle: youtubePlaylistTitle,
         videoUploadDate: "12/06/2022",
         audioDownloadDateTime: "08/01/2024 16:35",
-        audioPausedDateTime: "19/08/2024 14:46",
+        audioPausedDateTime: "19/08/2024 14:46", // last listened date
+        importedAudioDateTime: "07/09/2025 16:52",
+        importedAudioPausedDateTime: "07/09/2025 17:21", // last listened date
+        convertedAudioDateTime: "07/09/2025 16:55",
+        convertedAudioPausedDateTime: "07/09/2025 17:22", // last listened date
+        extractedAudioDateTime: "17/07/2026 16:17",
+        extractedAudioPausedDateTime: "17/07/2026 16:20",
         playlistLastDownloadDateTime: "17/07/2026 16:17",
         commentCreationDate: '12/10/24',
         commentUpdateDate: '01/11/24',
@@ -56176,8 +56182,11 @@ Future<void> _verifyDateFormatApplication({
   required audioDownloadDateTime,
   String audioPausedDateTime = '',
   String importedAudioDateTime = '',
+  String importedAudioPausedDateTime = '',
   String convertedAudioDateTime = '',
+  String convertedAudioPausedDateTime = '',
   String extractedAudioDateTime = '',
+  String extractedAudioPausedDateTime = '',
   required String playlistLastDownloadDateTime,
   required String commentCreationDate,
   required String commentUpdateDate,
@@ -56204,10 +56213,7 @@ Future<void> _verifyDateFormatApplication({
     audioDownloadDateTime: audioDownloadDateTime,
   );
 
-  if (audioPausedDateTime.isNotEmpty &&
-      importedAudioDateTime.isEmpty &&
-      convertedAudioDateTime.isEmpty &&
-      extractedAudioDateTime.isEmpty) {
+  if (audioPausedDateTime.isNotEmpty) {
     await _verifyAudioInfoDialogDateFormat(
       tester: tester,
       // Downloaded audio already listened
@@ -56221,7 +56227,7 @@ Future<void> _verifyDateFormatApplication({
       tester: tester,
       audioTitle: "Prière au Seigneur", // Imported audio
       importedAudioDateTime: importedAudioDateTime,
-      audioPausedDateTime: audioPausedDateTime, // Last listened date/time
+      audioPausedDateTime: importedAudioPausedDateTime, // Last listened date/time
     );
   }
 
@@ -56230,7 +56236,7 @@ Future<void> _verifyDateFormatApplication({
       tester: tester,
       audioTitle: "essai de conversion", // Converted audio
       convertedAudioDateTime: convertedAudioDateTime,
-      audioPausedDateTime: audioPausedDateTime, // Last listened date/time
+      audioPausedDateTime: convertedAudioPausedDateTime, // Last listened date/time
     );
   }
 
@@ -56239,7 +56245,7 @@ Future<void> _verifyDateFormatApplication({
       tester: tester,
       audioTitle: "Jancovici short comment extraction", // Extracted audio
       extractedAudioDateTime: extractedAudioDateTime,
-      audioPausedDateTime: audioPausedDateTime, // Last listened date/time
+      audioPausedDateTime: extractedAudioPausedDateTime, // Last listened date/time
     );
   }
 

@@ -4726,7 +4726,13 @@ void main() {
         playlistTitle: youtubePlaylistTitle,
         videoUploadDate: "12/06/2022",
         audioDownloadDateTime: "08/01/2024 16:35",
-        audioPausedDateTime: "19/08/2024 14:46",
+        audioPausedDateTime: "19/08/2024 14:46", // last listened date
+        importedAudioDateTime: "07/09/2025 16:52",
+        importedAudioPausedDateTime: "07/09/2025 17:21", // last listened date
+        convertedAudioDateTime: "07/09/2025 16:55",
+        convertedAudioPausedDateTime: "07/09/2025 17:22", // last listened date
+        extractedAudioDateTime: "17/07/2026 16:17",
+        extractedAudioPausedDateTime: "17/07/2026 16:20",
         playlistLastDownloadDateTime: "17/07/2026 16:17",
         commentCreationDate: '12/10/24',
         commentUpdateDate: '01/11/24',
@@ -4822,6 +4828,12 @@ void main() {
         videoUploadDate: "06/12/2022",
         audioDownloadDateTime: "01/08/2024 16:35",
         audioPausedDateTime: "08/19/2024 14:46",
+        importedAudioDateTime: "09/07/2025 16:52",
+        importedAudioPausedDateTime: "09/07/2025 17:21", // last listened date
+        convertedAudioDateTime: "09/07/2025 16:55",
+        convertedAudioPausedDateTime: "09/07/2025 17:22", // last listened date
+        extractedAudioDateTime: "07/17/2026 16:17",
+        extractedAudioPausedDateTime: "07/17/2026 16:20",
         playlistLastDownloadDateTime: "07/17/2026 16:17",
         commentCreationDate: '10/12/24',
         commentUpdateDate: '11/01/24',
@@ -4917,6 +4929,12 @@ void main() {
         videoUploadDate: "2022/06/12",
         audioDownloadDateTime: "2024/01/08 16:35",
         audioPausedDateTime: "2024/08/19 14:46",
+        importedAudioDateTime: "2025/09/07 16:52",
+        importedAudioPausedDateTime: "2025/09/07 17:21", // last listened date
+        convertedAudioDateTime: "2025/09/07 16:55",
+        convertedAudioPausedDateTime: "2025/09/07 17:22", // last listened date
+        extractedAudioDateTime: "2026/07/17 16:17",
+        extractedAudioPausedDateTime: "2026/07/17 16:20",
         playlistLastDownloadDateTime: "2026/07/17 16:17",
         commentCreationDate: '24/10/12',
         commentUpdateDate: '24/11/01',
@@ -5012,6 +5030,12 @@ void main() {
         videoUploadDate: "12/06/2022",
         audioDownloadDateTime: "08/01/2024 16:35",
         audioPausedDateTime: "19/08/2024 14:46",
+        importedAudioDateTime: "07/09/2025 16:52",
+        importedAudioPausedDateTime: "07/09/2025 17:21", // last listened date
+        convertedAudioDateTime: "07/09/2025 16:55",
+        convertedAudioPausedDateTime: "07/09/2025 17:22", // last listened date
+        extractedAudioDateTime: "17/07/2026 16:17",
+        extractedAudioPausedDateTime: "17/07/2026 16:20",
         playlistLastDownloadDateTime: "17/07/2026 16:17",
         commentCreationDate: '12/10/24',
         commentUpdateDate: '01/11/24',
@@ -5058,6 +5082,7 @@ void main() {
       const String youtubePlaylistTitle = 'S8 audio';
 
       List<String> audioSubTitles = [
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17",
         "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55",
         "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52",
         "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35",
@@ -5069,11 +5094,13 @@ void main() {
         "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16 Audio downl duration: 0:00:01",
         "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45 Audio downl duration: 0:00:01",
         "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35 Audio downl duration: 0:00:01",
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17 Audio downl duration: 0:00:00",
         "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55 Audio downl duration: 0:00:00",
         "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52 Audio downl duration: 0:00:00",
       ];
 
       List<String> audioSubTitlesWithAudioRemainingDuration = [
+        "0:00:37.5 Remaining 00:00:00 Listened on 07/17/2026 at 16:20",
         "0:00:07.0 Remaining 00:00:03 Listened on 09/07/2025 at 17:22",
         "0:10:55.2 Remaining 00:00:04 Listened on 08/19/2024 at 14:46",
         "0:00:39.0 Remaining 00:00:34 Listened on 09/07/2025 at 17:21",
@@ -5082,6 +5109,7 @@ void main() {
       ];
 
       List<String> audioSubTitlesLastListenedDateTimeDescending = [
+        "0:00:37.5 Listened on 07/17/2026 at 16:20",
         "0:00:07.0 Listened on 09/07/2025 at 17:22",
         "0:00:39.0 Listened on 09/07/2025 at 17:21",
         "0:10:55.2 Listened on 08/19/2024 at 14:46",
@@ -5093,11 +5121,13 @@ void main() {
         "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45",
         "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55",
         "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35",
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17",
         "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16",
         "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52",
       ];
 
       List<String> audioSubTitlesVideoUploadDate = [
+        "0:00:37.5 Video upload date: 00/00/0000",
         "0:00:07.0 Video upload date: 00/00/0000",
         "0:00:39.0 Video upload date: 00/00/0000",
         "0:05:11.2 Video upload date: 09/23/2023",
@@ -5131,7 +5161,13 @@ void main() {
         videoUploadDate: "06/12/2022",
         audioDownloadDateTime: "01/08/2024 16:35",
         audioPausedDateTime: "08/19/2024 14:46",
-        playlistLastDownloadDateTime: "09/07/2025 16:55",
+        importedAudioDateTime: "09/07/2025 16:52",
+        importedAudioPausedDateTime: "09/07/2025 17:21", // last listened date
+        convertedAudioDateTime: "09/07/2025 16:55",
+        convertedAudioPausedDateTime: "09/07/2025 17:22", // last listened date
+        extractedAudioDateTime: "07/17/2026 16:17",
+        extractedAudioPausedDateTime: "07/17/2026 16:20",
+        playlistLastDownloadDateTime: "07/17/2026 16:17",
         commentCreationDate: '10/12/24',
         commentUpdateDate: '11/01/24',
         datePickerDateStr: DateFormat('MM/dd/yyyy').format(now),
@@ -5174,6 +5210,7 @@ void main() {
       const String youtubePlaylistTitle = 'S8 audio';
 
       List<String> audioSubTitles = [
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17",
         "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55",
         "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52",
         "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35",
@@ -5185,11 +5222,13 @@ void main() {
         "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16 Audio downl duration: 0:00:01",
         "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45 Audio downl duration: 0:00:01",
         "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35 Audio downl duration: 0:00:01",
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17 Audio downl duration: 0:00:00",
         "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55 Audio downl duration: 0:00:00",
         "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52 Audio downl duration: 0:00:00",
       ];
 
       List<String> audioSubTitlesWithAudioRemainingDuration = [
+        "0:00:37.5 Remaining 00:00:00 Listened on 2026/07/17 at 16:20",
         "0:00:07.0 Remaining 00:00:03 Listened on 2025/09/07 at 17:22",
         "0:10:55.2 Remaining 00:00:04 Listened on 2024/08/19 at 14:46",
         "0:00:39.0 Remaining 00:00:34 Listened on 2025/09/07 at 17:21",
@@ -5198,6 +5237,7 @@ void main() {
       ];
 
       List<String> audioSubTitlesLastListenedDateTimeDescending = [
+        "0:00:37.5 Listened on 2026/07/17 at 16:20",
         "0:00:07.0 Listened on 2025/09/07 at 17:22",
         "0:00:39.0 Listened on 2025/09/07 at 17:21",
         "0:10:55.2 Listened on 2024/08/19 at 14:46",
@@ -5209,11 +5249,13 @@ void main() {
         "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45",
         "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55",
         "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35",
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17",
         "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16",
         "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52",
       ];
 
       List<String> audioSubTitlesVideoUploadDate = [
+        "0:00:37.5 Video upload date: 0000/00/00",
         "0:00:07.0 Video upload date: 0000/00/00",
         "0:00:39.0 Video upload date: 0000/00/00",
         "0:05:11.2 Video upload date: 2023/09/23",
@@ -5247,7 +5289,13 @@ void main() {
         videoUploadDate: "2022/06/12",
         audioDownloadDateTime: "2024/01/08 16:35",
         audioPausedDateTime: "2024/08/19 14:46",
-        playlistLastDownloadDateTime: "2025/09/07 16:55",
+        importedAudioDateTime: "2025/09/07 16:52",
+        importedAudioPausedDateTime: "2025/09/07 17:21", // last listened date
+        convertedAudioDateTime: "2025/09/07 16:55",
+        convertedAudioPausedDateTime: "2025/09/07 17:22", // last listened date
+        extractedAudioDateTime: "2026/07/17 16:17",
+        extractedAudioPausedDateTime: "2026/07/17 16:20",
+        playlistLastDownloadDateTime: "2026/07/17 16:17",
         commentCreationDate: '24/10/12',
         commentUpdateDate: '24/11/01',
         datePickerDateStr: DateFormat('yyyy/MM/dd').format(now),
@@ -5288,6 +5336,7 @@ void main() {
       const String youtubePlaylistTitle = 'S8 audio';
 
       List<String> audioSubTitles = [
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17",
         "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
         "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
         "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35",
@@ -5299,11 +5348,13 @@ void main() {
         "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 Audio downl duration: 0:00:01",
         "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 Audio downl duration: 0:00:01",
         "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 Audio downl duration: 0:00:01",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17 Audio downl duration: 0:00:00",
         "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55 Audio downl duration: 0:00:00",
         "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52 Audio downl duration: 0:00:00",
       ];
 
       List<String> audioSubTitlesWithAudioRemainingDuration = [
+        "0:00:37.5 Remaining 00:00:00 Listened on 17/07/2026 at 16:20",
         "0:00:07.0 Remaining 00:00:03 Listened on 07/09/2025 at 17:22",
         "0:10:55.2 Remaining 00:00:04 Listened on 19/08/2024 at 14:46",
         "0:00:39.0 Remaining 00:00:34 Listened on 07/09/2025 at 17:21",
@@ -5312,6 +5363,7 @@ void main() {
       ];
 
       List<String> audioSubTitlesLastListenedDateTimeDescending = [
+        "0:00:37.5 Listened on 17/07/2026 at 16:20",
         "0:00:07.0 Listened on 07/09/2025 at 17:22",
         "0:00:39.0 Listened on 07/09/2025 at 17:21",
         "0:10:55.2 Listened on 19/08/2024 at 14:46",
@@ -5323,11 +5375,13 @@ void main() {
         "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
         "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
         "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17",
         "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16",
         "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
       ];
 
       List<String> audioSubTitlesVideoUploadDate = [
+        "0:00:37.5 Video upload date: 00/00/0000",
         "0:00:07.0 Video upload date: 00/00/0000",
         "0:00:39.0 Video upload date: 00/00/0000",
         "0:05:11.2 Video upload date: 23/09/2023",
@@ -5363,7 +5417,13 @@ void main() {
         videoUploadDate: "12/06/2022",
         audioDownloadDateTime: "08/01/2024 16:35",
         audioPausedDateTime: "19/08/2024 14:46",
-        playlistLastDownloadDateTime: "07/09/2025 16:55",
+        importedAudioDateTime: "07/09/2025 16:52",
+        importedAudioPausedDateTime: "07/09/2025 17:21", // last listened date
+        convertedAudioDateTime: "07/09/2025 16:55",
+        convertedAudioPausedDateTime: "07/09/2025 17:22", // last listened date
+        extractedAudioDateTime: "17/07/2026 16:17",
+        extractedAudioPausedDateTime: "17/07/2026 16:20",
+        playlistLastDownloadDateTime: "17/07/2026 16:17",
         commentCreationDate: '12/10/24',
         commentUpdateDate: '01/11/24',
         datePickerDateStr: DateFormat('dd/MM/yyyy').format(now),
@@ -56175,6 +56235,12 @@ Future<void> _verifyDateFormatApplication({
   required String videoUploadDate,
   required audioDownloadDateTime,
   String audioPausedDateTime = '',
+  String importedAudioDateTime = '',
+  String importedAudioPausedDateTime = '',
+  String convertedAudioDateTime = '',
+  String convertedAudioPausedDateTime = '',
+  String extractedAudioDateTime = '',
+  String extractedAudioPausedDateTime = '',
   required String playlistLastDownloadDateTime,
   required String commentCreationDate,
   required String commentUpdateDate,
@@ -56195,6 +56261,7 @@ Future<void> _verifyDateFormatApplication({
   await _verifyAudioInfoDialogDateFormat(
     tester: tester,
     audioTitle:
+        // Downloaded audio not yet listened
         "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
     videoUploadDate: videoUploadDate,
     audioDownloadDateTime: audioDownloadDateTime,
@@ -56203,8 +56270,36 @@ Future<void> _verifyDateFormatApplication({
   if (audioPausedDateTime.isNotEmpty) {
     await _verifyAudioInfoDialogDateFormat(
       tester: tester,
+      // Downloaded audio already listened
       audioTitle: "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
-      audioPausedDateTime: audioPausedDateTime,
+      audioPausedDateTime: audioPausedDateTime, // Last listened date/time
+    );
+  }
+
+  if (importedAudioDateTime.isNotEmpty) {
+    await _verifyAudioInfoDialogDateFormat(
+      tester: tester,
+      audioTitle: "Prière au Seigneur", // Imported audio
+      importedAudioDateTime: importedAudioDateTime,
+      audioPausedDateTime: importedAudioPausedDateTime, // Last listened date/time
+    );
+  }
+
+  if (convertedAudioDateTime.isNotEmpty) {
+    await _verifyAudioInfoDialogDateFormat(
+      tester: tester,
+      audioTitle: "essai de conversion", // Converted audio
+      convertedAudioDateTime: convertedAudioDateTime,
+      audioPausedDateTime: convertedAudioPausedDateTime, // Last listened date/time
+    );
+  }
+
+  if (extractedAudioDateTime.isNotEmpty) {
+    await _verifyAudioInfoDialogDateFormat(
+      tester: tester,
+      audioTitle: "Jancovici short comment extraction", // Extracted audio
+      extractedAudioDateTime: extractedAudioDateTime,
+      audioPausedDateTime: extractedAudioPausedDateTime, // Last listened date/time
     );
   }
 
@@ -56443,7 +56538,10 @@ Future<void> _verifyAudioInfoDialogDateFormat({
   required String audioTitle,
   String videoUploadDate = '',
   String audioDownloadDateTime = '',
-  String audioPausedDateTime = '',
+  String audioPausedDateTime = '', // Last listened date/time
+  String importedAudioDateTime = '',
+  String convertedAudioDateTime = '',
+  String extractedAudioDateTime = '',
 }) async {
   // First, find the Audio sublist ListTile Text widget
   Finder targetAudioListTileTextWidgetFinder = find.text(audioTitle);

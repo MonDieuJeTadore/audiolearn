@@ -7611,13 +7611,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           await tester.tap(find.byKey(const Key('playlist_toggle_button')));
           await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
-          // Tap on playlist button to expand the
-          // list of playlists
-          await tester.tap(find.byKey(const Key('playlist_toggle_button')));
-          await tester.pumpAndSettle(const Duration(milliseconds: 200));
-
           // Select the 'local' playlist
-
           await IntegrationTestUtil.selectPlaylist(
             tester: tester,
             playlistToSelectTitle: 'local',

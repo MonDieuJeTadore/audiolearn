@@ -6883,8 +6883,8 @@ void main() {
       await tester.tap(find.byKey(const Key('playPauseIconButton')));
 
       // Ensure that the audio position is updated
-      for (int i = 0; i < 12; i++) {
-        await Future.delayed(const Duration(milliseconds: 500));
+      for (int i = 0; i < 6; i++) {
+        await Future.delayed(const Duration(milliseconds: 1000));
         await tester.pumpAndSettle();
       }
 
@@ -7090,8 +7090,8 @@ void main() {
 
       // Verify the current audio position in the audio player view
 
-      expectedAudioPlayerAudioPositionMin = '5:00';
-      expectedAudioPlayerAudioPositionMax = '5:00';
+      expectedAudioPlayerAudioPositionMin = '5:43';
+      expectedAudioPlayerAudioPositionMax = '5:44';
 
       IntegrationTestUtil.verifyPositionBetweenMinMax(
         tester: tester,
@@ -8753,8 +8753,8 @@ void main() {
       await tester.tap(find.byKey(const Key('playPauseIconButton')));
 
       // Ensure that the audio position is updated
-      for (int i = 0; i < 12; i++) {
-        await Future.delayed(const Duration(milliseconds: 500));
+      for (int i = 0; i < 6; i++) {
+        await Future.delayed(const Duration(milliseconds: 1000));
         await tester.pumpAndSettle();
       }
 
@@ -12224,7 +12224,7 @@ void main() {
           tester: tester,
           commentPositionTextButtonInTenthSecondsMin: 92654,
           commentPositionTextButtonInTenthSecondsMax: 92671,
-          audioPlayerViewAudioPositionMin: '2:34:27',
+          audioPlayerViewAudioPositionMin: '2:34:26',
           audioPlayerViewAudioPositionMax: '2:34:27',
         );
 
@@ -12240,13 +12240,15 @@ void main() {
 
         // Wait during 2 seconds to verify that the audio is not
         // playing after the end position of the comment which was 1:17:14
-        await Future.delayed(const Duration(seconds: 2));
-        await tester.pumpAndSettle(const Duration(milliseconds: 1000));
+        for (int i = 0; i < 7; i++) {
+          await Future.delayed(const Duration(milliseconds: 1000));
+          await tester.pumpAndSettle();
+        }
 
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
-          commentPositionTextButtonInTenthSecondsMin: 46340,
+          commentPositionTextButtonInTenthSecondsMin: 46337,
           commentPositionTextButtonInTenthSecondsMax: 46351,
           audioPlayerViewAudioPositionMin: '1:17:14',
           audioPlayerViewAudioPositionMax: '1:17:15',

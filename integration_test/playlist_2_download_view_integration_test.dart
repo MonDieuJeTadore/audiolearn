@@ -4733,6 +4733,7 @@ void main() {
         convertedAudioPausedDateTime: "07/09/2025 17:22", // last listened date
         extractedAudioDateTime: "17/07/2026 16:17",
         extractedAudioPausedDateTime: "17/07/2026 16:20",
+        extractedAudioPausedDate: "17/07/2026",
         playlistLastDownloadDateTime: "17/07/2026 16:17",
         commentCreationDate: '12/10/24',
         commentUpdateDate: '01/11/24',
@@ -4834,6 +4835,7 @@ void main() {
         convertedAudioPausedDateTime: "09/07/2025 17:22", // last listened date
         extractedAudioDateTime: "07/17/2026 16:17",
         extractedAudioPausedDateTime: "07/17/2026 16:20",
+        extractedAudioPausedDate: "07/17/2026",
         playlistLastDownloadDateTime: "07/17/2026 16:17",
         commentCreationDate: '10/12/24',
         commentUpdateDate: '11/01/24',
@@ -4935,6 +4937,7 @@ void main() {
         convertedAudioPausedDateTime: "2025/09/07 17:22", // last listened date
         extractedAudioDateTime: "2026/07/17 16:17",
         extractedAudioPausedDateTime: "2026/07/17 16:20",
+        extractedAudioPausedDate: "2026/07/17",
         playlistLastDownloadDateTime: "2026/07/17 16:17",
         commentCreationDate: '24/10/12',
         commentUpdateDate: '24/11/01',
@@ -5036,6 +5039,7 @@ void main() {
         convertedAudioPausedDateTime: "07/09/2025 17:22", // last listened date
         extractedAudioDateTime: "17/07/2026 16:17",
         extractedAudioPausedDateTime: "17/07/2026 16:20",
+        extractedAudioPausedDate: "17/07/2026",
         playlistLastDownloadDateTime: "17/07/2026 16:17",
         commentCreationDate: '12/10/24',
         commentUpdateDate: '01/11/24',
@@ -5167,6 +5171,7 @@ void main() {
         convertedAudioPausedDateTime: "09/07/2025 17:22", // last listened date
         extractedAudioDateTime: "07/17/2026 16:17",
         extractedAudioPausedDateTime: "07/17/2026 16:20",
+        extractedAudioPausedDate: "07/17/2026",
         playlistLastDownloadDateTime: "07/17/2026 16:17",
         commentCreationDate: '10/12/24',
         commentUpdateDate: '11/01/24',
@@ -5295,6 +5300,7 @@ void main() {
         convertedAudioPausedDateTime: "2025/09/07 17:22", // last listened date
         extractedAudioDateTime: "2026/07/17 16:17",
         extractedAudioPausedDateTime: "2026/07/17 16:20",
+        extractedAudioPausedDate: "2026/07/17",
         playlistLastDownloadDateTime: "2026/07/17 16:17",
         commentCreationDate: '24/10/12',
         commentUpdateDate: '24/11/01',
@@ -5423,6 +5429,7 @@ void main() {
         convertedAudioPausedDateTime: "07/09/2025 17:22", // last listened date
         extractedAudioDateTime: "17/07/2026 16:17",
         extractedAudioPausedDateTime: "17/07/2026 16:20",
+        extractedAudioPausedDate: "17/07/2026",
         playlistLastDownloadDateTime: "17/07/2026 16:17",
         commentCreationDate: '12/10/24',
         commentUpdateDate: '01/11/24',
@@ -56241,6 +56248,7 @@ Future<void> _verifyDateFormatApplication({
   String convertedAudioPausedDateTime = '',
   String extractedAudioDateTime = '',
   String extractedAudioPausedDateTime = '',
+  String extractedAudioPausedDate = '',
   required String playlistLastDownloadDateTime,
   required String commentCreationDate,
   required String commentUpdateDate,
@@ -56281,7 +56289,8 @@ Future<void> _verifyDateFormatApplication({
       tester: tester,
       audioTitle: "Prière au Seigneur", // Imported audio
       importedAudioDateTime: importedAudioDateTime,
-      audioPausedDateTime: importedAudioPausedDateTime, // Last listened date/time
+      audioPausedDateTime:
+          importedAudioPausedDateTime, // Last listened date/time
     );
   }
 
@@ -56290,7 +56299,8 @@ Future<void> _verifyDateFormatApplication({
       tester: tester,
       audioTitle: "essai de conversion", // Converted audio
       convertedAudioDateTime: convertedAudioDateTime,
-      audioPausedDateTime: convertedAudioPausedDateTime, // Last listened date/time
+      audioPausedDateTime:
+          convertedAudioPausedDateTime, // Last listened date/time
     );
   }
 
@@ -56299,7 +56309,8 @@ Future<void> _verifyDateFormatApplication({
       tester: tester,
       audioTitle: "Jancovici short comment extraction", // Extracted audio
       extractedAudioDateTime: extractedAudioDateTime,
-      audioPausedDateTime: extractedAudioPausedDateTime, // Last listened date/time
+      audioPausedDateTime:
+          extractedAudioPausedDateTime, // Last listened date/time
     );
   }
 
@@ -56530,6 +56541,52 @@ Future<void> _verifyDateFormatApplication({
       findsOneWidget);
 
   await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+  await tester.pumpAndSettle();
+
+  // Now verify the date format on the 'Define that the Audio is
+  // playable every n Days ...' dialog.
+
+  // First, find the audio sublist ListTile Text widget of the audio
+  // whose title is "Jancovici short comment extraction"
+  Finder audioListTileTextWidgetFinder =
+      find.text("Jancovici short comment extraction");
+
+  // Then obtain the audio ListTile widget enclosing the Text widget
+  // by finding its ancestor
+  Finder audioListTileWidgetFinder = find.ancestor(
+    of: audioListTileTextWidgetFinder,
+    matching: find.byType(ListTile),
+  );
+
+  // Now we want to tap the popup menu of the audio ListTile
+  // "Jancovici short comment extraction"
+
+  // Find the leading menu icon button of the audio ListTile
+  // and tap on it
+  Finder audioListTileLeadingMenuIconButton = find.descendant(
+    of: audioListTileWidgetFinder,
+    matching: find.byIcon(Icons.menu),
+  );
+
+  // Tap the leading menu icon button to open the popup menu
+  await tester.tap(audioListTileLeadingMenuIconButton);
+  await tester.pumpAndSettle();
+
+  // Now find the "Define that the Audio is playable every n
+  // Days ..." popup menu item and tap on it
+  final Finder popupModifyAudioTitleMenuItem =
+      find.byKey(const Key("popup_menu_define_playable_every_n_days"));
+
+  await tester.tap(popupModifyAudioTitleMenuItem);
+  await tester.pumpAndSettle();
+
+  expect(find.textContaining("Last played date: $extractedAudioPausedDate."), findsOneWidget);
+
+  // Now tap on the Cancel button
+  final Finder audioModificationCancelButtonFinder =
+      find.byKey(const Key('audioModificationCancelButton'));
+
+  await tester.tap(audioModificationCancelButtonFinder);
   await tester.pumpAndSettle();
 }
 

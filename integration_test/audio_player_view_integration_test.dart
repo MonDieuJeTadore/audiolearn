@@ -11808,7 +11808,7 @@ void main() {
         );
       });
     });
-    group('Tests executable only with audioplayers 6.4.0 or higher', () {
+    group('With audioplayers 6.4.0 or higher executable only', () {
       testWidgets(
           '''Verify that after typing once on the decrease end position comment button in very short
            comment (0:00 to 0:04) the comment plays till 0:03 seconds and not later.''',

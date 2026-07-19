@@ -321,6 +321,7 @@ class _MyHomePageState extends State<MyHomePage>
       ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
+        top: false,
         child: Column(
           children: [
             _buildPageView(_screenWidgetLst[_currentIndex]),

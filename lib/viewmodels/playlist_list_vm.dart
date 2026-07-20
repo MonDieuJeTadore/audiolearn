@@ -6609,10 +6609,11 @@ class PlaylistListVM extends ChangeNotifier {
 
     if (isDescending) {
       if (positionToMoveTo < initialPosition) {
+        int initialMinusToMoveToPosition = initialPosition - positionToMoveTo;
         if (!isPrefixPresent) {
           positionToMoveTo =
               ((positionToMoveTo - 2) <= -1) ? 0 : --positionToMoveTo;
-        } else if ((initialPosition - positionToMoveTo) == 1) {
+        } else if ((initialMinusToMoveToPosition) == 1) {
           // If the audio is moved to the position just before its
           // initial position, we need to update the next audio valid
           // video title prefix to its new position number. Otherwise,
@@ -6628,13 +6629,14 @@ class PlaylistListVM extends ChangeNotifier {
           int audioIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
               .indexWhere((element) => element == audioToMove);
           Audio firstAudioAfterAudioToMove =
-              sortFilteredPlaylistPlayableAudiosLst[audioIndexInSortedList + 1];
+              sortFilteredPlaylistPlayableAudiosLst[
+                  audioIndexInSortedList + initialMinusToMoveToPosition];
           final String titleWithoutPrefix = firstAudioAfterAudioToMove
               .validVideoTitle
               .replaceFirst(regex, '');
 
           firstAudioAfterAudioToMove.validVideoTitle =
-              '${positionToMoveTo + 1}_$titleWithoutPrefix';
+              '${positionToMoveTo + initialMinusToMoveToPosition}_$titleWithoutPrefix';
         } else if ((initialPosition - positionToMoveTo) == 2) {
           positionToMoveTo =
               ((positionToMoveTo - 2) <= -1) ? 0 : positionToMoveTo;

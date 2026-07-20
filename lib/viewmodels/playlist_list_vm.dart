@@ -6609,7 +6609,7 @@ class PlaylistListVM extends ChangeNotifier {
 
     if (isDescending) {
       if (positionToMoveTo < initialPosition) {
-        if (!isPrefixPresent || ((initialPosition - positionToMoveTo) > 2)) {
+        if (!isPrefixPresent) {
           positionToMoveTo =
               ((positionToMoveTo - 2) <= -1) ? 0 : --positionToMoveTo;
         } else if ((initialPosition - positionToMoveTo) == 1) {
@@ -6635,9 +6635,12 @@ class PlaylistListVM extends ChangeNotifier {
 
           firstAudioAfterAudioToMove.validVideoTitle =
               '${positionToMoveTo + 1}_$titleWithoutPrefix';
-        } else {
+        } else if ((initialPosition - positionToMoveTo) == 2) {
           positionToMoveTo =
               ((positionToMoveTo - 2) <= -1) ? 0 : positionToMoveTo;
+        } else {
+          positionToMoveTo =
+              ((positionToMoveTo - 2) <= -1) ? 0 : --positionToMoveTo;
         }
       } else {
         ++positionToMoveTo;

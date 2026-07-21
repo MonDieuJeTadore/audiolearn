@@ -6610,10 +6610,12 @@ class PlaylistListVM extends ChangeNotifier {
 
     if (isDescending) {
       if (enteredPositionToMoveTo < initialPosition) {
-        int initialMinusToMoveToPosition = initialPosition - enteredPositionToMoveTo;
+        int initialMinusToMoveToPosition =
+            initialPosition - enteredPositionToMoveTo;
         if (!isPrefixPresent) {
-          positionToMoveTo =
-              ((enteredPositionToMoveTo - 2) <= -1) ? 0 : enteredPositionToMoveTo - 1;
+          positionToMoveTo = ((enteredPositionToMoveTo - 2) <= -1)
+              ? 0
+              : enteredPositionToMoveTo - 1;
         } else if ((initialMinusToMoveToPosition) == 1) {
           // If the audio is moved to the position just before its
           // initial position, we need to update the next audio valid
@@ -6639,11 +6641,13 @@ class PlaylistListVM extends ChangeNotifier {
           firstAudioAfterAudioToMove.validVideoTitle =
               '${enteredPositionToMoveTo + initialMinusToMoveToPosition}_$titleWithoutPrefix';
         } else if ((initialMinusToMoveToPosition) == 2) {
-          positionToMoveTo =
-              ((enteredPositionToMoveTo - 2) <= -1) ? 0 : enteredPositionToMoveTo;
+          positionToMoveTo = ((enteredPositionToMoveTo - 2) <= -1)
+              ? 0
+              : enteredPositionToMoveTo;
         } else {
-          positionToMoveTo =
-              ((enteredPositionToMoveTo - 2) <= -1) ? 0 : enteredPositionToMoveTo - 1;
+          positionToMoveTo = ((enteredPositionToMoveTo - 2) <= -1)
+              ? 0
+              : enteredPositionToMoveTo - 1;
         }
       } else {
         positionToMoveTo = enteredPositionToMoveTo + 1;
@@ -6661,27 +6665,34 @@ class PlaylistListVM extends ChangeNotifier {
         sortFilterParametersDefaultName: sortFilterParametersDefaultName,
       );
 
-      // List<Audio> sortFilteredPlaylistPlayableAudiosLst =
-      //     getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
-      //   audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
-      //   passedAudioSortFilterParameters: audioSortFilterParameters,
-      //   playlist: playlist, // add or correct position to audio title ok
-      //   //                     even if the playlist is not selected
-      // );
-      // int audioIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
-      //     .indexWhere((element) => element == audioToMove);
+      List<Audio> sortFilteredPlaylistPlayableAudiosLst =
+          getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
+        audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+        passedAudioSortFilterParameters: audioSortFilterParameters,
+        playlist: playlist, // add or correct position to audio title ok
+        //                     even if the playlist is not selected
+      );
+      int audioIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
+          .indexWhere((element) => element == audioToMove);
 
-      // if (audioIndexInSortedList < (enteredPositionToMoveTo - 1)) {
-      //   Audio firstAudioAfterAudioToMove =
-      //       sortFilteredPlaylistPlayableAudiosLst[enteredPositionToMoveTo];
-      //   final String titleWithoutPrefix =
-      //       firstAudioAfterAudioToMove.validVideoTitle.replaceFirst(regex, '');
+      final int sortFilteredPlaylistPlayableAudiosLstLength = sortFilteredPlaylistPlayableAudiosLst.length;
 
-      //   firstAudioAfterAudioToMove.validVideoTitle =
-      //       '${enteredPositionToMoveTo - 1}_$titleWithoutPrefix';
-      // }
+      if ((enteredPositionToMoveTo <= sortFilteredPlaylistPlayableAudiosLstLength) &&
+          (sortFilteredPlaylistPlayableAudiosLstLength - audioIndexInSortedList) < enteredPositionToMoveTo) {
+        Audio firstAudioBeforeMovedAudio =
+            sortFilteredPlaylistPlayableAudiosLst[
+                sortFilteredPlaylistPlayableAudiosLst.length -
+                    enteredPositionToMoveTo];
+        final String titleWithoutPrefix =
+            firstAudioBeforeMovedAudio.validVideoTitle.replaceFirst(regex, '');
 
-      // notifyListeners();
+        firstAudioBeforeMovedAudio.validVideoTitle =
+            '${enteredPositionToMoveTo - 1}_$titleWithoutPrefix';
+        audioToMove.validVideoTitle =
+            '${enteredPositionToMoveTo}_${audioToMove.validVideoTitle.replaceFirst(regex, '')}';
+
+        notifyListeners();
+      }
 
       return false; // Returning false will not display a warning because the
       //               numeric prefixes are added to the audio valid video

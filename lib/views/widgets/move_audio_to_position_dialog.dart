@@ -191,7 +191,7 @@ class _MoveAudioToPositionDialogState extends State<MoveAudioToPositionDialog>
 
     return playlistListVMlistendFalse.moveAudioToPosition(
       audioToMove: widget.audio,
-      positionToMoveTo: int.parse(_audioPositionTextEditingController.text.trim()),
+      enteredPositionToMoveTo: int.parse(_audioPositionTextEditingController.text.trim()),
       sortFilterParametersAppliedName:
           AppLocalizations.of(context)!.sortFilterParametersAppliedName,
       sortFilterParametersDefaultName:

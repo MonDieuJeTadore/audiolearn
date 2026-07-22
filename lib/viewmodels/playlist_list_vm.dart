@@ -2590,8 +2590,9 @@ class PlaylistListVM extends ChangeNotifier {
       );
     }
 
-    if (currentAudio.enclosingPlaylist!.audioPlayingOrder ==
-        AudioPlayingOrder.ascending) {
+    Playlist audiosPlaylist = currentAudio.enclosingPlaylist!;
+
+    if (audiosPlaylist.audioPlayingOrder == AudioPlayingOrder.ascending) {
       if (currentAudioIndex == 0) {
         // means the current audio is the last downloaded audio
         // available in the playableAudioLst and so there is no
@@ -2602,7 +2603,7 @@ class PlaylistListVM extends ChangeNotifier {
       for (int i = currentAudioIndex - 1; i >= 0; i--) {
         Audio audio = sortedAndFilteredPlayableAudioLst[i];
         if (audio.wasFullyListened() ||
-            !_isAudioPlayableToday(
+            !audiosPlaylist.isAudioPlayableToday(
               audio: audio,
             )) {
           continue;
@@ -2628,7 +2629,7 @@ class PlaylistListVM extends ChangeNotifier {
           i++) {
         Audio audio = sortedAndFilteredPlayableAudioLst[i];
         if (audio.wasFullyListened() ||
-            !_isAudioPlayableToday(
+            !audiosPlaylist.isAudioPlayableToday(
               audio: audio,
             )) {
           continue;
@@ -2667,43 +2668,6 @@ class PlaylistListVM extends ChangeNotifier {
     currentAudio.audioPositionSeconds = currentAudio.audioPositionSeconds + 20;
 
     return currentAudioIndex;
-  }
-
-  bool _isAudioPlayableToday({
-    required Audio audio,
-  }) {
-    DateTime today = DateTime.now();
-
-    int audioPlayableEveryNDays = audio.playableEveryNDays;
-
-    if (audioPlayableEveryNDays <= 1) {
-      // means the audio is playable every day
-      return true;
-    } else {
-      DateTime? audioPausedDateTime = audio.audioPausedDateTime;
-
-      if (audioPausedDateTime == null) {
-        // means the audio has never been played and so is playable today
-        return true;
-      }
-
-      DateTime audioPausedDateOnly = DateTime(
-        audioPausedDateTime.year,
-        audioPausedDateTime.month,
-        audioPausedDateTime.day,
-      );
-
-      DateTime todayDateOnly = DateTime(
-        today.year,
-        today.month,
-        today.day,
-      );
-
-      int daysSincePaused =
-          todayDateOnly.difference(audioPausedDateOnly).inDays;
-
-      return daysSincePaused >= audioPlayableEveryNDays;
-    }
   }
 
   /// Returns the audio contained in the playableAudioLst which
@@ -6068,8 +6032,10 @@ class PlaylistListVM extends ChangeNotifier {
     int rewindedAudioNumber = 0;
 
     if (audioPlayerViewAudioLst.isNotEmpty) {
-      rewindedAudioNumber = playlist.rewindPlayableAudioToStart(
-          audioToRewindLst: audioPlayerViewAudioLst);
+      rewindedAudioNumber =
+          playlist.rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
+        audioToRewindLst: audioPlayerViewAudioLst,
+      )[0] as int;
 
       Audio currentAudioInAudioPlayableListDialog;
 
@@ -6134,8 +6100,10 @@ class PlaylistListVM extends ChangeNotifier {
     int rewindedAudioNumber = 0;
 
     if (filteredAudioToRewindToStart.isNotEmpty) {
-      rewindedAudioNumber = playlist.rewindPlayableAudioToStart(
-          audioToRewindLst: filteredAudioToRewindToStart);
+      rewindedAudioNumber =
+          playlist.rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
+        audioToRewindLst: filteredAudioToRewindToStart,
+      )[0] as int;
 
       Audio currentAudioInAudioPlayableListDialog;
 
@@ -6675,10 +6643,14 @@ class PlaylistListVM extends ChangeNotifier {
       int audioIndexInSortedList = sortFilteredPlaylistPlayableAudiosLst
           .indexWhere((element) => element == audioToMove);
 
-      final int sortFilteredPlaylistPlayableAudiosLstLength = sortFilteredPlaylistPlayableAudiosLst.length;
+      final int sortFilteredPlaylistPlayableAudiosLstLength =
+          sortFilteredPlaylistPlayableAudiosLst.length;
 
-      if ((enteredPositionToMoveTo <= sortFilteredPlaylistPlayableAudiosLstLength) &&
-          (sortFilteredPlaylistPlayableAudiosLstLength - audioIndexInSortedList) < enteredPositionToMoveTo) {
+      if ((enteredPositionToMoveTo <=
+              sortFilteredPlaylistPlayableAudiosLstLength) &&
+          (sortFilteredPlaylistPlayableAudiosLstLength -
+                  audioIndexInSortedList) <
+              enteredPositionToMoveTo) {
         Audio firstAudioBeforeMovedAudio =
             sortFilteredPlaylistPlayableAudiosLst[
                 sortFilteredPlaylistPlayableAudiosLst.length -

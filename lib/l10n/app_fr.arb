@@ -697,7 +697,7 @@
   },
   "rewindAudioToStart": "Repositionner les audios au début",
   "rewindAudioToStartTooltip": "Repositionner tous les audios de la playlist au début. Cela est utile si vous souhaitez réécouter tous les audios.",
-  "rewindedPlayableAudioNumber": "{number} audios de la playlist ont été repositionnés au début et le premier audio écoutable a été selectionné.",
+  "rewindedPlayableAudioNumber": "{number} audios de la playlist ont été repositionnés au début et le premier audio écoutable a été selectionné.\n\nDurée jouable totale: {playableDuration}.",
   "dateFormat": "Format de date ...",
   "dateFormatSelectionDialogTitle": "Sélectionnez le format de date de l'application",
   "commented": "Commenté",

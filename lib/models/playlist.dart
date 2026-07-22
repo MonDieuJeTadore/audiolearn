@@ -579,6 +579,59 @@ class Playlist {
     return totalRemainingDuration;
   }
 
+  Duration getAudioPlayableTodayTotalDuration() {
+    Duration totalDuration = Duration.zero;
+
+    for (Audio audio in playableAudioLst) {
+      if (isAudioPlayableToday(
+        audio: audio,
+      )) {
+        totalDuration += audio.durationImpactedByPlaySpeed();
+      } else {
+        continue;
+      }
+    }
+
+    return totalDuration;
+  }
+
+  bool isAudioPlayableToday({
+    required Audio audio,
+  }) {
+    DateTime today = DateTime.now();
+
+    int audioPlayableEveryNDays = audio.playableEveryNDays;
+
+    if (audioPlayableEveryNDays <= 1) {
+      // means the audio is playable every day
+      return true;
+    } else {
+      DateTime? audioPausedDateTime = audio.audioPausedDateTime;
+
+      if (audioPausedDateTime == null) {
+        // means the audio has never been played and so is playable today
+        return true;
+      }
+
+      DateTime audioPausedDateOnly = DateTime(
+        audioPausedDateTime.year,
+        audioPausedDateTime.month,
+        audioPausedDateTime.day,
+      );
+
+      DateTime todayDateOnly = DateTime(
+        today.year,
+        today.month,
+        today.day,
+      );
+
+      int daysSincePaused =
+          todayDateOnly.difference(audioPausedDateOnly).inDays;
+
+      return daysSincePaused >= audioPlayableEveryNDays;
+    }
+  }
+
   int getPlayableAudioLstTotalFileSize() {
     int totalFileSize = 0;
 
@@ -794,7 +847,7 @@ class Playlist {
         replacedPlaylist.audioSortFilterParmsNameForAudioPlayerView;
   }
 
-  int rewindPlayableAudioToStart({
+  List<dynamic> rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration({
     required List<Audio> audioToRewindLst,
   }) {
     int rewindedAudioNumber = 0;
@@ -808,6 +861,11 @@ class Playlist {
       }
     }
 
-    return rewindedAudioNumber;
+    Duration todayPlayableAudioDuration = getAudioPlayableTodayTotalDuration();
+    
+    return [
+      rewindedAudioNumber,
+      todayPlayableAudioDuration,
+    ];
   }
 }

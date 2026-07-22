@@ -1284,8 +1284,9 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String rewindedPlayableAudioNumber(
     Object number,
+    Object duration,
   ) =>
-      "$number playlist audio were repositioned to start.";
+      "$number playlist audio were repositioned to start.\\\nCorresponding total duration: $duration.";
 
   @override
   String get dateFormat => "Select Date Format ...";

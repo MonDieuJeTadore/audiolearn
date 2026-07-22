@@ -1106,6 +1106,7 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
             context: _context,
             message: AppLocalizations.of(context)!.rewindedPlayableAudioNumber(
               _warningMessageVM.rewindedPlayableAudioNumber,
+              _warningMessageVM.todayPlayableAudioDuration.HHmmss(),
             ),
             warningMessageVM: _warningMessageVM,
             warningMode: WarningMode.confirm,

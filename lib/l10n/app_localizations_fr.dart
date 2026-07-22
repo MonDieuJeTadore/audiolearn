@@ -1362,8 +1362,8 @@ class AppLocalizationsFr extends AppLocalizations {
       'Repositionner tous les audios de la playlist au début. Cela est utile si vous souhaitez réécouter tous les audios.';
 
   @override
-  String rewindedPlayableAudioNumber(Object number) {
-    return '$number audios de la playlist ont été repositionnés au début et le premier audio écoutable a été selectionné.';
+  String rewindedPlayableAudioNumber(Object number, Object playableDuration) {
+    return '$number audios de la playlist ont été repositionnés au début et le premier audio écoutable a été selectionné.\n\nDurée jouable totale: $playableDuration.';
   }
 
   @override

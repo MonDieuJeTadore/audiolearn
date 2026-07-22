@@ -4118,10 +4118,11 @@ void main() {
       await tester.pumpAndSettle();
 
       // Rewind all 'S8 audio" playlist audios to start position
-      await _tapOnRewindPlaylistAudioToStartPositionMenu(
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
+        expectedTotalPlayableDuration: "0:00:00",
       );
 
       // Return to audio player view to verify the playlist current
@@ -4204,10 +4205,11 @@ void main() {
 
       // Rewind again all playlist audio to start position. Since
       // the playlist was already rewinded, 0 audio will be rewinded !
-      await _tapOnRewindPlaylistAudioToStartPositionMenu(
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 0,
+        expectedTotalPlayableDuration: "0:00:00",
       );
 
       // Purge the test playlist directory so that the created test
@@ -4229,10 +4231,11 @@ void main() {
       const String youtubePlaylistToRewindTitle = 'S8 audio';
 
       // Rewind all 'S8 audio" playlist audios to start position
-      await _tapOnRewindPlaylistAudioToStartPositionMenu(
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
+        expectedTotalPlayableDuration: "0:00:00",
       );
 
       // Tap the 'Toggle List' button to reduce the list of playlist's.
@@ -4289,10 +4292,11 @@ void main() {
       );
 
       // Rewind all unselected playlist audio to start position
-      await _tapOnRewindPlaylistAudioToStartPositionMenu(
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
+        expectedTotalPlayableDuration: "0:00:00",
       );
 
       // Purge the test playlist directory so that the created test
@@ -4325,10 +4329,11 @@ void main() {
       );
 
       // Rewind all unselected playlist audio to start position
-      await _tapOnRewindPlaylistAudioToStartPositionMenu(
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
+        expectedTotalPlayableDuration: "0:00:00",
       );
 
       // Purge the test playlist directory so that the created test
@@ -4353,10 +4358,11 @@ void main() {
       await tester.pumpAndSettle();
 
       // Rewind all local playlist audio to start position
-      await _tapOnRewindPlaylistAudioToStartPositionMenu(
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: localPlaylistToSelectTitle,
         numberOfRewindedAudio: 4,
+        expectedTotalPlayableDuration: "0:00:00",
       );
 
       // Purge the test playlist directory so that the created test
@@ -4388,10 +4394,11 @@ void main() {
       );
 
       // Rewind all unselected playlist audio to start position
-      await _tapOnRewindPlaylistAudioToStartPositionMenu(
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: localPlaylistToSelectTitle,
         numberOfRewindedAudio: 4,
+        expectedTotalPlayableDuration: "0:00:00",
       );
 
       // Purge the test playlist directory so that the created test
@@ -4426,10 +4433,11 @@ void main() {
       await tester.pumpAndSettle();
 
       // Rewind all playlist audio to start position
-      await _tapOnRewindPlaylistAudioToStartPositionMenu(
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
+        expectedTotalPlayableDuration: "0:00:00",
       );
 
       // Verify the current audio position
@@ -38128,10 +38136,11 @@ void main() {
 
       // Now rewind all audio to start position and verify that the
       // playlist info is updated accordingly
-      await _tapOnRewindPlaylistAudioToStartPositionMenu(
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: selectedPlaylistTitle,
         numberOfRewindedAudio: 40,
+        expectedTotalPlayableDuration: "0:00:00",
       );
 
       // Verify the playlist info dialog content
@@ -38169,10 +38178,11 @@ void main() {
 
       // Now rewind all audio to start position and verify that the
       // playlist info is updated accordingly
-      await _tapOnRewindPlaylistAudioToStartPositionMenu(
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: selectedPlaylistTitle,
         numberOfRewindedAudio: 40,
+        expectedTotalPlayableDuration: "0:00:00",
       );
 
       // Verify the playlist info dialog content
@@ -46323,7 +46333,8 @@ void main() {
         testWidgets(
             '''On Prières playlist, moving down from 9_ to 6_ an already positioned audio. Execute
                the Audio item menu "Move Audio to Position". Then move 6_ to 3_. This shows the correction
-               of an incredible bug since 6_ was moved to 2_ instead of 3_.''', (WidgetTester tester) async {
+               of an incredible bug since 6_ was moved to 2_ instead of 3_.''',
+            (WidgetTester tester) async {
           // playlist list is empty
           DirUtil.deleteFilesInDirAndSubDirs(
             rootPath: kApplicationPathWindowsTest,
@@ -46544,7 +46555,8 @@ void main() {
         });
         testWidgets(
             '''On Prières playlist, moving down from 9_ to 3_ an already positioned audio. Execute
-               the Audio item menu "Move Audio to Position"..''', (WidgetTester tester) async {
+               the Audio item menu "Move Audio to Position"..''',
+            (WidgetTester tester) async {
           // playlist list is empty
           DirUtil.deleteFilesInDirAndSubDirs(
             rootPath: kApplicationPathWindowsTest,
@@ -56727,7 +56739,8 @@ Future<void> _verifyDateFormatApplication({
   await tester.tap(popupModifyAudioTitleMenuItem);
   await tester.pumpAndSettle();
 
-  expect(find.textContaining("Last played date: $extractedAudioPausedDate."), findsOneWidget);
+  expect(find.textContaining("Last played date: $extractedAudioPausedDate."),
+      findsOneWidget);
 
   // Now tap on the Cancel button
   final Finder audioModificationCancelButtonFinder =
@@ -56916,10 +56929,11 @@ Future<void> _rewindPlaylistAfterPlayThenPauseAnAudio({
   }
 
   // Rewind all playlist audio to start position
-  await _tapOnRewindPlaylistAudioToStartPositionMenu(
+  await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
     tester: tester,
     playlistToRewindTitle: playlistToRewindTitle,
     numberOfRewindedAudio: audioRewindedNumber,
+    expectedTotalPlayableDuration: "0:00:00",
   );
 
   // Return to audio player view to verify the playlist current
@@ -56948,52 +56962,6 @@ Future<void> _rewindPlaylistAfterPlayThenPauseAnAudio({
       find.byKey(const ValueKey('playlistDownloadViewIconButton'));
   await tester.tap(appScreenNavigationButton);
   await tester.pumpAndSettle();
-}
-
-Future<void> _tapOnRewindPlaylistAudioToStartPositionMenu({
-  required WidgetTester tester,
-  required String playlistToRewindTitle,
-  required int numberOfRewindedAudio,
-}) async {
-  // Find the playlist to rewind audio ListTile
-
-  // First, find the Playlist ListTile Text widget
-  final Finder youtubePlaylistToRewindListTileTextWidgetFinder =
-      find.text(playlistToRewindTitle);
-
-  // Then obtain the Playlist ListTile widget enclosing the Text widget
-  // by finding its ancestor
-  final Finder youtubePlaylistToRewindListTileWidgetFinder = find.ancestor(
-    of: youtubePlaylistToRewindListTileTextWidgetFinder,
-    matching: find.byType(ListTile),
-  );
-
-  // Now test rewinding the playlist audio to start position
-
-  // Find the playlist leading menu icon button
-  final Finder firstPlaylistListTileLeadingMenuIconButton = find.descendant(
-    of: youtubePlaylistToRewindListTileWidgetFinder,
-    matching: find.byIcon(Icons.menu),
-  );
-
-  // Tap the leading menu icon button to open the popup menu
-  await tester.tap(firstPlaylistListTileLeadingMenuIconButton);
-  await tester.pumpAndSettle();
-
-  // Now find the 'Rewind Audio to Start' playlist popup menu item
-  // and tap on it
-  final Finder popupDeletePlaylistMenuItem =
-      find.byKey(const Key("popup_menu_rewind_audio_to_start"));
-
-  await tester.tap(popupDeletePlaylistMenuItem);
-  await tester.pumpAndSettle(const Duration(milliseconds: 200));
-
-  await IntegrationTestUtil.verifyAndCloseWarningDialog(
-    tester: tester,
-    warningDialogMessage:
-        "$numberOfRewindedAudio playlist audios were repositioned to start and the first listenable audio was selected.",
-    isWarningConfirming: true,
-  );
 }
 
 Future<void> _tapOnSetAudioQualityMenu({

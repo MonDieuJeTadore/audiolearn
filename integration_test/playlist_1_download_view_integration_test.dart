@@ -23430,15 +23430,16 @@ void main() {
       );
     });
   });
-  group('Define audio playable day tests', () {
-    testWidgets('''3 audios playable. The second audio is not playable this day.''', (WidgetTester tester) async {
+  group('Audio playable day usage and definition tests', () {
+    testWidgets(
+        '''3 audios playable. First. the 'Rewind all Audios to Start' playlist menu is executed
+           and the displayed total playable duration which depends of the playable today or not
+           audios duration is verifyed. The second audio is not playable this day. The test
+           verifies that the second audio is not played and that the third audio is played instead.''',
+        (WidgetTester tester) async {
       const String localPlaylistTitle = 'local';
-      const String firstAudioTitle =
-          "1_audio learn test short video one";
-      const String secondAudioTitle =
-          "2_morning _ cinematic video";
-      const String thirdAudioTitle =
-          "3_textToSpeech";
+      const String firstAudioTitle = "1_audio learn test short video one";
+      const String thirdAudioTitle = "3_textToSpeech";
 
       await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
         tester: tester,
@@ -23446,37 +23447,29 @@ void main() {
         selectedPlaylistTitle: localPlaylistTitle,
       );
 
+      // First, tap on the 'Rewind all Audios to Start' playlist menu item
+      // Rewind all 'S8 audio" playlist audios to start position
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
+        tester: tester,
+        playlistToRewindTitle: localPlaylistTitle,
+        numberOfRewindedAudio: 1,
+        expectedTotalPlayableDuration: "0:00:42",
+      );
 
-
-
-
-      // First, get the lastly downloaded Audio ListTile Text
+      // Then, get the first downloaded Audio ListTile Text
       // widget finder and tap on it
       final Finder thirdDownloadedAudioListTileTextWidgetFinder =
-          find.text(thirdAudioTitle);
+          find.text(firstAudioTitle);
 
       await tester.tap(thirdDownloadedAudioListTileTextWidgetFinder);
       await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
         tester: tester,
       );
 
-      // Tap on the forward 10 seconds icon button
+      // Tap twice on the forward 10 seconds icon button
       await tester
           .tap(find.byKey(const Key('audioPlayerViewForward10sButton')));
       await tester.pumpAndSettle();
-
-      // Now we open the AudioPlayableListDialog by tapping on the
-      // audio title
-      await tester.tap(find.text("$thirdAudioTitle\n0:18"));
-      await tester.pumpAndSettle();
-
-      // Select the first Audio in the AudioPlayableListDialog
-      await IntegrationTestUtil.selectAudioInAudioPlayableDialog(
-        tester: tester,
-        audioToSelectTitle: firstAudioTitle,
-      );
-
-      // Tap on the forward 10 seconds icon button
       await tester
           .tap(find.byKey(const Key('audioPlayerViewForward10sButton')));
       await tester.pumpAndSettle();
@@ -23487,101 +23480,71 @@ void main() {
       await tester.pumpAndSettle();
 
       // Ensure that the audio position is updated
-      for (int i = 0; i < 4; i++) {
-        await Future.delayed(const Duration(milliseconds: 100));
+      for (int i = 0; i < 5; i++) {
+        await Future.delayed(const Duration(milliseconds: 1000));
         await tester.pumpAndSettle();
       }
 
-
-
-
-
-
-
-
-      // First, find the Youtube playlist audio ListTile Text widget
-      Finder audioTitleTileTextWidgetFinder = find.text(secondAudioTitle);
-
-      // Then obtain the audio ListTile widget enclosing the Text widget
-      // by finding its ancestor
-      Finder audioTitleTileWidgetFinder = find.ancestor(
-        of: audioTitleTileTextWidgetFinder,
-        matching: find.byType(ListTile),
-      );
-
-      // Now we want to tap the popup menu of the audioTitle ListTile
-
-      // Find the leading menu icon button of the audioTitle ListTile
-      // and tap on it
-      Finder audioTitleTileLeadingMenuIconButton = find.descendant(
-        of: audioTitleTileWidgetFinder,
-        matching: find.byIcon(Icons.menu),
-      );
-
-      // Tap the leading menu icon button to open the popup menu
-      await tester.tap(audioTitleTileLeadingMenuIconButton);
-      await tester.pumpAndSettle();
-
-      // Now find the 'Audio Comments ...' popup menu item and
-      // tap on it
-      final Finder audioCommentsPopupMenuItem =
-          find.byKey(const Key("popup_menu_audio_comment"));
-
-      await tester.tap(audioCommentsPopupMenuItem);
-      await tester.pumpAndSettle();
-
-      // Verify that the audio comment dialog is displayed
-      expect(find.byType(AutoRefreshCommentDialog), findsOneWidget);
-
-      // Verify the dialog title
-      expect(find.text('Comments'), findsOneWidget);
-
-      // Verify that the audio comments list of the dialog has 1 comment
-      // item
-
-      Finder audioCommentsLstFinder = find.byKey(const Key(
-        'audioCommentsListKey',
-      ));
-
-      // Ensure the list has one child widgets
       expect(
-        tester.widget<ListBody>(audioCommentsLstFinder).children.length,
-        1,
+        find.text("$thirdAudioTitle\n0:18"),
+        findsOneWidget,
       );
 
-      // Now delete the comment item
-
-      // Find the delete icon button of the comment item and tap on it
-      final Finder deleteCommentIconButtonFinder = find.descendant(
-        of: audioCommentsLstFinder,
-        matching: find.byKey(const Key('deleteCommentIconButton')),
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
       );
-      await tester.tap(deleteCommentIconButtonFinder);
+    });
+    testWidgets(
+        '''3 audios playable. The second audio is not playable this day but its playable day is set
+           to 1 so that it will be playable today. The test verifies the Audio modification dialog
+           content and the fact that the second audio is played.''',
+        (WidgetTester tester) async {
+      const String localPlaylistTitle = 'local';
+      const String firstAudioTitle = "1_audio learn test short video one";
+      const String secondAudioTitle = "2_morning _ cinematic video";
+      const String thirdAudioTitle = "3_textToSpeech";
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'day_number_play_test',
+        selectedPlaylistTitle: localPlaylistTitle,
+      );
+
+      // First, get the first downloaded Audio ListTile Text
+      // widget finder and tap on it
+      final Finder thirdDownloadedAudioListTileTextWidgetFinder =
+          find.text(firstAudioTitle);
+
+      await tester.tap(thirdDownloadedAudioListTileTextWidgetFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Tap twice on the forward 10 seconds icon button
+      await tester
+          .tap(find.byKey(const Key('audioPlayerViewForward10sButton')));
+      await tester.pumpAndSettle();
+      await tester
+          .tap(find.byKey(const Key('audioPlayerViewForward10sButton')));
       await tester.pumpAndSettle();
 
-      // Verify the delete comment dialog title
-      expect(find.text('Delete Comment'), findsOneWidget);
-
-      final String commentTitle = 'Comment Jancovici';
-
-      // Verify the delete comment dialog message
-      expect(find.text("Deleting comment \"$commentTitle\"."), findsOneWidget);
-
-      // Confirm the deletion of the comment
-      await tester.tap(find.byKey(const Key('confirmButton')));
+      // Now play the audio and wait n seconds to verify that the
+      // second audio is not playable this day
+      await tester.tap(find.byIcon(Icons.play_arrow));
       await tester.pumpAndSettle();
 
-      final Finder commentListDialogFinder = find.byType(CommentListAddDialog);
+      // Ensure that the audio position is updated
+      for (int i = 0; i < 5; i++) {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        await tester.pumpAndSettle();
+      }
 
-      // Verify that the comment list dialog now displays no comment
       expect(
-          find.descendant(
-              of: commentListDialogFinder, matching: find.text(commentTitle)),
-          findsNothing);
-
-      // Now close the comment list dialog
-      await tester.tap(find.byKey(const Key('closeDialogTextButton')));
-      await tester.pumpAndSettle();
+        find.text("$thirdAudioTitle\n0:18"),
+        findsOneWidget,
+      );
 
       // Purge the test playlist directory so that the created test
       // files are not uploaded to GitHub

@@ -122,13 +122,13 @@ class IntegrationTestUtil {
         DateTimeUtil.convertToTenthsOfSeconds(timeString: maxPositionTimeStr);
 
     expect(
-      actualPositionTenthOfSeconds,
-      inInclusiveRange(
-        expectedMinPositionTenthSeconds,
-        expectedMaxPositionTenthSeconds,
-      ),
-      reason:
-          'Real audio position text value is $actualPositionTimeString, expected between $minPositionTimeStr and $maxPositionTimeStr');
+        actualPositionTenthOfSeconds,
+        inInclusiveRange(
+          expectedMinPositionTenthSeconds,
+          expectedMaxPositionTenthSeconds,
+        ),
+        reason:
+            'Real audio position text value is $actualPositionTimeString, expected between $minPositionTimeStr and $maxPositionTimeStr');
   }
 
   /// Verify that the position displayed in the {textWidgetFinder} text
@@ -4506,6 +4506,53 @@ class IntegrationTestUtil {
         fileExtension: fileExtension,
       ),
       expectedFileNamesLst,
+    );
+  }
+
+  static Future<void> tapOnRewindPlaylistAudioToStartPositionMenu({
+    required WidgetTester tester,
+    required String playlistToRewindTitle,
+    required int numberOfRewindedAudio,
+    required String expectedTotalPlayableDuration,
+  }) async {
+    // Find the playlist to rewind audio ListTile
+
+    // First, find the Playlist ListTile Text widget
+    final Finder youtubePlaylistToRewindListTileTextWidgetFinder =
+        find.text(playlistToRewindTitle);
+
+    // Then obtain the Playlist ListTile widget enclosing the Text widget
+    // by finding its ancestor
+    final Finder youtubePlaylistToRewindListTileWidgetFinder = find.ancestor(
+      of: youtubePlaylistToRewindListTileTextWidgetFinder,
+      matching: find.byType(ListTile),
+    );
+
+    // Now test rewinding the playlist audio to start position
+
+    // Find the playlist leading menu icon button
+    final Finder firstPlaylistListTileLeadingMenuIconButton = find.descendant(
+      of: youtubePlaylistToRewindListTileWidgetFinder,
+      matching: find.byIcon(Icons.menu),
+    );
+
+    // Tap the leading menu icon button to open the popup menu
+    await tester.tap(firstPlaylistListTileLeadingMenuIconButton);
+    await tester.pumpAndSettle();
+
+    // Now find the 'Rewind Audio to Start' playlist popup menu item
+    // and tap on it
+    final Finder popupDeletePlaylistMenuItem =
+        find.byKey(const Key("popup_menu_rewind_audio_to_start"));
+
+    await tester.tap(popupDeletePlaylistMenuItem);
+    await tester.pumpAndSettle(const Duration(milliseconds: 200));
+
+    await IntegrationTestUtil.verifyAndCloseWarningDialog(
+      tester: tester,
+      warningDialogMessage:
+          "$numberOfRewindedAudio playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal playable duration: $expectedTotalPlayableDuration.",
+      isWarningConfirming: true,
     );
   }
 }

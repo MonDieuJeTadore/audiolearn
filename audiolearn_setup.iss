@@ -1,5 +1,5 @@
 #define MyAppName "AudioLearn"
-#define MyAppVersion "3.5.7"
+#define MyAppVersion "3.5.72"
 #define MyAppPublisher "Jean-Pierre Schnyder"
 #define MyAppURL ""
 #define MyAppExeName "audiolearn.exe"

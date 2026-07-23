@@ -552,17 +552,20 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
             }
             break;
           case PlaylistPopupMenuAction.rewindAudioToStart:
-            List<dynamic> resultsLst = playlist
+            List<dynamic> resultsLst = playlistListVMlistenFalse
                 .rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
-              audioToRewindLst: playlistListVMlistenFalse.getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
-                audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+              playlist: playlist,
+              audioToRewindLst: playlistListVMlistenFalse
+                  .getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
+                audioLearnAppViewType:
+                    AudioLearnAppViewType.playlistDownloadView,
                 playlist: playlist,
               ),
             );
 
             warningMessageVMlistenFalse.rewindedPlayableAudioToStart(
                 rewindedPlayableAudioNumber: resultsLst[0] as int,
-                todayPlayableAudioDuration: resultsLst[1] as Duration);
+                todayPlayableAudioDurationStr: resultsLst[1] as String);
             break;
           case PlaylistPopupMenuAction.setPlaylistAudioPlaySpeed:
             final List<HelpItem> audioSetSpeedDialogHelpItemsLst = [

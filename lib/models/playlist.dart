@@ -579,22 +579,6 @@ class Playlist {
     return totalRemainingDuration;
   }
 
-  Duration getAudioPlayableTodayTotalDuration() {
-    Duration totalDuration = Duration.zero;
-
-    for (Audio audio in playableAudioLst) {
-      if (isAudioPlayableToday(
-        audio: audio,
-      )) {
-        totalDuration += audio.durationImpactedByPlaySpeed();
-      } else {
-        continue;
-      }
-    }
-
-    return totalDuration;
-  }
-
   bool isAudioPlayableToday({
     required Audio audio,
   }) {
@@ -845,27 +829,5 @@ class Playlist {
         replacedPlaylist.audioSortFilterParmsNameForPlaylistDownloadView;
     audioSortFilterParmsNameForAudioPlayerView =
         replacedPlaylist.audioSortFilterParmsNameForAudioPlayerView;
-  }
-
-  List<dynamic> rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration({
-    required List<Audio> audioToRewindLst,
-  }) {
-    int rewindedAudioNumber = 0;
-
-    for (Audio audio in audioToRewindLst) {
-      if (audio.audioPositionSeconds > 0 ||
-          audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd) {
-        audio.audioPositionSeconds = 0;
-        audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd = false;
-        rewindedAudioNumber++;
-      }
-    }
-
-    Duration todayPlayableAudioDuration = getAudioPlayableTodayTotalDuration();
-    
-    return [
-      rewindedAudioNumber,
-      todayPlayableAudioDuration,
-    ];
   }
 }

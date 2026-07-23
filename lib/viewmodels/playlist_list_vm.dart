@@ -6020,10 +6020,12 @@ class PlaylistListVM extends ChangeNotifier {
   /// audio to start position. Otherwise, after clicking on the play audio view
   /// button, the current audio will be positioned to the last played position
   /// instead of the start position.
-  int rewindPlayableAudioToStart({
+  List<dynamic>  rewindPlayableAudioToStart({
     required AudioPlayerVM audioPlayerVMlistenFalse,
     required Playlist playlist,
   }) {
+    List<dynamic> rewindedAudioNumberAndTodayPlayableAudioDurationLst = [];
+
     // Obtaining the playable audio list ordered according to the
     // sort/filter parameters applied to the audio player view.
     List<Audio> audioPlayerViewAudioLst =
@@ -6031,14 +6033,12 @@ class PlaylistListVM extends ChangeNotifier {
             audioLearnAppViewType: AudioLearnAppViewType.audioPlayerView,
             playlist: playlist);
 
-    int rewindedAudioNumber = 0;
-
     if (audioPlayerViewAudioLst.isNotEmpty) {
-      rewindedAudioNumber =
-          rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
+      rewindedAudioNumberAndTodayPlayableAudioDurationLst =
+          _rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
         playlist: playlist,
         audioToRewindLst: audioPlayerViewAudioLst,
-      )[0] as int;
+      );
 
       Audio currentAudioInAudioPlayableListDialog;
 
@@ -6073,7 +6073,7 @@ class PlaylistListVM extends ChangeNotifier {
       );
     }
 
-    if (rewindedAudioNumber > 0) {
+    if (rewindedAudioNumberAndTodayPlayableAudioDurationLst[0] as int > 0) {
       JsonDataService.saveToFile(
         model: playlist,
         path: playlist.getPlaylistDownloadFilePathName(),
@@ -6082,10 +6082,10 @@ class PlaylistListVM extends ChangeNotifier {
 
     notifyListeners();
 
-    return rewindedAudioNumber;
+    return rewindedAudioNumberAndTodayPlayableAudioDurationLst;
   }
 
-  List<dynamic> rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration({
+  List<dynamic> _rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration({
     required Playlist playlist,
     required List<Audio> audioToRewindLst,
   }) {
@@ -6103,8 +6103,6 @@ class PlaylistListVM extends ChangeNotifier {
     Duration todayPlayableAudioDuration = _getAudioPlayableTodayTotalDuration(
       playlist: playlist,
     );
-
-    notifyListeners();
 
     return [
       rewindedAudioNumber,
@@ -6153,7 +6151,7 @@ class PlaylistListVM extends ChangeNotifier {
 
     if (filteredAudioToRewindToStart.isNotEmpty) {
       rewindedAudioNumber =
-          rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
+          _rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
         playlist: playlist,
         audioToRewindLst: filteredAudioToRewindToStart,
       )[0] as int;

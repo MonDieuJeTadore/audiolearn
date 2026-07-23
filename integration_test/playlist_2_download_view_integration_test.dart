@@ -4362,7 +4362,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: localPlaylistToSelectTitle,
         numberOfRewindedAudio: 4,
-        expectedTotalPlayableDuration: "0:22:10",
+        expectedTotalPlayableDuration: "22:10",
       );
 
       // Purge the test playlist directory so that the created test
@@ -4398,7 +4398,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: localPlaylistToSelectTitle,
         numberOfRewindedAudio: 4,
-        expectedTotalPlayableDuration: "0:22:09",
+        expectedTotalPlayableDuration: "22:10",
       );
 
       // Purge the test playlist directory so that the created test

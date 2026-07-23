@@ -1415,14 +1415,14 @@ class WarningMessageVM extends ChangeNotifier {
 
   int _rewindedPlayableAudioNumber = 0;
   int get rewindedPlayableAudioNumber => _rewindedPlayableAudioNumber;
-  Duration _todayPlayableAudioDuration = Duration.zero;
-  Duration get todayPlayableAudioDuration => _todayPlayableAudioDuration;
+  String _todayPlayableAudioDurationStr = '';
+  String get todayPlayableAudioDurationStr => _todayPlayableAudioDurationStr;
   void rewindedPlayableAudioToStart({
     required int rewindedPlayableAudioNumber,
-    required Duration todayPlayableAudioDuration,
+    required String todayPlayableAudioDurationStr,
   }) {
     _rewindedPlayableAudioNumber = rewindedPlayableAudioNumber;
-    _todayPlayableAudioDuration = todayPlayableAudioDuration;
+    _todayPlayableAudioDurationStr = todayPlayableAudioDurationStr;
 
     warningMessageType = WarningMessageType.rewindedPlayableAudioToStart;
 

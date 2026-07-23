@@ -18,8 +18,10 @@ import '../models/sort_filter_parameters.dart';
 import '../services/audio_sort_filter_service.dart';
 import '../services/json_data_service.dart';
 import '../services/settings_data_service.dart';
+import '../utils/date_time_util.dart';
 import '../utils/dir_util.dart';
 import '../utils/date_time_expansion.dart';
+import '../utils/duration_expansion.dart';
 import 'date_format_vm.dart';
 import 'picture_vm.dart';
 import 'audio_download_vm.dart';
@@ -6033,7 +6035,8 @@ class PlaylistListVM extends ChangeNotifier {
 
     if (audioPlayerViewAudioLst.isNotEmpty) {
       rewindedAudioNumber =
-          playlist.rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
+          rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
+        playlist: playlist,
         audioToRewindLst: audioPlayerViewAudioLst,
       )[0] as int;
 
@@ -6082,6 +6085,55 @@ class PlaylistListVM extends ChangeNotifier {
     return rewindedAudioNumber;
   }
 
+  List<dynamic> rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration({
+    required Playlist playlist,
+    required List<Audio> audioToRewindLst,
+  }) {
+    int rewindedAudioNumber = 0;
+
+    for (Audio audio in audioToRewindLst) {
+      if (audio.audioPositionSeconds > 0 ||
+          audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd) {
+        audio.audioPositionSeconds = 0;
+        audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd = false;
+        rewindedAudioNumber++;
+      }
+    }
+
+    Duration todayPlayableAudioDuration = _getAudioPlayableTodayTotalDuration(
+      playlist: playlist,
+    );
+
+    notifyListeners();
+
+    return [
+      rewindedAudioNumber,
+      DateTimeUtil.convertTimeWithTenthOfSecToTimeWithSec(
+        timeWithTenthOfSecondsStr: todayPlayableAudioDuration.HHmmss(
+          addRemainingOneDigitTenthOfSecond: true,
+        ),
+      ),
+    ];
+  }
+
+  Duration _getAudioPlayableTodayTotalDuration({
+    required Playlist playlist,
+  }) {
+    Duration totalDuration = Duration.zero;
+
+    for (Audio audio in playlist.playableAudioLst) {
+      if (playlist.isAudioPlayableToday(
+        audio: audio,
+      )) {
+        totalDuration += audio.durationImpactedByPlaySpeed();
+      } else {
+        continue;
+      }
+    }
+
+    return totalDuration;
+  }
+
   /// Method called when the user clicks on the 'Rewind filtered audio to start'
   /// sub menu item of the playlist 'Filtered Audios Actions' menu . The method
   /// rewinds the filtered audios to start and saves the playlist to its json file.
@@ -6101,7 +6153,8 @@ class PlaylistListVM extends ChangeNotifier {
 
     if (filteredAudioToRewindToStart.isNotEmpty) {
       rewindedAudioNumber =
-          playlist.rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
+          rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
+        playlist: playlist,
         audioToRewindLst: filteredAudioToRewindToStart,
       )[0] as int;
 

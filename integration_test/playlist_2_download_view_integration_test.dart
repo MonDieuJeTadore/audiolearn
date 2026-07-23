@@ -4122,7 +4122,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
-        expectedTotalPlayableDuration: "0:00:00",
+        expectedTotalPlayableDuration: "1:09:58",
       );
 
       // Return to audio player view to verify the playlist current
@@ -4209,7 +4209,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 0,
-        expectedTotalPlayableDuration: "0:00:00",
+        expectedTotalPlayableDuration: "1:09:58",
       );
 
       // Purge the test playlist directory so that the created test
@@ -4235,7 +4235,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
-        expectedTotalPlayableDuration: "0:00:00",
+        expectedTotalPlayableDuration: "1:09:58",
       );
 
       // Tap the 'Toggle List' button to reduce the list of playlist's.
@@ -4296,7 +4296,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
-        expectedTotalPlayableDuration: "0:00:00",
+        expectedTotalPlayableDuration: "1:09:58",
       );
 
       // Purge the test playlist directory so that the created test
@@ -4333,7 +4333,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
-        expectedTotalPlayableDuration: "0:00:00",
+        expectedTotalPlayableDuration: "1:09:58",
       );
 
       // Purge the test playlist directory so that the created test
@@ -4362,7 +4362,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: localPlaylistToSelectTitle,
         numberOfRewindedAudio: 4,
-        expectedTotalPlayableDuration: "0:00:00",
+        expectedTotalPlayableDuration: "0:22:10",
       );
 
       // Purge the test playlist directory so that the created test
@@ -4398,7 +4398,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: localPlaylistToSelectTitle,
         numberOfRewindedAudio: 4,
-        expectedTotalPlayableDuration: "0:00:00",
+        expectedTotalPlayableDuration: "0:22:09",
       );
 
       // Purge the test playlist directory so that the created test
@@ -4437,7 +4437,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
-        expectedTotalPlayableDuration: "0:00:00",
+        expectedTotalPlayableDuration: "1:09:58",
       );
 
       // Verify the current audio position
@@ -38140,7 +38140,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: selectedPlaylistTitle,
         numberOfRewindedAudio: 40,
-        expectedTotalPlayableDuration: "0:00:00",
+        expectedTotalPlayableDuration: "56:32",
       );
 
       // Verify the playlist info dialog content
@@ -38182,7 +38182,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: selectedPlaylistTitle,
         numberOfRewindedAudio: 40,
-        expectedTotalPlayableDuration: "0:00:00",
+        expectedTotalPlayableDuration: "56:32",
       );
 
       // Verify the playlist info dialog content
@@ -56933,7 +56933,7 @@ Future<void> _rewindPlaylistAfterPlayThenPauseAnAudio({
     tester: tester,
     playlistToRewindTitle: playlistToRewindTitle,
     numberOfRewindedAudio: audioRewindedNumber,
-    expectedTotalPlayableDuration: "0:00:00",
+    expectedTotalPlayableDuration: "1:09:58",
   );
 
   // Return to audio player view to verify the playlist current

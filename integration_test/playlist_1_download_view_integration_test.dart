@@ -23453,7 +23453,7 @@ void main() {
         tester: tester,
         playlistToRewindTitle: localPlaylistTitle,
         numberOfRewindedAudio: 1,
-        expectedTotalPlayableDuration: "0:00:42",
+        expectedTotalPlayableDuration: "0:42",
       );
 
       // Then, get the first downloaded Audio ListTile Text

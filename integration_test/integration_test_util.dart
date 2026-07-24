@@ -4518,13 +4518,13 @@ class IntegrationTestUtil {
     // Find the playlist to rewind audio ListTile
 
     // First, find the Playlist ListTile Text widget
-    final Finder youtubePlaylistToRewindListTileTextWidgetFinder =
+    final Finder playlistToRewindListTileTextWidgetFinder =
         find.text(playlistToRewindTitle);
 
     // Then obtain the Playlist ListTile widget enclosing the Text widget
     // by finding its ancestor
-    final Finder youtubePlaylistToRewindListTileWidgetFinder = find.ancestor(
-      of: youtubePlaylistToRewindListTileTextWidgetFinder,
+    final Finder playlistToRewindListTileWidgetFinder = find.ancestor(
+      of: playlistToRewindListTileTextWidgetFinder,
       matching: find.byType(ListTile),
     );
 
@@ -4532,7 +4532,7 @@ class IntegrationTestUtil {
 
     // Find the playlist leading menu icon button
     final Finder firstPlaylistListTileLeadingMenuIconButton = find.descendant(
-      of: youtubePlaylistToRewindListTileWidgetFinder,
+      of: playlistToRewindListTileWidgetFinder,
       matching: find.byIcon(Icons.menu),
     );
 
@@ -4542,10 +4542,10 @@ class IntegrationTestUtil {
 
     // Now find the 'Rewind Audio to Start' playlist popup menu item
     // and tap on it
-    final Finder popupDeletePlaylistMenuItem =
+    final Finder popupRewindAudiosPlaylistMenuItem =
         find.byKey(const Key("popup_menu_rewind_audio_to_start"));
 
-    await tester.tap(popupDeletePlaylistMenuItem);
+    await tester.tap(popupRewindAudiosPlaylistMenuItem);
     await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
     await IntegrationTestUtil.verifyAndCloseWarningDialog(

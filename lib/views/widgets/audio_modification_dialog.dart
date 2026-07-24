@@ -320,7 +320,7 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
         _modifyAudioUrl(context);
         break;
       case AudioModificationType.playableEveryNDays:
-        isWarningDisplayed = _modifyPlayableOnlyWeekDays(
+        isWarningDisplayed = _modifyPlayableEveryDays(
           context: context,
         );
         break;
@@ -373,7 +373,7 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
   /// days. IIn this case, after the warning is displayed, the audio modification dialog is not
   /// closed and the user can correct the error. If no warning is displayed, the audio modification
   /// dialog is closed.
-  bool _modifyPlayableOnlyWeekDays({
+  bool _modifyPlayableEveryDays({
     required BuildContext context,
   }) {
     String playableOnlyWeekDaysStr =

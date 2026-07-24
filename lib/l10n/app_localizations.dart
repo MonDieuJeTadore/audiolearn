@@ -4918,18 +4918,6 @@ abstract class AppLocalizations {
   /// **'If not defined, the audio is playable every day !'**
   String get definePlayableEveryNDaysMenuTooltip;
 
-  /// No description provided for @definePlayableOnlyMonthDaysMenu.
-  ///
-  /// In en, this message translates to:
-  /// **'List the only playable Month Day Number(s) ...'**
-  String get definePlayableOnlyMonthDaysMenu;
-
-  /// No description provided for @definePlayableOnlyMonthDaysMenuTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'If not defined, the audio is playable on every month day !'**
-  String get definePlayableOnlyMonthDaysMenuTooltip;
-
   /// No description provided for @playableEveryNDays.
   ///
   /// In en, this message translates to:

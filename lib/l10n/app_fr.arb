@@ -1742,8 +1742,6 @@
   "restoringPlaylistsFromZipProgression": "Restoration de playlist(s) à partir d'un ZIP ...",
   "definePlayableEveryNDaysMenu": "Définir que l'audio est jouable tous les n jours ...",
   "definePlayableEveryNDaysMenuTooltip": "Si ce n'est pas défini, l'audio est jouable chaque jour !",
-  "definePlayableOnlyMonthDaysMenu": "Lister le(s) jour(s) de mois durant lesquels l'audio est jouable ...",
-  "definePlayableOnlyMonthDaysMenuTooltip": "Si ce n'est pas défini, l'audio est jouable durant n'importe quel jour du mois !",
   "playableEveryNDays": "Jouable tous les n jours",
   "modifyPlayableEveryNDaysTooltip": "",
   "modifyPlayableEveryNDaysDialogComment": "1 est défini par défaut et indique que l'audio est jouable tous les jours.\nDate de dernière écoute: {lastPlayedDate}.",

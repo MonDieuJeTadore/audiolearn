@@ -3192,14 +3192,6 @@ class MockAppLocalizations extends AppLocalizations {
       "If not defined, the audio is playable on every week day !";
 
   @override
-  String get definePlayableOnlyMonthDaysMenu =>
-      "List the only playable Month Day Number(s) ...";
-
-  @override
-  String get definePlayableOnlyMonthDaysMenuTooltip =>
-      "If not defined, the audio is playable on every month day !.";
-
-  @override
   String get playableEveryNDays => "Playable Week Day Number(s)";
 
   @override

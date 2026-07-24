@@ -3099,14 +3099,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Si ce n\'est pas défini, l\'audio est jouable chaque jour !';
 
   @override
-  String get definePlayableOnlyMonthDaysMenu =>
-      'Lister le(s) jour(s) de mois durant lesquels l\'audio est jouable ...';
-
-  @override
-  String get definePlayableOnlyMonthDaysMenuTooltip =>
-      'Si ce n\'est pas défini, l\'audio est jouable durant n\'importe quel jour du mois !';
-
-  @override
   String get playableEveryNDays => 'Jouable tous les n jours';
 
   @override

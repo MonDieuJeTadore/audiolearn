@@ -1115,14 +1115,15 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
             });
             break;
           case FilteredAudioAction.rewindFilteredAudioToStart:
-            int rewindedPlayableAudioNumber =
-                playlistListVMlistenFalse.rewindPlayableFilteredAudioToStart(
+            List<dynamic> resultsLst =
+                playlistListVMlistenFalse.rewindPlayableAudioToStart(
               audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
               playlist: playlist,
             );
 
-            warningMessageVMlistenFalse.rewindedFilteredPlayableAudioToStart(
-                rewindedPlayableAudioNumber: rewindedPlayableAudioNumber);
+            warningMessageVMlistenFalse.rewindedPlayableAudioToStart(
+                rewindedPlayableAudioNumber: resultsLst[0] as int,
+                todayPlayableAudioDurationStr: resultsLst[1] as String);
             break;
           case FilteredAudioAction.extractFilteredAudio:
             List<Audio> sortFilteredAudioLst = playlistListVMlistenFalse

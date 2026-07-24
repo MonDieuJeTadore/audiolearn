@@ -3125,4 +3125,20 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get notYetPlayed => 'pas encore écouté';
+
+  @override
+  String get modifyFilteredAudioLastListenedDateTime =>
+      'Modifier la date/heure de dernière écoute des audios filtrés ...';
+
+  @override
+  String get setAudioLastListenedDateTimeTitle =>
+      'Définir la date/heure de dernière écoute';
+
+  @override
+  String get setAudioLastListenedDateTimeTitleExplanation =>
+      'La date/heure définie sera appliquée à chaque audio filtré.';
+
+  @override
+  String get setAudioLastListenedDateTimeTitleTooltip =>
+      'Ceci est utile si les audios concernés n\'ont pas été écoutés avant la date/heure définie.';
 }

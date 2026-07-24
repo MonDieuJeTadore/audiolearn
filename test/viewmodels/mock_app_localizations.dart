@@ -3220,4 +3220,20 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get notYetPlayed => "not yet played";
+
+  @override
+  String get modifyFilteredAudioLastListenedDateTime =>
+      "Modify filtered Audios last listen Date/Time ...";
+
+  @override
+  String get setAudioLastListenedDateTimeTitle =>
+      "Define the last listened Date/Time";
+
+  @override
+  String get setAudioLastListenedDateTimeTitleExplanation =>
+      "The defined date/time will be set as last listen date/time in every filtered audio.";
+
+  @override
+  String get setAudioLastListenedDateTimeTitleTooltip =>
+      "This is usefull if the concerned audios were not listened before the defined date/time.";
 }

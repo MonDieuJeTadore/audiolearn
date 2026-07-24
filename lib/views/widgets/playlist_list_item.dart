@@ -58,6 +58,7 @@ enum FilteredAudioAction {
   moveFilteredAudio,
   copyFilteredAudio,
   rewindFilteredAudioToStart,
+  modifyFilteredAudioLastListenedDateTime,
   extractFilteredAudio,
   deleteFilteredAudio,
   deleteFilteredAudioFromPlaylistAsWell,
@@ -928,6 +929,13 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
           child: Text(AppLocalizations.of(context)!.rewindFilteredAudioToStart),
         ),
         PopupMenuItem<FilteredAudioAction>(
+          key: const Key(
+              'popup_menu_modify_filtered_audio_last_listened_date_time'),
+          value: FilteredAudioAction.modifyFilteredAudioLastListenedDateTime,
+          child: Text(AppLocalizations.of(context)!
+              .modifyFilteredAudioLastListenedDateTime),
+        ),
+        PopupMenuItem<FilteredAudioAction>(
           key: const Key('popup_menu_extract_filtered_audio'),
           value: FilteredAudioAction.extractFilteredAudio,
           child: Text(AppLocalizations.of(context)!.extractFilteredAudio),
@@ -1124,6 +1132,114 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
             warningMessageVMlistenFalse.rewindedPlayableAudioToStart(
                 rewindedPlayableAudioNumber: resultsLst[0] as int,
                 todayPlayableAudioDurationStr: resultsLst[1] as String);
+            break;
+          case FilteredAudioAction.modifyFilteredAudioLastListenedDateTime:
+            final PlaylistListVM playlistListVMlistenFalse =
+                Provider.of<PlaylistListVM>(
+              context,
+              listen: false,
+            );
+            final DateFormatVM dateFormatVMlistenFalse =
+                Provider.of<DateFormatVM>(
+              context,
+              listen: false,
+            );
+
+            showDialog<List<String>>(
+              barrierDismissible:
+                  false, // Prevents the dialog from closing when tapping outside.
+              context: context,
+              builder: (BuildContext context) {
+                String translatedDateFormatStr =
+                    UiUtil.obtainTranslatedDateFormat(
+                        context: context,
+                        dateFormatVMlistenFalse: dateFormatVMlistenFalse);
+
+                return SetValueToTargetDialog(
+                  dialogTitle: AppLocalizations.of(context)!
+                      .setAudioLastListenedDateTimeTitle,
+                  dialogCommentStr: AppLocalizations.of(context)!
+                      .setAudioLastListenedDateTimeTitleExplanation,
+                  passedValueFieldLabel: AppLocalizations.of(context)!
+                      .audioDownloadFromDateTimeLabel(translatedDateFormatStr),
+                  passedValueFieldTooltip: AppLocalizations.of(context)!
+                      .setAudioLastListenedDateTimeTitleTooltip,
+                  passedValueStr:
+                      dateFormatVMlistenFalse.formatDateTime(DateTime.now()),
+                  checkboxLabelLst: [],
+                  validationFunction: validateDateTimeFormat,
+                  validationFunctionArgs: [
+                    dateFormatVMlistenFalse,
+                  ],
+                  isCursorAtStart: true,
+                );
+              },
+            ).then((resultStringLst) async {
+              if (resultStringLst == null) {
+                // The case if the Cancel button was pressed.
+                return;
+              }
+
+              String oldestAudioDownloadDateFormattedStr = resultStringLst[0];
+
+              List<dynamic> resultsLst =
+                  await UiUtil.obtainAudioMp3SavingToZipDuration(
+                playlistListVMlistenFalse: playlistListVMlistenFalse,
+                dateFormatVMlistenFalse: dateFormatVMlistenFalse,
+                warningMessageVMlistenFalse: warningMessageVMlistenFalse,
+                playlistsLst: [playlist], // only one playlist
+                oldestAudioDownloadDateFormattedStr:
+                    oldestAudioDownloadDateFormattedStr,
+              );
+
+              if (resultsLst[0] == null) {
+                // The case if the date format is invalid.
+                return;
+              }
+
+              DateTime parseDateTimeOrDateStrUsinAppDateFormat =
+                  resultsLst[0]! as DateTime;
+              Duration audioMp3SavingToZipDuration = resultsLst[1] as Duration;
+
+              // Use the global navigator context which is always valid,
+              // even after an async gap on Android.
+              final BuildContext validContext =
+                  UiUtil.globalNavigatorKey.currentContext!;
+
+              showDialog<void>(
+                context: validContext,
+                barrierDismissible:
+                    false, // This line prevents the dialog from closing when
+                //            tapping outside the dialog
+                builder: (BuildContext context) {
+                  return ConfirmActionDialog(
+                    actionFunction: () async {
+                      await playlistListVMlistenFalse
+                          .savePlaylistsAudioMp3FilesToZip(
+                        listOfPlaylists: [playlist],
+                        fromAudioDownloadDateTime:
+                            parseDateTimeOrDateStrUsinAppDateFormat,
+                        zipFileSizeLimitInMb: settingsDataService.get(
+                              settingType: SettingType.playlists,
+                              settingSubType:
+                                  Playlists.maxSavableAudioMp3FileSizeInMb,
+                            ) ??
+                            kMp3ZipFileSizeLimitInMb,
+                        uniquePlaylistIsSaved: true,
+                      );
+                      // Handle any post-execution logic here
+                    },
+                    actionFunctionArgs: [],
+                    dialogTitleOne:
+                        AppLocalizations.of(context)!.savingAudioToZipTimeTitle,
+                    dialogContent:
+                        AppLocalizations.of(context)!.savingAudioToZipTime(
+                      audioMp3SavingToZipDuration.HHmmss(),
+                    ),
+                  );
+                },
+              );
+            });
             break;
           case FilteredAudioAction.extractFilteredAudio:
             List<Audio> sortFilteredAudioLst = playlistListVMlistenFalse

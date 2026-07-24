@@ -4965,6 +4965,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'not yet listened'**
   String get notYetPlayed;
+
+  /// No description provided for @modifyFilteredAudioLastListenedDateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify filtered Audios last listen Date/Time ...'**
+  String get modifyFilteredAudioLastListenedDateTime;
+
+  /// No description provided for @setAudioLastListenedDateTimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Define the last listened Date/Time'**
+  String get setAudioLastListenedDateTimeTitle;
+
+  /// No description provided for @setAudioLastListenedDateTimeTitleExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'The defined date/time will be set as last listen date/time in every filtered audio.'**
+  String get setAudioLastListenedDateTimeTitleExplanation;
+
+  /// No description provided for @setAudioLastListenedDateTimeTitleTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'This is usefull if the concerned audios were not listened before the defined date/time.'**
+  String get setAudioLastListenedDateTimeTitleTooltip;
 }
 
 class _AppLocalizationsDelegate

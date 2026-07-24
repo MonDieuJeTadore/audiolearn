@@ -1749,5 +1749,9 @@
   "modifyPlayableEveryNDaysButton": "Modifier",
   "invalidPlayableEveryNDaysWarning": "Nombre de jours entre deux lectures invalide : \"{dayNumber}\".",
   "playableEveryNDaysLabel": "Jouable tous les n jours",
-  "notYetPlayed": "pas encore écouté"
+  "notYetPlayed": "pas encore écouté",
+  "modifyFilteredAudioLastListenedDateTime": "Modifier la date/heure de dernière écoute des audios filtrés ...",
+  "setAudioLastListenedDateTimeTitle": "Définir la date/heure de dernière écoute",
+  "setAudioLastListenedDateTimeTitleExplanation": "La date/heure définie sera appliquée à chaque audio filtré.",
+  "setAudioLastListenedDateTimeTitleTooltip": "Ceci est utile si les audios concernés n'ont pas été écoutés avant la date/heure définie."
 }

@@ -3143,9 +3143,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ceci est utile si les audios concernés n\'ont pas été écoutés avant la date/heure définie.';
 
   @override
-  String get lastListenedDate => 'Date dernière écoute';
+  String get startLastListenedDate => 'Date début dernière écoute';
 
   @override
-  String get lastListenedDateSortFilterTooltip =>
-      'Les audios écoutés à cette date seront listés.';
+  String get startLastListenedDateSortFilterTooltip =>
+      'Si seule la date de début de dernière écoute est définie, tous les audios écoutés à partir de la date définie seront listés.';
+
+  @override
+  String get endLastListenedDateSortFilterTooltip =>
+      'Si seule la date de fin de dernière écoute est définie, tous les audios écoutés jusqu\'à la date définie seront listés.';
 }

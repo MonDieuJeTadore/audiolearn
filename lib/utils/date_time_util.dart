@@ -175,4 +175,18 @@ class DateTimeUtil {
     // Set the time to the end of the given day (23:59:59)
     return DateTime(date.year, date.month, date.day, 23, 59, 59);
   }
+
+  /// Checks if the date part of two DateTime objects are identical.
+  static bool isDateOnlyIdentical({
+    required DateTime? firstDateOrDateTime,
+    required DateTime? secondDateOrDateTime,
+  }) {
+    if (firstDateOrDateTime == null || secondDateOrDateTime == null) {
+      return false;
+    }
+
+    return firstDateOrDateTime.year == secondDateOrDateTime.year &&
+        firstDateOrDateTime.month == secondDateOrDateTime.month &&
+        firstDateOrDateTime.day == secondDateOrDateTime.day;
+  }
 }

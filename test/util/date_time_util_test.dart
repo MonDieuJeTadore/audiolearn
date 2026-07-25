@@ -569,4 +569,54 @@ void main() {
       expect(increasedValue, DateTime(2024, 1, 7, 23, 59, 59));
     });
   });
+  group('DateTimeUtil.isDateOnlyIdentical()', () {
+    test('isDateOnlyIdentical date only identical', () {
+      bool result = DateTimeUtil.isDateOnlyIdentical(
+        firstDateOrDateTime: DateTime(2024, 1, 7),
+        secondDateOrDateTime: DateTime(2024, 1, 7),
+      );
+
+      expect(result, true);
+    });
+    test('isDateOnlyIdentical date only different', () {
+      bool result = DateTimeUtil.isDateOnlyIdentical(
+        firstDateOrDateTime: DateTime(2024, 1, 7),
+        secondDateOrDateTime: DateTime(2024, 1, 8),
+      );
+
+      expect(result, false);
+    });
+    test('isDateOnlyIdentical date + hours minutes seconds identical', () {
+      bool result = DateTimeUtil.isDateOnlyIdentical(
+        firstDateOrDateTime: DateTime(2024, 1, 7, 10, 45, 23),
+        secondDateOrDateTime: DateTime(2024, 1, 7, 10, 45, 23),
+      );
+
+      expect(result, true);
+    });
+    test('isDateOnlyIdentical date and hours minutes identical, but seconds different', () {
+      bool result = DateTimeUtil.isDateOnlyIdentical(
+        firstDateOrDateTime: DateTime(2024, 1, 7, 10, 45, 23),
+        secondDateOrDateTime: DateTime(2024, 1, 7, 10, 45, 24),
+      );
+
+      expect(result, true);
+    });
+    test('isDateOnlyIdentical date and hours identical, but minutes seconds different', () {
+      bool result = DateTimeUtil.isDateOnlyIdentical(
+        firstDateOrDateTime: DateTime(2024, 1, 7, 10, 46, 23),
+        secondDateOrDateTime: DateTime(2024, 1, 7, 10, 45, 24),
+      );
+
+      expect(result, true);
+    });
+    test('isDateOnlyIdentical date and hours different, but minutes seconds identical', () {
+      bool result = DateTimeUtil.isDateOnlyIdentical(
+        firstDateOrDateTime: DateTime(2024, 1, 7, 19, 46, 24),
+        secondDateOrDateTime: DateTime(2024, 1, 7, 10, 46, 24),
+      );
+
+      expect(result, true);
+    });
+  });
 }

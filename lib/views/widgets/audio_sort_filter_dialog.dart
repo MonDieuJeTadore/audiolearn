@@ -1269,9 +1269,9 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
           dateTimeType: DateType.lastListenedDate,
           controller: _lastListenedDateController,
           dateTime: _lastListenedDate,
-          label: AppLocalizations.of(context)!.lastListenedDate,
+          label: AppLocalizations.of(context)!.startLastListenedDate,
           tooltipMessage:
-              AppLocalizations.of(context)!.lastListenedDateSortFilterTooltip,
+              AppLocalizations.of(context)!.startLastListenedDateSortFilterTooltip,
         ),
       ],
     );
@@ -2551,7 +2551,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       'downloadDateEndRange': AppLocalizations.of(context)!.endDownloadDate,
       'uploadDateStartRange': AppLocalizations.of(context)!.startUploadDate,
       'uploadDateEndRange': AppLocalizations.of(context)!.endUploadDate,
-      'lastListenedDate': AppLocalizations.of(context)!.lastListenedDate,
+      'lastListenedDate': AppLocalizations.of(context)!.startLastListenedDate,
       'emptyDate': AppLocalizations.of(context)!.emptyDate,
       'fileSizeStartRangeMB':
           "${AppLocalizations.of(context)!.fileSizeRange} ${AppLocalizations.of(context)!.start}",

@@ -3238,9 +3238,13 @@ class MockAppLocalizations extends AppLocalizations {
       "This is usefull if the concerned audios were not listened before the defined date/time.";
 
   @override
-  String get lastListenedDate => "Last listened date";
+  String get startLastListenedDate => "Last listened date";
 
   @override
-  String get lastListenedDateSortFilterTooltip =>
-      "Lists all audios that were listened to on this date.";
+  String get startLastListenedDateSortFilterTooltip =>
+      "Lists all audios listened on or before the specified end date if set.";
+
+  @override
+  String get endLastListenedDateSortFilterTooltip =>
+      "Lists all audios listened on or before the specified end date if set.";
 }

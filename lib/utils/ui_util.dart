@@ -410,7 +410,7 @@ class UiUtil {
           if (filePath != null && filePath.isNotEmpty) {
             // Verify the file exists
             File selectedFile = File(filePath);
-            
+
             if (await selectedFile.exists()) {
               return {'type': 'file', 'path': filePath};
             } else {
@@ -919,5 +919,71 @@ class UiUtil {
 
     // dragging to the AudioPlayerView screen
     onPageChangedFunction(ScreenMixin.AUDIO_PLAYER_VIEW_DRAGGABLE_INDEX);
+  }
+
+  static Future<DateTime?> showAudioLearnDatePicker({
+    required BuildContext context,
+    required DateTime initialDate,
+    required DateTime firstDate,
+    required DateTime lastDate,
+    required Locale locale,
+  }) {
+    DateTime selectedDate = initialDate;
+
+    return showDialog<DateTime>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return Localizations.override(
+          context: dialogContext,
+          locale: locale,
+          child: Builder(
+            builder: (localizedContext) {
+              final MaterialLocalizations localizations =
+                  MaterialLocalizations.of(localizedContext);
+
+              return Dialog(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CalendarDatePicker(
+                        initialDate: initialDate,
+                        firstDate: firstDate,
+                        lastDate: lastDate,
+                        onDateChanged: (DateTime date) {
+                          selectedDate = date;
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.of(dialogContext).pop(selectedDate),
+                              child: Text(localizations.okButtonLabel),
+                            ),
+                            const SizedBox(width: 8),
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.of(dialogContext).pop(),
+                              child: Text(localizations.cancelButtonLabel),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 }

@@ -26,11 +26,12 @@ enum CalledFrom {
   audioPlayerViewAudioMenu,
 }
 
-enum DateTimeType {
+enum DateType {
   startDownloadDateTime,
   endDownloadDateTime,
   startUploadDateTime,
   endUploadDateTime,
+  lastListenedDate,
 }
 
 class AudioSortFilterDialog extends StatefulWidget {
@@ -109,6 +110,8 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       TextEditingController();
   final TextEditingController _endUploadDateTimeController =
       TextEditingController();
+  final TextEditingController _lastListenedDateController =
+      TextEditingController();
   final TextEditingController _startAudioDurationController =
       TextEditingController();
   final TextEditingController _endAudioDurationController =
@@ -119,6 +122,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
   DateTime? _endDownloadDateTime;
   DateTime? _startUploadDateTime;
   DateTime? _endUploadDateTime;
+  DateTime? _lastListenedDate;
 
   final _audioTitleSearchSentenceFocusNode = FocusNode();
   final _sortFilterSaveAsUniqueNameFocusNode = FocusNode();
@@ -278,6 +282,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     _startUploadDateTime =
         audioSortDefaultFilterParameters.uploadDateStartRange;
     _endUploadDateTime = audioSortDefaultFilterParameters.uploadDateEndRange;
+    _lastListenedDate = audioSortDefaultFilterParameters.lastListenedDate;
 
     double fileSizeStartRangeMB =
         audioSortDefaultFilterParameters.fileSizeStartRangeMB;
@@ -312,6 +317,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     _endDownloadDateTimeController.dispose();
     _startUploadDateTimeController.dispose();
     _endUploadDateTimeController.dispose();
+    _lastListenedDateController.dispose();
     _startAudioDurationController.dispose();
     _endAudioDurationController.dispose();
     _audioTitleSearchSentenceFocusNode.dispose();
@@ -352,6 +358,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     _endDownloadDateTimeController.clear();
     _startUploadDateTimeController.clear();
     _endUploadDateTimeController.clear();
+    _lastListenedDateController.clear();
     _startAudioDurationController.clear();
     _endAudioDurationController.clear();
     _startFileSizeController.clear();
@@ -403,6 +410,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     _endDownloadDateTimeController.clear();
     _startUploadDateTimeController.clear();
     _endUploadDateTimeController.clear();
+    _lastListenedDateController.clear();
     _startAudioDurationController.clear();
     _endAudioDurationController.clear();
     _startFileSizeController.clear();
@@ -1205,7 +1213,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
           textFieldKey: const Key('startDownloadDateTextField'),
           context: context,
           dateFormatVMlistenFalse: dateFormatVMlistenFalse,
-          dateTimeType: DateTimeType.startDownloadDateTime,
+          dateTimeType: DateType.startDownloadDateTime,
           controller: _startDownloadDateTimeController,
           dateTime: _startDownloadDateTime,
           label: AppLocalizations.of(context)!.startDownloadDate,
@@ -1218,7 +1226,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
           textFieldKey: const Key('endDownloadDateTextField'),
           context: context,
           dateFormatVMlistenFalse: dateFormatVMlistenFalse,
-          dateTimeType: DateTimeType.endDownloadDateTime,
+          dateTimeType: DateType.endDownloadDateTime,
           controller: _endDownloadDateTimeController,
           dateTime: _endDownloadDateTime,
           label: AppLocalizations.of(context)!.endDownloadDate,
@@ -1231,7 +1239,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
           textFieldKey: const Key('startUploadDateTextField'),
           context: context,
           dateFormatVMlistenFalse: dateFormatVMlistenFalse,
-          dateTimeType: DateTimeType.startUploadDateTime,
+          dateTimeType: DateType.startUploadDateTime,
           controller: _startUploadDateTimeController,
           dateTime: _startUploadDateTime,
           label: AppLocalizations.of(context)!.startUploadDate,
@@ -1244,12 +1252,25 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
           textFieldKey: const Key('endUploadDateTextField'),
           context: context,
           dateFormatVMlistenFalse: dateFormatVMlistenFalse,
-          dateTimeType: DateTimeType.endUploadDateTime,
+          dateTimeType: DateType.endUploadDateTime,
           controller: _endUploadDateTimeController,
           dateTime: _endUploadDateTime,
           label: AppLocalizations.of(context)!.endUploadDate,
           tooltipMessage:
               AppLocalizations.of(context)!.endVideoUploadDateSortFilterTooltip,
+        ),
+        _buildDateTextFieldWithDateEditorIcon(
+          languageProviderVMlistenFalse: languageProviderVMlistenFalse,
+          dateIconButtondKey: const Key('lastListenedDateIconButton'),
+          textFieldKey: const Key('lastListenedDateTextField'),
+          context: context,
+          dateFormatVMlistenFalse: dateFormatVMlistenFalse,
+          dateTimeType: DateType.lastListenedDate,
+          controller: _lastListenedDateController,
+          dateTime: _lastListenedDate,
+          label: AppLocalizations.of(context)!.lastListenedDate,
+          tooltipMessage:
+              AppLocalizations.of(context)!.lastListenedDateSortFilterTooltip,
         ),
       ],
     );
@@ -1261,7 +1282,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     required Key textFieldKey,
     required BuildContext context,
     required DateFormatVM dateFormatVMlistenFalse,
-    required DateTimeType dateTimeType,
+    required DateType dateTimeType,
     required TextEditingController controller,
     required DateTime? dateTime,
     required String label,
@@ -1355,21 +1376,24 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
   }
 
   void _setDateToPrivateVariable({
-    required DateTimeType dateTimeType,
+    required DateType dateTimeType,
     DateTime? dateTime,
   }) {
     switch (dateTimeType) {
-      case DateTimeType.startDownloadDateTime:
+      case DateType.startDownloadDateTime:
         _startDownloadDateTime = dateTime;
         break;
-      case DateTimeType.endDownloadDateTime:
+      case DateType.endDownloadDateTime:
         _endDownloadDateTime = dateTime;
         break;
-      case DateTimeType.startUploadDateTime:
+      case DateType.startUploadDateTime:
         _startUploadDateTime = dateTime;
         break;
-      case DateTimeType.endUploadDateTime:
+      case DateType.endUploadDateTime:
         _endUploadDateTime = dateTime;
+        break;
+      case DateType.lastListenedDate:
+        _lastListenedDate = dateTime;
         break;
     }
   }
@@ -2526,6 +2550,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       'downloadDateEndRange': AppLocalizations.of(context)!.endDownloadDate,
       'uploadDateStartRange': AppLocalizations.of(context)!.startUploadDate,
       'uploadDateEndRange': AppLocalizations.of(context)!.endUploadDate,
+      'lastListenedDate': AppLocalizations.of(context)!.lastListenedDate,
       'emptyDate': AppLocalizations.of(context)!.emptyDate,
       'fileSizeStartRangeMB':
           "${AppLocalizations.of(context)!.fileSizeRange} ${AppLocalizations.of(context)!.start}",
@@ -2745,6 +2770,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       downloadDateEndRange: _endDownloadDateTime,
       uploadDateStartRange: _startUploadDateTime,
       uploadDateEndRange: _endUploadDateTime,
+      lastListenedDate: _lastListenedDate,
       fileSizeStartRangeMB: double.tryParse(startFileSizeTxt) ?? 0.0,
       fileSizeEndRangeMB: double.tryParse(endFileSizeTxt) ?? 0.0,
       durationStartRangeSec: startAudioDurationSeconds,

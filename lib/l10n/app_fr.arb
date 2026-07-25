@@ -1753,5 +1753,7 @@
   "modifyFilteredAudioLastListenedDateTime": "Modifier la date/heure de dernière écoute des audios filtrés ...",
   "setAudioLastListenedDateTimeTitle": "Définir la date/heure de dernière écoute",
   "setAudioLastListenedDateTimeTitleExplanation": "La date/heure définie sera appliquée à chaque audio filtré.",
-  "setAudioLastListenedDateTimeTitleTooltip": "Ceci est utile si les audios concernés n'ont pas été écoutés avant la date/heure définie."
+  "setAudioLastListenedDateTimeTitleTooltip": "Ceci est utile si les audios concernés n'ont pas été écoutés avant la date/heure définie.",
+  "lastListenedDate": "Date dernière écoute",
+  "lastListenedDateSortFilterTooltip": "Les audios écoutés à cette date seront listés."
 }

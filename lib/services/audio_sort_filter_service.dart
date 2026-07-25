@@ -720,6 +720,22 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+    if (existingAudioSortFilterParms.lastListenedDate !=
+        newOrModifiedaudioSortFilterParms.lastListenedDate) {
+      wasFilterOptionsTitleAddedToDifferencesLst =
+          _addToDifferencesLstOtherOptionDateValueStr(
+              dateFormatVMlistenFalse: dateFormatVMlistenFalse,
+              initialDateTimeValue:
+                  existingAudioSortFilterParms.lastListenedDate,
+              modifiedDateTimeValue:
+                  newOrModifiedaudioSortFilterParms.lastListenedDate,
+              sortFilterParmsNameTranslationMap:
+                  sortFilterParmsNameTranslationMap,
+              optionNameTranslationKey: 'lastListenedDate',
+              differencesLst: differencesLst,
+              wasFilterOptionsTitleAddedToDifferencesLst:
+                  wasFilterOptionsTitleAddedToDifferencesLst);
+    }
     if (existingAudioSortFilterParms.fileSizeStartRangeMB !=
         newOrModifiedaudioSortFilterParms.fileSizeStartRangeMB) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -1351,10 +1367,9 @@ class AudioSortFilterService {
 
     Playlist playlist = filteredAudios.first.enclosingPlaylist!;
 
-    Map<String, List<Comment>> commentsMap =
-        CommentVM(
-          isTest: _settingsDataService.isTest,
-        ).getPlaylistAudioComments(
+    Map<String, List<Comment>> commentsMap = CommentVM(
+      isTest: _settingsDataService.isTest,
+    ).getPlaylistAudioComments(
       playlist: playlist,
     );
 
@@ -1511,6 +1526,13 @@ class AudioSortFilterService {
         audioLst: filteredAudios,
         startDateTime: audioSortFilterParameters.uploadDateStartRange,
         endDateTime: audioSortFilterParameters.uploadDateEndRange,
+      );
+    }
+
+    if (audioSortFilterParameters.lastListenedDate != null) {
+      filteredAudios = _filterAudioLstByAudioLastListenedDate(
+        audioLst: filteredAudios,
+        lastListenedDate: audioSortFilterParameters.lastListenedDate,
       );
     }
 
@@ -1688,6 +1710,23 @@ class AudioSortFilterService {
         return audioLst;
       }
     }
+  }
+
+  List<Audio> _filterAudioLstByAudioLastListenedDate({
+    required List<Audio> audioLst,
+    required DateTime? lastListenedDate,
+  }) {
+    if (lastListenedDate != null) {
+      // endDateTime is null
+      return audioLst.where((audio) {
+        return (DateTimeUtil.isDateOnlyIdentical(
+          firstDateOrDateTime: audio.audioPausedDateTime,
+          secondDateOrDateTime: lastListenedDate,
+        ));
+      }).toList();
+    }
+
+    return [];
   }
 
   List<Audio> _filterAudioLstByAudioFileSize({

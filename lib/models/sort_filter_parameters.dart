@@ -382,6 +382,9 @@ class AudioSortFilterParameters {
   final DateTime? uploadDateStartRange;
   final DateTime? uploadDateEndRange;
 
+  // The date the last listened date filter.
+  final DateTime? lastListenedDate;
+
   // The start and end range for the file size filter.
   final double fileSizeStartRangeMB;
   final double fileSizeEndRangeMB;
@@ -418,6 +421,7 @@ class AudioSortFilterParameters {
     this.downloadDateEndRange,
     this.uploadDateStartRange,
     this.uploadDateEndRange,
+    this.lastListenedDate,
     this.fileSizeStartRangeMB = 0,
     this.fileSizeEndRangeMB = 0,
     this.durationStartRangeSec = 0,
@@ -466,6 +470,9 @@ class AudioSortFilterParameters {
       uploadDateEndRange: json['uploadDateEndRange'] == null
           ? null
           : DateTime.parse(json['uploadDateEndRange']),
+      lastListenedDate: json['lastListenedDate'] == null
+          ? null
+          : DateTime.parse(json['lastListenedDate']),
       fileSizeStartRangeMB: json['fileSizeStartRangeMB'] ?? 0.0,
       fileSizeEndRangeMB: json['fileSizeEndRangeMB'] ?? 0.0,
       durationStartRangeSec: json['durationStartRangeSec'],
@@ -503,6 +510,7 @@ class AudioSortFilterParameters {
       'downloadDateEndRange': downloadDateEndRange?.toIso8601String(),
       'uploadDateStartRange': uploadDateStartRange?.toIso8601String(),
       'uploadDateEndRange': uploadDateEndRange?.toIso8601String(),
+      'lastListenedDate': lastListenedDate?.toIso8601String(),
       'fileSizeStartRangeMB': fileSizeStartRangeMB,
       'fileSizeEndRangeMB': fileSizeEndRangeMB,
       'durationStartRangeSec': durationStartRangeSec,
@@ -544,6 +552,7 @@ class AudioSortFilterParameters {
         other.downloadDateEndRange == downloadDateEndRange &&
         other.uploadDateStartRange == uploadDateStartRange &&
         other.uploadDateEndRange == uploadDateEndRange &&
+        other.lastListenedDate == lastListenedDate &&
         other.fileSizeStartRangeMB == fileSizeStartRangeMB &&
         other.fileSizeEndRangeMB == fileSizeEndRangeMB &&
         other.durationStartRangeSec == durationStartRangeSec &&
@@ -607,6 +616,7 @@ class AudioSortFilterParameters {
       downloadDateEndRange: downloadDateEndRange,
       uploadDateStartRange: uploadDateStartRange,
       uploadDateEndRange: uploadDateEndRange,
+      lastListenedDate: lastListenedDate,
       fileSizeStartRangeMB: fileSizeStartRangeMB,
       fileSizeEndRangeMB: fileSizeEndRangeMB,
       durationStartRangeSec: durationStartRangeSec,

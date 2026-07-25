@@ -4989,6 +4989,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This is usefull if the concerned audios were not listened before the defined date/time.'**
   String get setAudioLastListenedDateTimeTitleTooltip;
+
+  /// No description provided for @lastListenedDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Last listened date'**
+  String get lastListenedDate;
+
+  /// No description provided for @lastListenedDateSortFilterTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Lists all audios listened to on this date.'**
+  String get lastListenedDateSortFilterTooltip;
 }
 
 class _AppLocalizationsDelegate

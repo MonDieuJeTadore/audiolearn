@@ -3106,4 +3106,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get setAudioLastListenedDateTimeTitleTooltip =>
       'This is usefull if the concerned audios were not listened before the defined date/time.';
+
+  @override
+  String get lastListenedDate => 'Last listened date';
+
+  @override
+  String get lastListenedDateSortFilterTooltip =>
+      'Lists all audios listened to on this date.';
 }

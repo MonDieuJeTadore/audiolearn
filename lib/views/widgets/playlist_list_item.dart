@@ -1124,7 +1124,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
             break;
           case FilteredAudioAction.rewindFilteredAudioToStart:
             List<dynamic> resultsLst =
-                playlistListVMlistenFalse.rewindPlayableAudioToStart(
+                playlistListVMlistenFalse.rewindFilteredPlayableAudioToStart(
               audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
               playlist: playlist,
             );

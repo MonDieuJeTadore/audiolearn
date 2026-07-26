@@ -6018,12 +6018,12 @@ class PlaylistListVM extends ChangeNotifier {
   ///
   /// Method called also when the user clicks on the 'Rewind filtered audio to
   /// start' sub menu item of the playlist 'Filtered Audios Actions' menu.
-  /// 
+  ///
   /// Passing the {audioPlayerVM} is necessary in order to rewind the current
   /// audio to start position. Otherwise, after clicking on the play audio view
   /// button, the current audio will be positioned to the last played position
   /// instead of the start position.
-  List<dynamic>  rewindPlayableAudioToStart({
+  List<dynamic> rewindPlayableAudioToStart({
     required AudioPlayerVM audioPlayerVMlistenFalse,
     required Playlist playlist,
   }) {
@@ -6039,6 +6039,82 @@ class PlaylistListVM extends ChangeNotifier {
     if (audioPlayerViewAudioLst.isNotEmpty) {
       rewindedAudioNumberAndTodayPlayableAudioDurationLst =
           _rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration(
+        playlist: playlist,
+        audioToRewindLst: audioPlayerViewAudioLst,
+      );
+
+      Audio currentAudioInAudioPlayableListDialog;
+
+      if (playlist.audioPlayingOrder == AudioPlayingOrder.descending) {
+        // If the audio playing order is descending, we need to
+        // set the current audio to the first playable audio.
+        currentAudioInAudioPlayableListDialog = audioPlayerViewAudioLst.first;
+      } else {
+        // If the audio playing order is ascending, we need to
+        // set the current audio to the last playable audio.
+        currentAudioInAudioPlayableListDialog = audioPlayerViewAudioLst.last;
+      }
+
+      audioPlayerVMlistenFalse.setCurrentAudio(
+          audio: currentAudioInAudioPlayableListDialog);
+
+      // Setting the current audio index in the download playlist
+      // view audio list
+      playlist.currentOrPastPlayableAudioIndex =
+          playlist.playableAudioLst.indexOf(
+        currentAudioInAudioPlayableListDialog,
+      );
+    }
+
+    if (playlist.currentOrPastPlayableAudioIndex != -1 &&
+        audioPlayerVMlistenFalse.currentAudio != null) {
+      audioPlayerVMlistenFalse.skipToStart(
+        // This parameter value avoids that the current audio is
+        // set the previous audio position after rewinding the
+        // current audio to start position.
+        isAfterRewindingAudioPosition: true,
+      );
+    }
+
+    if (rewindedAudioNumberAndTodayPlayableAudioDurationLst[0] as int > 0) {
+      JsonDataService.saveToFile(
+        model: playlist,
+        path: playlist.getPlaylistDownloadFilePathName(),
+      );
+    }
+
+    notifyListeners();
+
+    return rewindedAudioNumberAndTodayPlayableAudioDurationLst;
+  }
+
+  /// Method called when the user clicks on the 'Rewind audio to start' playlist
+  /// menu item. The method rewinds the audio to start and saves the playlist
+  /// to its json file.
+  ///
+  /// Method called also when the user clicks on the 'Rewind filtered audio to
+  /// start' sub menu item of the playlist 'Filtered Audios Actions' menu.
+  ///
+  /// Passing the {audioPlayerVM} is necessary in order to rewind the current
+  /// audio to start position. Otherwise, after clicking on the play audio view
+  /// button, the current audio will be positioned to the last played position
+  /// instead of the start position.
+  List<dynamic> rewindFilteredPlayableAudioToStart({
+    required AudioPlayerVM audioPlayerVMlistenFalse,
+    required Playlist playlist,
+  }) {
+    List<dynamic> rewindedAudioNumberAndTodayPlayableAudioDurationLst = [];
+
+    // Obtaining the playable audio list ordered according to the
+    // sort/filter parameters applied to the audio player view.
+    List<Audio> audioPlayerViewAudioLst =
+        getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
+            audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+            playlist: playlist);
+
+    if (audioPlayerViewAudioLst.isNotEmpty) {
+      rewindedAudioNumberAndTodayPlayableAudioDurationLst =
+          _rewindFilteredPlayableAudioToStartAndGetTodayPlayableAudioDuration(
         playlist: playlist,
         audioToRewindLst: audioPlayerViewAudioLst,
       );
@@ -6111,6 +6187,34 @@ class PlaylistListVM extends ChangeNotifier {
       rewindedAudioNumber,
       DateTimeUtil.convertTimeWithTenthOfSecToTimeWithSec(
         timeWithTenthOfSecondsStr: todayPlayableAudioDuration.HHmmss(
+          addRemainingOneDigitTenthOfSecond: true,
+        ),
+      ),
+    ];
+  }
+
+  List<dynamic>
+      _rewindFilteredPlayableAudioToStartAndGetTodayPlayableAudioDuration({
+    required Playlist playlist,
+    required List<Audio> audioToRewindLst,
+  }) {
+    int rewindedAudioNumber = 0;
+    Duration totalDuration = Duration.zero;
+
+    for (Audio audio in audioToRewindLst) {
+      if (audio.audioPositionSeconds > 0 ||
+          audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd) {
+        audio.audioPositionSeconds = 0;
+        audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd = false;
+        rewindedAudioNumber++;
+        totalDuration += audio.durationImpactedByPlaySpeed();
+      }
+    }
+
+    return [
+      rewindedAudioNumber,
+      DateTimeUtil.convertTimeWithTenthOfSecToTimeWithSec(
+        timeWithTenthOfSecondsStr: totalDuration.HHmmss(
           addRemainingOneDigitTenthOfSecond: true,
         ),
       ),

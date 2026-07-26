@@ -3152,4 +3152,17 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get endLastListenedDateSortFilterTooltip =>
       'Si seule la date de fin de dernière écoute est définie, tous les audios écoutés jusqu\'à la date définie seront listés.';
+
+  @override
+  String get obtainFilteredAudioNumberAndDuration =>
+      'Obtenir le nombre d\'audios filtrés ainsi que leur durée jouable totale';
+
+  @override
+  String filteredAudioNumberAndDuration(
+      Object number, Object playableDuration) {
+    return 'Durée jouable totale des $number audios filtrés de la playlist: $playableDuration.';
+  }
+
+  @override
+  String get filteredAudioNumberAndDurationDialogTitle => 'Valeurs obtenues';
 }

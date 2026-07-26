@@ -5007,6 +5007,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Lists all audios listened on or before the specified end date if set.'**
   String get endLastListenedDateSortFilterTooltip;
+
+  /// No description provided for @obtainFilteredAudioNumberAndDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Obtain filtered Audios Number and and theit total playable Duration'**
+  String get obtainFilteredAudioNumberAndDuration;
+
+  /// No description provided for @filteredAudioNumberAndDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Total playable duration of the {number} playlist filtered audios: {playableDuration}.'**
+  String filteredAudioNumberAndDuration(Object number, Object playableDuration);
+
+  /// No description provided for @filteredAudioNumberAndDurationDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Obtained Values'**
+  String get filteredAudioNumberAndDurationDialogTitle;
 }
 
 class _AppLocalizationsDelegate

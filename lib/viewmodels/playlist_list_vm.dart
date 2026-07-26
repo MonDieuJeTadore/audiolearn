@@ -6088,12 +6088,9 @@ class PlaylistListVM extends ChangeNotifier {
     return rewindedAudioNumberAndTodayPlayableAudioDurationLst;
   }
 
-  /// Method called when the user clicks on the 'Rewind audio to start' playlist
-  /// menu item. The method rewinds the audio to start and saves the playlist
-  /// to its json file.
-  ///
-  /// Method called also when the user clicks on the 'Rewind filtered audio to
-  /// start' sub menu item of the playlist 'Filtered Audios Actions' menu.
+  /// Method called when the user clicks on the 'Rewind filtered Audio to start'
+  /// sub-menu item of the 'Filtered Audios Actions' playlist menu item. The method
+  /// rewinds the audio to start and saves the playlist to its json file.
   ///
   /// Passing the {audioPlayerVM} is necessary in order to rewind the current
   /// audio to start position. Otherwise, after clicking on the play audio view
@@ -6164,6 +6161,34 @@ class PlaylistListVM extends ChangeNotifier {
     return rewindedAudioNumberAndTodayPlayableAudioDurationLst;
   }
 
+  List<dynamic> obtainFilteredPlayableAudioNumberAndDuration({
+    required AudioPlayerVM audioPlayerVMlistenFalse,
+    required Playlist playlist,
+  }) {
+    // Obtaining the playable audio list ordered according to the
+    // sort/filter parameters applied to the audio player view.
+    List<Audio> audioPlayerViewAudioLst =
+        getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
+            audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+            playlist: playlist);
+
+    String durationStr = '';
+
+    if (audioPlayerViewAudioLst.isNotEmpty) {
+      durationStr = _obtainAudioDuration(
+        playlist: playlist,
+        filteredAudioLst: audioPlayerViewAudioLst,
+      );
+
+      return [
+        audioPlayerViewAudioLst.length,
+        durationStr,
+      ];
+    }
+
+    return [];
+  }
+
   List<dynamic> _rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration({
     required Playlist playlist,
     required List<Audio> audioToRewindLst,
@@ -6219,6 +6244,23 @@ class PlaylistListVM extends ChangeNotifier {
         ),
       ),
     ];
+  }
+
+  String _obtainAudioDuration({
+    required Playlist playlist,
+    required List<Audio> filteredAudioLst,
+  }) {
+    Duration totalDuration = Duration.zero;
+
+    for (Audio audio in filteredAudioLst) {
+      totalDuration += audio.durationImpactedByPlaySpeed();
+    }
+
+    return DateTimeUtil.convertTimeWithTenthOfSecToTimeWithSec(
+      timeWithTenthOfSecondsStr: totalDuration.HHmmss(
+        addRemainingOneDigitTenthOfSecond: true,
+      ),
+    );
   }
 
   Duration _getAudioPlayableTodayTotalDuration({

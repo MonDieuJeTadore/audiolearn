@@ -58,6 +58,7 @@ enum FilteredAudioAction {
   moveFilteredAudio,
   copyFilteredAudio,
   rewindFilteredAudioToStart,
+  obtainFilteredAudioNumberAndDuration,
   modifyFilteredAudioLastListenedDateTime,
   extractFilteredAudio,
   deleteFilteredAudio,
@@ -929,6 +930,11 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
           child: Text(AppLocalizations.of(context)!.rewindFilteredAudioToStart),
         ),
         PopupMenuItem<FilteredAudioAction>(
+          key: const Key('popup_menu_obtain_filtered_audio_number_and_duration'),
+          value: FilteredAudioAction.obtainFilteredAudioNumberAndDuration,
+          child: Text(AppLocalizations.of(context)!.obtainFilteredAudioNumberAndDuration),
+        ),
+        PopupMenuItem<FilteredAudioAction>(
           key: const Key(
               'popup_menu_modify_filtered_audio_last_listened_date_time'),
           value: FilteredAudioAction.modifyFilteredAudioLastListenedDateTime,
@@ -1132,6 +1138,17 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
             warningMessageVMlistenFalse.rewindedPlayableAudioToStart(
                 rewindedPlayableAudioNumber: resultsLst[0] as int,
                 todayPlayableAudioDurationStr: resultsLst[1] as String);
+            break;
+          case FilteredAudioAction.obtainFilteredAudioNumberAndDuration:
+            List<dynamic> resultsLst =
+                playlistListVMlistenFalse.obtainFilteredPlayableAudioNumberAndDuration(
+              audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
+              playlist: playlist,
+            );
+
+            warningMessageVMlistenFalse.filteredAudioNumberAndDuration(
+                filteredAudiosNumber: resultsLst[0] as int,
+                filteredAudiosDurationStr: resultsLst[1] as String);
             break;
           case FilteredAudioAction.modifyFilteredAudioLastListenedDateTime:
             final PlaylistListVM playlistListVMlistenFalse =

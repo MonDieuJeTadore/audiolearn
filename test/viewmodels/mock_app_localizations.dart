@@ -3247,4 +3247,21 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get endLastListenedDateSortFilterTooltip =>
       "Lists all audios listened on or before the specified end date if set.";
+
+  @override
+  String get obtainFilteredAudioNumberAndDuration =>
+      "Obtain filtered Audios Number and Duration";
+
+  @override
+  String filteredAudioNumberAndDuration(
+    Object number,
+    Object playableDuration,
+  ) =>
+      "Total playable duration of the $number playlist filtered audios: $playableDuration.";
+
+  @override
+  String get filteredAudioNumberAndDurationDialogTitle => "Values";
+
+  @override
+  String get filteredAudioNumberAndDurationDialogTitle => "Values";
 }

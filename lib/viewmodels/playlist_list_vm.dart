@@ -2605,7 +2605,7 @@ class PlaylistListVM extends ChangeNotifier {
       for (int i = currentAudioIndex - 1; i >= 0; i--) {
         Audio audio = sortedAndFilteredPlayableAudioLst[i];
         if (audio.wasFullyListened() ||
-            !audiosPlaylist.isAudioPlayableToday(
+            !_isAudioPlayableToday(
               audio: audio,
             )) {
           continue;
@@ -2631,7 +2631,7 @@ class PlaylistListVM extends ChangeNotifier {
           i++) {
         Audio audio = sortedAndFilteredPlayableAudioLst[i];
         if (audio.wasFullyListened() ||
-            !audiosPlaylist.isAudioPlayableToday(
+            !_isAudioPlayableToday(
               audio: audio,
             )) {
           continue;
@@ -6176,7 +6176,6 @@ class PlaylistListVM extends ChangeNotifier {
 
     if (audioPlayerViewAudioLst.isNotEmpty) {
       durationStr = _obtainAudioDuration(
-        playlist: playlist,
         filteredAudioLst: audioPlayerViewAudioLst,
       );
 
@@ -6224,7 +6223,6 @@ class PlaylistListVM extends ChangeNotifier {
     required List<Audio> audioToRewindLst,
   }) {
     int rewindedAudioNumber = 0;
-    Duration totalDuration = Duration.zero;
 
     for (Audio audio in audioToRewindLst) {
       if (audio.audioPositionSeconds > 0 ||
@@ -6232,14 +6230,17 @@ class PlaylistListVM extends ChangeNotifier {
         audio.audioPositionSeconds = 0;
         audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd = false;
         rewindedAudioNumber++;
-        totalDuration += audio.durationImpactedByPlaySpeed();
       }
     }
+
+    Duration todayPlayableAudioDuration = _getFilteredAudioPlayableTodayTotalDuration(
+      filteredAudioLst: audioToRewindLst,
+    );
 
     return [
       rewindedAudioNumber,
       DateTimeUtil.convertTimeWithTenthOfSecToTimeWithSec(
-        timeWithTenthOfSecondsStr: totalDuration.HHmmss(
+        timeWithTenthOfSecondsStr: todayPlayableAudioDuration.HHmmss(
           addRemainingOneDigitTenthOfSecond: true,
         ),
       ),
@@ -6247,7 +6248,6 @@ class PlaylistListVM extends ChangeNotifier {
   }
 
   String _obtainAudioDuration({
-    required Playlist playlist,
     required List<Audio> filteredAudioLst,
   }) {
     Duration totalDuration = Duration.zero;
@@ -6269,7 +6269,7 @@ class PlaylistListVM extends ChangeNotifier {
     Duration totalDuration = Duration.zero;
 
     for (Audio audio in playlist.playableAudioLst) {
-      if (playlist.isAudioPlayableToday(
+      if (_isAudioPlayableToday(
         audio: audio,
       )) {
         totalDuration += audio.durationImpactedByPlaySpeed();
@@ -6279,6 +6279,61 @@ class PlaylistListVM extends ChangeNotifier {
     }
 
     return totalDuration;
+  }
+
+  Duration _getFilteredAudioPlayableTodayTotalDuration({
+    required List<Audio> filteredAudioLst,
+  }) {
+    Duration totalDuration = Duration.zero;
+
+    for (Audio audio in filteredAudioLst) {
+      if (_isAudioPlayableToday(
+        audio: audio,
+      )) {
+        totalDuration += audio.durationImpactedByPlaySpeed();
+      } else {
+        continue;
+      }
+    }
+
+    return totalDuration;
+  }
+
+  bool _isAudioPlayableToday({
+    required Audio audio,
+  }) {
+    DateTime today = DateTime.now();
+
+    int audioPlayableEveryNDays = audio.playableEveryNDays;
+
+    if (audioPlayableEveryNDays <= 1) {
+      // means the audio is playable every day
+      return true;
+    } else {
+      DateTime? audioPausedDateTime = audio.audioPausedDateTime;
+
+      if (audioPausedDateTime == null) {
+        // means the audio has never been played and so is playable today
+        return true;
+      }
+
+      DateTime audioPausedDateOnly = DateTime(
+        audioPausedDateTime.year,
+        audioPausedDateTime.month,
+        audioPausedDateTime.day,
+      );
+
+      DateTime todayDateOnly = DateTime(
+        today.year,
+        today.month,
+        today.day,
+      );
+
+      int daysSincePaused =
+          todayDateOnly.difference(audioPausedDateOnly).inDays;
+
+      return daysSincePaused >= audioPlayableEveryNDays;
+    }
   }
 
   /// Method called when the user clicks on the Save button in the application

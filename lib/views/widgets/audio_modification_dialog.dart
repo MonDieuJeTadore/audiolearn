@@ -20,7 +20,8 @@ enum AudioModificationType {
   playableEveryNDays,
 }
 
-/// This dialog allows the user to rename the audio file or modify its title.
+/// This dialog allows the user to rename the audio file, modify its title, modify the URL of
+/// its Youtube video or modify its playable every day number.
 class AudioModificationDialog extends StatefulWidget {
   final Audio audio;
   final AudioModificationType audioModificationType;

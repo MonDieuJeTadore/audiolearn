@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 
 import 'package:audiolearn/viewmodels/audio_player_vm.dart';
@@ -23608,7 +23609,7 @@ void main() {
       // Verify the dialog comment
       expect(
           find.text(
-              '1 is set by default indicating that the audio is playable every day.\nLast played date: 24/07/2026.'),
+              '1 is set by default indicating that the audio is playable every day.\nLast played date: ${DateFormat('dd/MM/yyyy').format(DateTime.now())}.'),
           findsOneWidget);
 
       // Find the TextField using the Key
@@ -23723,7 +23724,7 @@ void main() {
     await IntegrationTestUtil.verifyAndCloseWarningDialog(
       tester: tester,
       warningDialogMessage:
-          "1 playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal playable duration: 1:12.",
+          "3 playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal playable duration: 1:12.",
       isWarningConfirming: true,
     );
 

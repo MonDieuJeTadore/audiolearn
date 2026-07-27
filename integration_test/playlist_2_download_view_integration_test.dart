@@ -54410,8 +54410,8 @@ void main() {
       await tester.drag(listFinder, const Offset(0, 5000));
       await tester.pumpAndSettle();
 
-      // Tap on "1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'"
-      // to open the audio player view
+      // Tap on "41_Dédier une ou deux heures par jour à une vraie
+      // vie spirituelle" to open the audio player view
       String audioTitleToSelect =
           "41_Dédier une ou deux heures par jour à une vraie vie spirituelle";
 
@@ -54441,7 +54441,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            "41 playlist audios were repositioned to start and the first listenable audio was selected.",
+            "41 playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal playable duration: 56:32.",
         isWarningConfirming: true,
       );
 

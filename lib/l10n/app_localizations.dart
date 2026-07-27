@@ -4990,23 +4990,17 @@ abstract class AppLocalizations {
   /// **'This is usefull if the concerned audios were not listened before the defined date/time.'**
   String get setAudioLastListenedDateTimeTitleTooltip;
 
-  /// No description provided for @startLastListenedDate.
+  /// No description provided for @lastListenedDate.
   ///
   /// In en, this message translates to:
-  /// **'Start last listened date'**
-  String get startLastListenedDate;
+  /// **'Last listened date'**
+  String get lastListenedDate;
 
-  /// No description provided for @startLastListenedDateSortFilterTooltip.
+  /// No description provided for @lastListenedDateSortFilterTooltip.
   ///
   /// In en, this message translates to:
   /// **'Lists all audios listened on or after the specified start date if set.'**
-  String get startLastListenedDateSortFilterTooltip;
-
-  /// No description provided for @endLastListenedDateSortFilterTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'Lists all audios listened on or before the specified end date if set.'**
-  String get endLastListenedDateSortFilterTooltip;
+  String get lastListenedDateSortFilterTooltip;
 
   /// No description provided for @obtainFilteredAudioNumberAndDuration.
   ///

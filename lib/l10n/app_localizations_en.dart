@@ -3108,15 +3108,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'This is usefull if the concerned audios were not listened before the defined date/time.';
 
   @override
-  String get startLastListenedDate => 'Start last listened date';
+  String get lastListenedDate => 'Last listened date';
 
   @override
-  String get startLastListenedDateSortFilterTooltip =>
+  String get lastListenedDateSortFilterTooltip =>
       'Lists all audios listened on or after the specified start date if set.';
-
-  @override
-  String get endLastListenedDateSortFilterTooltip =>
-      'Lists all audios listened on or before the specified end date if set.';
 
   @override
   String get obtainFilteredAudioNumberAndDuration =>

@@ -579,43 +579,6 @@ class Playlist {
     return totalRemainingDuration;
   }
 
-  bool isAudioPlayableToday({
-    required Audio audio,
-  }) {
-    DateTime today = DateTime.now();
-
-    int audioPlayableEveryNDays = audio.playableEveryNDays;
-
-    if (audioPlayableEveryNDays <= 1) {
-      // means the audio is playable every day
-      return true;
-    } else {
-      DateTime? audioPausedDateTime = audio.audioPausedDateTime;
-
-      if (audioPausedDateTime == null) {
-        // means the audio has never been played and so is playable today
-        return true;
-      }
-
-      DateTime audioPausedDateOnly = DateTime(
-        audioPausedDateTime.year,
-        audioPausedDateTime.month,
-        audioPausedDateTime.day,
-      );
-
-      DateTime todayDateOnly = DateTime(
-        today.year,
-        today.month,
-        today.day,
-      );
-
-      int daysSincePaused =
-          todayDateOnly.difference(audioPausedDateOnly).inDays;
-
-      return daysSincePaused >= audioPlayableEveryNDays;
-    }
-  }
-
   int getPlayableAudioLstTotalFileSize() {
     int totalFileSize = 0;
 

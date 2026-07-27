@@ -6172,16 +6172,19 @@ class PlaylistListVM extends ChangeNotifier {
             audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
             playlist: playlist);
 
-    String durationStr = '';
-
     if (audioPlayerViewAudioLst.isNotEmpty) {
-      durationStr = _obtainAudioDuration(
+      List<dynamic> numberAndTotalDurationLst =
+          _getFilteredAudioPlayableTodayNumberAndTotalDuration(
         filteredAudioLst: audioPlayerViewAudioLst,
       );
 
       return [
-        audioPlayerViewAudioLst.length,
-        durationStr,
+        numberAndTotalDurationLst[0] as int,
+        DateTimeUtil.convertTimeWithTenthOfSecToTimeWithSec(
+          timeWithTenthOfSecondsStr: (numberAndTotalDurationLst[1] as Duration).HHmmss(
+            addRemainingOneDigitTenthOfSecond: true,
+          ),
+        ),
       ];
     }
 
@@ -6222,45 +6225,27 @@ class PlaylistListVM extends ChangeNotifier {
     required Playlist playlist,
     required List<Audio> audioToRewindLst,
   }) {
-    int rewindedAudioNumber = 0;
-
     for (Audio audio in audioToRewindLst) {
       if (audio.audioPositionSeconds > 0 ||
           audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd) {
         audio.audioPositionSeconds = 0;
         audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd = false;
-        rewindedAudioNumber++;
       }
     }
 
-    Duration todayPlayableAudioDuration = _getFilteredAudioPlayableTodayTotalDuration(
+    List<dynamic> numberAndTotalDurationLst =
+        _getFilteredAudioPlayableTodayNumberAndTotalDuration(
       filteredAudioLst: audioToRewindLst,
     );
 
     return [
-      rewindedAudioNumber,
+      numberAndTotalDurationLst[0] as int,
       DateTimeUtil.convertTimeWithTenthOfSecToTimeWithSec(
-        timeWithTenthOfSecondsStr: todayPlayableAudioDuration.HHmmss(
+        timeWithTenthOfSecondsStr: (numberAndTotalDurationLst[1] as Duration).HHmmss(
           addRemainingOneDigitTenthOfSecond: true,
         ),
       ),
     ];
-  }
-
-  String _obtainAudioDuration({
-    required List<Audio> filteredAudioLst,
-  }) {
-    Duration totalDuration = Duration.zero;
-
-    for (Audio audio in filteredAudioLst) {
-      totalDuration += audio.durationImpactedByPlaySpeed();
-    }
-
-    return DateTimeUtil.convertTimeWithTenthOfSecToTimeWithSec(
-      timeWithTenthOfSecondsStr: totalDuration.HHmmss(
-        addRemainingOneDigitTenthOfSecond: true,
-      ),
-    );
   }
 
   Duration _getAudioPlayableTodayTotalDuration({
@@ -6281,22 +6266,29 @@ class PlaylistListVM extends ChangeNotifier {
     return totalDuration;
   }
 
-  Duration _getFilteredAudioPlayableTodayTotalDuration({
+  /// Method that returns the number of filtered audios that are playable today
+  /// and the total duration of these audios.
+  List<dynamic> _getFilteredAudioPlayableTodayNumberAndTotalDuration({
     required List<Audio> filteredAudioLst,
   }) {
+    int filteredPlayableAudioCount = 0;
     Duration totalDuration = Duration.zero;
 
     for (Audio audio in filteredAudioLst) {
       if (_isAudioPlayableToday(
         audio: audio,
       )) {
+        filteredPlayableAudioCount++;
         totalDuration += audio.durationImpactedByPlaySpeed();
       } else {
         continue;
       }
     }
 
-    return totalDuration;
+    return [
+      filteredPlayableAudioCount,
+      totalDuration,
+    ];
   }
 
   bool _isAudioPlayableToday({

@@ -5011,7 +5011,7 @@ abstract class AppLocalizations {
   /// No description provided for @filteredAudioNumberAndDuration.
   ///
   /// In en, this message translates to:
-  /// **'Total playable duration of the {number} playlist filtered audios: {playableDuration}.'**
+  /// **'Total playable duration of the {number} playlist filtered playable today audios: {playableDuration}.'**
   String filteredAudioNumberAndDuration(Object number, Object playableDuration);
 
   /// No description provided for @filteredAudioNumberAndDurationDialogTitle.

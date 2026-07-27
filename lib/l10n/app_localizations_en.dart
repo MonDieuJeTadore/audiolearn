@@ -3121,7 +3121,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String filteredAudioNumberAndDuration(
       Object number, Object playableDuration) {
-    return 'Total playable duration of the $number playlist filtered audios: $playableDuration.';
+    return 'Total playable duration of the $number playlist filtered playable today audios: $playableDuration.';
   }
 
   @override

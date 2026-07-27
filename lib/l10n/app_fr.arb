@@ -1757,6 +1757,6 @@
   "lastListenedDate": "Date dernière écoute",
   "lastListenedDateSortFilterTooltip": "Les audios écoutés à cette date seront listés.",
   "obtainFilteredAudioNumberAndDuration": "Obtenir le nombre d'audios filtrés ainsi que leur durée jouable totale",
-  "filteredAudioNumberAndDuration": "Durée jouable totale des {number} audios filtrés de la playlist: {playableDuration}.",
+  "filteredAudioNumberAndDuration": "Durée jouable totale des {number} audios filtrés jouables aujourd'hui de la playlist: {playableDuration}.",
   "filteredAudioNumberAndDurationDialogTitle": "Valeurs obtenues"
 }

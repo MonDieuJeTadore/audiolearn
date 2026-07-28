@@ -2297,7 +2297,7 @@ abstract class AppLocalizations {
   /// No description provided for @rewindedPlayableAudioNumber.
   ///
   /// In en, this message translates to:
-  /// **'{number} playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal playable duration: {playableDuration}.'**
+  /// **'{number} playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: {playableDuration}.'**
   String rewindedPlayableAudioNumber(Object number, Object playableDuration);
 
   /// No description provided for @dateFormat.

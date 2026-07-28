@@ -1354,7 +1354,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String rewindedPlayableAudioNumber(Object number, Object playableDuration) {
-    return '$number playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal playable duration: $playableDuration.';
+    return '$number playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: $playableDuration.';
   }
 
   @override

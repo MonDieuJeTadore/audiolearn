@@ -4551,7 +4551,7 @@ class IntegrationTestUtil {
     await IntegrationTestUtil.verifyAndCloseWarningDialog(
       tester: tester,
       warningDialogMessage:
-          "$numberOfRewindedAudio playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal playable duration: $expectedTotalPlayableDuration.",
+          "$numberOfRewindedAudio playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: $expectedTotalPlayableDuration.",
       isWarningConfirming: true,
     );
   }

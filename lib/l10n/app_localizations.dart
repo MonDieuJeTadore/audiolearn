@@ -5005,7 +5005,7 @@ abstract class AppLocalizations {
   /// No description provided for @obtainFilteredAudioNumberAndDuration.
   ///
   /// In en, this message translates to:
-  /// **'Obtain filtered Audios Number and and theit total playable Duration'**
+  /// **'Obtain filtered Audios Number and and their total playable Duration'**
   String get obtainFilteredAudioNumberAndDuration;
 
   /// No description provided for @filteredAudioNumberAndDuration.
@@ -5019,6 +5019,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Obtained Values'**
   String get filteredAudioNumberAndDurationDialogTitle;
+
+  /// No description provided for @playableEveryNDaysRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Playable every n days range'**
+  String get playableEveryNDaysRange;
+
+  /// No description provided for @startAudioPlayableEveryNDaysSortFilterTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Lists all audios which are playable every n days equal to or greater than the specified minimum number if set.'**
+  String get startAudioPlayableEveryNDaysSortFilterTooltip;
+
+  /// No description provided for @endAudioPlayableEveryNDaysSortFilterTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Lists all audios which are playable every n days equal to or less than the specified maximum number if set.'**
+  String get endAudioPlayableEveryNDaysSortFilterTooltip;
 }
 
 class _AppLocalizationsDelegate

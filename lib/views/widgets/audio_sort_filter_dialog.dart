@@ -686,14 +686,15 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
                       dateFormatVMlistenFalse: dateFormatVMlistenFalse,
                       dateNow: now,
                     ),
+                    _buildAudioPlayableEveryNDaysFields(context: context),
                     const SizedBox(
                       height: kDialogTextFieldVerticalSeparation,
                     ),
-                    _buildAudioFileSizeFields(context),
+                    _buildAudioFileSizeFields(context: context),
                     const SizedBox(
                       height: kDialogTextFieldVerticalSeparation,
                     ),
-                    _buildAudioDurationFields(context),
+                    _buildAudioDurationFields(context: context),
                     const SizedBox(
                       height: kDialogTextFieldVerticalSeparation,
                     ),
@@ -1081,9 +1082,9 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     }
   }
 
-  Column _buildAudioDurationFields(
-    BuildContext context,
-  ) {
+  Column _buildAudioDurationFields({
+    required BuildContext context,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1120,9 +1121,48 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     );
   }
 
-  Column _buildAudioFileSizeFields(
-    BuildContext context,
-  ) {
+  Column _buildAudioPlayableEveryNDaysFields({
+    required BuildContext context,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(AppLocalizations.of(context)!.playableEveryNDaysRange),
+        const SizedBox(
+          height: 5,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildLabelTextField(
+              key: const Key('startPlayableEveryNDaysTextField'),
+              context: context,
+              controller: _startFileSizeController,
+              label: AppLocalizations.of(context)!.start,
+              labelSize: 43.0,
+              tooltipMessage: AppLocalizations.of(context)!
+                  .startAudioPlayableEveryNDaysSortFilterTooltip,
+            ),
+            const SizedBox(width: 10),
+            _buildLabelTextField(
+              key: const Key('endPlayableEveryNDaysTextField'),
+              context: context,
+              controller: _endFileSizeController,
+              label: AppLocalizations.of(context)!.end,
+              labelSize: 27.0,
+              tooltipMessage: AppLocalizations.of(context)!
+                  .endAudioPlayableEveryNDaysSortFilterTooltip,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Column _buildAudioFileSizeFields({
+    required BuildContext context,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -3116,7 +3116,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get obtainFilteredAudioNumberAndDuration =>
-      'Obtain filtered Audios Number and and theit total playable Duration';
+      'Obtain filtered Audios Number and and their total playable Duration';
 
   @override
   String filteredAudioNumberAndDuration(
@@ -3126,4 +3126,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get filteredAudioNumberAndDurationDialogTitle => 'Obtained Values';
+
+  @override
+  String get playableEveryNDaysRange => 'Playable every n days range';
+
+  @override
+  String get startAudioPlayableEveryNDaysSortFilterTooltip =>
+      'Lists all audios which are playable every n days equal to or greater than the specified minimum number if set.';
+
+  @override
+  String get endAudioPlayableEveryNDaysSortFilterTooltip =>
+      'Lists all audios which are playable every n days equal to or less than the specified maximum number if set.';
 }

@@ -3257,4 +3257,15 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get filteredAudioNumberAndDurationDialogTitle => "Values";
+
+  @override
+  String get playableEveryNDaysRange => "Playable every n days range";
+
+  @override
+  String get startAudioPlayableEveryNDaysSortFilterTooltip =>
+      "Lists all audios which are playable every n days equal to or greater than the specified minimum number if set.";
+
+  @override
+  String get endAudioPlayableEveryNDaysSortFilterTooltip =>
+      "Lists all audios which are playable every n days equal to or less than the specified maximum number if set.";
 }

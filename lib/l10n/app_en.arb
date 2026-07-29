@@ -1327,7 +1327,10 @@
   "setAudioLastListenedDateTimeTitleTooltip": "This is usefull if the concerned audios were not listened before the defined date/time.",
   "lastListenedDate": "Last listened date",
   "lastListenedDateSortFilterTooltip": "Lists all audios listened on or after the specified start date if set.",
-  "obtainFilteredAudioNumberAndDuration": "Obtain filtered Audios Number and and theit total playable Duration",
+  "obtainFilteredAudioNumberAndDuration": "Obtain filtered Audios Number and and their total playable Duration",
   "filteredAudioNumberAndDuration": "Total playable duration of the {number} playlist filtered playable today audios: {playableDuration}.",
-  "filteredAudioNumberAndDurationDialogTitle": "Obtained Values"
+  "filteredAudioNumberAndDurationDialogTitle": "Obtained Values",
+  "playableEveryNDaysRange": "Playable every n days range",
+  "startAudioPlayableEveryNDaysSortFilterTooltip": "Lists all audios which are playable every n days equal to or greater than the specified minimum number if set.",
+  "endAudioPlayableEveryNDaysSortFilterTooltip": "Lists all audios which are playable every n days equal to or less than the specified maximum number if set."
 }

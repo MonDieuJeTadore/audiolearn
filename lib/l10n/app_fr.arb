@@ -1758,5 +1758,8 @@
   "lastListenedDateSortFilterTooltip": "Les audios écoutés à cette date seront listés.",
   "obtainFilteredAudioNumberAndDuration": "Obtenir le nombre d'audios filtrés ainsi que leur durée jouable totale",
   "filteredAudioNumberAndDuration": "Durée jouable totale des {number} audios filtrés jouables aujourd'hui de la playlist: {playableDuration}.",
-  "filteredAudioNumberAndDurationDialogTitle": "Valeurs obtenues"
+  "filteredAudioNumberAndDurationDialogTitle": "Valeurs obtenues",
+  "playableEveryNDaysRange": "Intervalle jouable tous les n jours",
+  "startAudioPlayableEveryNDaysSortFilterTooltip": "Si seule l'intervalle minimale est définie, tous les audios jouables ces n jours ou les n jours supérieurs à la valeur définie seront listés.",
+  "endAudioPlayableEveryNDaysSortFilterTooltip": "Si seule l'intervalle maximale est définie, tous les audios jouables ces n jours ou les n jours inférieurs à la valeur définie seront listés."
 }

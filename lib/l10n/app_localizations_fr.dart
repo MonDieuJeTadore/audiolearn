@@ -3161,4 +3161,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get filteredAudioNumberAndDurationDialogTitle => 'Valeurs obtenues';
+
+  @override
+  String get playableEveryNDaysRange => 'Intervalle jouable tous les n jours';
+
+  @override
+  String get startAudioPlayableEveryNDaysSortFilterTooltip =>
+      'Si seule l\'intervalle minimale est définie, tous les audios jouables ces n jours ou les n jours supérieurs à la valeur définie seront listés.';
+
+  @override
+  String get endAudioPlayableEveryNDaysSortFilterTooltip =>
+      'Si seule l\'intervalle maximale est définie, tous les audios jouables ces n jours ou les n jours inférieurs à la valeur définie seront listés.';
 }

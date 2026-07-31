@@ -1315,7 +1315,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get playlistAudioPicturesLabel => 'Audio pictures';
 
   @override
-  String get listenedOn => 'Listened on';
+  String get listenedOn => 'listened on';
 
   @override
   String get remaining => 'Remaining';
@@ -3137,4 +3137,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get endAudioPlayableEveryNDaysSortFilterTooltip =>
       'Lists all audios which are playable every n days equal to or less than the specified maximum number if set.';
+
+  @override
+  String playableEveryNDaysSubTitle(Object nDays) {
+    return 'playable every $nDays days';
+  }
+
+  @override
+  String get playableEveryNDaysOrder => 'Playable every n days';
 }

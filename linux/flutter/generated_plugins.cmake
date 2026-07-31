@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_linux
+  ffmpeg_kit_flutter_new
   screen_retriever_linux
   url_launcher_linux
   volume_controller

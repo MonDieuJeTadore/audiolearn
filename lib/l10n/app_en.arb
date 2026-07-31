@@ -560,7 +560,7 @@
   "playlistSortFilterLabel": "Sort/filter {screenName}",
   "playlistAudioCommentsLabel": "Audio comments",
   "playlistAudioPicturesLabel": "Audio pictures",
-  "listenedOn": "Listened on",
+  "listenedOn": "listened on",
   "remaining": "Remaining",
   "searchInYoutubeChannelName": "Include Youtube channel",
   "searchInYoutubeChannelNameTooltip": "If set, search words or sentences are searched on Youtube channel name as well.",
@@ -1332,5 +1332,7 @@
   "filteredAudioNumberAndDurationDialogTitle": "Obtained Values",
   "playableEveryNDaysRange": "Playable every n days range",
   "startAudioPlayableEveryNDaysSortFilterTooltip": "Lists all audios which are playable every n days equal to or greater than the specified minimum number if set.",
-  "endAudioPlayableEveryNDaysSortFilterTooltip": "Lists all audios which are playable every n days equal to or less than the specified maximum number if set."
+  "endAudioPlayableEveryNDaysSortFilterTooltip": "Lists all audios which are playable every n days equal to or less than the specified maximum number if set.",
+  "playableEveryNDaysSubTitle": "playable every {nDays} days",
+  "playableEveryNDaysOrder": "Playable every n days"
 }

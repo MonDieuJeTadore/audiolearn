@@ -676,7 +676,7 @@
   "playlistSortFilterLabel": "Tri/filtre {screenName}",
   "playlistAudioCommentsLabel": "Commentaires des audios",
   "playlistAudioPicturesLabel": "Photos des audios",
-  "listenedOn": "Écouté le",
+  "listenedOn": "écouté le",
   "remaining": "Durée restante",
   "searchInYoutubeChannelName": "Inclure la chaîne Youtube",
   "searchInYoutubeChannelNameTooltip": "Inclure le nom de la chaîne Youtube dans la recherche.",
@@ -1761,5 +1761,7 @@
   "filteredAudioNumberAndDurationDialogTitle": "Valeurs obtenues",
   "playableEveryNDaysRange": "Intervalle jouable tous les n jours",
   "startAudioPlayableEveryNDaysSortFilterTooltip": "Si seule l'intervalle minimale est définie, tous les audios jouables ces n jours ou les n jours supérieurs à la valeur définie seront listés.",
-  "endAudioPlayableEveryNDaysSortFilterTooltip": "Si seule l'intervalle maximale est définie, tous les audios jouables ces n jours ou les n jours inférieurs à la valeur définie seront listés."
+  "endAudioPlayableEveryNDaysSortFilterTooltip": "Si seule l'intervalle maximale est définie, tous les audios jouables ces n jours ou les n jours inférieurs à la valeur définie seront listés.",
+  "playableEveryNDaysSubTitle": "jouable tous les {nDays} jour(s)",
+  "playableEveryNDaysOrder": "Jouable tous les n jours"
 }

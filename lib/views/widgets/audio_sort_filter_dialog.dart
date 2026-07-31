@@ -96,6 +96,10 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
   late bool _filterConverted;
   late bool _filterExtracted;
 
+  final TextEditingController _startPlayableEveryNDayController =
+      TextEditingController();
+  final TextEditingController _endPlayableEveryNDayController =
+      TextEditingController();
   final TextEditingController _startFileSizeController =
       TextEditingController();
   final TextEditingController _endFileSizeController = TextEditingController();
@@ -124,6 +128,8 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
   DateTime? _startUploadDateTime;
   DateTime? _endUploadDateTime;
   DateTime? _lastListenedDate;
+  int _startPlayableEveryNDayRange = 0;
+  int _endPlayableEveryNDayRange = 0;
 
   final _audioTitleSearchSentenceFocusNode = FocusNode();
   final _sortFilterSaveAsUniqueNameFocusNode = FocusNode();
@@ -284,6 +290,22 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
         audioSortDefaultFilterParameters.uploadDateStartRange;
     _endUploadDateTime = audioSortDefaultFilterParameters.uploadDateEndRange;
     _lastListenedDate = audioSortDefaultFilterParameters.lastListenedDate;
+    _startPlayableEveryNDayRange =
+        audioSortDefaultFilterParameters.startPlayableEveryNDayRange;
+    _endPlayableEveryNDayRange =
+        audioSortDefaultFilterParameters.endPlayableEveryNDayRange;
+        
+    int startPlayableEveryNDayRange =
+        audioSortDefaultFilterParameters.startPlayableEveryNDayRange;
+    _startPlayableEveryNDayController.text = (startPlayableEveryNDayRange > 0)
+        ? startPlayableEveryNDayRange.toString()
+        : '';
+
+    int endPlayableEveryNDayRange =
+        audioSortDefaultFilterParameters.endPlayableEveryNDayRange;
+    _endFileSizeController.text = (endPlayableEveryNDayRange > 0)
+        ? endPlayableEveryNDayRange.toString()
+        : '';
 
     double fileSizeStartRangeMB =
         audioSortDefaultFilterParameters.fileSizeStartRangeMB;
@@ -310,6 +332,8 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
 
   @override
   void dispose() {
+    _startPlayableEveryNDayController.dispose();
+    _endPlayableEveryNDayController.dispose();
     _startFileSizeController.dispose();
     _endFileSizeController.dispose();
     _sortFilterSaveAsUniqueNameController.dispose();
@@ -364,6 +388,8 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     _endAudioDurationController.clear();
     _startFileSizeController.clear();
     _endFileSizeController.clear();
+    _startPlayableEveryNDayController.clear();
+    _endPlayableEveryNDayController.clear();
     _audioSortOptionButtonIconColor = kDarkAndLightDisabledIconColor;
 
     _initializeHistoricalAudioSortFilterParamsLeftIconColors();
@@ -416,6 +442,8 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     _endAudioDurationController.clear();
     _startFileSizeController.clear();
     _endFileSizeController.clear();
+    _startPlayableEveryNDayController.clear();
+    _endPlayableEveryNDayController.clear();
 
     if (_selectedSortingItemLst.length > 1) {
       _audioSortOptionButtonIconColor = kDarkAndLightEnabledIconColor;
@@ -461,6 +489,8 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
         return AppLocalizations.of(context)!.audioRemainingDuration;
       case SortingOption.lastListenedDateTime:
         return AppLocalizations.of(context)!.lastListenedDateTime;
+      case SortingOption.playableEveryNDays:
+        return AppLocalizations.of(context)!.playableEveryNDaysOrder;
       case SortingOption.lastCommentDateTime:
         return AppLocalizations.of(context)!.lastCommentDateTime;
       case SortingOption.audioFileSize:
@@ -1138,7 +1168,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
             _buildLabelTextField(
               key: const Key('startPlayableEveryNDaysTextField'),
               context: context,
-              controller: _startFileSizeController,
+              controller: _startPlayableEveryNDayController,
               label: AppLocalizations.of(context)!.start,
               labelSize: 43.0,
               tooltipMessage: AppLocalizations.of(context)!
@@ -1148,7 +1178,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
             _buildLabelTextField(
               key: const Key('endPlayableEveryNDaysTextField'),
               context: context,
-              controller: _endFileSizeController,
+              controller: _endPlayableEveryNDayController,
               label: AppLocalizations.of(context)!.end,
               labelSize: 27.0,
               tooltipMessage: AppLocalizations.of(context)!
@@ -2543,6 +2573,8 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
           AppLocalizations.of(context)!.audioRemainingDuration,
       'lastListenedDateTime':
           AppLocalizations.of(context)!.lastListenedDateTime,
+      'playableEveryNDays':
+          AppLocalizations.of(context)!.playableEveryNDaysOrder,
       'lastCommentDateTime': AppLocalizations.of(context)!.lastCommentDateTime,
       'audioFileSize': AppLocalizations.of(context)!.audioFileSize,
       'audioDownloadSpeed': AppLocalizations.of(context)!.audioDownloadSpeed,
@@ -2593,6 +2625,10 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       'uploadDateEndRange': AppLocalizations.of(context)!.endUploadDate,
       'lastListenedDate': AppLocalizations.of(context)!.lastListenedDate,
       'emptyDate': AppLocalizations.of(context)!.emptyDate,
+      'playableEveryNDaysStart':
+          "${AppLocalizations.of(context)!.playableEveryNDaysOrder} ${AppLocalizations.of(context)!.start}",
+      'playableEveryNDaysEnd':
+          "${AppLocalizations.of(context)!.playableEveryNDaysOrder} ${AppLocalizations.of(context)!.end}",
       'fileSizeStartRangeMB':
           "${AppLocalizations.of(context)!.fileSizeRange} ${AppLocalizations.of(context)!.start}",
       'fileSizeEndRangeMB':
@@ -2742,6 +2778,8 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
 
   AudioSortFilterParameters?
       _generateAudioSortFilterParametersFromDialogFields() {
+    String startPlayableEveryNDayTxt = _startPlayableEveryNDayController.text;
+    String endPlayableEveryNDayTxt = _endPlayableEveryNDayController.text;
     String startFileSizeTxt = _startFileSizeController.text;
     String endFileSizeTxt = _endFileSizeController.text;
     String startAudioDurationTxt = _startAudioDurationController.text;
@@ -2812,6 +2850,8 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       uploadDateStartRange: _startUploadDateTime,
       uploadDateEndRange: _endUploadDateTime,
       lastListenedDate: _lastListenedDate,
+      startPlayableEveryNDayRange: int.tryParse(startPlayableEveryNDayTxt) ?? 0,
+      endPlayableEveryNDayRange: int.tryParse(endPlayableEveryNDayTxt) ?? 0,
       fileSizeStartRangeMB: double.tryParse(startFileSizeTxt) ?? 0.0,
       fileSizeEndRangeMB: double.tryParse(endFileSizeTxt) ?? 0.0,
       durationStartRangeSec: startAudioDurationSeconds,

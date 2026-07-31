@@ -2235,7 +2235,7 @@ abstract class AppLocalizations {
   /// No description provided for @listenedOn.
   ///
   /// In en, this message translates to:
-  /// **'Listened on'**
+  /// **'listened on'**
   String get listenedOn;
 
   /// No description provided for @remaining.
@@ -5037,6 +5037,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Lists all audios which are playable every n days equal to or less than the specified maximum number if set.'**
   String get endAudioPlayableEveryNDaysSortFilterTooltip;
+
+  /// No description provided for @playableEveryNDaysSubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'playable every {nDays} days'**
+  String playableEveryNDaysSubTitle(Object nDays);
+
+  /// No description provided for @playableEveryNDaysOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Playable every n days'**
+  String get playableEveryNDaysOrder;
 }
 
 class _AppLocalizationsDelegate

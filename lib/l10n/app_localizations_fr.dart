@@ -1324,7 +1324,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get playlistAudioPicturesLabel => 'Photos des audios';
 
   @override
-  String get listenedOn => 'Écouté le';
+  String get listenedOn => 'écouté le';
 
   @override
   String get remaining => 'Durée restante';
@@ -3172,4 +3172,12 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get endAudioPlayableEveryNDaysSortFilterTooltip =>
       'Si seule l\'intervalle maximale est définie, tous les audios jouables ces n jours ou les n jours inférieurs à la valeur définie seront listés.';
+
+  @override
+  String playableEveryNDaysSubTitle(Object nDays) {
+    return 'jouable tous les $nDays jour(s)';
+  }
+
+  @override
+  String get playableEveryNDaysOrder => 'Jouable tous les n jours';
 }

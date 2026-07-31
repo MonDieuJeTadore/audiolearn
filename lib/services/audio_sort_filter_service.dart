@@ -736,6 +736,51 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+    if (existingAudioSortFilterParms.startPlayableEveryNDayRange !=
+        newOrModifiedaudioSortFilterParms.startPlayableEveryNDayRange) {
+      wasFilterOptionsTitleAddedToDifferencesLst =
+          _addToDifferencesLstOtherOptionDisplayedStr(
+              initialValueStr:
+                  existingAudioSortFilterParms
+                      .startPlayableEveryNDayRange
+                      .toString(),
+              modifiedValueStr: newOrModifiedaudioSortFilterParms
+                  .startPlayableEveryNDayRange
+                  .toString(),
+              sortFilterParmsNameTranslationMap:
+                  sortFilterParmsNameTranslationMap,
+              optionNameTranslationKey: 'startPlayableEveryNDayRange',
+              differencesLst: differencesLst,
+              wasFilterOptionsTitleAddedToDifferencesLst:
+                  wasFilterOptionsTitleAddedToDifferencesLst,
+              areInitialStartAndEndValueEqualToZero:
+                  existingAudioSortFilterParms.startPlayableEveryNDayRange ==
+                          0 &&
+                      existingAudioSortFilterParms.endPlayableEveryNDayRange ==
+                          0);
+    }
+    if (existingAudioSortFilterParms.endPlayableEveryNDayRange !=
+        newOrModifiedaudioSortFilterParms.endPlayableEveryNDayRange) {
+      wasFilterOptionsTitleAddedToDifferencesLst =
+          _addToDifferencesLstOtherOptionDisplayedStr(
+              initialValueStr: existingAudioSortFilterParms
+                  .endPlayableEveryNDayRange
+                  .toString(),
+              modifiedValueStr: newOrModifiedaudioSortFilterParms
+                  .endPlayableEveryNDayRange
+                  .toString(),
+              sortFilterParmsNameTranslationMap:
+                  sortFilterParmsNameTranslationMap,
+              optionNameTranslationKey: 'endPlayableEveryNDayRange',
+              differencesLst: differencesLst,
+              wasFilterOptionsTitleAddedToDifferencesLst:
+                  wasFilterOptionsTitleAddedToDifferencesLst,
+              areInitialStartAndEndValueEqualToZero:
+                  existingAudioSortFilterParms.startPlayableEveryNDayRange ==
+                          0 &&
+                      existingAudioSortFilterParms.endPlayableEveryNDayRange ==
+                          0);
+    }
     if (existingAudioSortFilterParms.fileSizeStartRangeMB !=
         newOrModifiedaudioSortFilterParms.fileSizeStartRangeMB) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -1536,6 +1581,15 @@ class AudioSortFilterService {
       );
     }
 
+    if (audioSortFilterParameters.startPlayableEveryNDayRange != 0 ||
+        audioSortFilterParameters.endPlayableEveryNDayRange != 0) {
+      filteredAudios = _filterAudioLstByPlayableEveryNDayRange(
+        audioLst: filteredAudios,
+        startRange: audioSortFilterParameters.startPlayableEveryNDayRange,
+        endRange: audioSortFilterParameters.endPlayableEveryNDayRange,
+      );
+    }
+
     if (audioSortFilterParameters.fileSizeStartRangeMB != 0 ||
         audioSortFilterParameters.fileSizeEndRangeMB != 0) {
       filteredAudios = _filterAudioLstByAudioFileSize(
@@ -1727,6 +1781,39 @@ class AudioSortFilterService {
     }
 
     return [];
+  }
+
+  List<Audio> _filterAudioLstByPlayableEveryNDayRange({
+    required List<Audio> audioLst,
+    required int startRange,
+    required int endRange,
+  }) {
+    if (startRange != 0) {
+      if (endRange != 0) {
+        if (startRange > endRange) {
+          return [];
+        }
+        return audioLst.where((audio) {
+          return audio.playableEveryNDays >= startRange &&
+              audio.playableEveryNDays <= endRange;
+        }).toList();
+      } else {
+        // endRange == 0
+        return audioLst.where((audio) {
+          return audio.playableEveryNDays >= startRange;
+        }).toList();
+      }
+    } else {
+      // startRange == 0
+      if (endRange != 0) {
+        return audioLst.where((audio) {
+          return audio.playableEveryNDays <= endRange;
+        }).toList();
+      } else {
+        // startRange et endRange sont 0
+        return audioLst;
+      }
+    }
   }
 
   List<Audio> _filterAudioLstByAudioFileSize({

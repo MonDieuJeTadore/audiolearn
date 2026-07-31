@@ -294,7 +294,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
         audioSortDefaultFilterParameters.startPlayableEveryNDayRange;
     _endPlayableEveryNDayRange =
         audioSortDefaultFilterParameters.endPlayableEveryNDayRange;
-        
+
     int startPlayableEveryNDayRange =
         audioSortDefaultFilterParameters.startPlayableEveryNDayRange;
     _startPlayableEveryNDayController.text = (startPlayableEveryNDayRange > 0)
@@ -303,7 +303,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
 
     int endPlayableEveryNDayRange =
         audioSortDefaultFilterParameters.endPlayableEveryNDayRange;
-    _endFileSizeController.text = (endPlayableEveryNDayRange > 0)
+    _endPlayableEveryNDayController.text = (endPlayableEveryNDayRange > 0)
         ? endPlayableEveryNDayRange.toString()
         : '';
 
@@ -2625,9 +2625,9 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       'uploadDateEndRange': AppLocalizations.of(context)!.endUploadDate,
       'lastListenedDate': AppLocalizations.of(context)!.lastListenedDate,
       'emptyDate': AppLocalizations.of(context)!.emptyDate,
-      'playableEveryNDaysStart':
+      'startPlayableEveryNDayRange':
           "${AppLocalizations.of(context)!.playableEveryNDaysOrder} ${AppLocalizations.of(context)!.start}",
-      'playableEveryNDaysEnd':
+      'endPlayableEveryNDayRange':
           "${AppLocalizations.of(context)!.playableEveryNDaysOrder} ${AppLocalizations.of(context)!.end}",
       'fileSizeStartRangeMB':
           "${AppLocalizations.of(context)!.fileSizeRange} ${AppLocalizations.of(context)!.start}",

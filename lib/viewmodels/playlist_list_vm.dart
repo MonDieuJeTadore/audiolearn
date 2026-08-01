@@ -2932,6 +2932,22 @@ class PlaylistListVM extends ChangeNotifier {
     }
   }
 
+  bool isLastListenedDateTimeOrPlayableEveryNDaysRangeDefined() {
+    if (_audioSortFilterParameters != null) {
+      if (_audioSortFilterParameters!.lastListenedDate !=
+              null) {
+        return true;
+      }
+
+      if (_audioSortFilterParameters!.startPlayableEveryNDayRange > 0 ||
+          _audioSortFilterParameters!.endPlayableEveryNDayRange > 0) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   /// This method is called when the user closes the playlist comment list dialog.
   /// It is used to undo the change made to the playlist current audio index
   /// as well as the position of the listened comments audio.

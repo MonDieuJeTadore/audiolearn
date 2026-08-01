@@ -289,9 +289,7 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
         switch (value) {
           case AudioPopupMenuAction.openYoutubeVideo:
             openUrlInExternalApp(
-              url: audio.videoUrl,
-              warningMessageVM: warningMessageVM
-            );
+                url: audio.videoUrl, warningMessageVM: warningMessageVM);
             break;
           case AudioPopupMenuAction.copyYoutubeVideoUrl:
             Clipboard.setData(ClipboardData(text: audio.videoUrl));
@@ -514,7 +512,8 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
               builder: (BuildContext context) {
                 return AudioModificationDialog(
                   audio: audio,
-                  audioModificationType: AudioModificationType.playableEveryNDays,
+                  audioModificationType:
+                      AudioModificationType.playableEveryNDays,
                 );
               },
             );
@@ -686,12 +685,24 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
 
     SortingOption appliedSortingOption =
         playlistVMlistnedFalse.getAppliedSortingOption();
+    bool isLastLListeneDateOrPlayableEveryNDaysRangeDDefined =
+        playlistVMlistnedFalse
+            .isLastListenedDateTimeOrPlayableEveryNDaysRangeDefined();
 
     switch (appliedSortingOption) {
       case SortingOption.lastListenedDateTime:
-        return _lastListenedDateTimeOrPlayableEveryNDays(context, dateFormatVMlistenTrue, audioDuration);
+        return _lastListenedDateTimeOrPlayableEveryNDays(
+            context, dateFormatVMlistenTrue, audioDuration);
       case SortingOption.playableEveryNDays:
-        return _lastListenedDateTimeOrPlayableEveryNDays(context, dateFormatVMlistenTrue, audioDuration);
+        return _lastListenedDateTimeOrPlayableEveryNDays(
+            context, dateFormatVMlistenTrue, audioDuration);
+      case SortingOption.chapterAudioTitle:
+        if (isLastLListeneDateOrPlayableEveryNDaysRangeDDefined) {
+          return _lastListenedDateTimeOrPlayableEveryNDays(
+              context, dateFormatVMlistenTrue, audioDuration);
+        } else {
+          return _applyDefault(context, dateFormatVMlistenTrue, audioDuration);
+        }
       case SortingOption.lastCommentDateTime:
         CommentVM commentVM = CommentVM(
           isTest: settingsDataService.isTest,
@@ -765,28 +776,33 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
 
         return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart $audioDownloadDurationSubtitlePart';
       default:
-        String lastSubtitlePart = _createDefaultLastSubTitlePart(
-          context: context,
-          dateFormatVMlistenTrue: dateFormatVMlistenTrue,
-        );
-
-        return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart';
+        return _applyDefault(context, dateFormatVMlistenTrue, audioDuration);
     }
   }
 
-  String _lastListenedDateTimeOrPlayableEveryNDays(BuildContext context, DateFormatVM dateFormatVMlistenTrue, Duration audioDuration) {
+  String _applyDefault(BuildContext context,
+      DateFormatVM dateFormatVMlistenTrue, Duration audioDuration) {
+    String lastSubtitlePart = _createDefaultLastSubTitlePart(
+      context: context,
+      dateFormatVMlistenTrue: dateFormatVMlistenTrue,
+    );
+
+    return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart';
+  }
+
+  String _lastListenedDateTimeOrPlayableEveryNDays(BuildContext context,
+      DateFormatVM dateFormatVMlistenTrue, Duration audioDuration) {
     final DateTime? lastListenedDateTime = audio.audioPausedDateTime;
     final String playableEveryNDays = audio.playableEveryNDays.toString();
     final String lastSubtitlePart;
-    
+
     if (lastListenedDateTime == null) {
-      lastSubtitlePart =
-          AppLocalizations.of(context)!.audioStateNotListened;
+      lastSubtitlePart = AppLocalizations.of(context)!.audioStateNotListened;
     } else {
       lastSubtitlePart =
           '${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)} ${AppLocalizations.of(context)!.atPreposition} ${timeFormat.format(lastListenedDateTime)}';
     }
-    
+
     return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart ${AppLocalizations.of(context)!.playableEveryNDaysSubTitle(playableEveryNDays)}';
   }
 

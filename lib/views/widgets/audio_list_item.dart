@@ -685,24 +685,11 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
 
     SortingOption appliedSortingOption =
         playlistVMlistnedFalse.getAppliedSortingOption();
-    bool isLastLListeneDateOrPlayableEveryNDaysRangeDDefined =
+    bool isLastLListeneDateOrPlayableEveryNDaysRangeDefined =
         playlistVMlistnedFalse
             .isLastListenedDateTimeOrPlayableEveryNDaysRangeDefined();
 
     switch (appliedSortingOption) {
-      case SortingOption.lastListenedDateTime:
-        return _lastListenedDateTimeOrPlayableEveryNDays(
-            context, dateFormatVMlistenTrue, audioDuration);
-      case SortingOption.playableEveryNDays:
-        return _lastListenedDateTimeOrPlayableEveryNDays(
-            context, dateFormatVMlistenTrue, audioDuration);
-      case SortingOption.chapterAudioTitle:
-        if (isLastLListeneDateOrPlayableEveryNDaysRangeDDefined) {
-          return _lastListenedDateTimeOrPlayableEveryNDays(
-              context, dateFormatVMlistenTrue, audioDuration);
-        } else {
-          return _applyDefault(context, dateFormatVMlistenTrue, audioDuration);
-        }
       case SortingOption.lastCommentDateTime:
         CommentVM commentVM = CommentVM(
           isTest: settingsDataService.isTest,
@@ -744,13 +731,8 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
       case SortingOption.videoUploadDate:
         // This video upload date value is only used if the audio type is
         // AudioType.imported or AudioType.converted.
-        DateTime videoUploadDate = DateTime(0, 1, 1);
-        final String lastSubtitlePart;
-
-        if (audio.audioType == AudioType.downloaded) {
-          videoUploadDate = audio.videoUploadDate;
-        }
-
+        DateTime videoUploadDate = audio.videoUploadDate;
+        String lastSubtitlePart;
         String formatedDate =
             dateFormatVMlistenTrue.formatDate(videoUploadDate);
 
@@ -758,8 +740,22 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           formatedDate = formatedDate.replaceAll('01', '00');
         }
 
+        String defaultLastSubTitlePart = _createDefaultLastSubTitlePart(
+          context: context,
+          dateFormatVMlistenTrue: dateFormatVMlistenTrue,
+        );
+
         lastSubtitlePart =
-            '${AppLocalizations.of(context)!.videoUploadDate}: $formatedDate';
+            '$defaultLastSubTitlePart ${AppLocalizations.of(context)!.videoUploadDate}: $formatedDate';
+
+        if (isLastLListeneDateOrPlayableEveryNDaysRangeDefined) {
+          lastSubtitlePart =
+              '$lastSubtitlePart ${_lastListenedDateTimeOrPlayableEveryNDays(
+            context: context,
+            dateFormatVMlistenTrue: dateFormatVMlistenTrue,
+            audioDuration: audioDuration,
+          )}';
+        }
 
         return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart';
       case SortingOption.audioDownloadDuration:
@@ -776,22 +772,44 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
 
         return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart $audioDownloadDurationSubtitlePart';
       default:
-        return _applyDefault(context, dateFormatVMlistenTrue, audioDuration);
+        return _applyDefault(
+          context: context,
+          dateFormatVMlistenTrue: dateFormatVMlistenTrue,
+          audioDuration: audioDuration,
+          finalSubtitlePart: isLastLListeneDateOrPlayableEveryNDaysRangeDefined
+              ? _lastListenedDateTimeOrPlayableEveryNDays(
+                  context: context,
+                  dateFormatVMlistenTrue: dateFormatVMlistenTrue,
+                  audioDuration: audioDuration,
+                )
+              : '',
+        );
     }
   }
 
-  String _applyDefault(BuildContext context,
-      DateFormatVM dateFormatVMlistenTrue, Duration audioDuration) {
+  String _applyDefault({
+    required BuildContext context,
+    required DateFormatVM dateFormatVMlistenTrue,
+    required Duration audioDuration,
+    String finalSubtitlePart = '',
+  }) {
     String lastSubtitlePart = _createDefaultLastSubTitlePart(
       context: context,
       dateFormatVMlistenTrue: dateFormatVMlistenTrue,
     );
 
+    if (finalSubtitlePart.isNotEmpty) {
+      lastSubtitlePart = '$lastSubtitlePart $finalSubtitlePart';
+    }
+
     return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart';
   }
 
-  String _lastListenedDateTimeOrPlayableEveryNDays(BuildContext context,
-      DateFormatVM dateFormatVMlistenTrue, Duration audioDuration) {
+  String _lastListenedDateTimeOrPlayableEveryNDays({
+    required BuildContext context,
+    required DateFormatVM dateFormatVMlistenTrue,
+    required Duration audioDuration,
+  }) {
     final DateTime? lastListenedDateTime = audio.audioPausedDateTime;
     final String playableEveryNDays = audio.playableEveryNDays.toString();
     final String lastSubtitlePart;
@@ -803,7 +821,7 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           '${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)} ${AppLocalizations.of(context)!.atPreposition} ${timeFormat.format(lastListenedDateTime)}';
     }
 
-    return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart ${AppLocalizations.of(context)!.playableEveryNDaysSubTitle(playableEveryNDays)}';
+    return '$lastSubtitlePart ${AppLocalizations.of(context)!.playableEveryNDaysSubTitle(playableEveryNDays)}';
   }
 
   String _createDefaultLastSubTitlePart({

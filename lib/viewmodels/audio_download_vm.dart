@@ -2663,17 +2663,17 @@ class AudioDownloadVM extends ChangeNotifier {
       filePathName: targetFilePathName,
     );
 
-    DateTime dateTimeNow = DateTime.now();
     final String audioTitle = importedFileName.replaceFirst('.mp3', '');
+    final DateTime dateTimeZero = DateTime(0, 1, 1);
 
     Audio importedAudio = Audio(
       enclosingPlaylist: targetPlaylist,
       originalVideoTitle: audioTitle,
       compactVideoDescription: '',
       videoUrl: '',
-      audioDownloadDateTime: dateTimeNow,
+      audioDownloadDateTime: dateTimeZero,
       audioDownloadDuration: const Duration(microseconds: 0),
-      videoUploadDate: dateTimeNow,
+      videoUploadDate: dateTimeZero,
       audioDuration: importedAudioDuration,
       audioPlaySpeed: _determineNewAudioPlaySpeed(targetPlaylist),
     );
@@ -2700,7 +2700,7 @@ class AudioDownloadVM extends ChangeNotifier {
   }) async {
     Duration importedAudioDuration =
         Duration(milliseconds: (totalDuration * 1000).round());
-    DateTime dateTimeNow = DateTime.now();
+    final DateTime dateTimeZero = DateTime(0, 1, 1);
     final String audioTitle = extractedFileName.replaceFirst('.mp3', '');
 
     Audio extractedAudio = Audio(
@@ -2708,9 +2708,9 @@ class AudioDownloadVM extends ChangeNotifier {
       originalVideoTitle: audioTitle,
       compactVideoDescription: '',
       videoUrl: currentAudio.videoUrl,
-      audioDownloadDateTime: dateTimeNow,
+      audioDownloadDateTime: dateTimeZero,
       audioDownloadDuration: const Duration(microseconds: 0),
-      videoUploadDate: dateTimeNow,
+      videoUploadDate: dateTimeZero,
       audioDuration: importedAudioDuration,
       audioPlaySpeed: _determineNewAudioPlaySpeed(targetPlaylist),
     );

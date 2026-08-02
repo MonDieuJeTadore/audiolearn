@@ -930,9 +930,11 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
           child: Text(AppLocalizations.of(context)!.rewindFilteredAudioToStart),
         ),
         PopupMenuItem<FilteredAudioAction>(
-          key: const Key('popup_menu_obtain_filtered_audio_number_and_duration'),
+          key:
+              const Key('popup_menu_obtain_filtered_audio_number_and_duration'),
           value: FilteredAudioAction.obtainFilteredAudioNumberAndDuration,
-          child: Text(AppLocalizations.of(context)!.obtainFilteredAudioNumberAndDuration),
+          child: Text(AppLocalizations.of(context)!
+              .obtainFilteredAudioNumberAndDuration),
         ),
         PopupMenuItem<FilteredAudioAction>(
           key: const Key(
@@ -1140,8 +1142,8 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                 todayPlayableAudioDurationStr: resultsLst[1] as String);
             break;
           case FilteredAudioAction.obtainFilteredAudioNumberAndDuration:
-            List<dynamic> resultsLst =
-                playlistListVMlistenFalse.obtainFilteredPlayableAudioNumberAndDuration(
+            List<dynamic> resultsLst = playlistListVMlistenFalse
+                .obtainFilteredPlayableAudioNumberAndDuration(
               audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
               playlist: playlist,
             );
@@ -1151,11 +1153,6 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                 filteredAudiosDurationStr: resultsLst[1] as String);
             break;
           case FilteredAudioAction.modifyFilteredAudioLastListenedDateTime:
-            final PlaylistListVM playlistListVMlistenFalse =
-                Provider.of<PlaylistListVM>(
-              context,
-              listen: false,
-            );
             final DateFormatVM dateFormatVMlistenFalse =
                 Provider.of<DateFormatVM>(
               context,
@@ -1197,64 +1194,16 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                 return;
               }
 
-              String oldestAudioDownloadDateFormattedStr = resultStringLst[0];
+              String definedAudioLastListenedDateFormattedStr =
+                  resultStringLst[0];
 
-              List<dynamic> resultsLst =
-                  await UiUtil.obtainAudioMp3SavingToZipDuration(
-                playlistListVMlistenFalse: playlistListVMlistenFalse,
+              playlistListVMlistenFalse
+                  .modifyFilteredPlayableAudioLastListenedDateTime(
+                audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
                 dateFormatVMlistenFalse: dateFormatVMlistenFalse,
-                warningMessageVMlistenFalse: warningMessageVMlistenFalse,
-                playlistsLst: [playlist], // only one playlist
-                oldestAudioDownloadDateFormattedStr:
-                    oldestAudioDownloadDateFormattedStr,
-              );
-
-              if (resultsLst[0] == null) {
-                // The case if the date format is invalid.
-                return;
-              }
-
-              DateTime parseDateTimeOrDateStrUsinAppDateFormat =
-                  resultsLst[0]! as DateTime;
-              Duration audioMp3SavingToZipDuration = resultsLst[1] as Duration;
-
-              // Use the global navigator context which is always valid,
-              // even after an async gap on Android.
-              final BuildContext validContext =
-                  UiUtil.globalNavigatorKey.currentContext!;
-
-              showDialog<void>(
-                context: validContext,
-                barrierDismissible:
-                    false, // This line prevents the dialog from closing when
-                //            tapping outside the dialog
-                builder: (BuildContext context) {
-                  return ConfirmActionDialog(
-                    actionFunction: () async {
-                      await playlistListVMlistenFalse
-                          .savePlaylistsAudioMp3FilesToZip(
-                        listOfPlaylists: [playlist],
-                        fromAudioDownloadDateTime:
-                            parseDateTimeOrDateStrUsinAppDateFormat,
-                        zipFileSizeLimitInMb: settingsDataService.get(
-                              settingType: SettingType.playlists,
-                              settingSubType:
-                                  Playlists.maxSavableAudioMp3FileSizeInMb,
-                            ) ??
-                            kMp3ZipFileSizeLimitInMb,
-                        uniquePlaylistIsSaved: true,
-                      );
-                      // Handle any post-execution logic here
-                    },
-                    actionFunctionArgs: [],
-                    dialogTitleOne:
-                        AppLocalizations.of(context)!.savingAudioToZipTimeTitle,
-                    dialogContent:
-                        AppLocalizations.of(context)!.savingAudioToZipTime(
-                      audioMp3SavingToZipDuration.HHmmss(),
-                    ),
-                  );
-                },
+                playlist: playlist,
+                definedAudioLastListenedDateFormattedStr:
+                    definedAudioLastListenedDateFormattedStr,
               );
             });
             break;

@@ -2934,8 +2934,7 @@ class PlaylistListVM extends ChangeNotifier {
 
   bool isLastListenedDateTimeOrPlayableEveryNDaysRangeDefined() {
     if (_audioSortFilterParameters != null) {
-      if (_audioSortFilterParameters!.lastListenedDate !=
-              null) {
+      if (_audioSortFilterParameters!.lastListenedDate != null) {
         return true;
       }
 
@@ -2946,6 +2945,40 @@ class PlaylistListVM extends ChangeNotifier {
     }
 
     return false;
+  }
+
+  void modifyFilteredPlayableAudioLastListenedDateTime({
+    required AudioPlayerVM audioPlayerVMlistenFalse,
+    required DateFormatVM dateFormatVMlistenFalse,
+    required Playlist playlist,
+    required String definedAudioLastListenedDateFormattedStr,
+  }) {
+    // Obtaining the playable audio list ordered according to the
+    // sort/filter parameters applied to the audio player view.
+    List<Audio> audioPlayerViewAudioLst =
+        getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
+            audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+            playlist: playlist);
+
+    DateTime? definedAudioLastListenedDateTime =
+        dateFormatVMlistenFalse.parseDateTimeStrUsinAppDateFormat(
+      dateTimeStr: definedAudioLastListenedDateFormattedStr,
+    );
+
+    if (definedAudioLastListenedDateTime == null) {
+      return;
+    }
+
+    for (Audio audio in audioPlayerViewAudioLst) {
+      audio.audioPausedDateTime = definedAudioLastListenedDateTime;
+    }
+
+    JsonDataService.saveToFile(
+      model: playlist,
+      path: playlist.getPlaylistDownloadFilePathName(),
+    );
+
+    notifyListeners();
   }
 
   /// This method is called when the user closes the playlist comment list dialog.
@@ -6197,7 +6230,8 @@ class PlaylistListVM extends ChangeNotifier {
       return [
         numberAndTotalDurationLst[0] as int,
         DateTimeUtil.convertTimeWithTenthOfSecToTimeWithSec(
-          timeWithTenthOfSecondsStr: (numberAndTotalDurationLst[1] as Duration).HHmmss(
+          timeWithTenthOfSecondsStr:
+              (numberAndTotalDurationLst[1] as Duration).HHmmss(
             addRemainingOneDigitTenthOfSecond: true,
           ),
         ),
@@ -6257,7 +6291,8 @@ class PlaylistListVM extends ChangeNotifier {
     return [
       numberAndTotalDurationLst[0] as int,
       DateTimeUtil.convertTimeWithTenthOfSecToTimeWithSec(
-        timeWithTenthOfSecondsStr: (numberAndTotalDurationLst[1] as Duration).HHmmss(
+        timeWithTenthOfSecondsStr:
+            (numberAndTotalDurationLst[1] as Duration).HHmmss(
           addRemainingOneDigitTenthOfSecond: true,
         ),
       ),

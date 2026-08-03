@@ -8021,8 +8021,11 @@ void main() {
 
       // Avoids integration test failure due to the fact that the
       // position is 5510 or 5520 and not 3000 !
-      await Future.delayed(const Duration(milliseconds: 1500));
-      await tester.pumpAndSettle(); // must be used !
+      // Ensure that the audio position is updated
+      for (int i = 0; i < 5; i++) {
+        await Future.delayed(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
+      }
 
       IntegrationTestUtil.verifyPositionBetweenMinMax(
         tester: tester,
@@ -8971,8 +8974,11 @@ void main() {
 
       // Avoids integration test failure due to the fact that the
       // position is 3700 or 3710 and not 3000 !
-      await Future.delayed(const Duration(milliseconds: 2000));
-      await tester.pumpAndSettle(); // must be used !
+      // Ensure that the audio position is updated
+      for (int i = 0; i < 5; i++) {
+        await Future.delayed(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
+      }
 
       IntegrationTestUtil.verifyPositionBetweenMinMax(
         tester: tester,
@@ -12238,7 +12244,7 @@ void main() {
         await tester.tap(reduceEndPositionButtonFinder);
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
-        // Wait during 2 seconds to verify that the audio is not
+        // Wait during 7 seconds to verify that the audio is not
         // playing after the end position of the comment which was 1:17:14
         for (int i = 0; i < 7; i++) {
           await Future.delayed(const Duration(milliseconds: 1000));

@@ -12088,7 +12088,7 @@ void main() {
         );
       });
       testWidgets(
-          '''Audio speed 0.5. Set the fourth comment end position to 1:17:15 and verify
+          '''FAILS IN 5_2_1 BRANCH. Audio speed 0.5. Set the fourth comment end position to 1:17:15 and verify
             that the comment stops at 1:17:15. Verify that after typing once on the decrease
             end position button, the comment plays till 1:17:14 seconds and not later.''',
           (WidgetTester tester) async {

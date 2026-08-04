@@ -705,7 +705,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get audioStateTerminated => 'Terminé';
 
   @override
-  String get audioStateNotListened => 'Non écouté';
+  String get audioStateNotListened => 'non écouté';
 
   @override
   String get audioPausedDateTimeLabel => 'Date/heure dernière écoute';
@@ -1327,7 +1327,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get listenedOn => 'écouté le';
 
   @override
-  String get remaining => 'Durée restante';
+  String get remaining => 'durée restante';
 
   @override
   String get searchInYoutubeChannelName => 'Inclure la chaîne Youtube';
@@ -3180,4 +3180,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playableEveryNDaysOrder => 'Jouable tous les n jours';
+
+  @override
+  String get playableOnDate => 'Jouable en date';
 }

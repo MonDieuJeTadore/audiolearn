@@ -3277,4 +3277,7 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get playableEveryNDaysOrder => "Playable every n days";
+
+  @override
+  String get playableOnDate => "Playable on date";
 }

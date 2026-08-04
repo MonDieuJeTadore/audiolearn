@@ -462,7 +462,7 @@
   "audioStatePaused": "En pause",
   "audioStatePlaying": "En lecture",
   "audioStateTerminated": "Terminé",
-  "audioStateNotListened": "Non écouté",
+  "audioStateNotListened": "non écouté",
   "audioPausedDateTimeLabel": "Date/heure dernière écoute",
   "audioPlaySpeedLabel": "Vitesse lecture",
   "playlistAudioPlaySpeedLabel": "Vitesse de lecture",
@@ -677,7 +677,7 @@
   "playlistAudioCommentsLabel": "Commentaires des audios",
   "playlistAudioPicturesLabel": "Photos des audios",
   "listenedOn": "écouté le",
-  "remaining": "Durée restante",
+  "remaining": "durée restante",
   "searchInYoutubeChannelName": "Inclure la chaîne Youtube",
   "searchInYoutubeChannelNameTooltip": "Inclure le nom de la chaîne Youtube dans la recherche.",
   "savePlaylistAndCommentsToZipMenu": "Sauver les playlists, commentaires, photos et settings dans un fichier ZIP ...",
@@ -1763,5 +1763,6 @@
   "startAudioPlayableEveryNDaysSortFilterTooltip": "Si seule l'intervalle minimale est définie, tous les audios jouables ces n jours ou les n jours supérieurs à la valeur définie seront listés.",
   "endAudioPlayableEveryNDaysSortFilterTooltip": "Si seule l'intervalle maximale est définie, tous les audios jouables ces n jours ou les n jours inférieurs à la valeur définie seront listés.",
   "playableEveryNDaysSubTitle": "jouable tous les {nDays} jour(s)",
-  "playableEveryNDaysOrder": "Jouable tous les n jours"
+  "playableEveryNDaysOrder": "Jouable tous les n jours",
+  "playableOnDate": "Jouable en date"
 }

@@ -12,10 +12,10 @@
         "SettingType.language": "Language.english"
     },
     "SettingType.playlists": {
-        "Playlists.arePlaylistsDisplayedInPlaylistDownloadView": "true",
-        "Playlists.isMusicQualityByDefault": "false",
         "Playlists.orderedTitleLst": "[local, S8 audio]",
+        "Playlists.isMusicQualityByDefault": "false",
         "Playlists.playSpeed": "1.25",
+        "Playlists.arePlaylistsDisplayedInPlaylistDownloadView": "true",
         "Playlists.maxSavableAudioMp3FileSizeInMb": "525.0",
         "Playlists.onWindowsPlayVolumeInPercentage": "2",
         "Playlists.latestGlobalRestoredAudioDate": "2000-01-01T00:00:00.000"
@@ -62,6 +62,9 @@
             "downloadDateEndRange": null,
             "uploadDateStartRange": null,
             "uploadDateEndRange": null,
+            "lastListenedDate": null,
+            "startPlayableEveryNDayRange": 0,
+            "endPlayableEveryNDayRange": 0,
             "fileSizeStartRangeMB": 0.0,
             "fileSizeEndRangeMB": 0.0,
             "durationStartRangeSec": 0,

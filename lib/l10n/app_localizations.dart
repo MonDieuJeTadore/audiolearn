@@ -1271,7 +1271,7 @@ abstract class AppLocalizations {
   /// No description provided for @audioStateNotListened.
   ///
   /// In en, this message translates to:
-  /// **'Not listened'**
+  /// **'not listened'**
   String get audioStateNotListened;
 
   /// No description provided for @audioPausedDateTimeLabel.
@@ -2241,7 +2241,7 @@ abstract class AppLocalizations {
   /// No description provided for @remaining.
   ///
   /// In en, this message translates to:
-  /// **'Remaining'**
+  /// **'remaining'**
   String get remaining;
 
   /// No description provided for @searchInYoutubeChannelName.
@@ -5049,6 +5049,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Playable every n days'**
   String get playableEveryNDaysOrder;
+
+  /// No description provided for @playableOnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Playable on date'**
+  String get playableOnDate;
 }
 
 class _AppLocalizationsDelegate

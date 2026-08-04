@@ -4672,21 +4672,21 @@ void main() {
       ];
 
       List<String> audioSubTitlesWithAudioRemainingDuration = [
-        "0:00:37.5 Remaining 00:00:00 Listened on 17/07/2026 at 16:20",
-        "0:00:07.0 Remaining 00:00:03 Listened on 07/09/2025 at 17:22",
-        "0:10:55.2 Remaining 00:00:04 Listened on 19/08/2024 at 14:46",
-        "0:00:39.0 Remaining 00:00:34 Listened on 07/09/2025 at 17:21",
-        "0:05:11.2 Remaining 00:00:38 Listened on 16/03/2024 at 17:09",
-        "0:05:11.2 Remaining 00:06:29 Not listened",
+        "0:00:37.5 remaining 00:00:00 listened on 17/07/2026 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 07/09/2025 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 19/08/2024 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 07/09/2025 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 16/03/2024 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
       ];
 
       List<String> audioSubTitlesLastListenedDateTimeDescending = [
-        "0:00:37.5 Listened on 17/07/2026 at 16:20",
-        "0:00:07.0 Listened on 07/09/2025 at 17:22",
-        "0:00:39.0 Listened on 07/09/2025 at 17:21",
-        "0:10:55.2 Listened on 19/08/2024 at 14:46",
-        "0:05:11.2 Listened on 16/03/2024 at 17:09",
-        "0:05:11.2 Not listened",
+        "0:00:37.5 listened on 17/07/2026 at 16:20",
+        "0:00:07.0 listened on 07/09/2025 at 17:22",
+        "0:00:39.0 listened on 07/09/2025 at 17:21",
+        "0:10:55.2 listened on 19/08/2024 at 14:46",
+        "0:05:11.2 listened on 16/03/2024 at 17:09",
+        "0:05:11.2 not listened",
       ];
 
       List<String> audioSubTitlesTitleAsc = [
@@ -4776,21 +4776,21 @@ void main() {
       ];
 
       audioSubTitlesWithAudioRemainingDuration = [
-        "0:00:37.5 Remaining 00:00:00 Listened on 07/17/2026 at 16:20",
-        "0:00:07.0 Remaining 00:00:03 Listened on 09/07/2025 at 17:22",
-        "0:10:55.2 Remaining 00:00:04 Listened on 08/19/2024 at 14:46",
-        "0:00:39.0 Remaining 00:00:34 Listened on 09/07/2025 at 17:21",
-        "0:05:11.2 Remaining 00:00:38 Listened on 03/16/2024 at 17:09",
-        "0:05:11.2 Remaining 00:06:29 Not listened",
+        "0:00:37.5 remaining 00:00:00 listened on 07/17/2026 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 09/07/2025 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 08/19/2024 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 09/07/2025 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 03/16/2024 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
       ];
 
       audioSubTitlesLastListenedDateTimeDescending = [
-        "0:00:37.5 Listened on 07/17/2026 at 16:20",
-        "0:00:07.0 Listened on 09/07/2025 at 17:22",
-        "0:00:39.0 Listened on 09/07/2025 at 17:21",
-        "0:10:55.2 Listened on 08/19/2024 at 14:46",
-        "0:05:11.2 Listened on 03/16/2024 at 17:09",
-        "0:05:11.2 Not listened",
+        "0:00:37.5 listened on 07/17/2026 at 16:20",
+        "0:00:07.0 listened on 09/07/2025 at 17:22",
+        "0:00:39.0 listened on 09/07/2025 at 17:21",
+        "0:10:55.2 listened on 08/19/2024 at 14:46",
+        "0:05:11.2 listened on 03/16/2024 at 17:09",
+        "0:05:11.2 not listened",
       ];
 
       audioSubTitlesTitleAsc = [
@@ -4878,21 +4878,21 @@ void main() {
       ];
 
       audioSubTitlesWithAudioRemainingDuration = [
-        "0:00:37.5 Remaining 00:00:00 Listened on 2026/07/17 at 16:20",
-        "0:00:07.0 Remaining 00:00:03 Listened on 2025/09/07 at 17:22",
-        "0:10:55.2 Remaining 00:00:04 Listened on 2024/08/19 at 14:46",
-        "0:00:39.0 Remaining 00:00:34 Listened on 2025/09/07 at 17:21",
-        "0:05:11.2 Remaining 00:00:38 Listened on 2024/03/16 at 17:09",
-        "0:05:11.2 Remaining 00:06:29 Not listened",
+        "0:00:37.5 remaining 00:00:00 listened on 2026/07/17 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 2025/09/07 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 2024/08/19 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 2025/09/07 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 2024/03/16 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
       ];
 
       audioSubTitlesLastListenedDateTimeDescending = [
-        "0:00:37.5 Listened on 2026/07/17 at 16:20",
-        "0:00:07.0 Listened on 2025/09/07 at 17:22",
-        "0:00:39.0 Listened on 2025/09/07 at 17:21",
-        "0:10:55.2 Listened on 2024/08/19 at 14:46",
-        "0:05:11.2 Listened on 2024/03/16 at 17:09",
-        "0:05:11.2 Not listened",
+        "0:00:37.5 listened on 2026/07/17 at 16:20",
+        "0:00:07.0 listened on 2025/09/07 at 17:22",
+        "0:00:39.0 listened on 2025/09/07 at 17:21",
+        "0:10:55.2 listened on 2024/08/19 at 14:46",
+        "0:05:11.2 listened on 2024/03/16 at 17:09",
+        "0:05:11.2 not listened",
       ];
 
       audioSubTitlesTitleAsc = [
@@ -4980,21 +4980,21 @@ void main() {
       ];
 
       audioSubTitlesWithAudioRemainingDuration = [
-        "0:00:37.5 Remaining 00:00:00 Listened on 17/07/2026 at 16:20",
-        "0:00:07.0 Remaining 00:00:03 Listened on 07/09/2025 at 17:22",
-        "0:10:55.2 Remaining 00:00:04 Listened on 19/08/2024 at 14:46",
-        "0:00:39.0 Remaining 00:00:34 Listened on 07/09/2025 at 17:21",
-        "0:05:11.2 Remaining 00:00:38 Listened on 16/03/2024 at 17:09",
-        "0:05:11.2 Remaining 00:06:29 Not listened",
+        "0:00:37.5 remaining 00:00:00 listened on 17/07/2026 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 07/09/2025 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 19/08/2024 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 07/09/2025 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 16/03/2024 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
       ];
 
       audioSubTitlesLastListenedDateTimeDescending = [
-        "0:00:37.5 Listened on 17/07/2026 at 16:20",
-        "0:00:07.0 Listened on 07/09/2025 at 17:22",
-        "0:00:39.0 Listened on 07/09/2025 at 17:21",
-        "0:10:55.2 Listened on 19/08/2024 at 14:46",
-        "0:05:11.2 Listened on 16/03/2024 at 17:09",
-        "0:05:11.2 Not listened",
+        "0:00:37.5 listened on 17/07/2026 at 16:20",
+        "0:00:07.0 listened on 07/09/2025 at 17:22",
+        "0:00:39.0 listened on 07/09/2025 at 17:21",
+        "0:10:55.2 listened on 19/08/2024 at 14:46",
+        "0:05:11.2 listened on 16/03/2024 at 17:09",
+        "0:05:11.2 not listened",
       ];
 
       audioSubTitlesTitleAsc = [
@@ -5112,21 +5112,21 @@ void main() {
       ];
 
       List<String> audioSubTitlesWithAudioRemainingDuration = [
-        "0:00:37.5 Remaining 00:00:00 Listened on 07/17/2026 at 16:20",
-        "0:00:07.0 Remaining 00:00:03 Listened on 09/07/2025 at 17:22",
-        "0:10:55.2 Remaining 00:00:04 Listened on 08/19/2024 at 14:46",
-        "0:00:39.0 Remaining 00:00:34 Listened on 09/07/2025 at 17:21",
-        "0:05:11.2 Remaining 00:00:38 Listened on 03/16/2024 at 17:09",
-        "0:05:11.2 Remaining 00:06:29 Not listened",
+        "0:00:37.5 remaining 00:00:00 listened on 07/17/2026 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 09/07/2025 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 08/19/2024 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 09/07/2025 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 03/16/2024 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
       ];
 
       List<String> audioSubTitlesLastListenedDateTimeDescending = [
-        "0:00:37.5 Listened on 07/17/2026 at 16:20",
-        "0:00:07.0 Listened on 09/07/2025 at 17:22",
-        "0:00:39.0 Listened on 09/07/2025 at 17:21",
-        "0:10:55.2 Listened on 08/19/2024 at 14:46",
-        "0:05:11.2 Listened on 03/16/2024 at 17:09",
-        "0:05:11.2 Not listened",
+        "0:00:37.5 listened on 07/17/2026 at 16:20",
+        "0:00:07.0 listened on 09/07/2025 at 17:22",
+        "0:00:39.0 listened on 09/07/2025 at 17:21",
+        "0:10:55.2 listened on 08/19/2024 at 14:46",
+        "0:05:11.2 listened on 03/16/2024 at 17:09",
+        "0:05:11.2 not listened",
       ];
 
       List<String> audioSubTitlesTitleAsc = [
@@ -5241,21 +5241,21 @@ void main() {
       ];
 
       List<String> audioSubTitlesWithAudioRemainingDuration = [
-        "0:00:37.5 Remaining 00:00:00 Listened on 2026/07/17 at 16:20",
-        "0:00:07.0 Remaining 00:00:03 Listened on 2025/09/07 at 17:22",
-        "0:10:55.2 Remaining 00:00:04 Listened on 2024/08/19 at 14:46",
-        "0:00:39.0 Remaining 00:00:34 Listened on 2025/09/07 at 17:21",
-        "0:05:11.2 Remaining 00:00:38 Listened on 2024/03/16 at 17:09",
-        "0:05:11.2 Remaining 00:06:29 Not listened",
+        "0:00:37.5 remaining 00:00:00 listened on 2026/07/17 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 2025/09/07 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 2024/08/19 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 2025/09/07 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 2024/03/16 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
       ];
 
       List<String> audioSubTitlesLastListenedDateTimeDescending = [
-        "0:00:37.5 Listened on 2026/07/17 at 16:20",
-        "0:00:07.0 Listened on 2025/09/07 at 17:22",
-        "0:00:39.0 Listened on 2025/09/07 at 17:21",
-        "0:10:55.2 Listened on 2024/08/19 at 14:46",
-        "0:05:11.2 Listened on 2024/03/16 at 17:09",
-        "0:05:11.2 Not listened",
+        "0:00:37.5 listened on 2026/07/17 at 16:20",
+        "0:00:07.0 listened on 2025/09/07 at 17:22",
+        "0:00:39.0 listened on 2025/09/07 at 17:21",
+        "0:10:55.2 listened on 2024/08/19 at 14:46",
+        "0:05:11.2 listened on 2024/03/16 at 17:09",
+        "0:05:11.2 not listened",
       ];
 
       List<String> audioSubTitlesTitleAsc = [
@@ -5368,21 +5368,21 @@ void main() {
       ];
 
       List<String> audioSubTitlesWithAudioRemainingDuration = [
-        "0:00:37.5 Remaining 00:00:00 Listened on 17/07/2026 at 16:20",
-        "0:00:07.0 Remaining 00:00:03 Listened on 07/09/2025 at 17:22",
-        "0:10:55.2 Remaining 00:00:04 Listened on 19/08/2024 at 14:46",
-        "0:00:39.0 Remaining 00:00:34 Listened on 07/09/2025 at 17:21",
-        "0:05:11.2 Remaining 00:00:38 Listened on 16/03/2024 at 17:09",
-        "0:05:11.2 Remaining 00:06:29 Not listened",
+        "0:00:37.5 remaining 00:00:00 listened on 17/07/2026 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 07/09/2025 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 19/08/2024 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 07/09/2025 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 16/03/2024 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
       ];
 
       List<String> audioSubTitlesLastListenedDateTimeDescending = [
-        "0:00:37.5 Listened on 17/07/2026 at 16:20",
-        "0:00:07.0 Listened on 07/09/2025 at 17:22",
-        "0:00:39.0 Listened on 07/09/2025 at 17:21",
-        "0:10:55.2 Listened on 19/08/2024 at 14:46",
-        "0:05:11.2 Listened on 16/03/2024 at 17:09",
-        "0:05:11.2 Not listened",
+        "0:00:37.5 listened on 17/07/2026 at 16:20",
+        "0:00:07.0 listened on 07/09/2025 at 17:22",
+        "0:00:39.0 listened on 07/09/2025 at 17:21",
+        "0:10:55.2 listened on 19/08/2024 at 14:46",
+        "0:05:11.2 listened on 16/03/2024 at 17:09",
+        "0:05:11.2 not listened",
       ];
 
       List<String> audioSubTitlesTitleAsc = [
@@ -13453,7 +13453,6 @@ void main() {
       // Verifying translated texts in DatePicker dialog
       await _verifyDatePickerTitleTranslation(
         tester: tester,
-        datePickerTranslatedTitleStr: 'Sélectionner une date',
         datePickerCancelButtonTranslatedStr: 'Annuler',
       );
 
@@ -13502,7 +13501,6 @@ void main() {
       // Verify the translated texts in the DatePicker dialog
       await _verifyDatePickerTitleTranslation(
         tester: tester,
-        datePickerTranslatedTitleStr: 'Select date',
         datePickerCancelButtonTranslatedStr: 'Cancel',
       );
 
@@ -13568,7 +13566,6 @@ void main() {
       // Verify the translated texts in the DatePicker dialog
       await _verifyDatePickerTitleTranslation(
         tester: tester,
-        datePickerTranslatedTitleStr: 'Sélectionner une date',
         datePickerCancelButtonTranslatedStr: 'Annuler',
       );
 
@@ -13615,7 +13612,6 @@ void main() {
       // Verify the translated texts in the DatePicker dialog
       await _verifyDatePickerTitleTranslation(
         tester: tester,
-        datePickerTranslatedTitleStr: 'Select date',
         datePickerCancelButtonTranslatedStr: 'Cancel',
       );
 
@@ -20588,10 +20584,12 @@ void main() {
           );
 
           // Now change the download date in the dialog
+          DateTime dateTime = DateTime.now();
+
           final String audioOldestDownloadDateToday =
-              DateFormat('dd/MM/yyyy').format(DateTime.now());
+              DateFormat('dd/MM/yyyy').format(dateTime);
           final String audioOldestDownloadDateTodayForFileNName =
-              DateFormat('yyyy-MM-dd').format(DateTime.now());
+              DateFormat('yyyy-MM-dd').format(dateTime);
           TextField textField =
               tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
 
@@ -38294,8 +38292,6 @@ void main() {
             size: 155136),
       ]);
 
-      DateTime importDateTime = DateTime.now();
-
       await IntegrationTestUtil.typeOnPlaylistMenuItem(
         tester: tester,
         playlistTitle: localPlaylistTitle,
@@ -38564,8 +38560,6 @@ void main() {
             size: 17689541),
       ]);
 
-      DateTime importDateTime = DateTime.now();
-
       await IntegrationTestUtil.typeOnPlaylistMenuItem(
         tester: tester,
         playlistTitle: targetPlaylistTitle,
@@ -38666,8 +38660,6 @@ void main() {
       // Tap the 'Toggle List' button to show the list of playlist's.
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
-
-      importDateTime = DateTime.now();
 
       await IntegrationTestUtil.typeOnPlaylistMenuItem(
         tester: tester,
@@ -39090,8 +39082,6 @@ void main() {
         // Verify the text was entered
         expect(find.text(enteredFileNameNoExt), findsOneWidget);
 
-        DateTime now = DateTime.now();
-
         // Tap on the 'Create MP3' button
         Finder saveMP3FileButton =
             find.byKey(const Key('create_mp3_button_key'));
@@ -39285,8 +39275,6 @@ void main() {
         await tester.enterText(
             mp3FileNameTextFieldFinder, enteredFileNameNoExt);
         await tester.pump();
-
-        now = DateTime.now();
 
         // Tap on the 'Create MP3' button
         saveMP3FileButton = find.byKey(const Key('create_mp3_button_key'));
@@ -39820,7 +39808,6 @@ void main() {
         // Verify the text was entered
         expect(find.text(enteredFileNameNoExt), findsOneWidget);
 
-        DateTime now = DateTime.now();
 
         // Tap on the 'Create MP3' button
         Finder saveMP3FileButton =
@@ -40856,8 +40843,6 @@ void main() {
         // Verify the text was entered
         expect(find.text(enteredFileNameNoExt), findsOneWidget);
 
-        DateTime now = DateTime.now();
-
         // Tap on the 'Create MP3' button
         Finder saveMP3FileButton =
             find.byKey(const Key('create_mp3_button_key'));
@@ -41050,8 +41035,6 @@ void main() {
         await tester.enterText(
             mp3FileNameTextFieldFinder, enteredFileNameNoExt);
         await tester.pump();
-
-        now = DateTime.now();
 
         // Tap on the 'Create MP3' button
         saveMP3FileButton = find.byKey(const Key('create_mp3_button_key'));
@@ -41571,8 +41554,6 @@ void main() {
 
         // Verify the text was entered
         expect(find.text(enteredFileNameNoExt), findsOneWidget);
-
-        DateTime now = DateTime.now();
 
         // Tap on the 'Create MP3' button
         Finder saveMP3FileButton =
@@ -56002,13 +55983,9 @@ Future<void> _changeAndSavePlaylistRootPath({
 
 Future<void> _verifyDatePickerTitleTranslation({
   required WidgetTester tester,
-  required String datePickerTranslatedTitleStr,
   required String datePickerCancelButtonTranslatedStr,
 }) async {
   await _openSortFilterThenDatePickerDialog(tester);
-
-  // Verify the translated title in the DatePicker dialog
-  expect(find.text(datePickerTranslatedTitleStr), findsOneWidget);
 
   // Now close the DatePicker dialog by tapping on the cancel button
   await tester.tap(find.text(datePickerCancelButtonTranslatedStr).last);

@@ -2932,7 +2932,7 @@ class PlaylistListVM extends ChangeNotifier {
     }
   }
 
-  bool isLastListenedDateTimeOrPlayableEveryNDaysRangeDefined() {
+  bool isLastListenedDateTimeOrPlayableEveryNDaysRangeOrPlayableOnDefined() {
     if (_audioSortFilterParameters != null) {
       if (_audioSortFilterParameters!.lastListenedDate != null) {
         return true;
@@ -2940,6 +2940,10 @@ class PlaylistListVM extends ChangeNotifier {
 
       if (_audioSortFilterParameters!.startPlayableEveryNDayRange > 0 ||
           _audioSortFilterParameters!.endPlayableEveryNDayRange > 0) {
+        return true;
+      }
+
+      if (_audioSortFilterParameters!.playableOnDate != null) {
         return true;
       }
     }
@@ -6210,7 +6214,7 @@ class PlaylistListVM extends ChangeNotifier {
     return rewindedAudioNumberAndTodayPlayableAudioDurationLst;
   }
 
-  List<dynamic> obtainFilteredPlayableAudioNumberAndDuration({
+  List<dynamic> obtainFilteredPlayableTodayAudioNumberAndDuration({
     required AudioPlayerVM audioPlayerVMlistenFalse,
     required Playlist playlist,
   }) {
@@ -6236,6 +6240,26 @@ class PlaylistListVM extends ChangeNotifier {
           ),
         ),
       ];
+    }
+
+    return [];
+  }
+
+  List<Audio> obtainFilteredPlayableAudioAtDate({
+    required Playlist playlist,
+    required DateTime selectedDate,
+  }) {
+    // Obtaining the playable audio list ordered according to the
+    // sort/filter parameters applied to the audio player view.
+    List<Audio> audioPlayerViewAudioLst =
+        getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
+            audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+            playlist: playlist);
+
+    if (audioPlayerViewAudioLst.isNotEmpty) {
+      return _getFilteredAudiosPlayableAtDate(
+          filteredAudioLst: audioPlayerViewAudioLst,
+          playableDate: selectedDate);
     }
 
     return [];
@@ -6342,6 +6366,27 @@ class PlaylistListVM extends ChangeNotifier {
     ];
   }
 
+  /// Method that returns the list of filtered audios that are playable at a specific date
+  List<Audio> _getFilteredAudiosPlayableAtDate({
+    required List<Audio> filteredAudioLst,
+    required DateTime playableDate,
+  }) {
+    List<Audio> playableAudiosAtDate = [];
+
+    for (Audio audio in filteredAudioLst) {
+      if (isAudioPlayableAtDate(
+        audio: audio,
+        playableDate: playableDate,
+      )) {
+        playableAudiosAtDate.add(audio);
+      } else {
+        continue;
+      }
+    }
+
+    return playableAudiosAtDate;
+  }
+
   bool _isAudioPlayableToday({
     required Audio audio,
   }) {
@@ -6374,6 +6419,45 @@ class PlaylistListVM extends ChangeNotifier {
 
       int daysSincePaused =
           todayDateOnly.difference(audioPausedDateOnly).inDays;
+
+      return daysSincePaused >= audioPlayableEveryNDays;
+    }
+  }
+
+  /// Method that returns true if the audio is playable at a specific date. The method is static so
+  /// that it can be called from other classes (AudioSortFilterService) without needing an instance
+  /// of PlaylistListVM.
+  static bool isAudioPlayableAtDate({
+    required Audio audio,
+    required DateTime playableDate,
+  }) {
+    int audioPlayableEveryNDays = audio.playableEveryNDays;
+
+    if (audioPlayableEveryNDays <= 1) {
+      // means the audio is playable every day
+      return true;
+    } else {
+      DateTime? audioPausedDateTime = audio.audioPausedDateTime;
+
+      if (audioPausedDateTime == null) {
+        // means the audio has never been played and so is playable today
+        return true;
+      }
+
+      DateTime audioPausedDateOnly = DateTime(
+        audioPausedDateTime.year,
+        audioPausedDateTime.month,
+        audioPausedDateTime.day,
+      );
+
+      DateTime playableDateOnly = DateTime(
+        playableDate.year,
+        playableDate.month,
+        playableDate.day,
+      );
+
+      int daysSincePaused =
+          playableDateOnly.difference(audioPausedDateOnly).inDays;
 
       return daysSincePaused >= audioPlayableEveryNDays;
     }

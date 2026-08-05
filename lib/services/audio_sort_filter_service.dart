@@ -12,6 +12,7 @@ import '../viewmodels/comment_vm.dart';
 import '../viewmodels/picture_vm.dart';
 import '../viewmodels/date_format_vm.dart';
 import '../models/sort_filter_parameters.dart';
+import '../viewmodels/playlist_list_vm.dart';
 
 enum SortFilterParmsVersion {
   versionOne,
@@ -732,6 +733,21 @@ class AudioSortFilterService {
               sortFilterParmsNameTranslationMap:
                   sortFilterParmsNameTranslationMap,
               optionNameTranslationKey: 'lastListenedDate',
+              differencesLst: differencesLst,
+              wasFilterOptionsTitleAddedToDifferencesLst:
+                  wasFilterOptionsTitleAddedToDifferencesLst);
+    }
+    if (existingAudioSortFilterParms.playableOnDate !=
+        newOrModifiedaudioSortFilterParms.lastListenedDate) {
+      wasFilterOptionsTitleAddedToDifferencesLst =
+          _addToDifferencesLstOtherOptionDateValueStr(
+              dateFormatVMlistenFalse: dateFormatVMlistenFalse,
+              initialDateTimeValue: existingAudioSortFilterParms.playableOnDate,
+              modifiedDateTimeValue:
+                  newOrModifiedaudioSortFilterParms.playableOnDate,
+              sortFilterParmsNameTranslationMap:
+                  sortFilterParmsNameTranslationMap,
+              optionNameTranslationKey: 'playableOnDate',
               differencesLst: differencesLst,
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
@@ -1581,6 +1597,13 @@ class AudioSortFilterService {
       );
     }
 
+    if (audioSortFilterParameters.playableOnDate != null) {
+      filteredAudios = _filterAudioLstByAudioPlayableOnDate(
+        audioLst: filteredAudios,
+        playableOnDate: audioSortFilterParameters.playableOnDate,
+      );
+    }
+
     if (audioSortFilterParameters.startPlayableEveryNDayRange != 0 ||
         audioSortFilterParameters.endPlayableEveryNDayRange != 0) {
       filteredAudios = _filterAudioLstByPlayableEveryNDayRange(
@@ -1778,6 +1801,30 @@ class AudioSortFilterService {
           secondDateOrDateTime: lastListenedDate,
         ));
       }).toList();
+    }
+
+    return [];
+  }
+
+  List<Audio> _filterAudioLstByAudioPlayableOnDate({
+    required List<Audio> audioLst,
+    required DateTime? playableOnDate,
+  }) {
+    if (playableOnDate != null) {
+      List<Audio> playableAudiosAtDate = [];
+
+      for (Audio audio in audioLst) {
+        if (PlaylistListVM.isAudioPlayableAtDate(
+          audio: audio,
+          playableDate: playableOnDate,
+        )) {
+          playableAudiosAtDate.add(audio);
+        } else {
+          continue;
+        }
+      }
+
+      return playableAudiosAtDate;
     }
 
     return [];

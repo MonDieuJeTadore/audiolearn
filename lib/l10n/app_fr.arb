@@ -1764,5 +1764,6 @@
   "endAudioPlayableEveryNDaysSortFilterTooltip": "Si seule l'intervalle maximale est définie, tous les audios jouables ces n jours ou les n jours inférieurs à la valeur définie seront listés.",
   "playableEveryNDaysSubTitle": "jouable tous les {nDays} jour(s)",
   "playableEveryNDaysOrder": "Jouable tous les n jours",
-  "playableOnDate": "Jouable en date"
+  "playableOnDate": "Jouable en date",
+  "playableOnDateSortFilterTooltip": "Les audios jouables à cette date seront listés."
 }

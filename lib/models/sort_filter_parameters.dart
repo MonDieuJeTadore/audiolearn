@@ -392,6 +392,9 @@ class AudioSortFilterParameters {
   // The date the last listened date filter.
   final DateTime? lastListenedDate;
 
+  // The playable on date filter.
+  final DateTime? playableOnDate;
+
   // The start and end range for the audio playable every
   // N day filter. If the audio is playable every N day, it
   // means that the audio can be played every N days. For
@@ -440,6 +443,7 @@ class AudioSortFilterParameters {
     this.uploadDateStartRange,
     this.uploadDateEndRange,
     this.lastListenedDate,
+    this.playableOnDate,
     this.startPlayableEveryNDayRange = 0,
     this.endPlayableEveryNDayRange = 0,
     this.fileSizeStartRangeMB = 0,
@@ -493,6 +497,9 @@ class AudioSortFilterParameters {
       lastListenedDate: json['lastListenedDate'] == null
           ? null
           : DateTime.parse(json['lastListenedDate']),
+      playableOnDate: json['playableOnDate'] == null
+          ? null
+          : DateTime.parse(json['playableOnDate']),
       startPlayableEveryNDayRange: json['startPlayableEveryNDayRange'] ?? 0,
       endPlayableEveryNDayRange: json['endPlayableEveryNDayRange'] ?? 0,
       fileSizeStartRangeMB: json['fileSizeStartRangeMB'] ?? 0.0,
@@ -533,6 +540,7 @@ class AudioSortFilterParameters {
       'uploadDateStartRange': uploadDateStartRange?.toIso8601String(),
       'uploadDateEndRange': uploadDateEndRange?.toIso8601String(),
       'lastListenedDate': lastListenedDate?.toIso8601String(),
+      'playableOnDate': playableOnDate?.toIso8601String(),
       'startPlayableEveryNDayRange': startPlayableEveryNDayRange,
       'endPlayableEveryNDayRange': endPlayableEveryNDayRange,
       'fileSizeStartRangeMB': fileSizeStartRangeMB,
@@ -577,6 +585,7 @@ class AudioSortFilterParameters {
         other.uploadDateStartRange == uploadDateStartRange &&
         other.uploadDateEndRange == uploadDateEndRange &&
         other.lastListenedDate == lastListenedDate &&
+        other.playableOnDate == playableOnDate &&
         other.startPlayableEveryNDayRange == startPlayableEveryNDayRange &&
         other.endPlayableEveryNDayRange == endPlayableEveryNDayRange &&
         other.fileSizeStartRangeMB == fileSizeStartRangeMB &&
@@ -643,6 +652,7 @@ class AudioSortFilterParameters {
       uploadDateStartRange: uploadDateStartRange,
       uploadDateEndRange: uploadDateEndRange,
       lastListenedDate: lastListenedDate,
+      playableOnDate: playableOnDate,
       startPlayableEveryNDayRange: startPlayableEveryNDayRange,
       endPlayableEveryNDayRange: endPlayableEveryNDayRange,
       fileSizeStartRangeMB: fileSizeStartRangeMB,

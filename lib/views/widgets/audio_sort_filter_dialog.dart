@@ -33,6 +33,7 @@ enum DateType {
   startUploadDateTime,
   endUploadDateTime,
   lastListenedDate,
+  playableOnDate,
 }
 
 class AudioSortFilterDialog extends StatefulWidget {
@@ -117,6 +118,8 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       TextEditingController();
   final TextEditingController _lastListenedDateController =
       TextEditingController();
+  final TextEditingController _playableOnDateController =
+      TextEditingController();
   final TextEditingController _startAudioDurationController =
       TextEditingController();
   final TextEditingController _endAudioDurationController =
@@ -130,6 +133,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
   DateTime? _lastListenedDate;
   int _startPlayableEveryNDayRange = 0;
   int _endPlayableEveryNDayRange = 0;
+  DateTime? _playableOnDate;
 
   final _audioTitleSearchSentenceFocusNode = FocusNode();
   final _sortFilterSaveAsUniqueNameFocusNode = FocusNode();
@@ -290,6 +294,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
         audioSortDefaultFilterParameters.uploadDateStartRange;
     _endUploadDateTime = audioSortDefaultFilterParameters.uploadDateEndRange;
     _lastListenedDate = audioSortDefaultFilterParameters.lastListenedDate;
+    _playableOnDate = audioSortDefaultFilterParameters.playableOnDate;
     _startPlayableEveryNDayRange =
         audioSortDefaultFilterParameters.startPlayableEveryNDayRange;
     _endPlayableEveryNDayRange =
@@ -343,6 +348,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     _startUploadDateTimeController.dispose();
     _endUploadDateTimeController.dispose();
     _lastListenedDateController.dispose();
+    _playableOnDateController.dispose();
     _startAudioDurationController.dispose();
     _endAudioDurationController.dispose();
     _audioTitleSearchSentenceFocusNode.dispose();
@@ -384,6 +390,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     _startUploadDateTimeController.clear();
     _endUploadDateTimeController.clear();
     _lastListenedDateController.clear();
+    _playableOnDateController.clear();
     _startAudioDurationController.clear();
     _endAudioDurationController.clear();
     _startFileSizeController.clear();
@@ -438,6 +445,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     _startUploadDateTimeController.clear();
     _endUploadDateTimeController.clear();
     _lastListenedDateController.clear();
+    _playableOnDateController.clear();
     _startAudioDurationController.clear();
     _endAudioDurationController.clear();
     _startFileSizeController.clear();
@@ -1343,6 +1351,19 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
           tooltipMessage:
               AppLocalizations.of(context)!.lastListenedDateSortFilterTooltip,
         ),
+        _buildDateTextFieldWithDateEditorIcon(
+          languageProviderVMlistenFalse: languageProviderVMlistenFalse,
+          dateIconButtondKey: const Key('playableOnDateIconButton'),
+          textFieldKey: const Key('playableOnDateTextField'),
+          context: context,
+          dateFormatVMlistenFalse: dateFormatVMlistenFalse,
+          dateTimeType: DateType.playableOnDate,
+          controller: _playableOnDateController,
+          dateTime: _playableOnDate,
+          label: AppLocalizations.of(context)!.playableOnDate,
+          tooltipMessage:
+              AppLocalizations.of(context)!.playableOnDateSortFilterTooltip,
+        ),
       ],
     );
   }
@@ -1466,6 +1487,8 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       case DateType.lastListenedDate:
         _lastListenedDate = dateTime;
         break;
+      case DateType.playableOnDate:
+        _playableOnDate = dateTime;
     }
   }
 
@@ -2624,6 +2647,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       'uploadDateStartRange': AppLocalizations.of(context)!.startUploadDate,
       'uploadDateEndRange': AppLocalizations.of(context)!.endUploadDate,
       'lastListenedDate': AppLocalizations.of(context)!.lastListenedDate,
+      'playableOnDate': AppLocalizations.of(context)!.playableOnDate,
       'emptyDate': AppLocalizations.of(context)!.emptyDate,
       'startPlayableEveryNDayRange':
           "${AppLocalizations.of(context)!.playableEveryNDaysOrder} ${AppLocalizations.of(context)!.start}",
@@ -2850,6 +2874,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       uploadDateStartRange: _startUploadDateTime,
       uploadDateEndRange: _endUploadDateTime,
       lastListenedDate: _lastListenedDate,
+      playableOnDate: _playableOnDate,
       startPlayableEveryNDayRange: int.tryParse(startPlayableEveryNDayTxt) ?? 0,
       endPlayableEveryNDayRange: int.tryParse(endPlayableEveryNDayTxt) ?? 0,
       fileSizeStartRangeMB: double.tryParse(startFileSizeTxt) ?? 0.0,

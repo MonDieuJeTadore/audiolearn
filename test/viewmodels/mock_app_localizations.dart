@@ -3280,4 +3280,8 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get playableOnDate => "Playable on date";
+
+  @override
+  String get playableOnDateSortFilterTooltip =>
+      "Lists all audios playable on the specified date if set.";
 }

@@ -1232,6 +1232,9 @@ class AudioDownloadVM extends ChangeNotifier {
       path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
     );
 
+    // necessary so that the audio sub title is updated
+    notifyListeners();
+    
     return false;
   }
 

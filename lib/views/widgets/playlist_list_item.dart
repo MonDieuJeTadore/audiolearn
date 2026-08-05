@@ -1143,7 +1143,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
             break;
           case FilteredAudioAction.obtainFilteredAudioNumberAndDuration:
             List<dynamic> resultsLst = playlistListVMlistenFalse
-                .obtainFilteredPlayableAudioNumberAndDuration(
+                .obtainFilteredPlayableTodayAudioNumberAndDuration(
               audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
               playlist: playlist,
             );

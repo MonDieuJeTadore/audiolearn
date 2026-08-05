@@ -3183,4 +3183,8 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playableOnDate => 'Jouable en date';
+
+  @override
+  String get playableOnDateSortFilterTooltip =>
+      'Les audios jouables à cette date seront listés.';
 }

@@ -5055,6 +5055,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Playable on date'**
   String get playableOnDate;
+
+  /// No description provided for @playableOnDateSortFilterTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Lists all audios playable on the specified date if set.'**
+  String get playableOnDateSortFilterTooltip;
 }
 
 class _AppLocalizationsDelegate

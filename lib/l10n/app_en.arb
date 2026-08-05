@@ -1335,5 +1335,6 @@
   "endAudioPlayableEveryNDaysSortFilterTooltip": "Lists all audios which are playable every n days equal to or less than the specified maximum number if set.",
   "playableEveryNDaysSubTitle": "playable every {nDays} days",
   "playableEveryNDaysOrder": "Playable every n days",
-  "playableOnDate": "Playable on date"
+  "playableOnDate": "Playable on date",
+  "playableOnDateSortFilterTooltip": "Lists all audios playable on the specified date if set."
 }

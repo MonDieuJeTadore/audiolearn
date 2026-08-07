@@ -562,7 +562,7 @@ class UiUtil {
 
     if (parseDateTimeOrDateStrUsinAppDateFormat == null) {
       warningMessageVMlistenFalse.setError(
-        errorType: ErrorType.dateFormatError,
+        errorType: ErrorType.dateTimeFormatError,
         errorArgOne: oldestAudioDownloadDateFormattedStr,
       );
 

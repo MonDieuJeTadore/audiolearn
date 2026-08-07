@@ -1311,7 +1311,7 @@
   "savePlaylistAudioMp3FilesToZipTooltip": "Sauvegarde les fichiers audio MP3 de la playlist dans un ou plusieurs fichier(s) ZIP. Vous pouvez spécifier un filtre de date/heure pour n'inclure que les fichiers audio téléchargés à partir de cette date.",
   "audioDownloadFromDateTimeUniquePlaylistExplanation": "La date de téléchargement spécifiée par défaut correspond à la date de téléchargement audio la plus ancienne de la playlist. Modifiez cette valeur en spécifiant la date de téléchargement à partir de laquelle les fichiers audio MP3 seront inclus dans le fichier ZIP.",
   "audioDownloadFromDateTimeUniquePlaylistTooltip": "Puisque la valeur de date/heure actuelle correspond à la valeur de date/heure de l'audio téléchargé le plus ancien de la playlist, si la date/heure n'est pas modifiée, tous les fichiers audio MP3 de la playlist seront inclus dans le fichier ZIP.",
-  "invalidDateFormatErrorMessage": "{dateStr} ne respecte pas le format date ou date heure:minute.",
+  "invalidDateTimeFormatErrorMessage": "{dateStr} ne respecte pas le format date ou date heure:minute.",
   "emptyDateErrorMessage": "Definir une date ou date heure:minute de téléchargement vide n'est pas possible.",
   "savingUniquePlaylistAudioMp3": "Sauvegarde des fichiers audio de la playlist {playlistTitle} ...",
   "savingMultiplePlaylistsAudioMp3": "Sauvegarde des fichiers audio de multiples playlists ...",
@@ -1756,7 +1756,6 @@
   "setAudioLastListenedDateTimeTitleTooltip": "Ceci est utile si les audios concernés n'ont pas été écoutés avant la date/heure définie.",
   "lastListenedDate": "Date dernière écoute",
   "lastListenedDateSortFilterTooltip": "Les audios écoutés à cette date seront listés.",
-  "obtainFilteredAudioNumberAndDuration": "Obtenir le nombre d'audios filtrés ainsi que leur durée jouable totale",
   "filteredAudioNumberAndDuration": "Durée jouable totale des {number} audios filtrés jouables aujourd'hui de la playlist: {playableDuration}.",
   "filteredAudioNumberAndDurationDialogTitle": "Valeurs obtenues",
   "playableEveryNDaysRange": "Intervalle jouable tous les n jours",
@@ -1765,5 +1764,11 @@
   "playableEveryNDaysSubTitle": "jouable tous les {nDays} jour(s)",
   "playableEveryNDaysOrder": "Jouable tous les n jours",
   "playableOnDate": "Jouable en date",
-  "playableOnDateSortFilterTooltip": "Les audios jouables à cette date seront listés."
+  "playableOnDateSortFilterTooltip": "Les audios jouables à cette date seront listés.",
+  "obtainFilteredAudioNumberAndDurationOnDate": "Obtenir le nombre d'audios filtrés ainsi que leur durée jouable totale à la date ...",
+  "definePlayableOnDateTitle": "Définir la date/heure de dernière écoute",
+  "playableOnDateTitleExplanation": "La date/heure définie sera appliquée à chaque audio filtré.",
+  "definePlayableOnDateTitleTooltip": "Ceci est utile si les audios concernés n'ont pas été écoutés avant la date/heure définie.",
+  "playableOnDateLabel": "Date ({selectedAppDateFormat})",
+  "invalidDateFormatErrorMessage": "{dateStr} ne respecte pas le format date (en plus sans heure:minute)."
 }

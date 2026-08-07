@@ -2066,7 +2066,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Puisque la valeur de date/heure actuelle correspond à la valeur de date/heure de l\'audio téléchargé le plus ancien de la playlist, si la date/heure n\'est pas modifiée, tous les fichiers audio MP3 de la playlist seront inclus dans le fichier ZIP.';
 
   @override
-  String invalidDateFormatErrorMessage(Object dateStr) {
+  String invalidDateTimeFormatErrorMessage(Object dateStr) {
     return '$dateStr ne respecte pas le format date ou date heure:minute.';
   }
 
@@ -3150,10 +3150,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Les audios écoutés à cette date seront listés.';
 
   @override
-  String get obtainFilteredAudioNumberAndDuration =>
-      'Obtenir le nombre d\'audios filtrés ainsi que leur durée jouable totale';
-
-  @override
   String filteredAudioNumberAndDuration(
       Object number, Object playableDuration) {
     return 'Durée jouable totale des $number audios filtrés jouables aujourd\'hui de la playlist: $playableDuration.';
@@ -3187,4 +3183,30 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get playableOnDateSortFilterTooltip =>
       'Les audios jouables à cette date seront listés.';
+
+  @override
+  String get obtainFilteredAudioNumberAndDurationOnDate =>
+      'Obtenir le nombre d\'audios filtrés ainsi que leur durée jouable totale à la date ...';
+
+  @override
+  String get definePlayableOnDateTitle =>
+      'Définir la date/heure de dernière écoute';
+
+  @override
+  String get playableOnDateTitleExplanation =>
+      'La date/heure définie sera appliquée à chaque audio filtré.';
+
+  @override
+  String get definePlayableOnDateTitleTooltip =>
+      'Ceci est utile si les audios concernés n\'ont pas été écoutés avant la date/heure définie.';
+
+  @override
+  String playableOnDateLabel(Object selectedAppDateFormat) {
+    return 'Date ($selectedAppDateFormat)';
+  }
+
+  @override
+  String invalidDateFormatErrorMessage(Object dateStr) {
+    return '$dateStr ne respecte pas le format date (en plus sans heure:minute).';
+  }
 }

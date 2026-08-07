@@ -15,6 +15,7 @@ enum InvalidValueState {
   none,
   positionTooBig,
   positionTooSmall,
+  dateTimeFormatInvalid,
   dateFormatInvalid,
   enteredDateEmpty,
   playlistPositionFormatInvalid,
@@ -309,7 +310,8 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
       // when saving the audio MP3 to zip file.
 
       return; // the SetValueToTargetDialog is not closed
-    } else if (_invalidValueState == InvalidValueState.dateFormatInvalid ||
+    } else if (_invalidValueState == InvalidValueState.dateTimeFormatInvalid ||
+        _invalidValueState == InvalidValueState.dateFormatInvalid ||
         _invalidValueState == InvalidValueState.enteredDateEmpty) {
       // The case if the entered date format was defined as invalid
       // in the _createResultList() method or is empty.
@@ -423,6 +425,15 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
           );
 
           _passedValueTextEditingController.text = minValueLimitStr;
+
+          return [""];
+        case InvalidValueState.dateTimeFormatInvalid:
+          warningMessageVM.setError(
+            errorType: ErrorType.dateTimeFormatError,
+            errorArgOne: enteredStr,
+          );
+
+          _passedValueTextEditingController.text = enteredStr;
 
           return [""];
         case InvalidValueState.dateFormatInvalid:

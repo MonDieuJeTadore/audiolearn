@@ -1142,16 +1142,6 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                 todayPlayableAudioDurationStr: resultsLst[1] as String);
             break;
           case FilteredAudioAction.obtainFilteredAudioNumberAndDurationOnDate:
-            // List<dynamic> resultsLst = playlistListVMlistenFalse
-            //     .obtainFilteredPlayableTodayAudioNumberAndDuration(
-            //   audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
-            //   playlist: playlist,
-            // );
-
-            // warningMessageVMlistenFalse.filteredAudioNumberAndDuration(
-            //     filteredAudiosNumber: resultsLst[0] as int,
-            //     filteredAudiosDurationStr: resultsLst[1] as String);
-
             final DateFormatVM dateFormatVMlistenFalse =
                 Provider.of<DateFormatVM>(
               context,
@@ -1169,8 +1159,8 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                         dateFormatVMlistenFalse: dateFormatVMlistenFalse);
 
                 return SetValueToTargetDialog(
-                  dialogTitle: AppLocalizations.of(context)!
-                      .definePlayableOnDateTitle,
+                  dialogTitle:
+                      AppLocalizations.of(context)!.definePlayableOnDateTitle,
                   dialogCommentStr: AppLocalizations.of(context)!
                       .playableOnDateTitleExplanation,
                   passedValueFieldLabel: AppLocalizations.of(context)!
@@ -1196,19 +1186,21 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
               String definedAudioLastListenedDateFormattedStr =
                   resultStringLst[0];
 
-              playlistListVMlistenFalse
-                  .modifyFilteredPlayableAudioLastListenedDateTime(
-                audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
-                dateFormatVMlistenFalse: dateFormatVMlistenFalse,
+              List<dynamic> resultLst =
+                  playlistListVMlistenFalse.obtainFilteredPlayableAudioAtDate(
                 playlist: playlist,
-                definedAudioLastListenedDateFormattedStr:
-                    definedAudioLastListenedDateFormattedStr,
+                selectedDate:
+                    dateFormatVMlistenFalse.parseDateStrUsinAppDateFormat(
+                  dateStr: definedAudioLastListenedDateFormattedStr,
+                )!,
+              );
+
+              warningMessageVMlistenFalse.filteredAudioNumberAndDurationOnDate(
+                filteredAudiosNumber: resultLst[0].length,
+                filteredAudiosDurationStr: resultLst[1] as String,
+                onDateStr: definedAudioLastListenedDateFormattedStr,
               );
             });
-
-
-
-
             break;
           case FilteredAudioAction.modifyFilteredAudioLastListenedDateTime:
             final DateFormatVM dateFormatVMlistenFalse =

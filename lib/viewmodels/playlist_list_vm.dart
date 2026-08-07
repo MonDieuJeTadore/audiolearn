@@ -6245,7 +6245,7 @@ class PlaylistListVM extends ChangeNotifier {
     return [];
   }
 
-  List<Audio> obtainFilteredPlayableAudioAtDate({
+  List<dynamic> obtainFilteredPlayableAudioAtDate({
     required Playlist playlist,
     required DateTime selectedDate,
   }) {
@@ -6256,13 +6256,31 @@ class PlaylistListVM extends ChangeNotifier {
             audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
             playlist: playlist);
 
+    List<Audio> filteredPlayableAudioAtDateLst = [];
+
     if (audioPlayerViewAudioLst.isNotEmpty) {
-      return _getFilteredAudiosPlayableAtDate(
+      filteredPlayableAudioAtDateLst = _getFilteredAudiosPlayableAtDate(
           filteredAudioLst: audioPlayerViewAudioLst,
           playableDate: selectedDate);
     }
 
-    return [];
+    Duration totalDuration = Duration.zero;
+
+    for (Audio audio in filteredPlayableAudioAtDateLst) {
+      totalDuration += audio.durationImpactedByPlaySpeed();
+    }
+
+    String convertedDuration =
+        DateTimeUtil.convertTimeWithTenthOfSecToTimeWithSec(
+      timeWithTenthOfSecondsStr: totalDuration.HHmmss(
+        addRemainingOneDigitTenthOfSecond: true,
+      ),
+    );
+
+    return [
+      filteredPlayableAudioAtDateLst,
+      convertedDuration,
+    ];
   }
 
   List<dynamic> _rewindPlayableAudioToStartAndGetTodayPlayableAudioDuration({

@@ -1770,5 +1770,6 @@
   "playableOnDateTitleExplanation": "La date/heure définie sera appliquée à chaque audio filtré.",
   "definePlayableOnDateTitleTooltip": "Ceci est utile si les audios concernés n'ont pas été écoutés avant la date/heure définie.",
   "playableOnDateLabel": "Date ({selectedAppDateFormat})",
-  "invalidDateFormatErrorMessage": "{dateStr} ne respecte pas le format date (en plus sans heure:minute)."
+  "invalidDateFormatErrorMessage": "{dateStr} ne respecte pas le format date (en plus sans heure:minute).",
+  "filteredAudioNumberAndDurationOnDate": "Durée jouable totale des {number} audios filtrés de la playlist jouables le {date}: {playableDuration}."
 }

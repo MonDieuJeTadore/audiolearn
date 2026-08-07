@@ -134,6 +134,9 @@ enum WarningMessageType {
   filteredAudioNumberAndDuration, // The case if obtaining the filtered 
   // audios number and duration.
 
+  filteredAudioNumberAndDurationOnDate, // The case if obtaining the filtered 
+  // audios number and duration on date.
+
   redownloadedAudioNumbersConfirmation, // The case if the sort
   // filtered deleted audios were redownloaded. This happens when
   // the user clicks on the playlist submenu 'Redownload filtered
@@ -1446,7 +1449,7 @@ class WarningMessageVM extends ChangeNotifier {
     // Causes the display warning message widget to be displayed.
     notifyListeners();
   }
-
+  
   void filteredAudioNumberAndDuration({
     required int filteredAudiosNumber,
     required String filteredAudiosDurationStr,
@@ -1455,6 +1458,24 @@ class WarningMessageVM extends ChangeNotifier {
     _todayPlayableAudioDurationStr = filteredAudiosDurationStr;
 
     warningMessageType = WarningMessageType.filteredAudioNumberAndDuration;
+
+    // Causes the display warning message widget to be displayed.
+    notifyListeners();
+  }
+
+  String _onDateStr = '';
+  String get onDateStr => _onDateStr;
+
+  void filteredAudioNumberAndDurationOnDate({
+    required int filteredAudiosNumber,
+    required String filteredAudiosDurationStr,
+    required String onDateStr,
+  }) {
+    _rewindedPlayableAudioNumber = filteredAudiosNumber;
+    _todayPlayableAudioDurationStr = filteredAudiosDurationStr;
+    _onDateStr = onDateStr;
+
+    warningMessageType = WarningMessageType.filteredAudioNumberAndDurationOnDate;
 
     // Causes the display warning message widget to be displayed.
     notifyListeners();

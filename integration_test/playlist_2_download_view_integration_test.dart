@@ -3257,7 +3257,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: [],
-          firstAudioListTileIndex: 5,
+          firstAudioListTileIndex: 4,
         );
 
         // Now tap on the search icon button to deactivate it
@@ -3423,12 +3423,11 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: playlistsTitles,
-          firstAudioListTileIndex: 5,
+          firstAudioListTileIndex: 4,
         );
 
         // And verify the displayd audio titles list
         playlistDisplayedAudioTitlesLst = [
-          "La résilience insulaire par Fiona Roche",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
           "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
@@ -3460,7 +3459,6 @@ void main() {
 
         // And verify the displayd audio titles list
         playlistDisplayedAudioTitlesLst = [
-          "La résilience insulaire par Fiona Roche",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
           "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
@@ -3676,7 +3674,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: [],
-          firstAudioListTileIndex: 5,
+          firstAudioListTileIndex: 4,
         );
 
         // Now tap on the search icon button to deactivate it
@@ -13788,7 +13786,7 @@ void main() {
         final String modifiedPlaylistRootPath =
             '$kApplicationPathWindowsTest${path.separator}newDirectory${path.separator}playlists';
         String newDirectoryPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
         const String modifiedDirSelectedPlaylistTitle =
             "local_not_empty_download_single_video";
 
@@ -13818,7 +13816,7 @@ void main() {
         // Now, reset the playlist root path to the initial value
 
         String audioPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         // With clicking on 'Confirm' button to accept restoring
         // the previous playlist titles order
@@ -13846,7 +13844,7 @@ void main() {
         // The playlist titles order is the initial one since 'Cancel'
         // will be clicked
         newDirectoryPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         // With clicking on 'Cancel' button to refuse restoring
         // the previous playlist titles order
@@ -13901,7 +13899,7 @@ void main() {
         ];
 
         audioPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         // Now reset the playlist root path to the initial value
         // with clicking on 'Cancel' button to refuse restoring
@@ -14021,7 +14019,7 @@ void main() {
         ];
 
         String newDirectoryPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, audio_player_view_2_shorts_test, local_3, local_audio_playlist_2]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, audio_player_view_2_shorts_test, local_3, local_audio_playlist_2]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         await _changePlaylistRootPathAndSaveAppSettings(
           tester: tester,
@@ -14061,7 +14059,7 @@ void main() {
         // the previous playlist titles order
 
         String audioPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, local_empty_download_single_video, local_not_empty_download_single_video]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, local_empty_download_single_video, local_not_empty_download_single_video]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         await _changePlaylistRootPathAndSaveAppSettings(
           tester: tester,
@@ -14088,7 +14086,7 @@ void main() {
         ];
 
         newDirectoryPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, audio_player_view_2_shorts_test, local_3, local_audio_playlist_2]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, audio_player_view_2_shorts_test, local_3, local_audio_playlist_2]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         await _changePlaylistRootPathAndSaveAppSettings(
           tester: tester,
@@ -14284,7 +14282,7 @@ void main() {
         // Nothing should change.
 
         String audioPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         await _changePlaylistRootPathAndSaveAppSettings(
           tester: tester,
@@ -38333,7 +38331,7 @@ void main() {
         audioEnclosingPlaylistTitle: localPlaylistTitle,
         audioDuration: '0:00:15.5',
         audioPosition: '0:00:00.0',
-        audioState: 'Not listened',
+        audioState: 'not listened',
         lastListenDateTime: '',
         audioFileName: fileName_5,
         audioFileSize: '155.1 KB',
@@ -38588,7 +38586,7 @@ void main() {
         audioEnclosingPlaylistTitle: targetPlaylistTitle,
         audioDuration: '0:00:18.7',
         audioPosition: '0:00:00.0',
-        audioState: 'Not listened',
+        audioState: 'not listened',
         lastListenDateTime: '',
         audioFileName: fileName_1,
         audioFileSize: '143.7 KB',
@@ -38609,7 +38607,7 @@ void main() {
         audioEnclosingPlaylistTitle: targetPlaylistTitle,
         audioDuration: '0:04:44.0',
         audioPosition: '0:00:00.0',
-        audioState: 'Not listened',
+        audioState: 'not listened',
         lastListenDateTime: '',
         audioFileName: "$fileNameNoExt.mp3",
         audioFileSize: '4.54 MB',
@@ -38697,7 +38695,7 @@ void main() {
         audioEnclosingPlaylistTitle: targetPlaylistTitle,
         audioDuration: '0:02:00.1',
         audioPosition: '0:00:00.0',
-        audioState: 'Not listened',
+        audioState: 'not listened',
         lastListenDateTime: '',
         audioFileName: "$fileNameNoExt.mp3",
         audioFileSize: '1.20 MB',
@@ -38724,7 +38722,7 @@ void main() {
         audioEnclosingPlaylistTitle: targetPlaylistTitle,
         audioDuration: '0:04:03.3',
         audioPosition: '0:00:00.0',
-        audioState: 'Not listened',
+        audioState: 'not listened',
         lastListenDateTime: '',
         audioFileName: "$fileNameNoExt.mp3",
         audioFileSize: '5.84 MB',
@@ -39148,7 +39146,7 @@ void main() {
           audioEnclosingPlaylistTitle: selectedYoutubePlaylistTitle,
           audioDuration: '0:00:05.6',
           audioPosition: '0:00:00.0',
-          audioState: 'Non écouté',
+          audioState: 'non écouté',
           lastListenDateTime: '',
           audioFileName: '$enteredFileNameNoExt.mp3',
           audioFileSize: '56.4 Ko',
@@ -39356,7 +39354,7 @@ void main() {
           audioEnclosingPlaylistTitle: selectedYoutubePlaylistTitle,
           audioDuration: '0:00:00.7',
           audioPosition: '0:00:00.0',
-          audioState: 'Non écouté',
+          audioState: 'non écouté',
           lastListenDateTime: '',
           audioFileName: '$enteredFileNameNoExt.mp3',
           audioFileSize: '6.9 Ko',
@@ -39859,7 +39857,7 @@ void main() {
           audioEnclosingPlaylistTitle: unselectedLocalPlaylistTitle,
           audioDuration: '0:00:05.6',
           audioPosition: '0:00:00.0',
-          audioState: 'Non écouté',
+          audioState: 'non écouté',
           lastListenDateTime: '',
           audioFileName: '$enteredFileNameNoExt.mp3',
           audioFileSize: '56.4 Ko',
@@ -40058,7 +40056,7 @@ void main() {
           audioEnclosingPlaylistTitle: unselectedLocalPlaylistTitle,
           audioDuration: '0:00:00.7',
           audioPosition: '0:00:00.0',
-          audioState: 'Non écouté',
+          audioState: 'non écouté',
           lastListenDateTime: '',
           audioFileName: '$enteredFileNameNoExt.mp3',
           audioFileSize: '6.9 Ko',
@@ -40909,7 +40907,7 @@ void main() {
           audioEnclosingPlaylistTitle: selectedYoutubePlaylistTitle,
           audioDuration: '0:00:05.9',
           audioPosition: '0:00:00.0',
-          audioState: 'Not listened',
+          audioState: 'not listened',
           lastListenDateTime: '',
           audioFileName: '$enteredFileNameNoExt.mp3',
           audioFileSize: '59.3 KB',
@@ -41116,7 +41114,7 @@ void main() {
           audioEnclosingPlaylistTitle: selectedYoutubePlaylistTitle,
           audioDuration: '0:00:01.1',
           audioPosition: '0:00:00.0',
-          audioState: 'Not listened',
+          audioState: 'not listened',
           lastListenDateTime: '',
           audioFileName: '$enteredFileNameNoExt.mp3',
           audioFileSize: '10.8 KB',
@@ -41605,7 +41603,7 @@ void main() {
           audioEnclosingPlaylistTitle: unselectedLocalPlaylistTitle,
           audioDuration: '0:00:05.9',
           audioPosition: '0:00:00.0',
-          audioState: 'Not listened',
+          audioState: 'not listened',
           lastListenDateTime: '',
           audioFileName: '$enteredFileNameNoExt.mp3',
           audioFileSize: '59.3 KB',
@@ -41803,7 +41801,7 @@ void main() {
           audioEnclosingPlaylistTitle: unselectedLocalPlaylistTitle,
           audioDuration: '0:00:01.1',
           audioPosition: '0:00:00.0',
-          audioState: 'Not listened',
+          audioState: 'not listened',
           lastListenDateTime: '',
           audioFileName: '$enteredFileNameNoExt.mp3',
           audioFileSize: '10.8 KB',
@@ -50216,7 +50214,7 @@ void main() {
             extractedFromPlaylistTitle: '1 long music',
             audioDuration: '0:00:51.0',
             audioPosition: '0:00:00.0',
-            audioState: 'Not listened',
+            audioState: 'not listened',
             lastListenDateTime: '',
             audioFileName:
                 '250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27.mp3',
@@ -50994,7 +50992,7 @@ void main() {
             extractedFromPlaylistTitle: '1 long music',
             audioDuration: '0:00:54.3',
             audioPosition: '0:00:00.0',
-            audioState: 'Not listened',
+            audioState: 'not listened',
             lastListenDateTime: '',
             audioFileName:
                 '260126-192653-Quand Dieu transforme l’épreuve en victoire 26-01-26.mp3',
@@ -53538,7 +53536,7 @@ void main() {
         audioEnclosingPlaylistTitle: playlistTitle,
         audioDuration: '0:01:41.1',
         audioPosition: '0:00:00.0',
-        audioState: 'Not listened',
+        audioState: 'not listened',
         lastListenDateTime: '10/12/2025 08:04',
         audioFileName:
             'Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!.mp3',

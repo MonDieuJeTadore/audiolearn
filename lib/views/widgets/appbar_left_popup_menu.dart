@@ -1097,7 +1097,7 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
 
     if (parsedDateTime == null) {
       return InvalidValueState
-          .dateFormatInvalid; // This will prevent the dialog from closing
+          .dateTimeFormatInvalid; // This will prevent the dialog from closing
     }
 
     return InvalidValueState.none;

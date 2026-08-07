@@ -281,6 +281,8 @@ enum ErrorType {
 
   errorInPlaylistJsonFile, // Error in the playlist json file.
 
+  dateTimeFormatError, // Error in the date time format.
+
   dateFormatError, // Error in the date format.
 
   enteredDateEmpty, // The case if the entered date is empty.

@@ -2049,7 +2049,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Since the current date/time value corresponds to the playlist oldest date/time downladed audio value, if the date/time is not modified, all the playlist audio MP3 files will be included in the ZIP file.';
 
   @override
-  String invalidDateFormatErrorMessage(Object dateStr) {
+  String invalidDateTimeFormatErrorMessage(Object dateStr) {
     return '$dateStr does not respect the date or date/time format.';
   }
 
@@ -3115,10 +3115,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Lists all audios listened on or after the specified start date if set.';
 
   @override
-  String get obtainFilteredAudioNumberAndDuration =>
-      'Obtain filtered Audios Number and and their total playable Duration';
-
-  @override
   String filteredAudioNumberAndDuration(
       Object number, Object playableDuration) {
     return 'Total playable duration of the $number playlist filtered playable today audios: $playableDuration.';
@@ -3152,4 +3148,28 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get playableOnDateSortFilterTooltip =>
       'Lists all audios playable on the specified date if set.';
+
+  @override
+  String get obtainFilteredAudioNumberAndDurationOnDate =>
+      'Obtain filtered Audios Number and their total playable Duration on Date ...';
+
+  @override
+  String get definePlayableOnDateTitle => 'Define the playable on Date';
+
+  @override
+  String get playableOnDateTitleExplanation =>
+      'The defined date will be used as last playable date to obtain the filtered audios number and their total playable duration,';
+
+  @override
+  String get definePlayableOnDateTitleTooltip => 'Tooltip to define !';
+
+  @override
+  String playableOnDateLabel(Object selectedAppDateFormat) {
+    return 'Date ($selectedAppDateFormat)';
+  }
+
+  @override
+  String invalidDateFormatErrorMessage(Object dateStr) {
+    return '$dateStr does not respect the date only format.';
+  }
 }

@@ -3324,11 +3324,11 @@ abstract class AppLocalizations {
   /// **'Since the current date/time value corresponds to the playlist oldest date/time downladed audio value, if the date/time is not modified, all the playlist audio MP3 files will be included in the ZIP file.'**
   String get audioDownloadFromDateTimeUniquePlaylistTooltip;
 
-  /// No description provided for @invalidDateFormatErrorMessage.
+  /// No description provided for @invalidDateTimeFormatErrorMessage.
   ///
   /// In en, this message translates to:
   /// **'{dateStr} does not respect the date or date/time format.'**
-  String invalidDateFormatErrorMessage(Object dateStr);
+  String invalidDateTimeFormatErrorMessage(Object dateStr);
 
   /// No description provided for @emptyDateErrorMessage.
   ///
@@ -5002,12 +5002,6 @@ abstract class AppLocalizations {
   /// **'Lists all audios listened on or after the specified start date if set.'**
   String get lastListenedDateSortFilterTooltip;
 
-  /// No description provided for @obtainFilteredAudioNumberAndDuration.
-  ///
-  /// In en, this message translates to:
-  /// **'Obtain filtered Audios Number and and their total playable Duration'**
-  String get obtainFilteredAudioNumberAndDuration;
-
   /// No description provided for @filteredAudioNumberAndDuration.
   ///
   /// In en, this message translates to:
@@ -5061,6 +5055,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Lists all audios playable on the specified date if set.'**
   String get playableOnDateSortFilterTooltip;
+
+  /// No description provided for @obtainFilteredAudioNumberAndDurationOnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Obtain filtered Audios Number and their total playable Duration on Date ...'**
+  String get obtainFilteredAudioNumberAndDurationOnDate;
+
+  /// No description provided for @definePlayableOnDateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Define the playable on Date'**
+  String get definePlayableOnDateTitle;
+
+  /// No description provided for @playableOnDateTitleExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'The defined date will be used as last playable date to obtain the filtered audios number and their total playable duration,'**
+  String get playableOnDateTitleExplanation;
+
+  /// No description provided for @definePlayableOnDateTitleTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tooltip to define !'**
+  String get definePlayableOnDateTitleTooltip;
+
+  /// No description provided for @playableOnDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date ({selectedAppDateFormat})'**
+  String playableOnDateLabel(Object selectedAppDateFormat);
+
+  /// No description provided for @invalidDateFormatErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{dateStr} does not respect the date only format.'**
+  String invalidDateFormatErrorMessage(Object dateStr);
 }
 
 class _AppLocalizationsDelegate

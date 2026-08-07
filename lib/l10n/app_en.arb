@@ -980,7 +980,7 @@
   "savePlaylistAudioMp3FilesToZipTooltip": "Saving the playlist audio MP3 files to one or several ZIP file(s). You can specify a date/time filter to only include audio files downloaded on or after that date.",
   "audioDownloadFromDateTimeUniquePlaylistExplanation": "The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.",
   "audioDownloadFromDateTimeUniquePlaylistTooltip": "Since the current date/time value corresponds to the playlist oldest date/time downladed audio value, if the date/time is not modified, all the playlist audio MP3 files will be included in the ZIP file.",
-  "invalidDateFormatErrorMessage": "{dateStr} does not respect the date or date/time format.",
+  "invalidDateTimeFormatErrorMessage": "{dateStr} does not respect the date or date/time format.",
   "emptyDateErrorMessage": "Defining an empty date or date/time download date is not possible.",
   "savingUniquePlaylistAudioMp3": "Saving {playlistTitle} audio files to ZIP ...",
   "savingMultiplePlaylistsAudioMp3": "Saving multiple playlists audio files to ZIP ...",
@@ -1327,7 +1327,6 @@
   "setAudioLastListenedDateTimeTitleTooltip": "This is usefull if the concerned audios were not listened before the defined date/time.",
   "lastListenedDate": "Last listened date",
   "lastListenedDateSortFilterTooltip": "Lists all audios listened on or after the specified start date if set.",
-  "obtainFilteredAudioNumberAndDuration": "Obtain filtered Audios Number and and their total playable Duration",
   "filteredAudioNumberAndDuration": "Total playable duration of the {number} playlist filtered playable today audios: {playableDuration}.",
   "filteredAudioNumberAndDurationDialogTitle": "Obtained Values",
   "playableEveryNDaysRange": "Playable every n days range",
@@ -1336,5 +1335,11 @@
   "playableEveryNDaysSubTitle": "playable every {nDays} days",
   "playableEveryNDaysOrder": "Playable every n days",
   "playableOnDate": "Playable on date",
-  "playableOnDateSortFilterTooltip": "Lists all audios playable on the specified date if set."
+  "playableOnDateSortFilterTooltip": "Lists all audios playable on the specified date if set.",
+  "obtainFilteredAudioNumberAndDurationOnDate": "Obtain filtered Audios Number and their total playable Duration on Date ...",
+  "definePlayableOnDateTitle": "Define the playable on Date",
+  "playableOnDateTitleExplanation": "The defined date will be used as last playable date to obtain the filtered audios number and their total playable duration,",
+  "definePlayableOnDateTitleTooltip": "Tooltip to define !",
+  "playableOnDateLabel": "Date ({selectedAppDateFormat})",
+  "invalidDateFormatErrorMessage": "{dateStr} does not respect the date only format."
 }

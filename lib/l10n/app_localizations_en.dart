@@ -3172,4 +3172,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String invalidDateFormatErrorMessage(Object dateStr) {
     return '$dateStr does not respect the date only format.';
   }
+
+  @override
+  String filteredAudioNumberAndDurationOnDate(
+      Object date, Object number, Object playableDuration) {
+    return 'Total playable duration of the $number playlist filtered audios playable on $date: $playableDuration.';
+  }
 }

@@ -3209,4 +3209,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String invalidDateFormatErrorMessage(Object dateStr) {
     return '$dateStr ne respecte pas le format date (en plus sans heure:minute).';
   }
+
+  @override
+  String filteredAudioNumberAndDurationOnDate(
+      Object date, Object number, Object playableDuration) {
+    return 'Durée jouable totale des $number audios filtrés de la playlist jouables le $date: $playableDuration.';
+  }
 }

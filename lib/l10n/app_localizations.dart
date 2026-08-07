@@ -5091,6 +5091,13 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{dateStr} does not respect the date only format.'**
   String invalidDateFormatErrorMessage(Object dateStr);
+
+  /// No description provided for @filteredAudioNumberAndDurationOnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Total playable duration of the {number} playlist filtered audios playable on {date}: {playableDuration}.'**
+  String filteredAudioNumberAndDurationOnDate(
+      Object date, Object number, Object playableDuration);
 }
 
 class _AppLocalizationsDelegate

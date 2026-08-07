@@ -3306,4 +3306,12 @@ class MockAppLocalizations extends AppLocalizations {
     Object dateStr,
   ) =>
       "$dateStr does not respect the date format.";
+
+  @override
+  String filteredAudioNumberAndDurationOnDate(
+    Object number,
+    Object date,
+    Object playableDuration,
+  ) =>
+      "Total playable duration of the $number playlist filtered audios playable on $date: $playableDuration.";
 }

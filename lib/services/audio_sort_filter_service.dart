@@ -358,6 +358,7 @@ class AudioSortFilterService {
                   wasFilterOptionsTitleAddedToDifferencesLst,
               isValueTranslated: true);
     }
+
     if (existingAudioSortFilterParms.ignoreCase !=
         newOrModifiedaudioSortFilterParms.ignoreCase) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -372,6 +373,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterAudios !=
         newOrModifiedaudioSortFilterParms.filterAudios) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -386,6 +388,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterComments !=
         newOrModifiedaudioSortFilterParms.filterComments) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -400,6 +403,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.searchAsWellInYoutubeChannelName !=
         newOrModifiedaudioSortFilterParms.searchAsWellInYoutubeChannelName) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -415,6 +419,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.searchAsWellInVideoCompactDescription !=
         newOrModifiedaudioSortFilterParms
             .searchAsWellInVideoCompactDescription) {
@@ -431,6 +436,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterFullyListened !=
         newOrModifiedaudioSortFilterParms.filterFullyListened) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -446,6 +452,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterPartiallyListened !=
         newOrModifiedaudioSortFilterParms.filterPartiallyListened) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -461,6 +468,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterNotListened !=
         newOrModifiedaudioSortFilterParms.filterNotListened) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -476,6 +484,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterMusicQuality !=
         newOrModifiedaudioSortFilterParms.filterMusicQuality) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -491,6 +500,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterSpokenQuality !=
         newOrModifiedaudioSortFilterParms.filterSpokenQuality) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -506,6 +516,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterCommented !=
         newOrModifiedaudioSortFilterParms.filterCommented) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -521,6 +532,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterNotCommented !=
         newOrModifiedaudioSortFilterParms.filterNotCommented) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -551,6 +563,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterNotPictured !=
         newOrModifiedaudioSortFilterParms.filterNotPictured) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -581,6 +594,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterNotPlayable !=
         newOrModifiedaudioSortFilterParms.filterNotPlayable) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -612,6 +626,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterImported !=
         newOrModifiedaudioSortFilterParms.filterImported) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -626,6 +641,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterConverted !=
         newOrModifiedaudioSortFilterParms.filterConverted) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -641,6 +657,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.filterExtracted !=
         newOrModifiedaudioSortFilterParms.filterExtracted) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -673,6 +690,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.downloadDateEndRange !=
         newOrModifiedaudioSortFilterParms.downloadDateEndRange) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -689,6 +707,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.uploadDateStartRange !=
         newOrModifiedaudioSortFilterParms.uploadDateStartRange) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -705,6 +724,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.uploadDateEndRange !=
         newOrModifiedaudioSortFilterParms.uploadDateEndRange) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -721,6 +741,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.lastListenedDate !=
         newOrModifiedaudioSortFilterParms.lastListenedDate) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -737,8 +758,9 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.playableOnDate !=
-        newOrModifiedaudioSortFilterParms.lastListenedDate) {
+        newOrModifiedaudioSortFilterParms.playableOnDate) {
       wasFilterOptionsTitleAddedToDifferencesLst =
           _addToDifferencesLstOtherOptionDateValueStr(
               dateFormatVMlistenFalse: dateFormatVMlistenFalse,
@@ -752,6 +774,7 @@ class AudioSortFilterService {
               wasFilterOptionsTitleAddedToDifferencesLst:
                   wasFilterOptionsTitleAddedToDifferencesLst);
     }
+
     if (existingAudioSortFilterParms.startPlayableEveryNDayRange !=
         newOrModifiedaudioSortFilterParms.startPlayableEveryNDayRange) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -775,6 +798,7 @@ class AudioSortFilterService {
                       existingAudioSortFilterParms.endPlayableEveryNDayRange ==
                           0);
     }
+
     if (existingAudioSortFilterParms.endPlayableEveryNDayRange !=
         newOrModifiedaudioSortFilterParms.endPlayableEveryNDayRange) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -797,6 +821,7 @@ class AudioSortFilterService {
                       existingAudioSortFilterParms.endPlayableEveryNDayRange ==
                           0);
     }
+
     if (existingAudioSortFilterParms.fileSizeStartRangeMB !=
         newOrModifiedaudioSortFilterParms.fileSizeStartRangeMB) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -816,6 +841,7 @@ class AudioSortFilterService {
                   existingAudioSortFilterParms.fileSizeStartRangeMB == 0 &&
                       existingAudioSortFilterParms.fileSizeEndRangeMB == 0);
     }
+
     if (existingAudioSortFilterParms.fileSizeEndRangeMB !=
         newOrModifiedaudioSortFilterParms.fileSizeEndRangeMB) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -835,6 +861,7 @@ class AudioSortFilterService {
                   existingAudioSortFilterParms.fileSizeStartRangeMB == 0 &&
                       existingAudioSortFilterParms.fileSizeEndRangeMB == 0);
     }
+
     if (existingAudioSortFilterParms.durationStartRangeSec !=
         newOrModifiedaudioSortFilterParms.durationStartRangeSec) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -856,6 +883,7 @@ class AudioSortFilterService {
                   existingAudioSortFilterParms.durationStartRangeSec == 0 &&
                       existingAudioSortFilterParms.durationEndRangeSec == 0);
     }
+    
     if (existingAudioSortFilterParms.durationEndRangeSec !=
         newOrModifiedaudioSortFilterParms.durationEndRangeSec) {
       wasFilterOptionsTitleAddedToDifferencesLst =

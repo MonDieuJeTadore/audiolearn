@@ -265,6 +265,12 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           ),
         ),
         PopupMenuItem<AudioPopupMenuAction>(
+          key: const Key('popup_menu_modify_audio_listened_date'),
+          value: AudioPopupMenuAction.modifyAudioListenedDate,
+          child:
+              Text(AppLocalizations.of(context)!.modifyAudioListenedDateMenu),
+        ),
+        PopupMenuItem<AudioPopupMenuAction>(
           key: const Key('popup_menu_delete_audio'),
           value: AudioPopupMenuAction.deleteAudio,
           child: Text(AppLocalizations.of(context)!.deleteAudio),
@@ -518,6 +524,21 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
               },
             );
             break;
+          case AudioPopupMenuAction.modifyAudioListenedDate:
+            await showDialog<String?>(
+              context: context,
+              barrierDismissible:
+                  false, // This line prevents the dialog from closing when
+              //            tapping outside the dialog
+              builder: (BuildContext context) {
+                return AudioModificationDialog(
+                  audio: audio,
+                  audioModificationType:
+                      AudioModificationType.modifyAudioListenedDate,
+                );
+              },
+            );
+            break;
           case AudioPopupMenuAction.deleteAudio:
             final Audio audioToDelete = audio;
 
@@ -719,7 +740,8 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           seconds: audio.getAudioRemainingMilliseconds() ~/ 1000,
         );
 
-        if (lastListenedDateTime == null) {
+        // || audio.audioPositionSeconds == 0 improves displaying not listened
+        if (lastListenedDateTime == null || audio.audioPositionSeconds == 0) {
           lastSubtitlePart =
               '${AppLocalizations.of(context)!.remaining} $audioRemainingHHMMSSDuration ${AppLocalizations.of(context)!.audioStateNotListened}';
         } else {
@@ -776,13 +798,14 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           context: context,
           dateFormatVMlistenTrue: dateFormatVMlistenTrue,
           audioDuration: audioDuration,
-          finalSubtitlePart: isLastLListeneDateOrPlayableEveryNDaysRangeOrPlayableOnDefined
-              ? _lastListenedDateTimeOrPlayableEveryNDays(
-                  context: context,
-                  dateFormatVMlistenTrue: dateFormatVMlistenTrue,
-                  audioDuration: audioDuration,
-                )
-              : '',
+          finalSubtitlePart:
+              isLastLListeneDateOrPlayableEveryNDaysRangeOrPlayableOnDefined
+                  ? _lastListenedDateTimeOrPlayableEveryNDays(
+                      context: context,
+                      dateFormatVMlistenTrue: dateFormatVMlistenTrue,
+                      audioDuration: audioDuration,
+                    )
+                  : '',
         );
     }
   }
@@ -814,7 +837,8 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
     final String playableEveryNDays = audio.playableEveryNDays.toString();
     final String lastSubtitlePart;
 
-    if (lastListenedDateTime == null) {
+    // || audio.audioPositionSeconds == 0 improves displaying not listened
+    if (lastListenedDateTime == null || audio.audioPositionSeconds == 0) {
       lastSubtitlePart = AppLocalizations.of(context)!.audioStateNotListened;
     } else {
       lastSubtitlePart =

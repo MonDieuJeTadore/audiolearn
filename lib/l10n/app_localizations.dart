@@ -5098,6 +5098,42 @@ abstract class AppLocalizations {
   /// **'Total playable duration of the {number} playlist filtered audios playable on {date}: {playableDuration}.'**
   String filteredAudioNumberAndDurationOnDate(
       Object date, Object number, Object playableDuration);
+
+  /// No description provided for @modifyAudioListenedDateMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify Audio listened Date ...'**
+  String get modifyAudioListenedDateMenu;
+
+  /// No description provided for @modifyAudioListenedDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Define the Audio listened Date'**
+  String get modifyAudioListenedDate;
+
+  /// No description provided for @listenedDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Listened date'**
+  String get listenedDateLabel;
+
+  /// No description provided for @modifyAudioListenedDateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify'**
+  String get modifyAudioListenedDateButton;
+
+  /// No description provided for @modifyAudioListenedDateTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Define the listened date which will be set in the audio. This will impact the day when the audio will be played.'**
+  String get modifyAudioListenedDateTooltip;
+
+  /// No description provided for @modifyAudioListenedDateDialogComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Last played date: {lastPlayedDate}.'**
+  String modifyAudioListenedDateDialogComment(Object lastPlayedDate);
 }
 
 class _AppLocalizationsDelegate

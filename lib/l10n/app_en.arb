@@ -1342,5 +1342,11 @@
   "definePlayableOnDateTitleTooltip": "Tooltip to define !",
   "playableOnDateLabel": "Date ({selectedAppDateFormat})",
   "invalidDateFormatErrorMessage": "{dateStr} does not respect the date only format.",
-  "filteredAudioNumberAndDurationOnDate": "Total playable duration of the {number} playlist filtered audios playable on {date}: {playableDuration}."
+  "filteredAudioNumberAndDurationOnDate": "Total playable duration of the {number} playlist filtered audios playable on {date}: {playableDuration}.",
+  "modifyAudioListenedDateMenu": "Modify Audio listened Date ...",
+  "modifyAudioListenedDate": "Define the Audio listened Date",
+  "listenedDateLabel": "Listened date",
+  "modifyAudioListenedDateButton": "Modify",
+  "modifyAudioListenedDateTooltip": "Define the listened date which will be set in the audio. This will impact the day when the audio will be played.",
+  "modifyAudioListenedDateDialogComment": "Last played date: {lastPlayedDate}."
 }

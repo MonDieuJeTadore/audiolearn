@@ -131,8 +131,6 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
   DateTime? _startUploadDateTime;
   DateTime? _endUploadDateTime;
   DateTime? _lastListenedDate;
-  int _startPlayableEveryNDayRange = 0;
-  int _endPlayableEveryNDayRange = 0;
   DateTime? _playableOnDate;
 
   final _audioTitleSearchSentenceFocusNode = FocusNode();
@@ -295,10 +293,6 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
     _endUploadDateTime = audioSortDefaultFilterParameters.uploadDateEndRange;
     _lastListenedDate = audioSortDefaultFilterParameters.lastListenedDate;
     _playableOnDate = audioSortDefaultFilterParameters.playableOnDate;
-    _startPlayableEveryNDayRange =
-        audioSortDefaultFilterParameters.startPlayableEveryNDayRange;
-    _endPlayableEveryNDayRange =
-        audioSortDefaultFilterParameters.endPlayableEveryNDayRange;
 
     int startPlayableEveryNDayRange =
         audioSortDefaultFilterParameters.startPlayableEveryNDayRange;

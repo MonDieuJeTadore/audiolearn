@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 const String kApplicationName = "AudioLearn";
 const String kApplicationNameForAboutView =
     "Audio Learn"; // Enables better readability
-const String kApplicationVersion = "3.5.83";
+const String kApplicationVersion = "3.5.84";
 
 enum PopupMenuButtonType {
   openSortFilterAudioDialog,
@@ -31,6 +31,7 @@ enum AudioPopupMenuAction {
   moveAudioToPlaylist,
   copyAudioToPlaylist,
   definePlayableEveryNDays,
+  modifyAudioListenedDate,
   deleteAudio,
   deleteAudioFromPlaylistAswell,
   addAudioPicture,

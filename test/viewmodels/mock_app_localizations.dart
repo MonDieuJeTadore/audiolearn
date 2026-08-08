@@ -3314,4 +3314,26 @@ class MockAppLocalizations extends AppLocalizations {
     Object playableDuration,
   ) =>
       "Total playable duration of the $number playlist filtered audios playable on $date: $playableDuration.";
+
+  @override
+  String get modifyAudioListenedDate => "Define Audio listened Date";
+
+  @override
+  String get listenedDateLabel => "Audio listened date";
+
+  @override
+  String get modifyAudioListenedDateButton => "Modify";
+
+  @override
+  String get modifyAudioListenedDateTooltip =>
+      "Define the listened date which will be set in the audio. This will impact the day when the audio will be played.";
+
+  @override
+  String get modifyAudioListenedDateMenu => "Modify Audio listened Date ...";
+
+  @override
+  String modifyAudioListenedDateDialogComment(
+    Object lastPlayedDate,
+  ) =>
+      "Last played date: $lastPlayedDate.";
 }

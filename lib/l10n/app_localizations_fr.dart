@@ -3215,4 +3215,26 @@ class AppLocalizationsFr extends AppLocalizations {
       Object date, Object number, Object playableDuration) {
     return 'Durée jouable totale des $number audios filtrés de la playlist jouables le $date: $playableDuration.';
   }
+
+  @override
+  String get modifyAudioListenedDateMenu =>
+      'Modifier la date d\'écoute de l\'audio ...';
+
+  @override
+  String get modifyAudioListenedDate => 'Définir la date d\'écoute';
+
+  @override
+  String get listenedDateLabel => 'Date d\'écoute';
+
+  @override
+  String get modifyAudioListenedDateButton => 'Modifier';
+
+  @override
+  String get modifyAudioListenedDateTooltip =>
+      'Indiquer la date d\'écoute qui sera définie dans l\'audio. Ceci va modifier le jour où l\'audio sera joué.';
+
+  @override
+  String modifyAudioListenedDateDialogComment(Object lastPlayedDate) {
+    return 'Date de dernière écoute: $lastPlayedDate.';
+  }
 }

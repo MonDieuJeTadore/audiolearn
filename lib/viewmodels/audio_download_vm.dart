@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:archive/archive.dart';
-import 'package:audiolearn/constants.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:collection/collection.dart';
 import 'package:ffmpeg_kit_flutter_new/media_information.dart';
@@ -21,6 +20,7 @@ import 'package:path/path.dart' as path;
 // youtube_explode_dart Playlist class name.
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
+import '../constants.dart';
 import '../models/text_to_mp3_audio_file.dart';
 import '../models/comment.dart';
 import '../services/settings_data_service.dart';
@@ -29,6 +29,7 @@ import '../models/audio.dart';
 import '../models/playlist.dart';
 import '../utils/dir_util.dart';
 import 'comment_vm.dart';
+import 'date_format_vm.dart';
 import 'picture_vm.dart';
 import 'warning_message_vm.dart';
 
@@ -1200,7 +1201,7 @@ class AudioDownloadVM extends ChangeNotifier {
 
   /// Method called by the AudioModificationDialog when the user clicks on the modify button in order
   /// to modify the audio playable every n day(s) value.
-  /// 
+  ///
   /// Returns true if a warning was displayed, false otherwise. The warning is displayed if the user
   /// enters an error when defining the every playable days. In this case, after the warning is displayed,
   /// the audio modification dialog is not closed and the user can correct the error. If no warning is
@@ -1215,7 +1216,8 @@ class AudioDownloadVM extends ChangeNotifier {
       (entry) => entry == audio,
     );
 
-    int modifiedPlayableEveryDaysValue = int.tryParse(modifiedPlayableEveryDaysValueStr) ?? -1;
+    int modifiedPlayableEveryDaysValue =
+        int.tryParse(modifiedPlayableEveryDaysValueStr) ?? -1;
 
     if (modifiedPlayableEveryDaysValue < 1) {
       warningMessageVM.invalidPlayableEveryNDaysWarning(
@@ -1234,7 +1236,51 @@ class AudioDownloadVM extends ChangeNotifier {
 
     // necessary so that the audio sub title is updated
     notifyListeners();
-    
+
+    return false;
+  }
+
+  /// Method called by the AudioModificationDialog when the user clicks on the modify button in order
+  /// to modify the audio listened date value.
+  ///
+  /// Returns true if a warning was displayed, false otherwise. The warning is displayed if the user
+  /// enters an error when defining the modified listened date. In this case, after the warning is
+  /// displayed, the audio modification dialog is not closed and the user can correct the error. If
+  /// no warning is displayed, the audio modification dialog is closed.
+  bool modifyAudioListenedDate({
+    required DateFormatVM dateFormatVMlistenFalse,
+    required Audio audio,
+    required String modifiedAudioListenedDateStr,
+  }) {
+    Playlist enclosingPlaylist = audio.enclosingPlaylist!;
+
+    Audio playlistAudio = enclosingPlaylist.playableAudioLst.firstWhere(
+      (entry) => entry == audio,
+    );
+
+    final DateTime? parsedDate =
+        dateFormatVMlistenFalse.parseDateStrUsinAppDateFormat(
+      dateStr: modifiedAudioListenedDateStr,
+    );
+
+    if (parsedDate == null) {
+      warningMessageVM.invalidPlayableEveryNDaysWarning(
+        invalidPlayableEveryDaysValue: modifiedAudioListenedDateStr,
+      );
+
+      return true;
+    }
+
+    playlistAudio.audioPausedDateTime = parsedDate;
+
+    JsonDataService.saveToFile(
+      model: enclosingPlaylist,
+      path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
+    );
+
+    // necessary so that the audio sub title is updated
+    notifyListeners();
+
     return false;
   }
 

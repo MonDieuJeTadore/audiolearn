@@ -18,6 +18,7 @@ enum AudioModificationType {
   modifyAudioTitle,
   modifyAudioUrl,
   playableEveryNDays,
+  modifyAudioListenedDate,
 }
 
 /// This dialog allows the user to rename the audio file, modify its title, modify the URL of
@@ -56,7 +57,7 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
       setState(() {}); // Rebuild when text changes
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       switch (widget.audioModificationType) {
         case AudioModificationType.renameAudioFile:
           _audioModificationTextEditingController.text =
@@ -72,6 +73,19 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
         case AudioModificationType.playableEveryNDays:
           _audioModificationTextEditingController.text =
               widget.audio.playableEveryNDays.toString();
+          break;
+        case AudioModificationType.modifyAudioListenedDate:
+          DateTime? audioPausedDateTime = widget.audio.audioPausedDateTime;
+          audioPausedDateTime ??= DateTime.now();
+
+          final DateFormatVM dateFormatVMlistenFalse =
+              Provider.of<DateFormatVM>(
+            context,
+            listen: false,
+          );
+
+          _audioModificationTextEditingController.text =
+              dateFormatVMlistenFalse.formatDate(audioPausedDateTime);
           break;
       }
 
@@ -172,6 +186,29 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
             AppLocalizations.of(context)!.modifyPlayableEveryNDaysTooltip;
         modificationButtonStr =
             AppLocalizations.of(context)!.modifyPlayableEveryNDaysButton;
+        flexibleValue = 1;
+        break;
+      case AudioModificationType.modifyAudioListenedDate:
+        titleStr = AppLocalizations.of(context)!.modifyAudioListenedDate;
+        DateTime? audioPausedDateTime = widget.audio.audioPausedDateTime;
+        final DateFormatVM dateFormatVMlistenFalse = Provider.of<DateFormatVM>(
+          context,
+          listen: false,
+        );
+
+        commentStr =
+            AppLocalizations.of(context)!.modifyAudioListenedDateDialogComment(
+          audioPausedDateTime != null
+              ? dateFormatVMlistenFalse.formatDate(
+                  audioPausedDateTime,
+                )
+              : AppLocalizations.of(context)!.notYetPlayed,
+        );
+        labelStr = AppLocalizations.of(context)!.listenedDateLabel;
+        labelAndTextFieldTooltipStr =
+            AppLocalizations.of(context)!.modifyAudioListenedDateTooltip;
+        modificationButtonStr =
+            AppLocalizations.of(context)!.modifyAudioListenedDateButton;
         flexibleValue = 1;
         break;
     }
@@ -325,6 +362,11 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
           context: context,
         );
         break;
+      case AudioModificationType.modifyAudioListenedDate:
+        isWarningDisplayed = _modifyAudioListenedDate(
+          context: context,
+        );
+        break;
     }
 
     return isWarningDisplayed;
@@ -387,6 +429,31 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
     return audioDownloadVMlistenFalse.modifyPlayableEveryDaysValue(
       audio: widget.audio,
       modifiedPlayableEveryDaysValueStr: playableOnlyWeekDaysStr,
+    );
+  }
+
+  /// Returns true if a warning was displayed by the AudioDownloadVM, false otherwise. The warning
+  /// is displayed if the user enters an error when defining the playable only week days or month
+  /// days. IIn this case, after the warning is displayed, the audio modification dialog is not
+  /// closed and the user can correct the error. If no warning is displayed, the audio modification
+  /// dialog is closed.
+  bool _modifyAudioListenedDate({
+    required BuildContext context,
+  }) {
+    String modifiedAudioListenedDate =
+        _audioModificationTextEditingController.text;
+    AudioDownloadVM audioDownloadVMlistenFalse = Provider.of<AudioDownloadVM>(
+      context,
+      listen: false,
+    );
+
+    return audioDownloadVMlistenFalse.modifyAudioListenedDate(
+      dateFormatVMlistenFalse: Provider.of<DateFormatVM>(
+        context,
+        listen: false,
+      ),
+      audio: widget.audio,
+      modifiedAudioListenedDateStr: modifiedAudioListenedDate,
     );
   }
 }

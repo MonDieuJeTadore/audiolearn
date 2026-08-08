@@ -1771,5 +1771,11 @@
   "definePlayableOnDateTitleTooltip": "Ceci est utile si les audios concernés n'ont pas été écoutés avant la date/heure définie.",
   "playableOnDateLabel": "Date ({selectedAppDateFormat})",
   "invalidDateFormatErrorMessage": "{dateStr} ne respecte pas le format date (en plus sans heure:minute).",
-  "filteredAudioNumberAndDurationOnDate": "Durée jouable totale des {number} audios filtrés de la playlist jouables le {date}: {playableDuration}."
+  "filteredAudioNumberAndDurationOnDate": "Durée jouable totale des {number} audios filtrés de la playlist jouables le {date}: {playableDuration}.",
+  "modifyAudioListenedDateMenu": "Modifier la date d'écoute de l'audio ...",
+  "modifyAudioListenedDate": "Définir la date d'écoute",
+  "listenedDateLabel": "Date d'écoute",
+  "modifyAudioListenedDateButton": "Modifier",
+  "modifyAudioListenedDateTooltip": "Indiquer la date d'écoute qui sera définie dans l'audio. Ceci va modifier le jour où l'audio sera joué.",
+  "modifyAudioListenedDateDialogComment": "Date de dernière écoute: {lastPlayedDate}."
 }

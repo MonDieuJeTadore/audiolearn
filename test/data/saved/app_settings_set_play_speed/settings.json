@@ -63,6 +63,7 @@
             "uploadDateStartRange": null,
             "uploadDateEndRange": null,
             "lastListenedDate": null,
+            "playableOnDate": null,
             "startPlayableEveryNDayRange": 0,
             "endPlayableEveryNDayRange": 0,
             "fileSizeStartRangeMB": 0.0,

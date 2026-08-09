@@ -740,8 +740,7 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           seconds: audio.getAudioRemainingMilliseconds() ~/ 1000,
         );
 
-        // || audio.audioPositionSeconds == 0 improves displaying not listened
-        if (lastListenedDateTime == null || audio.audioPositionSeconds == 0) {
+        if (lastListenedDateTime == null) {
           lastSubtitlePart =
               '${AppLocalizations.of(context)!.remaining} $audioRemainingHHMMSSDuration ${AppLocalizations.of(context)!.audioStateNotListened}';
         } else {
@@ -837,8 +836,7 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
     final String playableEveryNDays = audio.playableEveryNDays.toString();
     final String lastSubtitlePart;
 
-    // || audio.audioPositionSeconds == 0 improves displaying not listened
-    if (lastListenedDateTime == null || audio.audioPositionSeconds == 0) {
+    if (lastListenedDateTime == null) {
       lastSubtitlePart = AppLocalizations.of(context)!.audioStateNotListened;
     } else {
       lastSubtitlePart =

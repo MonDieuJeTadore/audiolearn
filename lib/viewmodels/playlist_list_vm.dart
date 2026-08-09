@@ -3562,7 +3562,7 @@ class PlaylistListVM extends ChangeNotifier {
 
           savedAudioNumber++;
           savedAudioFileSize += audio.audioFileSize;
-          savedAudioDuration += audio.audioDuration;
+          savedAudioDuration += audio.durationImpactedByPlaySpeed();
 
           if (audio.audioDownloadDateTime
               .isBefore(oldestAudioSavedToZipDownloadDateTime)) {

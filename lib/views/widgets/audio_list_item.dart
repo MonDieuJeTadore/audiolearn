@@ -843,7 +843,11 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           '${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)} ${AppLocalizations.of(context)!.atPreposition} ${timeFormat.format(lastListenedDateTime)}';
     }
 
-    return '$lastSubtitlePart ${AppLocalizations.of(context)!.playableEveryNDaysSubTitle(playableEveryNDays)}';
+    if (playableEveryNDays == '1') {
+      return '$lastSubtitlePart ${AppLocalizations.of(context)!.playableEvery1DaysSubTitle}';
+    } else {
+      return '$lastSubtitlePart ${AppLocalizations.of(context)!.playableEveryNDaysSubTitle(playableEveryNDays)}';
+    }
   }
 
   String _createDefaultLastSubTitlePart({

@@ -5023,7 +5023,7 @@ abstract class AppLocalizations {
   /// No description provided for @startAudioPlayableEveryNDaysSortFilterTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Lists all audios which are playable every n days equal to or greater than the specified minimum number if set.'**
+  /// **'Lists all audios which are playable every n days equal to or greater than the specified minimum number if set. If not set, the audios are payable every day !'**
   String get startAudioPlayableEveryNDaysSortFilterTooltip;
 
   /// No description provided for @endAudioPlayableEveryNDaysSortFilterTooltip.
@@ -5037,6 +5037,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'playable every {nDays} days'**
   String playableEveryNDaysSubTitle(Object nDays);
+
+  /// No description provided for @playableEvery1DaysSubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'playable every day'**
+  String get playableEvery1DaysSubTitle;
 
   /// No description provided for @playableEveryNDaysOrder.
   ///

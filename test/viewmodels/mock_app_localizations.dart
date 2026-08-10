@@ -3336,4 +3336,7 @@ class MockAppLocalizations extends AppLocalizations {
     Object lastPlayedDate,
   ) =>
       "Last played date: $lastPlayedDate.";
+
+  @override
+  String get playableEvery1DaysSubTitle => "playable every day";
 }

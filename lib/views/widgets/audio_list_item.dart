@@ -706,7 +706,7 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
 
     SortingOption appliedSortingOption =
         playlistVMlistnedFalse.getAppliedSortingOption();
-    bool isLastLListeneDateOrPlayableEveryNDaysRangeOrPlayableOnDefined =
+    bool isLastListeneDateOrPlayableEveryNDaysRangeOrPlayableOnDefined =
         playlistVMlistnedFalse
             .isLastListenedDateTimeOrPlayableEveryNDaysRangeOrPlayableOnDefined();
 
@@ -769,7 +769,7 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
         lastSubtitlePart =
             '$defaultLastSubTitlePart ${AppLocalizations.of(context)!.videoUploadDate}: $formatedDate';
 
-        if (isLastLListeneDateOrPlayableEveryNDaysRangeOrPlayableOnDefined) {
+        if (isLastListeneDateOrPlayableEveryNDaysRangeOrPlayableOnDefined) {
           lastSubtitlePart =
               '$lastSubtitlePart ${_lastListenedDateTimeOrPlayableEveryNDays(
             context: context,
@@ -798,7 +798,7 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           dateFormatVMlistenTrue: dateFormatVMlistenTrue,
           audioDuration: audioDuration,
           finalSubtitlePart:
-              isLastLListeneDateOrPlayableEveryNDaysRangeOrPlayableOnDefined
+              isLastListeneDateOrPlayableEveryNDaysRangeOrPlayableOnDefined
                   ? _lastListenedDateTimeOrPlayableEveryNDays(
                       context: context,
                       dateFormatVMlistenTrue: dateFormatVMlistenTrue,

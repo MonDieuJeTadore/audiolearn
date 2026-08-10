@@ -3163,7 +3163,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get startAudioPlayableEveryNDaysSortFilterTooltip =>
-      'Si seule l\'intervalle minimale est définie, tous les audios jouables ces n jours ou les n jours supérieurs à la valeur définie seront listés.';
+      'Si seule l\'intervalle minimale est définie, tous les audios jouables ces n jours ou les n jours supérieurs à la valeur définie seront listés. Si non défini, les audios sont jouables tous les jours !';
 
   @override
   String get endAudioPlayableEveryNDaysSortFilterTooltip =>
@@ -3171,8 +3171,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String playableEveryNDaysSubTitle(Object nDays) {
-    return 'jouable tous les $nDays jour(s)';
+    return 'jouable tous les $nDays jours';
   }
+
+  @override
+  String get playableEvery1DaysSubTitle => 'jouable chaque jour';
 
   @override
   String get playableEveryNDaysOrder => 'Jouable tous les n jours';

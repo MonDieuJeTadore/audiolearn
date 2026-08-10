@@ -3128,7 +3128,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get startAudioPlayableEveryNDaysSortFilterTooltip =>
-      'Lists all audios which are playable every n days equal to or greater than the specified minimum number if set.';
+      'Lists all audios which are playable every n days equal to or greater than the specified minimum number if set. If not set, the audios are payable every day !';
 
   @override
   String get endAudioPlayableEveryNDaysSortFilterTooltip =>
@@ -3138,6 +3138,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String playableEveryNDaysSubTitle(Object nDays) {
     return 'playable every $nDays days';
   }
+
+  @override
+  String get playableEvery1DaysSubTitle => 'playable every day';
 
   @override
   String get playableEveryNDaysOrder => 'Playable every n days';

@@ -2934,6 +2934,10 @@ class PlaylistListVM extends ChangeNotifier {
 
   bool isLastListenedDateTimeOrPlayableEveryNDaysRangeOrPlayableOnDefined() {
     if (_audioSortFilterParameters != null) {
+      if (getAppliedSortingOption() == SortingOption.lastListenedDateTime) {
+        return true;
+      }
+      
       if (_audioSortFilterParameters!.lastListenedDate != null) {
         return true;
       }

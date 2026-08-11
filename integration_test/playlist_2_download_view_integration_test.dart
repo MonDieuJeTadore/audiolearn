@@ -4697,12 +4697,12 @@ void main() {
       ];
 
       List<String> audioSubTitlesVideoUploadDate = [
-        "0:00:37.5 Video upload date: 00/00/0000",
-        "0:00:07.0 Video upload date: 00/00/0000",
-        "0:00:39.0 Video upload date: 00/00/0000",
-        "0:05:11.2 Video upload date: 23/09/2023",
-        "0:10:55.2 Video upload date: 10/09/2023",
-        "0:05:11.2 Video upload date: 12/06/2022",
+        "0:00:37.5 video upload date: 00/00/0000",
+        "0:00:07.0 video upload date: 00/00/0000",
+        "0:00:39.0 video upload date: 00/00/0000",
+        "0:05:11.2 video upload date: 23/09/2023",
+        "0:10:55.2 video upload date: 10/09/2023",
+        "0:05:11.2 video upload date: 12/06/2022",
       ];
 
       List<String> audioSubTitlesWithAudioDownloadSpeed = [
@@ -4801,12 +4801,12 @@ void main() {
       ];
 
       audioSubTitlesVideoUploadDate = [
-        "0:00:37.5 Video upload date: 00/00/0000",
-        "0:00:07.0 Video upload date: 00/00/0000",
-        "0:00:39.0 Video upload date: 00/00/0000",
-        "0:05:11.2 Video upload date: 09/23/2023",
-        "0:10:55.2 Video upload date: 09/10/2023",
-        "0:05:11.2 Video upload date: 06/12/2022",
+        "0:00:37.5 video upload date: 00/00/0000",
+        "0:00:07.0 video upload date: 00/00/0000",
+        "0:00:39.0 video upload date: 00/00/0000",
+        "0:05:11.2 video upload date: 09/23/2023",
+        "0:10:55.2 video upload date: 09/10/2023",
+        "0:05:11.2 video upload date: 06/12/2022",
       ];
 
       audioSubTitlesWithAudioDownloadSpeed = [
@@ -4903,12 +4903,12 @@ void main() {
       ];
 
       audioSubTitlesVideoUploadDate = [
-        "0:00:37.5 Video upload date: 0000/00/00",
-        "0:00:07.0 Video upload date: 0000/00/00",
-        "0:00:39.0 Video upload date: 0000/00/00",
-        "0:05:11.2 Video upload date: 2023/09/23",
-        "0:10:55.2 Video upload date: 2023/09/10",
-        "0:05:11.2 Video upload date: 2022/06/12",
+        "0:00:37.5 video upload date: 0000/00/00",
+        "0:00:07.0 video upload date: 0000/00/00",
+        "0:00:39.0 video upload date: 0000/00/00",
+        "0:05:11.2 video upload date: 2023/09/23",
+        "0:10:55.2 video upload date: 2023/09/10",
+        "0:05:11.2 video upload date: 2022/06/12",
       ];
 
       audioSubTitlesWithAudioDownloadSpeed = [
@@ -5005,12 +5005,12 @@ void main() {
       ];
 
       audioSubTitlesVideoUploadDate = [
-        "0:00:37.5 Video upload date: 00/00/0000",
-        "0:00:07.0 Video upload date: 00/00/0000",
-        "0:00:39.0 Video upload date: 00/00/0000",
-        "0:05:11.2 Video upload date: 23/09/2023",
-        "0:10:55.2 Video upload date: 10/09/2023",
-        "0:05:11.2 Video upload date: 12/06/2022",
+        "0:00:37.5 video upload date: 00/00/0000",
+        "0:00:07.0 video upload date: 00/00/0000",
+        "0:00:39.0 video upload date: 00/00/0000",
+        "0:05:11.2 video upload date: 23/09/2023",
+        "0:10:55.2 video upload date: 10/09/2023",
+        "0:05:11.2 video upload date: 12/06/2022",
       ];
 
       audioSubTitlesWithAudioDownloadSpeed = [
@@ -5137,12 +5137,12 @@ void main() {
       ];
 
       List<String> audioSubTitlesVideoUploadDate = [
-        "0:00:37.5 Video upload date: 00/00/0000",
-        "0:00:07.0 Video upload date: 00/00/0000",
-        "0:00:39.0 Video upload date: 00/00/0000",
-        "0:05:11.2 Video upload date: 09/23/2023",
-        "0:10:55.2 Video upload date: 09/10/2023",
-        "0:05:11.2 Video upload date: 06/12/2022",
+        "0:00:37.5 video upload date: 00/00/0000",
+        "0:00:07.0 video upload date: 00/00/0000",
+        "0:00:39.0 video upload date: 00/00/0000",
+        "0:05:11.2 video upload date: 09/23/2023",
+        "0:10:55.2 video upload date: 09/10/2023",
+        "0:05:11.2 video upload date: 06/12/2022",
       ];
 
       List<String> audioSubTitlesWithAudioDownloadSpeed = [
@@ -5266,12 +5266,12 @@ void main() {
       ];
 
       List<String> audioSubTitlesVideoUploadDate = [
-        "0:00:37.5 Video upload date: 0000/00/00",
-        "0:00:07.0 Video upload date: 0000/00/00",
-        "0:00:39.0 Video upload date: 0000/00/00",
-        "0:05:11.2 Video upload date: 2023/09/23",
-        "0:10:55.2 Video upload date: 2023/09/10",
-        "0:05:11.2 Video upload date: 2022/06/12",
+        "0:00:37.5 video upload date: 0000/00/00",
+        "0:00:07.0 video upload date: 0000/00/00",
+        "0:00:39.0 video upload date: 0000/00/00",
+        "0:05:11.2 video upload date: 2023/09/23",
+        "0:10:55.2 video upload date: 2023/09/10",
+        "0:05:11.2 video upload date: 2022/06/12",
       ];
 
       List<String> audioSubTitlesWithAudioDownloadSpeed = [
@@ -5393,12 +5393,12 @@ void main() {
       ];
 
       List<String> audioSubTitlesVideoUploadDate = [
-        "0:00:37.5 Video upload date: 00/00/0000",
-        "0:00:07.0 Video upload date: 00/00/0000",
-        "0:00:39.0 Video upload date: 00/00/0000",
-        "0:05:11.2 Video upload date: 23/09/2023",
-        "0:10:55.2 Video upload date: 10/09/2023",
-        "0:05:11.2 Video upload date: 12/06/2022",
+        "0:00:37.5 video upload date: 00/00/0000",
+        "0:00:07.0 video upload date: 00/00/0000",
+        "0:00:39.0 video upload date: 00/00/0000",
+        "0:05:11.2 video upload date: 23/09/2023",
+        "0:10:55.2 video upload date: 10/09/2023",
+        "0:05:11.2 video upload date: 12/06/2022",
       ];
 
       List<String> audioSubTitlesWithAudioDownloadSpeed = [

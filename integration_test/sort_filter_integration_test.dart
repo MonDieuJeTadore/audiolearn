@@ -118,7 +118,7 @@ void audioPlayerViewSortFilterIntegrationTest() {
       await tester.tap(find.byKey(const Key('filterFullyListenedCheckbox')));
       await tester.pumpAndSettle();
 
-      // Now tap the Not listened checkbox in order to exclude
+      // Now tap the not listened checkbox in order to exclude
       // those audio from the sort/filter list
       await tester.tap(find.byKey(const Key('filterNotListenedCheckbox')));
       await tester.pumpAndSettle();
@@ -1498,8 +1498,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // And verify the order of the playlist audio subtitles
 
           List<String> audioSubTitlesSortedByTitleAscending = [
-            "0:05:11.2 Video upload date: 12/06/2022",
-            "0:10:55.2 Video upload date: 10/09/2023",
+            "0:05:11.2 video upload date: 12/06/2022",
+            "0:10:55.2 video upload date: 10/09/2023",
           ];
 
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
@@ -1533,13 +1533,13 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           await tester.tap(dropdownItemEditIconButtonFinder);
           await tester.pumpAndSettle();
 
-          // Now select the 'Video upload date' item in the 'Sort by' dropdown button
+          // Now select the 'video upload date' item in the 'Sort by' dropdown button
 
           await tester
               .tap(find.byKey(const Key('sortingOptionDropdownButton')));
           await tester.pumpAndSettle();
 
-          await tester.tap(find.text('Video upload date'));
+          await tester.tap(find.text('video upload date'));
           await tester.pumpAndSettle();
 
           // Then delete the "Audio download date" descending sort option
@@ -2249,11 +2249,11 @@ void playlistDownloadViewSortFilterIntegrationTest() {
               audioSortOption: 'Audio chapter',
             );
 
-            // Select the 'Video upload date' item in the 'Sort by'
+            // Select the 'video upload date' item in the 'Sort by'
             // dropdown button
             await _selectSortByOption(
               tester: tester,
-              audioSortOption: 'Video upload date',
+              audioSortOption: 'video upload date',
             );
 
             // Select the 'Audio duration' item in the 'Sort by'
@@ -3192,7 +3192,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
 
             await _removeSortingItem(
               tester: tester,
-              sortingItemName: 'Video upload date',
+              sortingItemName: 'video upload date',
             );
 
             await _removeSortingItem(
@@ -3901,7 +3901,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             await tester.drag(
               find.byType(AudioSortFilterDialog),
               const Offset(
-                  0, 600), // Negative value for vertical drag to scroll down
+                  0, 1000), // Negative value for vertical drag to scroll down
             );
             await tester.pumpAndSettle();
 
@@ -3919,7 +3919,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
               audioSortOption: 'Chapitre audio',
             );
 
-            // Select the 'Video upload date' item in the 'Sort by'
+            // Select the 'video upload date' item in the 'Sort by'
             // dropdown button
             await _selectSortByOption(
               tester: tester,
@@ -6169,13 +6169,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio titles
 
         List<String> audioTitlesSortedByDateTimeListenedDescending = [
-          "Les besoins artificiels par R.Keucheyan",
           "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "La résilience insulaire par Fiona Roche",
           "La surpopulation mondiale par Jancovici et Barrau",
-          // "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
         ];
 
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -6358,13 +6357,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio titles
 
         List<String> audioTitlesSortedByDateTimeListenedAscending = [
-          "La surpopulation mondiale par Jancovici et Barrau",
           "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
           "La résilience insulaire par Fiona Roche",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
           "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
-          // "Les besoins artificiels par R.Keucheyan",
+          "Les besoins artificiels par R.Keucheyan",
         ];
 
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -6494,13 +6492,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio titles
 
         List<String> audioTitlesSortedByTitleAscending = [
-          "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
           "Les besoins artificiels par R.Keucheyan",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "La résilience insulaire par Fiona Roche",
           "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
           "La surpopulation mondiale par Jancovici et Barrau",
-          // "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
         ];
 
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -6593,13 +6590,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio titles
 
         audioTitlesSortedByTitleAscending = [
-          "La surpopulation mondiale par Jancovici et Barrau",
           "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
           "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
           "La résilience insulaire par Fiona Roche",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "Les besoins artificiels par R.Keucheyan",
-          // "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
+          "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
         ];
 
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -11780,13 +11776,13 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             saveAsTitle);
         await tester.pumpAndSettle();
 
-        // Now select the 'Video upload date' item in the 'Sort by'
+        // Now select the 'video upload date' item in the 'Sort by'
         // dropdown button
 
         await tester.tap(find.byKey(const Key('sortingOptionDropdownButton')));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.text('Video upload date'));
+        await tester.tap(find.text('video upload date'));
         await tester.pumpAndSettle();
 
         // Then delete the "Audio download date" descending sort option
@@ -11825,7 +11821,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             .tap(find.byKey(const Key('saveSortFilterOptionsTextButton')));
         await tester.pumpAndSettle();
 
-        // Now verify the playlist download view state with the 'Video upload date'
+        // Now verify the playlist download view state with the 'video upload date'
         // sort option applied
 
         // Verify that the dropdown button has been updated with the
@@ -11838,7 +11834,6 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // Verify the order of the playlist audio titles
 
         List<String> audioTitlesSortedByTitleAscending = [
-          "Les besoins artificiels par R.Keucheyan",
           "La résilience insulaire par Fiona Roche",
           "La surpopulation mondiale par Jancovici et Barrau",
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
@@ -11855,13 +11850,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio subtitles
 
         List<String> audioSubTitlesSortedByTitleAscending = [
-          "0:15:16.0 Video upload date: 05/01/2024",
-          "0:10:52.0 Video upload date: 03/01/2024",
-          "0:06:06.4 Video upload date: 03/12/2023",
-          "0:16:25.6 Video upload date: 01/12/2023",
-          "0:05:11.0 Video upload date: 23/09/2023",
-          "0:10:55.2 Video upload date: 10/09/2023",
-          "0:05:11.0 Video upload date: 12/06/2022",
+          "0:10:52.0 4.97 MB at 2.67 MB/sec on 07/01/2024 at 08:16 video upload date: 03/01/2024",
+          "0:06:06.4 2.79 MB at 2.73 MB/sec on 07/01/2024 at 16:36 video upload date: 03/12/2023",
+          "0:16:25.6 7.51 MB at 2.44 MB/sec on 26/12/2023 at 09:45 video upload date: 03/12/2023",
+          "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 video upload date: 23/09/2023",
+          "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 video upload date: 10/09/2023",
+          "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 video upload date: 12/06/2022",
         ];
 
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
@@ -12138,13 +12132,13 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio subtitles
 
         List<String> audioSubTitlesSortedByTitleAscending = [
-          "0:15:16.0 Remaining 00:00:00 Listened on 16/05/2024 at 17:09",
-          "0:05:11.2 Remaining 00:00:38 Listened on 16/03/2024 at 17:09",
-          "0:05:11.2 Remaining 00:06:29 Not listened",
-          "0:06:06.4 Remaining 00:07:38 Not listened",
-          "0:16:25.6 Remaining 00:10:32 Listened on 16/06/2024 at 17:09",
-          "0:10:52.0 Remaining 00:11:01 Listened on 16/02/2024 at 17:09",
-          "0:10:55.2 Remaining 00:13:39 Listened on 16/01/2024 at 17:09",
+          "0:15:16.0 remaining 00:00:00 listened on 16/05/2024 at 17:09",
+          "0:05:11.2 remaining 00:00:38 listened on 16/03/2024 at 17:09",
+          "0:05:11.2 remaining 00:06:29 not listened",
+          "0:06:06.4 remaining 00:07:38 not listened",
+          "0:16:25.6 remaining 00:10:32 listened on 16/06/2024 at 17:09",
+          "0:10:52.0 remaining 00:11:01 listened on 16/02/2024 at 17:09",
+          "0:10:55.2 remaining 00:13:39 listened on 16/01/2024 at 17:09",
         ];
 
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
@@ -12273,7 +12267,6 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // Verify the order of the playlist audio titles
 
         List<String> audioTitlesSortedByTitleAscending = [
-          "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
           "Les besoins artificiels par R.Keucheyan",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "La résilience insulaire par Fiona Roche",
@@ -12290,13 +12283,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio subtitles
 
         List<String> audioSubTitlesSortedByTitleAscending = [
-          "0:16:25.6 Listened on 16/06/2024 at 17:09",
-          "0:15:16.0 Listened on 16/05/2024 at 17:09",
-          "0:05:11.2 Listened on 16/03/2024 at 17:09",
-          "0:10:52.0 Listened on 16/02/2024 at 17:09",
-          "0:10:55.2 Listened on 16/01/2024 at 17:09",
-          "0:06:06.4 Not listened",
-          "0:05:11.2 Not listened",
+          "0:15:16.0 6.98 MB at 2.28 MB/sec on 07/01/2024 at 08:16 listened on 16/05/2024 at 17:09 playable every day",
+          "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 listened on 16/03/2024 at 17:09 playable every day",
+          "0:10:52.0 4.97 MB at 2.67 MB/sec on 07/01/2024 at 08:16 listened on 16/02/2024 at 17:09 playable every day",
+          "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 listened on 16/01/2024 at 17:09 playable every day",
+          "0:06:06.4 2.79 MB at 2.73 MB/sec on 07/01/2024 at 16:36 not listened playable every day",
+          "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 not listened playable every day",
         ];
 
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(

@@ -112,7 +112,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get audioDownloadDate => 'Audio downl date';
 
   @override
-  String get videoUploadDate => 'Video upload date';
+  String get videoUploadDate => 'video upload date';
 
   @override
   String get audioEnclosingPlaylistTitle => 'Audio playlist title';

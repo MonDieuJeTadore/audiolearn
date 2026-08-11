@@ -293,7 +293,7 @@ abstract class AppLocalizations {
   /// No description provided for @videoUploadDate.
   ///
   /// In en, this message translates to:
-  /// **'Video upload date'**
+  /// **'video upload date'**
   String get videoUploadDate;
 
   /// No description provided for @audioEnclosingPlaylistTitle.

@@ -642,7 +642,9 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // with the expected text
           expect(find.text('Clear Sort/Filter Parameters History'),
               findsOneWidget);
-          expect(find.text('Deleting all historical unamed sort/filter parameters.'),
+          expect(
+              find.text(
+                  'Deleting all historical unamed sort/filter parameters.'),
               findsOneWidget);
 
           // Click on the cancel button to cancel deletion
@@ -810,7 +812,9 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // with the expected text
           expect(find.text('Clear Sort/Filter Parameters History'),
               findsOneWidget);
-          expect(find.text('Deleting all historical unamed sort/filter parameters.'),
+          expect(
+              find.text(
+                  'Deleting all historical unamed sort/filter parameters.'),
               findsOneWidget);
 
           // Click on the cancel button to cancel deletion
@@ -844,7 +848,9 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // with the expected text
           expect(find.text('Clear Sort/Filter Parameters History'),
               findsOneWidget);
-          expect(find.text('Deleting all historical unamed sort/filter parameters.'),
+          expect(
+              find.text(
+                  'Deleting all historical unamed sort/filter parameters.'),
               findsOneWidget);
 
           // Click on the confirm button to execute deletion
@@ -1498,8 +1504,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // And verify the order of the playlist audio subtitles
 
           List<String> audioSubTitlesSortedByTitleAscending = [
-            "0:05:11.2 video upload date: 12/06/2022",
-            "0:10:55.2 video upload date: 10/09/2023",
+            "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 video upload date: 10/09/2023",
+            "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 video upload date: 12/06/2022",
           ];
 
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
@@ -1539,7 +1545,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
               .tap(find.byKey(const Key('sortingOptionDropdownButton')));
           await tester.pumpAndSettle();
 
-          await tester.tap(find.text('video upload date'));
+          await tester.tap(find.text('Video upload date'));
           await tester.pumpAndSettle();
 
           // Then delete the "Audio download date" descending sort option
@@ -2231,7 +2237,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             await tester.drag(
               find.byType(AudioSortFilterDialog),
               const Offset(
-                  0, 600), // Negative value for vertical drag to scroll down
+                  0, 1000), // Negative value for vertical drag to scroll down
             );
             await tester.pumpAndSettle();
 
@@ -2253,7 +2259,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             // dropdown button
             await _selectSortByOption(
               tester: tester,
-              audioSortOption: 'video upload date',
+              audioSortOption: 'Video upload date',
             );
 
             // Select the 'Audio duration' item in the 'Sort by'
@@ -3192,7 +3198,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
 
             await _removeSortingItem(
               tester: tester,
-              sortingItemName: 'video upload date',
+              sortingItemName: 'Video upload date',
             );
 
             await _removeSortingItem(
@@ -18082,7 +18088,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           await tester.pumpAndSettle();
 
           // Find the 'Extracted' checkbox widget
-           checkboxWidgetFinder =
+          checkboxWidgetFinder =
               find.byKey(const Key('filterExtractedCheckbox'));
 
           // Tap the checkbox to unselect it. This will reselect the
@@ -18246,7 +18252,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           await tester.pumpAndSettle();
 
           // Find the 'Extracted' checkbox widget
-           checkboxWidgetFinder =
+          checkboxWidgetFinder =
               find.byKey(const Key('filterExtractedCheckbox'));
 
           // Tap the checkbox to unselect it. This will reselect the

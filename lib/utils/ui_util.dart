@@ -602,6 +602,8 @@ class UiUtil {
         audioToDelete.audioType == AudioType.downloaded) {
       await showDialog<dynamic>(
         context: context,
+        barrierDismissible: false, // This line prevents the dialog from
+        //                            closing when tapping outside it
         builder: (BuildContext context) {
           return ConfirmActionDialog(
             actionFunction:
@@ -637,6 +639,8 @@ class UiUtil {
       if (audioToDeleteCommentLst.isNotEmpty && nextAudio != audioToDelete) {
         await showDialog<dynamic>(
           context: context,
+          barrierDismissible: false, // This line prevents the dialog from
+          //                            closing when tapping outside it
           builder: (BuildContext context) {
             return ConfirmActionDialog(
               actionFunction: UiUtil.deleteAudioFromPlaylistAsWell,
@@ -671,6 +675,8 @@ class UiUtil {
       if (audioToDeleteCommentLst.isNotEmpty) {
         await showDialog<dynamic>(
           context: context,
+          barrierDismissible: false, // This line prevents the dialog from
+          //                            closing when tapping outside it
           builder: (BuildContext context) {
             return ConfirmActionDialog(
               actionFunction: UiUtil.deleteAudioFromPlaylistAsWell,

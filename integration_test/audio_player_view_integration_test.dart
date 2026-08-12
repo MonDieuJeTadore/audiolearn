@@ -4049,8 +4049,11 @@ void main() {
 
       // Avoids integration test failure due to the fact that the
       // position is 660 or 680 and not 0 !
-      await Future.delayed(const Duration(milliseconds: 500));
-      await tester.pumpAndSettle(); // must be used !
+      // Ensure that the audio position is updated
+      for (int i = 0; i < 6; i++) {
+        await Future.delayed(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
+      }
 
       // If this test fails, try to rexecute it several times. If
       // the test continue to fail, restart your computer and
@@ -8656,6 +8659,14 @@ void main() {
             'Expected comment end position not found. Real value: $actualCommentStartPositionWithTenthOfSecondsStr',
       );
 
+      // Avoids integration test failure due to the fact that the
+      // position is 3700 or 3710 and not 3000 !
+      // Ensure that the audio position is updated
+      for (int i = 0; i < 6; i++) {
+        await Future.delayed(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
+      }
+
       // Verify the current audio position in the audio player view.
       // The audio position correspond to the comment start position
       // in seconds.
@@ -8975,7 +8986,7 @@ void main() {
       // Avoids integration test failure due to the fact that the
       // position is 3700 or 3710 and not 3000 !
       // Ensure that the audio position is updated
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < 6; i++) {
         await Future.delayed(const Duration(milliseconds: 500));
         await tester.pumpAndSettle();
       }

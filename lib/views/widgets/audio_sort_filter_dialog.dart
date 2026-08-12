@@ -2580,7 +2580,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
           "${AppLocalizations.of(context)!.presentOnlyInSecondTitle}:",
 
       'audioDownloadDate': AppLocalizations.of(context)!.audioDownloadDate,
-      'videoUploadDate': AppLocalizations.of(context)!.videoUploadDate,
+      'videoUploadDate': AppLocalizations.of(context)!.videoUploadDateLabel,
       'validAudioTitle': AppLocalizations.of(context)!.audioTitleLabel,
       'chapterAudioTitle': AppLocalizations.of(context)!.chapterAudioTitleLabel,
       'audioEnclosingPlaylistTitle':

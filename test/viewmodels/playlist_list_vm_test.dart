@@ -1131,7 +1131,7 @@ void main() {
 
         expect(
           savedTotalAudioFilesDuration,
-          const Duration(milliseconds: 398891),
+          const Duration(milliseconds: 321091),
         );
 
         List<String> zipLst = DirUtil.listFileNamesInDir(

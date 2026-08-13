@@ -18,6 +18,8 @@ enum InvalidValueState {
   dateTimeFormatInvalid,
   dateFormatInvalid,
   enteredDateEmpty,
+  enteredDayNumberEmpty,
+  enteredDayNumberInvalid,
   playlistPositionFormatInvalid,
   playlistPositionTooBig,
 }
@@ -317,6 +319,12 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
       // in the _createResultList() method or is empty.
 
       return; // the SetValueToTargetDialog is not closed
+    } else if (_invalidValueState == InvalidValueState.enteredDayNumberInvalid ||
+        _invalidValueState == InvalidValueState.enteredDayNumberEmpty) {
+      // The case if the entered day number was defined as invalid
+      // in the _createResultList() method or is empty.
+
+      return; // the SetValueToTargetDialog is not closed
     }
 
     Navigator.of(context)
@@ -448,6 +456,24 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
         case InvalidValueState.enteredDateEmpty:
           warningMessageVM.setError(
             errorType: ErrorType.enteredDateEmpty,
+            errorArgOne: enteredStr,
+          );
+
+          _passedValueTextEditingController.text = enteredStr;
+
+          return [""];
+        case InvalidValueState.enteredDayNumberInvalid:
+          warningMessageVM.setError(
+            errorType: ErrorType.dayNumberError,
+            errorArgOne: enteredStr,
+          );
+
+          _passedValueTextEditingController.text = enteredStr;
+
+          return [""];
+        case InvalidValueState.enteredDayNumberEmpty:
+          warningMessageVM.setError(
+            errorType: ErrorType.enteredDayNumberEmpty,
             errorArgOne: enteredStr,
           );
 

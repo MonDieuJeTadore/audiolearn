@@ -3339,4 +3339,26 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get playableEvery1DaysSubTitle => "playable every day";
+
+  @override
+  String get modifyFilteredAudioPlayableNDaysNumber =>
+      "Modify filtered Audios playable n Days Number ...";
+
+  @override
+  String get setAudioPlayableNDaysNumberTitle =>
+      "Define the playable every n Days Number";
+
+  @override
+  String get setAudioPlayableNDaysNumberTitleExplanation =>
+      "The defined playable every n days number will be set in every filtered audio.";
+
+  @override
+  String invaliddayNumberErrortMessage(
+    Object dayNumber,
+  ) =>
+      "$dayNumber does not respect the positive integer format.";
+
+  @override
+  String get enteredDayNumberEmptyMessage =>
+      "Defining an empty playable day numberis not possible.";
 }

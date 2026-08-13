@@ -4921,7 +4921,7 @@ abstract class AppLocalizations {
   /// No description provided for @playableEveryNDays.
   ///
   /// In en, this message translates to:
-  /// **'Playable Every n Days'**
+  /// **'Playable every n Days'**
   String get playableEveryNDays;
 
   /// No description provided for @modifyPlayableEveryNDaysTooltip.
@@ -5140,6 +5140,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last played date: {lastPlayedDate}.'**
   String modifyAudioListenedDateDialogComment(Object lastPlayedDate);
+
+  /// No description provided for @modifyFilteredAudioPlayableNDaysNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify filtered Audios playable n Days Number ...'**
+  String get modifyFilteredAudioPlayableNDaysNumber;
+
+  /// No description provided for @setAudioPlayableNDaysNumberTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Define the playable every n Days Number'**
+  String get setAudioPlayableNDaysNumberTitle;
+
+  /// No description provided for @setAudioPlayableNDaysNumberTitleExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'The defined playable every n days number will be set in every filtered audio.'**
+  String get setAudioPlayableNDaysNumberTitleExplanation;
+
+  /// No description provided for @invaliddayNumberErrortMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{dayNumber} does not respect the positive integer format.'**
+  String invaliddayNumberErrortMessage(Object dayNumber);
+
+  /// No description provided for @enteredDayNumberEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Defining an empty playable day number is not possible.'**
+  String get enteredDayNumberEmptyMessage;
 }
 
 class _AppLocalizationsDelegate

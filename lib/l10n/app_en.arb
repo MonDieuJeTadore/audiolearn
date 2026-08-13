@@ -1313,7 +1313,7 @@
   "restoringPlaylistsFromZipProgression": "Restoring playlist(s) from ZIP ...",
   "definePlayableEveryNDaysMenu": "Define that the Audio is playable every n Days ...",
   "definePlayableEveryNDaysMenuTooltip": "If not defined, the audio is playable every day !",
-  "playableEveryNDays": "Playable Every n Days",
+  "playableEveryNDays": "Playable every n Days",
   "modifyPlayableEveryNDaysTooltip": "",
   "modifyPlayableEveryNDaysDialogComment": "1 is set by default indicating that the audio is playable every day.\nLast played date: {lastPlayedDate}.",
   "modifyPlayableEveryNDaysLabel": "One integer number: ",
@@ -1349,5 +1349,10 @@
   "listenedDateLabel": "Listened date",
   "modifyAudioListenedDateButton": "Modify",
   "modifyAudioListenedDateTooltip": "Define the listened date which will be set in the audio. This will impact the day when the audio will be played.",
-  "modifyAudioListenedDateDialogComment": "Last played date: {lastPlayedDate}."
+  "modifyAudioListenedDateDialogComment": "Last played date: {lastPlayedDate}.",
+  "modifyFilteredAudioPlayableNDaysNumber": "Modify filtered Audios playable n Days Number ...",
+  "setAudioPlayableNDaysNumberTitle": "Define the playable every n Days Number",
+  "setAudioPlayableNDaysNumberTitleExplanation": "The defined playable every n days number will be set in every filtered audio.",
+  "invaliddayNumberErrortMessage": "{dayNumber} does not respect the positive integer format.",
+  "enteredDayNumberEmptyMessage": "Defining an empty playable day number is not possible."
 }

@@ -2989,6 +2989,36 @@ class PlaylistListVM extends ChangeNotifier {
     notifyListeners();
   }
 
+  void modifyFilteredPlayableAudioPlayableDayNumber({
+    required Playlist playlist,
+    required String definedPlayableDayNumberStr,
+  }) {
+    // Obtaining the playable audio list ordered according to the
+    // sort/filter parameters applied to the audio player view.
+    List<Audio> audioPlayerViewAudioLst =
+        getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
+            audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+            playlist: playlist);
+
+    int modifiedPlayableEveryDaysValue =
+        int.tryParse(definedPlayableDayNumberStr) ?? -1;
+
+    if (modifiedPlayableEveryDaysValue < 1) {
+      return;
+    }
+
+    for (Audio audio in audioPlayerViewAudioLst) {
+      audio.playableEveryNDays = modifiedPlayableEveryDaysValue;
+    }
+
+    JsonDataService.saveToFile(
+      model: playlist,
+      path: playlist.getPlaylistDownloadFilePathName(),
+    );
+
+    notifyListeners();
+  }
+
   /// This method is called when the user closes the playlist comment list dialog.
   /// It is used to undo the change made to the playlist current audio index
   /// as well as the position of the listened comments audio.

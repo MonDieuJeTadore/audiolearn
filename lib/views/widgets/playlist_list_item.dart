@@ -60,6 +60,7 @@ enum FilteredAudioAction {
   rewindFilteredAudioToStart,
   obtainFilteredAudioNumberAndDurationOnDate,
   modifyFilteredAudioLastListenedDateTime,
+  modifyFilteredAudioPlayableNDaysNumber,
   extractFilteredAudio,
   deleteFilteredAudio,
   deleteFilteredAudioFromPlaylistAsWell,
@@ -944,6 +945,13 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
               .modifyFilteredAudioLastListenedDateTime),
         ),
         PopupMenuItem<FilteredAudioAction>(
+          key: const Key(
+              'popup_menu_modify_filtered_audio_playable_n_days_number'),
+          value: FilteredAudioAction.modifyFilteredAudioPlayableNDaysNumber,
+          child: Text(AppLocalizations.of(context)!
+              .modifyFilteredAudioPlayableNDaysNumber),
+        ),
+        PopupMenuItem<FilteredAudioAction>(
           key: const Key('popup_menu_extract_filtered_audio'),
           value: FilteredAudioAction.extractFilteredAudio,
           child: Text(AppLocalizations.of(context)!.extractFilteredAudio),
@@ -1254,6 +1262,41 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                 playlist: playlist,
                 definedAudioLastListenedDateFormattedStr:
                     definedAudioLastListenedDateFormattedStr,
+              );
+            });
+            break;
+          case FilteredAudioAction.modifyFilteredAudioPlayableNDaysNumber:
+            showDialog<List<String>>(
+              barrierDismissible:
+                  false, // Prevents the dialog from closing when tapping outside.
+              context: context,
+              builder: (BuildContext context) {
+                return SetValueToTargetDialog(
+                  dialogTitle: AppLocalizations.of(context)!
+                      .setAudioPlayableNDaysNumberTitle,
+                  dialogCommentStr: AppLocalizations.of(context)!
+                      .setAudioPlayableNDaysNumberTitleExplanation,
+                  passedValueFieldLabel: AppLocalizations.of(context)!
+                      .modifyPlayableEveryNDaysLabel,
+                  passedValueStr: '1',
+                  checkboxLabelLst: [],
+                  validationFunction: validatePlayableEveryNDaysValue,
+                  validationFunctionArgs: [],
+                  isCursorAtStart: true,
+                );
+              },
+            ).then((resultStringLst) async {
+              if (resultStringLst == null) {
+                // The case if the Cancel button was pressed.
+                return;
+              }
+
+              String definedPlayableDayNumberStr = resultStringLst[0];
+
+              playlistListVMlistenFalse
+                  .modifyFilteredPlayableAudioPlayableDayNumber(
+                playlist: playlist,
+                definedPlayableDayNumberStr: definedPlayableDayNumberStr,
               );
             });
             break;
@@ -1723,6 +1766,23 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
     if (parsedDateTime == null) {
       return InvalidValueState
           .dateTimeFormatInvalid; // This will prevent the dialog from closing
+    }
+
+    return InvalidValueState.none;
+  }
+
+  InvalidValueState validatePlayableEveryNDaysValue(
+    String enteredPlayableEveryNDaysStr,
+  ) {
+    if (enteredPlayableEveryNDaysStr.isEmpty) {
+      return InvalidValueState.enteredDayNumberEmpty;
+    }
+
+    int modifiedPlayableEveryDaysValue =
+        int.tryParse(enteredPlayableEveryNDaysStr) ?? -1;
+
+    if (modifiedPlayableEveryDaysValue < 1) {
+      return InvalidValueState.enteredDayNumberInvalid;
     }
 
     return InvalidValueState.none;

@@ -290,6 +290,10 @@ enum ErrorType {
 
   enteredDateEmpty, // The case if the entered date is empty.
 
+  dayNumberError, // Error in the date format.
+
+  enteredDayNumberEmpty, // The case if the entered date is empty.
+
   insufficientStorageSpace, // Error in the storage space.
 
   pathError, // Error in the path.

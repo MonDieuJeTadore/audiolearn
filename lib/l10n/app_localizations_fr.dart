@@ -3240,4 +3240,24 @@ class AppLocalizationsFr extends AppLocalizations {
   String modifyAudioListenedDateDialogComment(Object lastPlayedDate) {
     return 'Date de dernière écoute: $lastPlayedDate.';
   }
+
+  @override
+  String get modifyFilteredAudioPlayableNDaysNumber =>
+      'Modifier le jour jouable des audios filtrés ...';
+
+  @override
+  String get setAudioPlayableNDaysNumberTitle => 'Jouable tous les n jours';
+
+  @override
+  String get setAudioPlayableNDaysNumberTitleExplanation =>
+      'Le numéro du jour jouable défini sera appliqué à chaque audio filtré.';
+
+  @override
+  String invaliddayNumberErrortMessage(Object dayNumber) {
+    return '$dayNumber ne respecte pas le format du nombre entier positif.';
+  }
+
+  @override
+  String get enteredDayNumberEmptyMessage =>
+      'Definir un numéro du jour jouable vide n\'est pas possible.';
 }

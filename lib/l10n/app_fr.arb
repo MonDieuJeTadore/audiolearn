@@ -1778,5 +1778,10 @@
   "listenedDateLabel": "Date d'écoute",
   "modifyAudioListenedDateButton": "Modifier",
   "modifyAudioListenedDateTooltip": "Indiquer la date d'écoute qui sera définie dans l'audio. Ceci va modifier le jour où l'audio sera joué.",
-  "modifyAudioListenedDateDialogComment": "Date de dernière écoute: {lastPlayedDate}."
+  "modifyAudioListenedDateDialogComment": "Date de dernière écoute: {lastPlayedDate}.",
+  "modifyFilteredAudioPlayableNDaysNumber": "Modifier le jour jouable des audios filtrés ...",
+  "setAudioPlayableNDaysNumberTitle": "Jouable tous les n jours",
+  "setAudioPlayableNDaysNumberTitleExplanation": "Le numéro du jour jouable défini sera appliqué à chaque audio filtré.",
+  "invaliddayNumberErrortMessage": "{dayNumber} ne respecte pas le format du nombre entier positif.",
+  "enteredDayNumberEmptyMessage": "Definir un numéro du jour jouable vide n'est pas possible."
 }

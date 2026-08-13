@@ -3064,7 +3064,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'If not defined, the audio is playable every day !';
 
   @override
-  String get playableEveryNDays => 'Playable Every n Days';
+  String get playableEveryNDays => 'Playable every n Days';
 
   @override
   String get modifyPlayableEveryNDaysTooltip => '';
@@ -3202,4 +3202,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String modifyAudioListenedDateDialogComment(Object lastPlayedDate) {
     return 'Last played date: $lastPlayedDate.';
   }
+
+  @override
+  String get modifyFilteredAudioPlayableNDaysNumber =>
+      'Modify filtered Audios playable n Days Number ...';
+
+  @override
+  String get setAudioPlayableNDaysNumberTitle =>
+      'Define the playable every n Days Number';
+
+  @override
+  String get setAudioPlayableNDaysNumberTitleExplanation =>
+      'The defined playable every n days number will be set in every filtered audio.';
+
+  @override
+  String invaliddayNumberErrortMessage(Object dayNumber) {
+    return '$dayNumber does not respect the positive integer format.';
+  }
+
+  @override
+  String get enteredDayNumberEmptyMessage =>
+      'Defining an empty playable day number is not possible.';
 }

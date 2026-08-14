@@ -1278,7 +1278,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                       .setAudioPlayableNDaysNumberTitleExplanation,
                   passedValueFieldLabel: AppLocalizations.of(context)!
                       .modifyPlayableEveryNDaysLabel,
-                  passedValueStr: '1',
+                  passedValueStr: '',
                   checkboxLabelLst: [],
                   validationFunction: validatePlayableEveryNDaysValue,
                   validationFunctionArgs: [],

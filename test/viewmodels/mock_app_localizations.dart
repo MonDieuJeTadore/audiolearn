@@ -3361,4 +3361,10 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get enteredDayNumberEmptyMessage =>
       "Defining an empty playable day numberis not possible.";
+
+  @override
+  String textToSpeechApiError(
+    Object errorMessage,
+  ) =>
+      "Text to audio conversion failed: $errorMessage.";
 }

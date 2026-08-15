@@ -3223,4 +3223,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get enteredDayNumberEmptyMessage =>
       'Defining an empty playable day number is not possible.';
+
+  @override
+  String textToSpeechApiError(Object errorMessage) {
+    return 'Text to audio conversion failed: $errorMessage.';
+  }
 }

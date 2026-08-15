@@ -305,11 +305,18 @@ class TextToSpeechVM extends ChangeNotifier {
           errorType: ErrorType.noInternetForConvertingTextToAudio,
         );
       }
+    } on TtsSynthesisException catch (e) {
+      // Genuine synthesis failure (auth, quota, malformed request, ...),
+      // unrelated to connectivity. Report the real cause instead of the
+      // generic "no internet" message.
+      warningMessageVMlistenFalse.setError(
+        errorType: ErrorType.textToSpeechApiError,
+        errorArgOne: e.message,
+      );
     } catch (e) {
       warningMessageVMlistenFalse.setError(
         errorType: ErrorType.noInternetForConvertingTextToAudio,
       );
-      rethrow;
     } finally {
       _isConverting = false;
       notifyListeners();

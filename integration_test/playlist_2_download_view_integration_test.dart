@@ -36370,7 +36370,6 @@ void main() {
 
       saveZipFilePath =
           '$kApplicationPathWindowsTest${path.separator}parent_1${path.separator}parent_1_1${path.separator}$kSavedPlaylistsDirName';
-      return;
       savedZipNameLst = await _saveAllPlaylistsAndTheirMp3(
         tester: tester,
         saveZipFilePath: saveZipFilePath,

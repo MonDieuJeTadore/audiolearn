@@ -37286,7 +37286,7 @@ void main() {
 
         // Ensure that the audio position is updated
         for (int i = 0; i < 6; i++) {
-          await Future.delayed(const Duration(milliseconds: 1000));
+          await Future.delayed(const Duration(milliseconds: 500));
           await tester.pumpAndSettle();
         }
 

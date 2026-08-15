@@ -282,6 +282,10 @@ enum ErrorType {
   // trying to convert a text to audio using a Google voice available
   // on Internet.
 
+  textToSpeechApiError, // Text-to-speech synthesis genuinely failed
+  // (auth, quota, malformed request, ...) for a reason unrelated to
+  // connectivity.
+  
   errorInPlaylistJsonFile, // Error in the playlist json file.
 
   dateTimeFormatError, // Error in the date time format.

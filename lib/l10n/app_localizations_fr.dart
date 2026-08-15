@@ -3260,4 +3260,9 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get enteredDayNumberEmptyMessage =>
       'Definir un numéro du jour jouable vide n\'est pas possible.';
+
+  @override
+  String textToSpeechApiError(Object errorMessage) {
+    return 'Échec de la conversion texte en audio : $errorMessage.';
+  }
 }

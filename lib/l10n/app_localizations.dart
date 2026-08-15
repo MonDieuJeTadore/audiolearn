@@ -5170,6 +5170,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Defining an empty playable day number is not possible.'**
   String get enteredDayNumberEmptyMessage;
+
+  /// No description provided for @textToSpeechApiError.
+  ///
+  /// In en, this message translates to:
+  /// **'Text to audio conversion failed: {errorMessage}.'**
+  String textToSpeechApiError(Object errorMessage);
 }
 
 class _AppLocalizationsDelegate

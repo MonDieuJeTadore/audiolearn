@@ -143,7 +143,21 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _displayWarningDialog(
                 context: _context,
-                message: AppLocalizations.of(context)!.noInternetForConvertingTextToAudio,
+                message: AppLocalizations.of(context)!
+                    .noInternetForConvertingTextToAudio,
+                warningMessageVM: _warningMessageVM,
+                themeProviderVM: themeProviderVM,
+              );
+            });
+
+            return const SizedBox.shrink();
+          case ErrorType.textToSpeechApiError:
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _displayWarningDialog(
+                context: _context,
+                message: AppLocalizations.of(context)!.textToSpeechApiError(
+                  _warningMessageVM.errorArgOne,
+                ),
                 warningMessageVM: _warningMessageVM,
                 themeProviderVM: themeProviderVM,
               );
@@ -154,7 +168,8 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _displayWarningDialog(
                 context: _context,
-                message: AppLocalizations.of(context)!.moveAudioToPositionErrorMessage,
+                message: AppLocalizations.of(context)!
+                    .moveAudioToPositionErrorMessage,
                 warningMessageVM: _warningMessageVM,
                 themeProviderVM: themeProviderVM,
               );
@@ -244,7 +259,8 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _displayWarningDialog(
                 context: _context,
-                message: AppLocalizations.of(context)!.enteredDayNumberEmptyMessage,
+                message:
+                    AppLocalizations.of(context)!.enteredDayNumberEmptyMessage,
                 warningMessageVM: _warningMessageVM,
                 themeProviderVM: themeProviderVM,
               );
@@ -1171,8 +1187,8 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _displayWarningDialog(
             context: _context,
-            message: AppLocalizations.of(context)!
-                .filteredAudioNumberAndDuration(
+            message:
+                AppLocalizations.of(context)!.filteredAudioNumberAndDuration(
               _warningMessageVM.rewindedPlayableAudioNumber,
               _warningMessageVM.todayPlayableAudioDurationStr,
             ),

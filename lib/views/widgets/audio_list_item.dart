@@ -789,7 +789,7 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
         final String audioDownloadDurationSubtitlePart;
 
         audioDownloadDurationSubtitlePart =
-            '${AppLocalizations.of(context)!.audioDownloadDuration}: ${audioDownloadDuration.HHmmss()}';
+            '${AppLocalizations.of(context)!.audioDownloadDuration} ${audioDownloadDuration.HHmmss()}';
 
         return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart $audioDownloadDurationSubtitlePart';
       default:

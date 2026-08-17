@@ -136,7 +136,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get audioDownloadSpeed => 'Audio downl speed';
 
   @override
-  String get audioDownloadDuration => 'Audio downl duration';
+  String get audioDownloadDuration => 'audio downl duration';
 
   @override
   String get sortAscending => 'Asc';

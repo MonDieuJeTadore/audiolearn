@@ -136,7 +136,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get audioDownloadSpeed => 'Vitesse téléch audio';
 
   @override
-  String get audioDownloadDuration => 'Durée téléch audio';
+  String get audioDownloadDuration => 'durée téléch audio';
 
   @override
   String get sortAscending => 'Asc';

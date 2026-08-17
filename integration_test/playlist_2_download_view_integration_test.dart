@@ -36177,7 +36177,10 @@ void main() {
            parent_1_1\\playlists, add a picture to one audio and verify where the jpg file was
            stored. Then, do multiple and unique playlist and mp3 saving and restore the
            saved zip's to audio\\playlists. This will verify that the playlist and mp3 saving and
-           restoring works correctly when the playlists root path is changed.''',
+           restoring works correctly when the playlists root path is changed.
+           
+           The saved mp3 are not all played at the same speed. This verifies that the saved
+           displayed duration is correct.''',
         (WidgetTester tester) async {
       // Purge the test playlist directory if it exists so that the
       // playlist list is empty
@@ -36231,7 +36234,7 @@ void main() {
         ],
         oldestAudioDownloadDateTimeStr: "02/03/2026 20:20",
         totalSavedMessage:
-            "Total saved audio number: 2, total size: 861.2 KB and total duration: 0:01:47.6.",
+            "Total saved audio number: 2, total size: 861.2 KB and total duration: 0:01:26.4.",
         savedMp3DirectoryPath: "$saveZipFilePath${path.separator}MP3",
         mp3ZipNameFirstPart: 'audioLearn_mp3_from_2026-03-02_20_20_15_on_',
         expectedMp3ZipContentLst: [
@@ -36394,7 +36397,7 @@ void main() {
         ],
         oldestAudioDownloadDateTimeStr: "02/03/2026 20:20",
         totalSavedMessage:
-            "Total saved audio number: 4, total size: 899.8 KB and total duration: 0:01:52.5.",
+            "Total saved audio number: 4, total size: 899.8 KB and total duration: 0:01:31.8.",
         savedMp3DirectoryPath: "$saveZipFilePath${path.separator}MP3",
         mp3ZipNameFirstPart: 'audioLearn_mp3_from_2026-03-02_20_20_15_on_',
         expectedMp3ZipContentLst: [
@@ -36425,7 +36428,7 @@ void main() {
         ],
         oldestAudioDownloadDateTimeStr: "02/03/2026 20:49",
         savedAudioMessage:
-            "Total saved audio number: 1, total size: 10.6 KB and total duration: 0:00:01.3",
+            "Total saved audio number: 1, total size: 10.6 KB and total duration: 0:00:01.9",
         savedMp3DirectoryPath: "$saveZipFilePath${path.separator}MP3",
         mp3ZipNameFirstPart: "Dieu je T'adore_mp3_from_2026-03-02_20_49_53_on_",
         dragToBottom: true,

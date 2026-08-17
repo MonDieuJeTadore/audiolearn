@@ -920,6 +920,8 @@ class AudioDownloadVM extends ChangeNotifier {
         // This avoid that when downloading a next audio file, the displayed
         // download progress starts at 100 % !
         _audioDownloadProgress = 0.0;
+        _lastSecondAudioDownloadSpeed = 0;
+        
         notifyListeners();
       }
 
@@ -1492,6 +1494,12 @@ class AudioDownloadVM extends ChangeNotifier {
 
     if (!_isAudioDownloading) {
       _isAudioDownloading = true;
+
+      // This avoid that when downloading a next audio file, the displayed
+      // download progress starts at 100 % !
+      _audioDownloadProgress = 0.0;
+      _lastSecondAudioDownloadSpeed = 0;
+
       notifyListeners();
     }
 
@@ -1606,6 +1614,12 @@ class AudioDownloadVM extends ChangeNotifier {
 
     if (!_isAudioDownloading) {
       _isAudioDownloading = true;
+
+      // This avoid that when downloading a next audio file, the displayed
+      // download progress starts at 100 % !
+      _audioDownloadProgress = 0.0;
+      _lastSecondAudioDownloadSpeed = 0;
+
       notifyListeners();
     }
 

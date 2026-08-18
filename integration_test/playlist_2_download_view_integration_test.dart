@@ -4783,12 +4783,12 @@ void main() {
       ];
 
       audioSubTitlesLastListenedDateTimeDescending = [
-        "0:00:37.5 listened on 07/17/2026 at 16:20",
-        "0:00:07.0 listened on 09/07/2025 at 17:22",
-        "0:00:39.0 listened on 09/07/2025 at 17:21",
-        "0:10:55.2 listened on 08/19/2024 at 14:46",
-        "0:05:11.2 listened on 03/16/2024 at 17:09",
-        "0:05:11.2 not listened",
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17 listened on 07/17/2026 at 16:20 playable every day",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55 listened on 09/07/2025 at 17:22 playable every day",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52 listened on 09/07/2025 at 17:21 playable every day",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16 listened on 08/19/2024 at 14:46 playable every day",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45 listened on 03/16/2024 at 17:09 playable every day",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35 not listened playable every day",
       ];
 
       audioSubTitlesTitleAsc = [
@@ -4801,12 +4801,12 @@ void main() {
       ];
 
       audioSubTitlesVideoUploadDate = [
-        "0:00:37.5 video upload date: 00/00/0000",
-        "0:00:07.0 video upload date: 00/00/0000",
-        "0:00:39.0 video upload date: 00/00/0000",
-        "0:05:11.2 video upload date: 09/23/2023",
-        "0:10:55.2 video upload date: 09/10/2023",
-        "0:05:11.2 video upload date: 06/12/2022",
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17 video upload date: 07/17/2026",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55 video upload date: 09/07/2025",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52 video upload date: 09/07/2025",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35 video upload date: 09/23/2023",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16 video upload date: 09/10/2023",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45 video upload date: 06/12/2022",
       ];
 
       audioSubTitlesWithAudioDownloadSpeed = [
@@ -36180,8 +36180,7 @@ void main() {
            restoring works correctly when the playlists root path is changed.
            
            The saved mp3 are not all played at the same speed. This verifies that the saved
-           displayed duration is correct.''',
-        (WidgetTester tester) async {
+           displayed duration is correct.''', (WidgetTester tester) async {
       // Purge the test playlist directory if it exists so that the
       // playlist list is empty
       DirUtil.deleteFilesInDirAndSubDirs(
@@ -39807,7 +39806,6 @@ void main() {
 
         // Verify the text was entered
         expect(find.text(enteredFileNameNoExt), findsOneWidget);
-
 
         // Tap on the 'Create MP3' button
         Finder saveMP3FileButton =

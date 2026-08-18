@@ -4885,12 +4885,12 @@ void main() {
       ];
 
       audioSubTitlesLastListenedDateTimeDescending = [
-        "0:00:37.5 listened on 2026/07/17 at 16:20",
-        "0:00:07.0 listened on 2025/09/07 at 17:22",
-        "0:00:39.0 listened on 2025/09/07 at 17:21",
-        "0:10:55.2 listened on 2024/08/19 at 14:46",
-        "0:05:11.2 listened on 2024/03/16 at 17:09",
-        "0:05:11.2 not listened",
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17 listened on 2026/07/17 at 16:20 playable every day",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55 listened on 2025/09/07 at 17:22 playable every day",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52 listened on 2025/09/07 at 17:21 playable every day",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16 listened on 2024/08/19 at 14:46 playable every day",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45 listened on 2024/03/16 at 17:09 playable every day",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35 not listened playable every day",
       ];
 
       audioSubTitlesTitleAsc = [
@@ -4903,12 +4903,12 @@ void main() {
       ];
 
       audioSubTitlesVideoUploadDate = [
-        "0:00:37.5 video upload date: 0000/00/00",
-        "0:00:07.0 video upload date: 0000/00/00",
-        "0:00:39.0 video upload date: 0000/00/00",
-        "0:05:11.2 video upload date: 2023/09/23",
-        "0:10:55.2 video upload date: 2023/09/10",
-        "0:05:11.2 video upload date: 2022/06/12",
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17 video upload date: 2026/07/17",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55 video upload date: 2025/09/07",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52 video upload date: 2025/09/07",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35 video upload date: 2023/09/23",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16 video upload date: 2023/09/10",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45 video upload date: 2022/06/12",
       ];
 
       audioSubTitlesWithAudioDownloadSpeed = [
@@ -4987,12 +4987,12 @@ void main() {
       ];
 
       audioSubTitlesLastListenedDateTimeDescending = [
-        "0:00:37.5 listened on 17/07/2026 at 16:20",
-        "0:00:07.0 listened on 07/09/2025 at 17:22",
-        "0:00:39.0 listened on 07/09/2025 at 17:21",
-        "0:10:55.2 listened on 19/08/2024 at 14:46",
-        "0:05:11.2 listened on 16/03/2024 at 17:09",
-        "0:05:11.2 not listened",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17 listened on 17/07/2026 at 16:20 playable every day",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55 listened on 07/09/2025 at 17:22 playable every day",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52 listened on 07/09/2025 at 17:21 playable every day",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 listened on 19/08/2024 at 14:46 playable every day",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 listened on 16/03/2024 at 17:09 playable every day",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 not listened playable every day",
       ];
 
       audioSubTitlesTitleAsc = [
@@ -5005,12 +5005,12 @@ void main() {
       ];
 
       audioSubTitlesVideoUploadDate = [
-        "0:00:37.5 video upload date: 00/00/0000",
-        "0:00:07.0 video upload date: 00/00/0000",
-        "0:00:39.0 video upload date: 00/00/0000",
-        "0:05:11.2 video upload date: 23/09/2023",
-        "0:10:55.2 video upload date: 10/09/2023",
-        "0:05:11.2 video upload date: 12/06/2022",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17 video upload date: 17/07/2026",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55 video upload date: 07/09/2025",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52 video upload date: 07/09/2025",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 video upload date: 23/09/2023",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 video upload date: 10/09/2023",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 video upload date: 12/06/2022",
       ];
 
       audioSubTitlesWithAudioDownloadSpeed = [

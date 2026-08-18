@@ -594,6 +594,7 @@ mixin ScreenMixin {
     bool isCursorAtStart = true,
     int labelFlexValue = 1,
     required int editableFieldFlexValue,
+    bool isFieldContentSelected = false,
   }) {
     if (isCursorAtStart) {
       // Set the cursor position at the start of the TextField,
@@ -602,6 +603,15 @@ mixin ScreenMixin {
         selection: const TextSelection.collapsed(offset: 0),
       );
     }
+
+    if (isFieldContentSelected) {
+      // Select the text in the TextField
+      controller.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: controller.text.length,
+      );      
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Tooltip(

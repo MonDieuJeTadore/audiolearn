@@ -44,6 +44,7 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
       TextEditingController();
   final TextEditingController _playVolumeInPercentageController =
       TextEditingController();
+  final FocusNode _focusNodePlayVolumeModificationTextField = FocusNode();
 
   @override
   void initState() {
@@ -77,6 +78,8 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
         kWindowsSystemVolume.toString();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNodePlayVolumeModificationTextField.requestFocus();
+
       _helpItemsLst = [
         HelpItem(
           helpTitle: AppLocalizations.of(context)!.defaultApplicationHelpTitle,
@@ -109,6 +112,7 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
   void dispose() {
     _mp3ZipFileSizeLimitInMbController.dispose();
     _playVolumeInPercentageController.dispose();
+    _focusNodePlayVolumeModificationTextField.dispose();
 
     super.dispose();
   }
@@ -120,6 +124,10 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
       context,
       listen: false,
     ); // by default, listen is true
+
+    FocusScope.of(context).requestFocus(
+      _focusNodePlayVolumeModificationTextField,
+    );
 
     return Theme(
       data: themeProviderVMlistenFalse.currentTheme == AppTheme.dark
@@ -258,7 +266,10 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
                                       .playVolumeInPercentageTooltip,
                               controller: _playVolumeInPercentageController,
                               labelFlexValue: 4,
+                              textFieldFocusNode:
+                                  _focusNodePlayVolumeModificationTextField,
                               editableFieldFlexValue: 1,
+                              isFieldContentSelected: true,
                             ),
                           ),
                         ],

@@ -5176,6 +5176,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Text to audio conversion failed: {errorMessage}.'**
   String textToSpeechApiError(Object errorMessage);
+
+  /// No description provided for @videoUploadDateNotExist.
+  ///
+  /// In en, this message translates to:
+  /// **'no related video'**
+  String get videoUploadDateNotExist;
 }
 
 class _AppLocalizationsDelegate

@@ -1355,5 +1355,6 @@
   "setAudioPlayableNDaysNumberTitleExplanation": "The defined playable every n days number will be set in every filtered audio.",
   "invaliddayNumberErrortMessage": "{dayNumber} does not respect the positive integer format.",
   "enteredDayNumberEmptyMessage": "Defining an empty playable day number is not possible.",
-  "textToSpeechApiError": "Text to audio conversion failed: {errorMessage}."
+  "textToSpeechApiError": "Text to audio conversion failed: {errorMessage}.",
+  "videoUploadDateNotExist": "no related video"
 }

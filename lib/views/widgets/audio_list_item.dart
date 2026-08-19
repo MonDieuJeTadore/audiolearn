@@ -752,22 +752,20 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
       case SortingOption.videoUploadDate:
         // This video upload date value is only used if the audio type is
         // AudioType.imported or AudioType.converted.
-        DateTime videoUploadDate = audio.videoUploadDate;
+        DateTime? videoUploadDate = audio.videoUploadDate;
         String lastSubtitlePart;
-        String formatedDate =
-            dateFormatVMlistenTrue.formatDate(videoUploadDate);
-
-        if (formatedDate.contains('0000')) {
-          formatedDate = formatedDate.replaceAll('01', '00');
-        }
 
         String defaultLastSubTitlePart = _createDefaultLastSubTitlePart(
           context: context,
           dateFormatVMlistenTrue: dateFormatVMlistenTrue,
         );
 
-        lastSubtitlePart =
-            '$defaultLastSubTitlePart ${AppLocalizations.of(context)!.videoUploadDate}: $formatedDate';
+        if (videoUploadDate == null) {
+          lastSubtitlePart = '$defaultLastSubTitlePart ${AppLocalizations.of(context)!.videoUploadDateNotExist}';
+        } else {
+          lastSubtitlePart =
+              '$defaultLastSubTitlePart ${AppLocalizations.of(context)!.videoUploadDate} ${dateFormatVMlistenTrue.formatDate(videoUploadDate)}';
+        }
 
         if (isLastListeneDateOrPlayableEveryNDaysRangeOrPlayableOnDefined) {
           lastSubtitlePart =

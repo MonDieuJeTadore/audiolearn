@@ -3367,4 +3367,7 @@ class MockAppLocalizations extends AppLocalizations {
     Object errorMessage,
   ) =>
       "Text to audio conversion failed: $errorMessage.";
+
+  @override
+  String get videoUploadDateNotExist => "no related video";
 }

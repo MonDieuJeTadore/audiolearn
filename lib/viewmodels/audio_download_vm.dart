@@ -887,8 +887,8 @@ class AudioDownloadVM extends ChangeNotifier {
         continue;
       }
 
-      DateTime videoUploadDate =
-          fullVideo.uploadDate ?? fullVideo.publishDate ?? DateTime(0, 1, 1);
+      DateTime? videoUploadDate =
+          fullVideo.uploadDate ?? fullVideo.publishDate;
 
       final String compactVideoDescription = _createCompactVideoDescription(
         videoDescription: fullVideo.description,
@@ -2734,8 +2734,8 @@ class AudioDownloadVM extends ChangeNotifier {
       compactVideoDescription: '',
       videoUrl: '',
       audioDownloadDateTime: DateTime.now(),
-      audioDownloadDuration: const Duration(microseconds: 0),
-      videoUploadDate: DateTime(0, 1, 1),
+      audioDownloadDuration: null,
+      videoUploadDate: null,
       audioDuration: importedAudioDuration,
       audioPlaySpeed: _determineNewAudioPlaySpeed(targetPlaylist),
     );
@@ -2770,8 +2770,8 @@ class AudioDownloadVM extends ChangeNotifier {
       compactVideoDescription: '',
       videoUrl: currentAudio.videoUrl,
       audioDownloadDateTime: DateTime.now(),
-      audioDownloadDuration: const Duration(microseconds: 0),
-      videoUploadDate: DateTime(0, 1, 1),
+      audioDownloadDuration: null,
+      videoUploadDate: null,
       audioDuration: importedAudioDuration,
       audioPlaySpeed: _determineNewAudioPlaySpeed(targetPlaylist),
     );

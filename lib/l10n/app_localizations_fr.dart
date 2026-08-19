@@ -3265,4 +3265,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String textToSpeechApiError(Object errorMessage) {
     return 'Échec de la conversion texte en audio : $errorMessage.';
   }
+
+  @override
+  String get videoUploadDateNotExist => 'pas de vidéo correspondante';
 }

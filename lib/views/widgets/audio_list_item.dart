@@ -784,10 +784,12 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
         );
 
         final Duration audioDownloadDuration = audio.audioDownloadDuration!;
-        final String audioDownloadDurationSubtitlePart;
+        String audioDownloadDurationSubtitlePart = '';
 
-        audioDownloadDurationSubtitlePart =
-            '${AppLocalizations.of(context)!.audioDownloadDuration} ${audioDownloadDuration.HHmmss()}';
+        if (audio.audioType == AudioType.downloaded) {
+          audioDownloadDurationSubtitlePart =
+              '${AppLocalizations.of(context)!.audioDownloadDuration} ${audioDownloadDuration.HHmmss()}';
+        }
 
         return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart $audioDownloadDurationSubtitlePart';
       default:

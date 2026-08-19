@@ -138,7 +138,7 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
           valueTextWidgetKey: const Key('videoUploadDateKey'),
           context: context,
           label: AppLocalizations.of(context)!.videoUploadDateLabel,
-          value: dateFormatVMlistenFalse.formatDate(audio.videoUploadDate)),
+          value: dateFormatVMlistenFalse.formatDate(audio.videoUploadDate!)),
       createInfoRowFunction(
           valueTextWidgetKey: const Key('audioDownloadDateTimeKey'),
           context: context,

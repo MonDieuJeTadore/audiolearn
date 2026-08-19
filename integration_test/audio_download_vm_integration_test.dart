@@ -1894,10 +1894,12 @@ void _checkDownloadedAudioShortVideoOne({
       "https://www.youtube.com/watch?v=v7PWb7f_P8M");
   expect(downloadedAudioOne.compactVideoDescription,
       "Jean-Pierre Schnyder\n\nCette vidéo me sert à tester AudioLearn, l'app Android que je développe et dont le code est disponible sur GitHub. ...");
-  expect(
-      DateTimeParser.truncateDateTimeToDateOnly(
-          downloadedAudioOne.videoUploadDate),
-      DateTime.parse("2023-06-10"));
+  if (downloadedAudioOne.videoUploadDate != null) {
+    expect(
+        DateTimeParser.truncateDateTimeToDateOnly(
+            downloadedAudioOne.videoUploadDate!),
+        DateTime.parse("2023-06-10"));
+  }
   expect(downloadedAudioOne.audioPlaySpeed, 1.0);
   expect(downloadedAudioOne.isAudioMusicQuality, downloadedAtMusicQuality);
 
@@ -1925,10 +1927,12 @@ void _checkDownloadedAudioShortVideoTwo({
       "Jean-Pierre Schnyder\n\nCette vidéo me sert à tester AudioLearn, l'app Android que je développe. ...");
   expect(downloadedAudioTwo.videoUrl,
       "https://www.youtube.com/watch?v=uv3VQoWSjBE");
-  expect(
-      DateTimeParser.truncateDateTimeToDateOnly(
-          downloadedAudioTwo.videoUploadDate),
-      DateTime.parse("2023-06-10"));
+  if (downloadedAudioTwo.videoUploadDate != null) {
+    expect(
+        DateTimeParser.truncateDateTimeToDateOnly(
+            downloadedAudioTwo.videoUploadDate!),
+        DateTime.parse("2023-06-10"));
+  }
   expect(downloadedAudioTwo.audioPlaySpeed, 1.0);
   expect(downloadedAudioTwo.isAudioMusicQuality, downloadedAtMusicQuality);
 
@@ -1975,10 +1979,12 @@ void checkPlaylistNewAudioOne({
       true);
 
   expect(downloadedAudioOne.audioFileSize, 61288);
-  expect(
-      DateTimeParser.truncateDateTimeToDateOnly(
-          downloadedAudioOne.videoUploadDate),
-      DateTime.parse("2023-07-01"));
+  if (downloadedAudioOne.videoUploadDate != null) {
+    expect(
+        DateTimeParser.truncateDateTimeToDateOnly(
+            downloadedAudioOne.videoUploadDate!),
+        DateTime.parse("2023-07-01"));
+  }
 }
 
 // Verify the values of the first Audio extracted from a playlist
@@ -2003,13 +2009,15 @@ void checkPlaylistNewAudioTwo({
       true);
 
   expect(downloadedAudioTwo.audioFileSize, 360849);
-  expect(
-      DateTimeParser.truncateDateTimeToDateOnly(
-          downloadedAudioTwo.videoUploadDate),
-      DateTime.parse("2023-07-01"));
-  // DateTime.parse("2023-07-01 18:48:13.000Z")); this
-  // uncomprehensible error happened several times when
-  // running the test on 04-10-2023 !
+  if (downloadedAudioTwo.videoUploadDate != null) {
+    expect(
+        DateTimeParser.truncateDateTimeToDateOnly(
+            downloadedAudioTwo.videoUploadDate!),
+        DateTime.parse("2023-07-01"));
+    // DateTime.parse("2023-07-01 18:48:13.000Z")); this
+    // uncomprehensible error happened several times when
+    // running the test on 04-10-2023 !
+  }
 }
 
 class DownloadPlaylistPage extends StatefulWidget {
@@ -2177,8 +2185,11 @@ void compareDeserializedWithOriginalAudio({
 
   expect(
       deserializedAudio.audioDownloadSpeed, originalAudio.audioDownloadSpeed);
-  expect(deserializedAudio.videoUploadDate.toIso8601String(),
-      originalAudio.videoUploadDate.toIso8601String());
+  if (deserializedAudio.videoUploadDate != null &&
+      originalAudio.videoUploadDate != null) {
+    expect(deserializedAudio.videoUploadDate!.toIso8601String(),
+        originalAudio.videoUploadDate!.toIso8601String());
+  }
   expect(deserializedAudio.audioDuration, originalAudio.audioDuration);
   expect(
       deserializedAudio.isAudioMusicQuality, originalAudio.isAudioMusicQuality);

@@ -1349,9 +1349,14 @@ void compareDeserializedWithOriginalAudio({
       originalAudio.audioDownloadDuration);
   expect(
       deserializedAudio.audioDownloadSpeed, originalAudio.audioDownloadSpeed);
-  expect(deserializedAudio.videoUploadDate.toIso8601String(),
-      originalAudio.videoUploadDate.toIso8601String());
 
+  if (originalAudio.videoUploadDate != null) {
+    expect(deserializedAudio.videoUploadDate?.toIso8601String(),
+        originalAudio.videoUploadDate?.toIso8601String());
+  } else {
+    expect(deserializedAudio.videoUploadDate, originalAudio.videoUploadDate);
+  }
+  
   if (originalAudio.audioType == AudioType.downloaded) {
     // inMilliseconds is used because the duration is not exactly the same
     // when it is serialized and deserialized since it is stored in the json

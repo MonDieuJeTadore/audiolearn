@@ -169,7 +169,9 @@ class AudioSortFilterParameters {
     ),
     SortingOption.videoUploadDate: SortCriteria<Audio>(
       selectorFunction: (Audio audio) {
-        return DateTimeParser.truncateDateTimeToDateOnly(audio.videoUploadDate);
+        return (audio.videoUploadDate != null)
+            ? DateTimeParser.truncateDateTimeToDateOnly(audio.videoUploadDate!)
+            : DateTime(0, 1, 1);
       },
       sortOrder: sortDescending,
     ),

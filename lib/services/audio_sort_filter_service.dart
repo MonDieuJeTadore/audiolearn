@@ -883,7 +883,7 @@ class AudioSortFilterService {
                   existingAudioSortFilterParms.durationStartRangeSec == 0 &&
                       existingAudioSortFilterParms.durationEndRangeSec == 0);
     }
-    
+
     if (existingAudioSortFilterParms.durationEndRangeSec !=
         newOrModifiedaudioSortFilterParms.durationEndRangeSec) {
       wasFilterOptionsTitleAddedToDifferencesLst =
@@ -1791,24 +1791,25 @@ class AudioSortFilterService {
         }
 
         return audioLst.where((audio) {
-          return (audio.videoUploadDate.isAfter(startDateTime) ||
-                  audio.videoUploadDate.isAtSameMomentAs(startDateTime)) &&
-              (audio.videoUploadDate.isBefore(endDateTime!) ||
-                  audio.videoUploadDate.isAtSameMomentAs(endDateTime));
+          return (audio.videoUploadDate != null) &&
+              ((audio.videoUploadDate!.isAfter(startDateTime) ||
+                      audio.videoUploadDate!.isAtSameMomentAs(startDateTime)) &&
+                  (audio.videoUploadDate!.isBefore(endDateTime!) ||
+                      audio.videoUploadDate!.isAtSameMomentAs(endDateTime)));
         }).toList();
       } else {
         // endDateTime is null
         return audioLst.where((audio) {
-          return (audio.videoUploadDate.isAfter(startDateTime) ||
-              audio.videoUploadDate.isAtSameMomentAs(startDateTime));
+          return (audio.videoUploadDate != null) && ((audio.videoUploadDate!.isAfter(startDateTime) ||
+              audio.videoUploadDate!.isAtSameMomentAs(startDateTime)));
         }).toList();
       }
     } else {
       // startDateTime is null
       if (endDateTime != null) {
         return audioLst.where((audio) {
-          return (audio.videoUploadDate.isBefore(endDateTime!) ||
-              audio.videoUploadDate.isAtSameMomentAs(endDateTime));
+          return (audio.videoUploadDate != null) && ((audio.videoUploadDate!.isBefore(endDateTime!) ||
+              audio.videoUploadDate!.isAtSameMomentAs(endDateTime)));
         }).toList();
       } else {
         // startDateTime and endDateTime are null

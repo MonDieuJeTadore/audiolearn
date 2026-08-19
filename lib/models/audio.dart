@@ -65,7 +65,7 @@ class Audio {
 
   // Date at which the video containing the audio was added on
   // Youtube
-  final DateTime videoUploadDate;
+  final DateTime? videoUploadDate;
 
   // Stored audio file name
   String audioFileName;
@@ -228,12 +228,15 @@ class Audio {
       validVideoTitle: json['validVideoTitle'],
       videoUrl: json['videoUrl'],
       audioDownloadDateTime: DateTime.parse(json['audioDownloadDateTime']),
-      audioDownloadDuration:
-          Duration(milliseconds: json['audioDownloadDurationMs']),
+      audioDownloadDuration: (json['audioDownloadDurationMs'] == null)
+          ? null
+          : Duration(milliseconds: json['audioDownloadDurationMs']),
       audioDownloadSpeed: (json['audioDownloadSpeed'] < 0)
           ? double.infinity
           : json['audioDownloadSpeed'],
-      videoUploadDate: DateTime.parse(json['videoUploadDate']),
+      videoUploadDate: (json['videoUploadDate'] == null)
+          ? null
+          : DateTime.parse(json['videoUploadDate']),
       audioDuration: Duration(milliseconds: json['audioDurationMs']),
       isAudioMusicQuality: json['isAudioMusicQuality'] ?? false,
       audioPlaySpeed: json['audioPlaySpeed'] ?? kAudioDefaultPlaySpeed,
@@ -270,11 +273,12 @@ class Audio {
       'validVideoTitle': validVideoTitle,
       'videoUrl': videoUrl,
       'audioDownloadDateTime': audioDownloadDateTime.toIso8601String(),
-      'audioDownloadDurationMs': audioDownloadDuration?.inMilliseconds,
+      'audioDownloadDurationMs': audioDownloadDuration
+          ?.inMilliseconds, // if audioDownloadDuration is null, the expression returns null, which is acceptable in JSON
       'audioDownloadSpeed':
           (audioDownloadSpeed.isFinite) ? audioDownloadSpeed : -1.0,
-      'videoUploadDate':
-          videoUploadDate.toIso8601String(), // can be null in json file
+      'videoUploadDate': videoUploadDate
+          ?.toIso8601String(), // if videoUploadDate is null, the expression returns null, which is acceptable in JSON
       'audioDurationMs': audioDuration.inMilliseconds,
       'isAudioMusicQuality': isAudioMusicQuality,
       'audioPlaySpeed': audioPlaySpeed,
@@ -282,9 +286,8 @@ class Audio {
       'isPlayingOrPausedWithPositionBetweenAudioStartAndEnd':
           isPlayingOrPausedWithPositionBetweenAudioStartAndEnd,
       'isPaused': isPaused,
-      'audioPausedDateTime': (audioPausedDateTime == null)
-          ? null
-          : audioPausedDateTime!.toIso8601String(),
+      'audioPausedDateTime': audioPausedDateTime
+          ?.toIso8601String(), // if audioPausedDateTime is null, the expression returns null, which is acceptable in JSON
       'audioPositionSeconds': audioPositionSeconds,
       'audioFileName': audioFileName,
       'audioFileSize': audioFileSize,

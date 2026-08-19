@@ -2519,14 +2519,44 @@ void _verifyAudioFields(Audio importedAudio, Audio expectedImportedAudio) {
       expectedImportedAudio.audioDownloadDuration);
   expect(importedAudio.audioDownloadSpeed,
       expectedImportedAudio.audioDownloadSpeed);
-  expect(
-    DateTimeUtil.areDateTimesEqualWithinTolerance(
-      dateTimeOne: importedAudio.videoUploadDate,
-      dateTimeTwo: expectedImportedAudio.videoUploadDate,
-      toleranceInSeconds: 1,
-    ),
-    true,
-  );
+
+  if (importedAudio.videoUploadDate == null &&
+      expectedImportedAudio.videoUploadDate == null) {
+    expect(
+        importedAudio.videoUploadDate, expectedImportedAudio.videoUploadDate);
+  } else if (importedAudio.videoUploadDate != null &&
+      expectedImportedAudio.videoUploadDate != null) {
+    expect(
+      DateTimeUtil.areDateTimesEqualWithinTolerance(
+        dateTimeOne: importedAudio.videoUploadDate!,
+        dateTimeTwo: expectedImportedAudio.videoUploadDate!,
+        toleranceInSeconds: 1,
+      ),
+      true,
+    );
+  } else {
+    fail(
+        "One of the video upload dates is null while the other is not. This is unexpected.");
+  }
+
+  if (importedAudio.videoUploadDate == null &&
+      expectedImportedAudio.videoUploadDate == null) {
+    expect(importedAudio.videoUploadDate, expectedImportedAudio.videoUploadDate);
+  } else if (importedAudio.videoUploadDate != null &&
+      expectedImportedAudio.videoUploadDate != null) {
+    expect(
+      DateTimeUtil.areDateTimesEqualWithinTolerance(
+        dateTimeOne: importedAudio.videoUploadDate!,
+        dateTimeTwo: expectedImportedAudio.videoUploadDate!,
+        toleranceInSeconds: 1,
+      ),
+      true,
+    );
+  } else {
+    fail(
+        "One of the video upload dates is null while the other is not. This is unexpected.");
+  }
+
   expect(importedAudio.audioDuration, expectedImportedAudio.audioDuration);
   expect(importedAudio.isAudioMusicQuality,
       expectedImportedAudio.isAudioMusicQuality);

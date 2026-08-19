@@ -1784,5 +1784,6 @@
   "setAudioPlayableNDaysNumberTitleExplanation": "Le numéro du jour jouable défini sera appliqué à chaque audio filtré.",
   "invaliddayNumberErrortMessage": "{dayNumber} ne respecte pas le format du nombre entier positif.",
   "enteredDayNumberEmptyMessage": "Definir un numéro du jour jouable vide n'est pas possible.",
-  "textToSpeechApiError": "Échec de la conversion texte en audio : {errorMessage}."
+  "textToSpeechApiError": "Échec de la conversion texte en audio : {errorMessage}.",
+  "videoUploadDateNotExist": "pas de vidéo correspondante"
 }

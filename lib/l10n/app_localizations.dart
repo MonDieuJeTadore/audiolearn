@@ -4948,12 +4948,6 @@ abstract class AppLocalizations {
   /// **'Modify'**
   String get modifyPlayableEveryNDaysButton;
 
-  /// No description provided for @invalidPlayableEveryNDaysWarning.
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid entered every playable day number: \"{dayNumber}\".'**
-  String invalidPlayableEveryNDaysWarning(Object dayNumber);
-
   /// No description provided for @playableEveryNDaysLabel.
   ///
   /// In en, this message translates to:

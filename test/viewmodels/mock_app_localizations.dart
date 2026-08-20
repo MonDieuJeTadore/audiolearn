@@ -3204,12 +3204,6 @@ class MockAppLocalizations extends AppLocalizations {
   String get modifyPlayableEveryNDaysButton => "Modify";
 
   @override
-  String invalidPlayableEveryNDaysWarning(
-    Object dayNumbers,
-  ) =>
-      "Invalid entered week day number(s) \"$dayNumbers\".";
-
-  @override
   String get playableEveryNDaysLabel => "Playable week day number(s)";
 
   @override

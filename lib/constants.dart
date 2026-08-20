@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 const String kApplicationName = "AudioLearn";
 const String kApplicationNameForAboutView =
     "Audio Learn"; // Enables better readability
-const String kApplicationVersion = "3.5.95";
+const String kApplicationVersion = "3.5.96";
 
 enum PopupMenuButtonType {
   openSortFilterAudioDialog,
@@ -78,9 +78,6 @@ const int kWindowsSystemVolume = 55;
 const String kOrderedPlaylistTitlesFileName = 'savedOrderedPlaylistTitles.txt';
 
 const double kAudioDefaultPlaySpeed = 1.0;
-
-// Google Cloud Platform API key
-const String kGoogleApiKey = 'AIzaSyCSxCyWPgRo9n_B2quFPkq-0u0CuFGA74s';
 
 const String kStartAtZeroPosition = '0Pos';
 

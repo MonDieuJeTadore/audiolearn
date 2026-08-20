@@ -223,10 +223,12 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
               event.logicalKey == LogicalKeyboardKey.numpadEnter) {
             // executing the same code as in the audioModification
             // TextButton onPressed callback
-            _handleAudioModification(context);
+            bool wasWarningDisplayed = _handleAudioModification(context);
 
-            Navigator.of(context)
-                .pop(_audioModificationTextEditingController.text);
+            if (!wasWarningDisplayed) {
+              Navigator.of(context)
+                  .pop(_audioModificationTextEditingController.text);
+            }
           }
         }
       },

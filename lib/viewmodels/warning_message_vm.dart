@@ -698,14 +698,14 @@ class WarningMessageVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _invalidPlayableOnlyWeekDays = '';
-  String get invalidPlayableOnlyWeekDays =>
-      _invalidPlayableOnlyWeekDays;
+  String _invalidPlayableEveryDaysValue = '';
+  String get invalidPlayableEveryDaysValue =>
+      _invalidPlayableEveryDaysValue;
 
   void invalidPlayableEveryNDaysWarning({
     required String invalidPlayableEveryDaysValue,
   }) {
-    _invalidPlayableOnlyWeekDays = invalidPlayableEveryDaysValue;
+    _invalidPlayableEveryDaysValue = invalidPlayableEveryDaysValue;
     warningMessageType = WarningMessageType.invalidPlayableOnlyWeekDays;
 
     // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.

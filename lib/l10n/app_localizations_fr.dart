@@ -3116,11 +3116,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get modifyPlayableEveryNDaysButton => 'Modifier';
 
   @override
-  String invalidPlayableEveryNDaysWarning(Object dayNumber) {
-    return 'Nombre de jours entre deux lectures invalide : \"$dayNumber\".';
-  }
-
-  @override
   String get playableEveryNDaysLabel => 'Jouable tous les n jours';
 
   @override

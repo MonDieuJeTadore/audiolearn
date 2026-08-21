@@ -59,8 +59,8 @@ enum FilteredAudioAction {
   copyFilteredAudio,
   rewindFilteredAudioToStart,
   obtainFilteredAudioNumberAndDurationOnDate,
-  modifyFilteredAudioLastListenedDateTime,
   modifyFilteredAudioPlayableNDaysNumber,
+  modifyFilteredAudioLastListenedDateTime,
   extractFilteredAudio,
   deleteFilteredAudio,
   deleteFilteredAudioFromPlaylistAsWell,
@@ -939,17 +939,17 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
         ),
         PopupMenuItem<FilteredAudioAction>(
           key: const Key(
-              'popup_menu_modify_filtered_audio_last_listened_date_time'),
-          value: FilteredAudioAction.modifyFilteredAudioLastListenedDateTime,
-          child: Text(AppLocalizations.of(context)!
-              .modifyFilteredAudioLastListenedDateTime),
-        ),
-        PopupMenuItem<FilteredAudioAction>(
-          key: const Key(
               'popup_menu_modify_filtered_audio_playable_n_days_number'),
           value: FilteredAudioAction.modifyFilteredAudioPlayableNDaysNumber,
           child: Text(AppLocalizations.of(context)!
               .modifyFilteredAudioPlayableNDaysNumber),
+        ),
+        PopupMenuItem<FilteredAudioAction>(
+          key: const Key(
+              'popup_menu_modify_filtered_audio_last_listened_date_time'),
+          value: FilteredAudioAction.modifyFilteredAudioLastListenedDateTime,
+          child: Text(AppLocalizations.of(context)!
+              .modifyFilteredAudioLastListenedDateTime),
         ),
         PopupMenuItem<FilteredAudioAction>(
           key: const Key('popup_menu_extract_filtered_audio'),
@@ -1210,61 +1210,6 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
               );
             });
             break;
-          case FilteredAudioAction.modifyFilteredAudioLastListenedDateTime:
-            final DateFormatVM dateFormatVMlistenFalse =
-                Provider.of<DateFormatVM>(
-              context,
-              listen: false,
-            );
-
-            showDialog<List<String>>(
-              barrierDismissible:
-                  false, // Prevents the dialog from closing when tapping outside.
-              context: context,
-              builder: (BuildContext context) {
-                String translatedDateFormatStr =
-                    UiUtil.obtainTranslatedDateFormat(
-                        context: context,
-                        dateFormatVMlistenFalse: dateFormatVMlistenFalse);
-
-                return SetValueToTargetDialog(
-                  dialogTitle: AppLocalizations.of(context)!
-                      .setAudioLastListenedDateTimeTitle,
-                  dialogCommentStr: AppLocalizations.of(context)!
-                      .setAudioLastListenedDateTimeTitleExplanation,
-                  passedValueFieldLabel: AppLocalizations.of(context)!
-                      .audioDownloadFromDateTimeLabel(translatedDateFormatStr),
-                  passedValueFieldTooltip: AppLocalizations.of(context)!
-                      .setAudioLastListenedDateTimeTitleTooltip,
-                  passedValueStr:
-                      dateFormatVMlistenFalse.formatDateTime(DateTime.now()),
-                  checkboxLabelLst: [],
-                  validationFunction: validateDateTimeFormat,
-                  validationFunctionArgs: [
-                    dateFormatVMlistenFalse,
-                  ],
-                  isCursorAtStart: true,
-                );
-              },
-            ).then((resultStringLst) async {
-              if (resultStringLst == null) {
-                // The case if the Cancel button was pressed.
-                return;
-              }
-
-              String definedAudioLastListenedDateFormattedStr =
-                  resultStringLst[0];
-
-              playlistListVMlistenFalse
-                  .modifyFilteredPlayableAudioLastListenedDateTime(
-                audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
-                dateFormatVMlistenFalse: dateFormatVMlistenFalse,
-                playlist: playlist,
-                definedAudioLastListenedDateFormattedStr:
-                    definedAudioLastListenedDateFormattedStr,
-              );
-            });
-            break;
           case FilteredAudioAction.modifyFilteredAudioPlayableNDaysNumber:
             showDialog<List<String>>(
               barrierDismissible:
@@ -1297,6 +1242,61 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                   .modifyFilteredPlayableAudioPlayableDayNumber(
                 playlist: playlist,
                 definedPlayableDayNumberStr: definedPlayableDayNumberStr,
+              );
+            });
+            break;
+          case FilteredAudioAction.modifyFilteredAudioLastListenedDateTime:
+            final DateFormatVM dateFormatVMlistenFalse =
+                Provider.of<DateFormatVM>(
+              context,
+              listen: false,
+            );
+
+            showDialog<List<String>>(
+              barrierDismissible:
+                  false, // Prevents the dialog from closing when tapping outside.
+              context: context,
+              builder: (BuildContext context) {
+                String translatedDateFormatStr =
+                    UiUtil.obtainTranslatedDateFormat(
+                        context: context,
+                        dateFormatVMlistenFalse: dateFormatVMlistenFalse);
+
+                return SetValueToTargetDialog(
+                  dialogTitle: AppLocalizations.of(context)!
+                      .setAudioLastListenedDateTitle,
+                  dialogCommentStr: AppLocalizations.of(context)!
+                      .setAudioLastListenedDateTitleExplanation,
+                  passedValueFieldLabel: AppLocalizations.of(context)!
+                      .audioDownloadFromDateLabel(translatedDateFormatStr),
+                  passedValueFieldTooltip: AppLocalizations.of(context)!
+                      .setAudioLastListenedDateTitleTooltip,
+                  passedValueStr:
+                      dateFormatVMlistenFalse.formatDate(DateTime.now()),
+                  checkboxLabelLst: [],
+                  validationFunction: validateDateTimeFormat,
+                  validationFunctionArgs: [
+                    dateFormatVMlistenFalse,
+                  ],
+                  isCursorAtStart: true,
+                );
+              },
+            ).then((resultStringLst) async {
+              if (resultStringLst == null) {
+                // The case if the Cancel button was pressed.
+                return;
+              }
+
+              String definedAudioLastListenedDateFormattedStr =
+                  resultStringLst[0];
+
+              playlistListVMlistenFalse
+                  .modifyFilteredPlayableAudioLastListenedDateTime(
+                audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
+                dateFormatVMlistenFalse: dateFormatVMlistenFalse,
+                playlist: playlist,
+                definedAudioLastListenedDateFormattedStr:
+                    definedAudioLastListenedDateFormattedStr,
               );
             });
             break;

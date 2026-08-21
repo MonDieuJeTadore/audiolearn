@@ -3220,15 +3220,15 @@ class MockAppLocalizations extends AppLocalizations {
       "Modify filtered Audios last listen Date/Time ...";
 
   @override
-  String get setAudioLastListenedDateTimeTitle =>
+  String get setAudioLastListenedDateTitle =>
       "Define the last listened Date/Time";
 
   @override
-  String get setAudioLastListenedDateTimeTitleExplanation =>
+  String get setAudioLastListenedDateTitleExplanation =>
       "The defined date/time will be set as last listen date/time in every filtered audio.";
 
   @override
-  String get setAudioLastListenedDateTimeTitleTooltip =>
+  String get setAudioLastListenedDateTitleTooltip =>
       "This is usefull if the concerned audios were not listened before the defined date/time.";
 
   @override
@@ -3364,4 +3364,10 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get videoUploadDateNotExist => "no related video";
+
+  @override
+  String audioDownloadFromDateLabel(
+    Object selectedAppDateFormat,
+  ) =>
+      "Date ($selectedAppDateFormat)";
 }

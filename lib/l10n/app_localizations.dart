@@ -4963,26 +4963,26 @@ abstract class AppLocalizations {
   /// No description provided for @modifyFilteredAudioLastListenedDateTime.
   ///
   /// In en, this message translates to:
-  /// **'Modify filtered Audios last listen Date/Time ...'**
+  /// **'Modify filtered Audios last listen Date ...'**
   String get modifyFilteredAudioLastListenedDateTime;
 
-  /// No description provided for @setAudioLastListenedDateTimeTitle.
+  /// No description provided for @setAudioLastListenedDateTitle.
   ///
   /// In en, this message translates to:
-  /// **'Define the last listened Date/Time'**
-  String get setAudioLastListenedDateTimeTitle;
+  /// **'Define the last listened Date'**
+  String get setAudioLastListenedDateTitle;
 
-  /// No description provided for @setAudioLastListenedDateTimeTitleExplanation.
+  /// No description provided for @setAudioLastListenedDateTitleExplanation.
   ///
   /// In en, this message translates to:
-  /// **'The defined date/time will be set as last listen date/time in every filtered audio.'**
-  String get setAudioLastListenedDateTimeTitleExplanation;
+  /// **'The defined date will be set as last listen date in every filtered audio.'**
+  String get setAudioLastListenedDateTitleExplanation;
 
-  /// No description provided for @setAudioLastListenedDateTimeTitleTooltip.
+  /// No description provided for @setAudioLastListenedDateTitleTooltip.
   ///
   /// In en, this message translates to:
-  /// **'This is usefull if the concerned audios were not listened before the defined date/time.'**
-  String get setAudioLastListenedDateTimeTitleTooltip;
+  /// **'This is usefull if the concerned audios were not listened before the defined date.'**
+  String get setAudioLastListenedDateTitleTooltip;
 
   /// No description provided for @lastListenedDate.
   ///
@@ -5102,7 +5102,7 @@ abstract class AppLocalizations {
   /// No description provided for @modifyAudioListenedDateMenu.
   ///
   /// In en, this message translates to:
-  /// **'Modify Audio listened Date ...'**
+  /// **'Modify Audio last listened Date ...'**
   String get modifyAudioListenedDateMenu;
 
   /// No description provided for @modifyAudioListenedDate.
@@ -5176,6 +5176,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'no related video'**
   String get videoUploadDateNotExist;
+
+  /// No description provided for @audioDownloadFromDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date ({selectedAppDateFormat})'**
+  String audioDownloadFromDateLabel(Object selectedAppDateFormat);
 }
 
 class _AppLocalizationsDelegate

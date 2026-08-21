@@ -744,8 +744,13 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           lastSubtitlePart =
               '${AppLocalizations.of(context)!.remaining} $audioRemainingHHMMSSDuration ${AppLocalizations.of(context)!.audioStateNotListened}';
         } else {
-          lastSubtitlePart =
-              '${AppLocalizations.of(context)!.remaining} $audioRemainingHHMMSSDuration ${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)} ${AppLocalizations.of(context)!.atPreposition} ${timeFormat.format(lastListenedDateTime)}';
+          if (lastListenedDateTime.hour == 0 && lastListenedDateTime.minute == 0) {
+            lastSubtitlePart =
+                '${AppLocalizations.of(context)!.remaining} $audioRemainingHHMMSSDuration ${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)}}';
+          } else {
+            lastSubtitlePart =
+                '${AppLocalizations.of(context)!.remaining} $audioRemainingHHMMSSDuration ${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)} ${AppLocalizations.of(context)!.atPreposition} ${timeFormat.format(lastListenedDateTime)}';
+          }
         }
 
         return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart';
@@ -839,8 +844,13 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
     if (lastListenedDateTime == null) {
       lastSubtitlePart = AppLocalizations.of(context)!.audioStateNotListened;
     } else {
-      lastSubtitlePart =
-          '${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)} ${AppLocalizations.of(context)!.atPreposition} ${timeFormat.format(lastListenedDateTime)}';
+          if (lastListenedDateTime.hour == 0 && lastListenedDateTime.minute == 0) {
+            lastSubtitlePart =
+                 '${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)}';
+          } else {
+            lastSubtitlePart =
+                 '${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)} ${AppLocalizations.of(context)!.atPreposition} ${timeFormat.format(lastListenedDateTime)}';
+          }
     }
 
     if (playableEveryNDays == '1') {

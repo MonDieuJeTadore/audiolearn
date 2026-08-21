@@ -1749,10 +1749,10 @@
   "modifyPlayableEveryNDaysButton": "Modifier",
   "playableEveryNDaysLabel": "Jouable tous les n jours",
   "notYetPlayed": "pas encore écouté",
-  "modifyFilteredAudioLastListenedDateTime": "Modifier la date/heure de dernière écoute des audios filtrés ...",
-  "setAudioLastListenedDateTimeTitle": "Définir la date/heure de dernière écoute",
-  "setAudioLastListenedDateTimeTitleExplanation": "La date/heure définie sera appliquée à chaque audio filtré.",
-  "setAudioLastListenedDateTimeTitleTooltip": "Ceci est utile si les audios concernés n'ont pas été écoutés avant la date/heure définie.",
+  "modifyFilteredAudioLastListenedDateTime": "Modifier la date de dernière écoute des audios filtrés ...",
+  "setAudioLastListenedDateTitle": "Définir la date de dernière écoute",
+  "setAudioLastListenedDateTitleExplanation": "La date définie sera appliquée à chaque audio filtré.",
+  "setAudioLastListenedDateTitleTooltip": "Ceci est utile si les audios concernés n'ont pas été écoutés avant la date définie.",
   "lastListenedDate": "Date dernière écoute",
   "lastListenedDateSortFilterTooltip": "Les audios écoutés à cette date seront listés.",
   "filteredAudioNumberAndDuration": "Durée jouable totale des {number} audios filtrés jouables aujourd'hui de la playlist: {playableDuration}.",
@@ -1772,7 +1772,7 @@
   "playableOnDateLabel": "Date ({selectedAppDateFormat})",
   "invalidDateFormatErrorMessage": "{dateStr} ne respecte pas le format date (en plus sans heure:minute).",
   "filteredAudioNumberAndDurationOnDate": "Durée jouable totale des {number} audios filtrés de la playlist jouables le {date}: {playableDuration}.",
-  "modifyAudioListenedDateMenu": "Modifier la date d'écoute de l'audio ...",
+  "modifyAudioListenedDateMenu": "Modifier la date de dernière écoute de l'audio ...",
   "modifyAudioListenedDate": "Définir la date d'écoute",
   "listenedDateLabel": "Date d'écoute",
   "modifyAudioListenedDateButton": "Modifier",
@@ -1784,5 +1784,6 @@
   "invaliddayNumberErrortMessage": "{dayNumber} ne respecte pas le format du nombre entier positif.",
   "enteredDayNumberEmptyMessage": "Definir un numéro du jour jouable vide n'est pas possible.",
   "textToSpeechApiError": "Échec de la conversion texte en audio : {errorMessage}.",
-  "videoUploadDateNotExist": "pas de vidéo correspondante"
+  "videoUploadDateNotExist": "pas de vidéo correspondante",
+  "audioDownloadFromDateLabel": "Date ({selectedAppDateFormat})"
 }

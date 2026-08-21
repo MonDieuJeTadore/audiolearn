@@ -500,7 +500,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       case SortingOption.audioDownloadSpeed:
         return AppLocalizations.of(context)!.audioDownloadSpeed;
       case SortingOption.audioDownloadDuration:
-        return AppLocalizations.of(context)!.audioDownloadDuration;
+        return AppLocalizations.of(context)!.audioDownloadDurationSort;
     }
   }
 
@@ -2596,7 +2596,7 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
       'audioFileSize': AppLocalizations.of(context)!.audioFileSize,
       'audioDownloadSpeed': AppLocalizations.of(context)!.audioDownloadSpeed,
       'audioDownloadDuration':
-          AppLocalizations.of(context)!.audioDownloadDuration,
+          AppLocalizations.of(context)!.audioDownloadDurationSort,
       "ascending": AppLocalizations.of(context)!.ascendingShort,
       "descending": AppLocalizations.of(context)!.descendingShort,
       'filterSentenceLstTitle':

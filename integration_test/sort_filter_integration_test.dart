@@ -1504,8 +1504,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // And verify the order of the playlist audio subtitles
 
           List<String> audioSubTitlesSortedByTitleAscending = [
-            "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 video upload date: 10/09/2023",
-            "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 video upload date: 12/06/2022",
+            "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 video upload date 10/09/2023",
+            "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 video upload date 12/06/2022",
           ];
 
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
@@ -11794,7 +11794,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         await tester.tap(find.byKey(const Key('sortingOptionDropdownButton')));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.text('video upload date'));
+        await tester.tap(find.text('Video upload date'));
         await tester.pumpAndSettle();
 
         // Then delete the "Audio download date" descending sort option
@@ -11862,12 +11862,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio subtitles
 
         List<String> audioSubTitlesSortedByTitleAscending = [
-          "0:10:52.0 4.97 MB at 2.67 MB/sec on 07/01/2024 at 08:16 video upload date: 03/01/2024",
-          "0:06:06.4 2.79 MB at 2.73 MB/sec on 07/01/2024 at 16:36 video upload date: 03/12/2023",
-          "0:16:25.6 7.51 MB at 2.44 MB/sec on 26/12/2023 at 09:45 video upload date: 03/12/2023",
-          "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 video upload date: 23/09/2023",
-          "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 video upload date: 10/09/2023",
-          "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 video upload date: 12/06/2022",
+          "0:10:52.0 4.97 MB at 2.67 MB/sec on 07/01/2024 at 08:16 video upload date 03/01/2024",
+          "0:06:06.4 2.79 MB at 2.73 MB/sec on 07/01/2024 at 16:36 video upload date 03/12/2023",
+          "0:16:25.6 7.51 MB at 2.44 MB/sec on 26/12/2023 at 09:45 video upload date 03/12/2023",
+          "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 video upload date 23/09/2023",
+          "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 video upload date 10/09/2023",
+          "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 video upload date 12/06/2022",
         ];
 
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
@@ -12868,12 +12868,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio subtitles
 
         List<String> audioSubTitlesSortedByTitleAscending = [
-          // "0:20:32.0. 7.51 MB at 2.44 MB/sec on 26/12/2023 at 09:45 Audio downl duration: 0:00:03.",
-          "0:15:16.0 6.98 MB at 2.28 MB/sec on 07/01/2024 at 08:16 Audio downl duration: 0:00:03",
-          "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 Audio downl duration: 0:00:01",
-          "0:12:52.0 4.97 MB at 2.67 MB/sec on 07/01/2024 at 08:16 Audio downl duration: 0:00:01",
-          "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 Audio downl duration: 0:00:01",
-          "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 Audio downl duration: 0:00:01",
+          // "0:20:32.0. 7.51 MB at 2.44 MB/sec on 26/12/2023 at 09:45 audio downl duration 0:00:03.",
+          "0:15:16.0 6.98 MB at 2.28 MB/sec on 07/01/2024 at 08:16 audio downl duration 0:00:03",
+          "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 audio downl duration 0:00:01",
+          "0:12:52.0 4.97 MB at 2.67 MB/sec on 07/01/2024 at 08:16 audio downl duration 0:00:01",
+          "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 audio downl duration 0:00:01",
+          "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 audio downl duration 0:00:01",
         ];
 
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(

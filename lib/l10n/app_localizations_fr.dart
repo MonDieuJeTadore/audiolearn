@@ -112,7 +112,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get audioDownloadDate => 'Date téléch audio';
 
   @override
-  String get videoUploadDate => 'Date mise en ligne vidéo';
+  String get videoUploadDate => 'date mise en ligne vidéo';
 
   @override
   String get audioEnclosingPlaylistTitle => 'Titre playlist audio';
@@ -137,6 +137,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get audioDownloadDuration => 'durée téléch audio';
+
+  @override
+  String get audioDownloadDurationSort => 'Durée téléch audio';
 
   @override
   String get sortAscending => 'Asc';
@@ -329,7 +332,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get audioDownloadSpeedLabel => 'Vitesse téléch';
 
   @override
-  String get videoUploadDateLabel => 'Date mise en ligne';
+  String get videoUploadDateLabel => 'Date mise en ligne vidéo';
 
   @override
   String get audioDurationLabel => 'Durée audio';

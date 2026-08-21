@@ -1378,6 +1378,12 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       warningMessageVMlistenFalse: warningMessageVMlistenFalse,
     );
 
+    if (_selectedSortFilterParametersName != null) {
+      // The case if applied or appliqué is selected in the dropdown button list
+      selectedPlaylistAudioSortFilterParmsName =
+          _selectedSortFilterParametersName!;
+    }
+
     if (selectedPlaylistAudioSortFilterParmsName.isEmpty) {
       selectedPlaylistAudioSortFilterParmsName =
           AppLocalizations.of(context)!.sortFilterParametersDefaultName;
@@ -1461,12 +1467,16 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     required PlaylistListVM playlistListVMlistenFalseOrTrue,
     notifyListeners = false,
   }) {
-    _selectedSortFilterParametersName = playlistListVMlistenFalseOrTrue
-        .getSelectedPlaylistAudioSortFilterParmsNameForView(
-      audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
-      translatedAppliedSortFilterParmsName:
-          AppLocalizations.of(context)!.sortFilterParametersAppliedName,
-    );
+    if (_selectedSortFilterParametersName !=
+        AppLocalizations.of(context)!.sortFilterParametersDefaultName) {
+        // The case if default or défaut is selected in the dropdown button list
+      _selectedSortFilterParametersName = playlistListVMlistenFalseOrTrue
+          .getSelectedPlaylistAudioSortFilterParmsNameForView(
+        audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+        translatedAppliedSortFilterParmsName:
+            AppLocalizations.of(context)!.sortFilterParametersAppliedName,
+      );
+    }
 
     String searchSentence = '';
 

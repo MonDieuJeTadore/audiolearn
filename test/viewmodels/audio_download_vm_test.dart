@@ -1252,8 +1252,6 @@ void main() {
         initialPlayableListLengh: 0,
       );
 
-      final DateTime dateTimeZero = DateTime(0, 1, 1);
-
       Audio expectedImportedAudio = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
         enclosingPlaylist: targetPlaylistEmpty,
@@ -1268,10 +1266,10 @@ void main() {
         validVideoTitle:
             "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
         videoUrl: '',
-        audioDownloadDateTime: dateTimeZero,
+        audioDownloadDateTime: DateTime.now(),
         audioDownloadDuration: const Duration(microseconds: 0),
         audioDownloadSpeed: 0,
-        videoUploadDate: dateTimeZero,
+        videoUploadDate: null,
         audioDuration: const Duration(milliseconds: 469000),
         isAudioMusicQuality: false,
         audioPlaySpeed: 1.0,
@@ -1388,8 +1386,6 @@ void main() {
         initialPlayableListLengh: 2,
       );
 
-      final DateTime dateTimeZero = DateTime(0, 1, 1);
-
       Audio expectedImportedAudio = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
         enclosingPlaylist: targetPlaylistEmpty,
@@ -1404,10 +1400,10 @@ void main() {
         validVideoTitle:
             "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
         videoUrl: '',
-        audioDownloadDateTime: dateTimeZero,
+        audioDownloadDateTime: DateTime.now(),
         audioDownloadDuration: const Duration(microseconds: 0),
         audioDownloadSpeed: 0,
-        videoUploadDate: dateTimeZero,
+        videoUploadDate: null,
         audioDuration: const Duration(milliseconds: 469000),
         isAudioMusicQuality: false,
         audioPlaySpeed: 1.5,
@@ -1741,8 +1737,6 @@ void main() {
         initialPlayableListLengh: 0,
       );
 
-      final DateTime dateTimeZero = DateTime(0, 1, 1);
-
       Audio expectedImportedAudio = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
         enclosingPlaylist: targetPlaylistEmpty,
@@ -1755,10 +1749,10 @@ void main() {
         compactVideoDescription: '',
         validVideoTitle: "La vraie prière",
         videoUrl: '',
-        audioDownloadDateTime: dateTimeZero,
+        audioDownloadDateTime: DateTime.now(),
         audioDownloadDuration: const Duration(microseconds: 0),
         audioDownloadSpeed: 0,
-        videoUploadDate: dateTimeZero,
+        videoUploadDate: null,
         audioDuration: const Duration(milliseconds: 284000),
         isAudioMusicQuality: true,
         audioPlaySpeed: 1.0,
@@ -1873,8 +1867,6 @@ void main() {
         initialPlayableListLengh: 0,
       );
 
-      final DateTime dateTimeZero = DateTime(0, 1, 1);
-
       Audio expectedImportedAudio = Audio.fullConstructor(
         youtubeVideoChannel: 'one',
         enclosingPlaylist: targetPlaylistEmpty,
@@ -1887,10 +1879,10 @@ void main() {
         compactVideoDescription: '',
         validVideoTitle: "La vraie prière",
         videoUrl: '',
-        audioDownloadDateTime: dateTimeZero,
+        audioDownloadDateTime: DateTime.now(),
         audioDownloadDuration: const Duration(microseconds: 0),
         audioDownloadSpeed: 0,
-        videoUploadDate: dateTimeZero,
+        videoUploadDate: null,
         audioDuration: const Duration(milliseconds: 284000),
         isAudioMusicQuality: true,
         audioPlaySpeed: 1.0,

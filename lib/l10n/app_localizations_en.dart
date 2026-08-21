@@ -3088,19 +3088,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modifyFilteredAudioLastListenedDateTime =>
-      'Modify filtered Audios last listen Date/Time ...';
+      'Modify filtered Audios last listen Date ...';
 
   @override
-  String get setAudioLastListenedDateTimeTitle =>
-      'Define the last listened Date/Time';
+  String get setAudioLastListenedDateTitle => 'Define the last listened Date';
 
   @override
-  String get setAudioLastListenedDateTimeTitleExplanation =>
-      'The defined date/time will be set as last listen date/time in every filtered audio.';
+  String get setAudioLastListenedDateTitleExplanation =>
+      'The defined date will be set as last listen date in every filtered audio.';
 
   @override
-  String get setAudioLastListenedDateTimeTitleTooltip =>
-      'This is usefull if the concerned audios were not listened before the defined date/time.';
+  String get setAudioLastListenedDateTitleTooltip =>
+      'This is usefull if the concerned audios were not listened before the defined date.';
 
   @override
   String get lastListenedDate => 'Last listened date';
@@ -3178,7 +3177,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get modifyAudioListenedDateMenu => 'Modify Audio listened Date ...';
+  String get modifyAudioListenedDateMenu =>
+      'Modify Audio last listened Date ...';
 
   @override
   String get modifyAudioListenedDate => 'Define the Audio listened Date';
@@ -3226,4 +3226,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get videoUploadDateNotExist => 'no related video';
+
+  @override
+  String audioDownloadFromDateLabel(Object selectedAppDateFormat) {
+    return 'Date ($selectedAppDateFormat)';
+  }
 }

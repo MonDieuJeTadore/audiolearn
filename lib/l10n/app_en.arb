@@ -1320,10 +1320,10 @@
   "modifyPlayableEveryNDaysButton": "Modify",
   "playableEveryNDaysLabel": "Playable every n day(s)",
   "notYetPlayed": "not yet listened",
-  "modifyFilteredAudioLastListenedDateTime": "Modify filtered Audios last listen Date/Time ...",
-  "setAudioLastListenedDateTimeTitle": "Define the last listened Date/Time",
-  "setAudioLastListenedDateTimeTitleExplanation": "The defined date/time will be set as last listen date/time in every filtered audio.",
-  "setAudioLastListenedDateTimeTitleTooltip": "This is usefull if the concerned audios were not listened before the defined date/time.",
+  "modifyFilteredAudioLastListenedDateTime": "Modify filtered Audios last listen Date ...",
+  "setAudioLastListenedDateTitle": "Define the last listened Date",
+  "setAudioLastListenedDateTitleExplanation": "The defined date will be set as last listen date in every filtered audio.",
+  "setAudioLastListenedDateTitleTooltip": "This is usefull if the concerned audios were not listened before the defined date.",
   "lastListenedDate": "Last listened date",
   "lastListenedDateSortFilterTooltip": "Lists all audios listened on or after the specified start date if set.",
   "filteredAudioNumberAndDuration": "Total playable duration of the {number} playlist filtered playable today audios: {playableDuration}.",
@@ -1343,7 +1343,7 @@
   "playableOnDateLabel": "Date ({selectedAppDateFormat})",
   "invalidDateFormatErrorMessage": "{dateStr} does not respect the date only format.",
   "filteredAudioNumberAndDurationOnDate": "Total playable duration of the {number} playlist filtered audios playable on {date}: {playableDuration}.",
-  "modifyAudioListenedDateMenu": "Modify Audio listened Date ...",
+  "modifyAudioListenedDateMenu": "Modify Audio last listened Date ...",
   "modifyAudioListenedDate": "Define the Audio listened Date",
   "listenedDateLabel": "Listened date",
   "modifyAudioListenedDateButton": "Modify",
@@ -1355,5 +1355,6 @@
   "invaliddayNumberErrortMessage": "{dayNumber} does not respect the positive integer format.",
   "enteredDayNumberEmptyMessage": "Defining an empty playable day number is not possible.",
   "textToSpeechApiError": "Text to audio conversion failed: {errorMessage}.",
-  "videoUploadDateNotExist": "no related video"
+  "videoUploadDateNotExist": "no related video",
+  "audioDownloadFromDateLabel": "Date ({selectedAppDateFormat})"
 }

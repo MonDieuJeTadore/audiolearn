@@ -52,6 +52,7 @@
   "audioSpokenQuality": "Spoken q.",
   "audioDownloadSpeed": "Audio downl speed",
   "audioDownloadDuration": "audio downl duration",
+  "audioDownloadDurationSort": "Audio downl duration",
   "sortAscending": "Asc",
   "sortDescending": "Desc",
   "filterSentences": "Filter words:",

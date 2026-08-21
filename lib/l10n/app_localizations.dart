@@ -344,6 +344,12 @@ abstract class AppLocalizations {
   /// **'audio downl duration'**
   String get audioDownloadDuration;
 
+  /// No description provided for @audioDownloadDurationSort.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio downl duration'**
+  String get audioDownloadDurationSort;
+
   /// No description provided for @sortAscending.
   ///
   /// In en, this message translates to:

@@ -3370,4 +3370,7 @@ class MockAppLocalizations extends AppLocalizations {
     Object selectedAppDateFormat,
   ) =>
       "Date ($selectedAppDateFormat)";
+
+  @override
+  String get audioDownloadDurationSort => "Audio downl duration";
 }

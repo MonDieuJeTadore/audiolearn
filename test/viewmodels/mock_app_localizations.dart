@@ -948,9 +948,6 @@ class MockAppLocalizations extends AppLocalizations {
       "Update comment start or end position";
 
   @override
-  String get commentCreationDateTooltip => "Comment creation date";
-
-  @override
   String get commentUpdateDateTooltip => "Comment last update date";
 
   @override
@@ -3373,4 +3370,14 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get audioDownloadDurationSort => "Audio downl duration";
+
+  @override
+  String get convertedAudioDateTimeLabelTooltip =>
+      "This value is the text to audio creation date/time. If this audio was recreated using an improved text or with a different voice, the recreation date is available in last comment present in the audio.";
+
+  @override
+  String commentCreationDateTooltip(
+    Object creationDateTime,
+  ) =>
+      "Comment creation date/time $creationDateTime";
 }

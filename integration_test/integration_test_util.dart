@@ -3287,7 +3287,7 @@ class IntegrationTestUtil {
           expect(find.text('Youtube channel'), findsNothing);
           expect(find.text('Audio title'), findsOneWidget);
           expect(find.text('Video upload date'), findsNothing);
-          expect(find.text('Converted text first date time'), findsOneWidget);
+          expect(find.text('Converted text first date/time'), findsOneWidget);
           expect(find.text('Playable'), findsOneWidget);
           expect(find.text('Video URL'), findsNothing);
           expect(find.text('Compact video description'), findsNothing);

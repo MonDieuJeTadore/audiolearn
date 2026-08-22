@@ -36221,15 +36221,15 @@ void main() {
         savedPicturesMessage:
             "\n\nSaved also 4 picture JPG file(s) in the ZIP file.",
         expectedPlaylistsZipContentLst: [
-          "playlists\\EMI\\EMI.json",
-          "playlists\\Local\\comments\\Jésus je T'aime énormément.json",
-          "playlists\\Local\\Local.json",
+          "playlists/EMI/EMI.json",
+          "playlists/Local/comments/Jésus je T'aime énormément.json",
+          "playlists/Local/Local.json",
           "settings.json",
-          "pictures\\pictureAudioMap.json",
-          "pictures\\Dieu je T'adore.jpg",
-          "pictures\\Jésus je T'adore.jpg",
-          "pictures\\Jésus je T'aime.jpg",
-          "pictures\\SkyCross.jpg",
+          "pictures/pictureAudioMap.json",
+          "pictures/Dieu je T'adore.jpg",
+          "pictures/Jésus je T'adore.jpg",
+          "pictures/Jésus je T'aime.jpg",
+          "pictures/SkyCross.jpg",
         ],
         oldestAudioDownloadDateTimeStr: "02/03/2026 20:20",
         totalSavedMessage:
@@ -36237,8 +36237,8 @@ void main() {
         savedMp3DirectoryPath: "$saveZipFilePath${path.separator}MP3",
         mp3ZipNameFirstPart: 'audioLearn_mp3_from_2026-03-02_20_20_15_on_',
         expectedMp3ZipContentLst: [
-          "playlists\\EMI\\260302-202015-Aram Khachaturian - Andantino (live) 17-02-02.mp3",
-          "playlists\\Local\\Jésus je T'aime énormément.mp3",
+          "playlists/EMI/260302-202015-Aram Khachaturian - Andantino (live) 17-02-02.mp3",
+          "playlists/Local/Jésus je T'aime énormément.mp3",
         ],
       );
 
@@ -36253,9 +36253,9 @@ void main() {
         saveZipFilePath: saveZipFilePath,
         savedPicturesMessage: '',
         expectedPlaylistZipContentLst: [
-          "playlists\\Local\\comments\\Jésus je T'aime énormément.json",
-          "playlists\\Local\\Local.json",
-          "pictures\\pictureAudioMap.json",
+          "playlists/Local/comments/Jésus je T'aime énormément.json",
+          "playlists/Local/Local.json",
+          "pictures/pictureAudioMap.json",
         ],
         oldestAudioDownloadDateTimeStr: "02/03/2026 20:29",
         savedAudioMessage:
@@ -36378,21 +36378,21 @@ void main() {
         savedPicturesMessage:
             "\n\nSaved also 4 picture JPG file(s) in the ZIP file.",
         expectedPlaylistsZipContentLst: [
-          "playlists\\Dieu je T'adore\\comments\\Jésus je T'aime.json",
-          "playlists\\Dieu je T'adore\\Dieu je T'adore.json",
-          "playlists\\Dieu je T'adore\\pictures\\Jésus je T'aime.json",
-          "playlists\\EMI\\EMI.json",
-          "playlists\\Local\\comments\\Jésus je T'aime énormément.json",
-          "playlists\\Local\\Local.json",
-          "playlists\\local 3\\comments\\Seigneur.json",
-          "playlists\\local 3\\local 3.json",
-          "playlists\\local 3\\pictures\\Seigneur.json",
+          "playlists/Dieu je T'adore/comments/Jésus je T'aime.json",
+          "playlists/Dieu je T'adore/Dieu je T'adore.json",
+          "playlists/Dieu je T'adore/pictures/Jésus je T'aime.json",
+          "playlists/EMI/EMI.json",
+          "playlists/Local/comments/Jésus je T'aime énormément.json",
+          "playlists/Local/Local.json",
+          "playlists/local 3/comments/Seigneur.json",
+          "playlists/local 3/local 3.json",
+          "playlists/local 3/pictures/Seigneur.json",
           "settings.json",
-          "pictures\\pictureAudioMap.json",
-          "pictures\\Dieu je T'adore.jpg",
-          "pictures\\Jésus je T'adore.jpg",
-          "pictures\\Jésus je T'aime.jpg",
-          "pictures\\SkyCross.jpg",
+          "pictures/pictureAudioMap.json",
+          "pictures/Dieu je T'adore.jpg",
+          "pictures/Jésus je T'adore.jpg",
+          "pictures/Jésus je T'aime.jpg",
+          "pictures/SkyCross.jpg",
         ],
         oldestAudioDownloadDateTimeStr: "02/03/2026 20:20",
         totalSavedMessage:
@@ -36400,10 +36400,10 @@ void main() {
         savedMp3DirectoryPath: "$saveZipFilePath${path.separator}MP3",
         mp3ZipNameFirstPart: 'audioLearn_mp3_from_2026-03-02_20_20_15_on_',
         expectedMp3ZipContentLst: [
-          "playlists\\Dieu je T'adore\\Jésus je T'aime.mp3",
-          "playlists\\local 3\\Seigneur.mp3",
-          "playlists\\EMI\\260302-202015-Aram Khachaturian - Andantino (live) 17-02-02.mp3",
-          "playlists\\Local\\Jésus je T'aime énormément.mp3",
+          "playlists/Dieu je T'adore/Jésus je T'aime.mp3",
+          "playlists/local 3/Seigneur.mp3",
+          "playlists/EMI/260302-202015-Aram Khachaturian - Andantino (live) 17-02-02.mp3",
+          "playlists/Local/Jésus je T'aime énormément.mp3",
         ],
       );
 
@@ -36419,11 +36419,11 @@ void main() {
         savedPicturesMessage:
             "Saved also 1 picture JPG file(s) in the ZIP file.",
         expectedPlaylistZipContentLst: [
-          "playlists\\Dieu je T'adore\\comments\\Jésus je T'aime.json",
-          "playlists\\Dieu je T'adore\\Dieu je T'adore.json",
-          "playlists\\Dieu je T'adore\\pictures\\Jésus je T'aime.json",
-          "pictures\\pictureAudioMap.json",
-          "pictures\\Jésus je T'aime.jpg",
+          "playlists/Dieu je T'adore/comments/Jésus je T'aime.json",
+          "playlists/Dieu je T'adore/Dieu je T'adore.json",
+          "playlists/Dieu je T'adore/pictures/Jésus je T'aime.json",
+          "pictures/pictureAudioMap.json",
+          "pictures/Jésus je T'aime.jpg",
         ],
         oldestAudioDownloadDateTimeStr: "02/03/2026 20:49",
         savedAudioMessage:
@@ -36433,8 +36433,8 @@ void main() {
         dragToBottom: true,
       );
 
-      // Change the playlist root path to the 'newDir\\playlists' directory in order
-      // to restore the zip files previously saved in 'parent_1\\parent_1_1\\saved'.
+      // Change the playlist root path to the 'newDir/playlists' directory in order
+      // to restore the zip files previously saved in 'parent_1/parent_1_1/saved'.
       // This will verify that the playlist and mp3 restoration works correctly when
       // the playlist root path was changed
       modifiedPlaylistRootPath =
@@ -36446,8 +36446,8 @@ void main() {
         pathToSelectStr: modifiedPlaylistRootPath,
       );
 
-      // Now restore in 'parent_1\\parent_1_1\\playlists' the multiple playlists
-      // previously saved in 'audio\\saved' dir.
+      // Now restore in 'parent_1/parent_1_1/playlists' the multiple playlists
+      // previously saved in 'audio/saved' dir.
 
       playlistTitles = [
         "Local 2",
@@ -36474,8 +36474,8 @@ void main() {
         audioTitlesOrderedLst: ["Dieu, je T'adore"],
       );
 
-      // Now restore in 'parent_1\\parent_1_1\\playlists' the mp3 of multiple
-      // playlists previously saved in 'audio\\saved\\MP3' dir.
+      // Now restore in 'parent_1/parent_1_1/playlists' the mp3 of multiple
+      // playlists previously saved in 'audio/saved/MP3' dir.
 
       mp3RestorableZipDirectory = '$savedZipFilePath${path.separator}MP3';
       multiplePlaylistsSavedMp3ZipName = savedZipNameLst[1];
@@ -38304,6 +38304,8 @@ void main() {
         isWarningConfirming: true,
       );
 
+      DateTime dateTimeNow = DateTime.now();
+
       // Re-import the same audio to verify the not imported warning
       await IntegrationTestUtil.typeOnPlaylistMenuItem(
         tester: tester,
@@ -38328,7 +38330,8 @@ void main() {
         tester: tester,
         audioType: AudioType.imported,
         validVideoTitleOrAudioTitle: fileNameNoExt,
-        audioDownloadDateTimeOne: '01/01/0000 00:00', isAudioPlayable: true,
+        audioDownloadDateTimeOne: frenchDateTimeFormat.format(DateTime.now()),
+        isAudioPlayable: true,
         audioEnclosingPlaylistTitle: localPlaylistTitle,
         audioDuration: '0:00:15.5',
         audioPosition: '0:00:00.0',
@@ -38347,9 +38350,9 @@ void main() {
       IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
         tester: tester,
         audioSubTitlesAcceptableLst: [
+          '0:00:15.5 155.1 KB imported on ${frenchDateFormat.format(dateTimeNow)} at ${timeFormat.format(dateTimeNow)}',
           "0:00:17.5 175.3 KB imported on 25/08/2025 at 17:52",
-          "0:00:17.7 176.6 Ko importé le 25/08/2025 à 17:22",
-          '0:00:15.5 155.1 KB imported on 01/01/0000 at 00:00',
+          "0:00:17.7 176.6 Ko imported on 25/08/2025 à 17:22",
         ],
         firstAudioListTileIndex: 3,
       );
@@ -38582,7 +38585,7 @@ void main() {
         tester: tester,
         audioType: AudioType.imported,
         validVideoTitleOrAudioTitle: fileName_1.replaceFirst('.mp3', ''),
-        audioDownloadDateTimeOne: '01/01/0000 00:00',
+        audioDownloadDateTimeOne: frenchDateTimeFormat.format(DateTime.now()),
         isAudioPlayable: true,
         audioEnclosingPlaylistTitle: targetPlaylistTitle,
         audioDuration: '0:00:18.7',
@@ -38603,7 +38606,7 @@ void main() {
         tester: tester,
         audioType: AudioType.imported,
         validVideoTitleOrAudioTitle: fileNameNoExt,
-        audioDownloadDateTimeOne: '01/01/0000 00:00',
+        audioDownloadDateTimeOne: frenchDateTimeFormat.format(DateTime.now()),
         isAudioPlayable: true,
         audioEnclosingPlaylistTitle: targetPlaylistTitle,
         audioDuration: '0:04:44.0',
@@ -38691,7 +38694,7 @@ void main() {
         tester: tester,
         audioType: AudioType.imported,
         validVideoTitleOrAudioTitle: fileNameNoExt,
-        audioDownloadDateTimeOne: '01/01/0000 00:00',
+        audioDownloadDateTimeOne: frenchDateTimeFormat.format(DateTime.now()),
         isAudioPlayable: true,
         audioEnclosingPlaylistTitle: targetPlaylistTitle,
         audioDuration: '0:02:00.1',
@@ -38718,7 +38721,7 @@ void main() {
         tester: tester,
         audioType: AudioType.imported,
         validVideoTitleOrAudioTitle: fileNameNoExt,
-        audioDownloadDateTimeOne: '01/01/0000 00:00',
+        audioDownloadDateTimeOne: frenchDateTimeFormat.format(DateTime.now()),
         isAudioPlayable: true,
         audioEnclosingPlaylistTitle: targetPlaylistTitle,
         audioDuration: '0:04:03.3',
@@ -39088,6 +39091,8 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
+        DateTime dateTimeNow = DateTime.now();
+
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
@@ -39114,7 +39119,7 @@ void main() {
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
           tester: tester,
           audioSubTitlesAcceptableLst: [
-            '0:00:05.6 56.4 Ko converti le 01/01/0000 à 00:00',
+            '0:00:05.6 56.4 Ko converti le ${frenchDateFormat.format(dateTimeNow)} à ${timeFormat.format(dateTimeNow)}',
           ],
           firstAudioListTileIndex: 5,
         );
@@ -39142,7 +39147,7 @@ void main() {
           tester: tester,
           audioType: AudioType.textToSpeech,
           validVideoTitleOrAudioTitle: enteredFileNameNoExt,
-          audioDownloadDateTimeOne: '01/01/0000 00:00',
+          audioDownloadDateTimeOne: frenchDateTimeFormat.format(DateTime.now()),
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: selectedYoutubePlaylistTitle,
           audioDuration: '0:00:05.6',
@@ -39322,7 +39327,7 @@ void main() {
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
           tester: tester,
           audioSubTitlesAcceptableLst: [
-            '0:00:00.7 6.9 Ko converti le 01/01/0000 à 00:00',
+            '0:00:00.7 6.9 Ko converti le ${frenchDateFormat.format(dateTimeNow)} à ${timeFormat.format(dateTimeNow)}',
           ],
           firstAudioListTileIndex: 5,
         );
@@ -39350,7 +39355,7 @@ void main() {
           tester: tester,
           audioType: AudioType.textToSpeech,
           validVideoTitleOrAudioTitle: enteredFileNameNoExt,
-          audioDownloadDateTimeOne: '01/01/0000 00:00',
+          audioDownloadDateTimeOne: frenchDateTimeFormat.format(dateTimeNow),
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: selectedYoutubePlaylistTitle,
           audioDuration: '0:00:00.7',
@@ -39814,6 +39819,8 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
+        DateTime dateTimeNow = DateTime.now();
+
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
@@ -39841,7 +39848,7 @@ void main() {
           audioSubTitlesAcceptableLst: [
             "0:00:17.5 175.3 Ko importé le 25/08/2025 à 17:52",
             "0:00:17.7 176.6 Ko importé le 25/08/2025 à 17:22",
-            '0:00:05.6 56.4 Ko converti le 01/01/0000 à 00:00',
+            '0:00:05.6 56.4 Ko converti le ${frenchDateFormat.format(dateTimeNow)} à ${timeFormat.format(dateTimeNow)}',
           ],
           firstAudioListTileIndex: 3,
         );
@@ -39852,7 +39859,7 @@ void main() {
           tester: tester,
           audioType: AudioType.textToSpeech,
           validVideoTitleOrAudioTitle: enteredFileNameNoExt,
-          audioDownloadDateTimeOne: '01/01/0000 00:00',
+          audioDownloadDateTimeOne: frenchDateTimeFormat.format(dateTimeNow),
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: unselectedLocalPlaylistTitle,
           audioDuration: '0:00:05.6',
@@ -40040,7 +40047,7 @@ void main() {
           audioSubTitlesAcceptableLst: [
             "0:00:17.5 175.3 Ko importé le 25/08/2025 à 17:52",
             "0:00:17.7 176.6 Ko importé le 25/08/2025 à 17:22",
-            '0:00:00.7 6.9 Ko converti le 01/01/0000 à 00:00',
+            '0:00:00.7 6.9 Ko converti le ${frenchDateFormat.format(dateTimeNow)} à ${timeFormat.format(dateTimeNow)}',
           ],
           firstAudioListTileIndex: 3,
         );
@@ -40051,7 +40058,7 @@ void main() {
           tester: tester,
           audioType: AudioType.textToSpeech,
           validVideoTitleOrAudioTitle: enteredFileNameNoExt,
-          audioDownloadDateTimeOne: '01/01/0000 00:00',
+          audioDownloadDateTimeOne: frenchDateTimeFormat.format(dateTimeNow),
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: unselectedLocalPlaylistTitle,
           audioDuration: '0:00:00.7',
@@ -40237,6 +40244,8 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
+        DateTime dateTimeNow = DateTime.now();
+
         // Close the warning dialog
         await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
         await tester.pumpAndSettle();
@@ -40260,7 +40269,7 @@ void main() {
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
           tester: tester,
           audioSubTitlesAcceptableLst: [
-            '0:00:11.8 117.5 Ko converti le 01/01/0000 à 00:00',
+            '0:00:11.8 117.5 Ko converti le ${frenchDateFormat.format(dateTimeNow)} à ${timeFormat.format(dateTimeNow)}',
           ],
           firstAudioListTileIndex: 5,
         );
@@ -40348,6 +40357,8 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
+        DateTime dateTimeNow = DateTime.now();
+
         // Close the warning dialog
         await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
         await tester.pumpAndSettle();
@@ -40372,7 +40383,7 @@ void main() {
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
           tester: tester,
           audioSubTitlesAcceptableLst: [
-            '0:00:10.4 104.1 Ko converti le 01/01/0000 à 00:00',
+            '0:00:10.4 104.1 Ko converti le ${frenchDateFormat.format(dateTimeNow)} à ${timeFormat.format(dateTimeNow)}',
           ],
           firstAudioListTileIndex: 5,
         );
@@ -40848,6 +40859,8 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
+        DateTime dateTimeNow = DateTime.now();
+
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
@@ -40874,7 +40887,7 @@ void main() {
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
           tester: tester,
           audioSubTitlesAcceptableLst: [
-            '0:00:05.9 59.3 KB converted on 01/01/0000 at 00:00',
+            '0:00:05.9 59.3 KB converted on ${frenchDateFormat.format(dateTimeNow)} at ${timeFormat.format(dateTimeNow)}',
           ],
           firstAudioListTileIndex: 5,
         );
@@ -40902,7 +40915,7 @@ void main() {
           tester: tester,
           audioType: AudioType.textToSpeech,
           validVideoTitleOrAudioTitle: enteredFileNameNoExt,
-          audioDownloadDateTimeOne: '01/01/0000 00:00',
+          audioDownloadDateTimeOne: frenchDateTimeFormat.format(dateTimeNow),
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: selectedYoutubePlaylistTitle,
           audioDuration: '0:00:05.9',
@@ -41055,6 +41068,8 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
+       dateTimeNow = DateTime.now();
+
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
@@ -41081,7 +41096,7 @@ void main() {
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
           tester: tester,
           audioSubTitlesAcceptableLst: [
-            '0:00:01.1 10.8 KB converted on 01/01/0000 at 00:00',
+            '0:00:01.1 10.8 KB converted on ${frenchDateFormat.format(dateTimeNow)} at ${timeFormat.format(dateTimeNow)}',
           ],
           firstAudioListTileIndex: 5,
         );
@@ -41109,7 +41124,7 @@ void main() {
           tester: tester,
           audioType: AudioType.textToSpeech,
           validVideoTitleOrAudioTitle: enteredFileNameNoExt,
-          audioDownloadDateTimeOne: '01/01/0000 00:00',
+          audioDownloadDateTimeOne: frenchDateTimeFormat.format(dateTimeNow),
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: selectedYoutubePlaylistTitle,
           audioDuration: '0:00:01.1',
@@ -41560,6 +41575,8 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
+        DateTime dateTimeNow = DateTime.now();
+
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
@@ -41587,7 +41604,7 @@ void main() {
           audioSubTitlesAcceptableLst: [
             "0:00:17.5 175.3 KB imported on 25/08/2025 at 17:52",
             "0:00:17.7 176.6 Ko importé le 25/08/2025 à 17:22",
-            '0:00:05.9 59.3 KB converti le 01/01/0000 à 00:00',
+            '0:00:05.9 59.3 KB converted on ${frenchDateFormat.format(dateTimeNow)} at ${timeFormat.format(dateTimeNow)}',
           ],
           firstAudioListTileIndex: 3,
         );
@@ -41598,7 +41615,7 @@ void main() {
           tester: tester,
           audioType: AudioType.textToSpeech,
           validVideoTitleOrAudioTitle: enteredFileNameNoExt,
-          audioDownloadDateTimeOne: '01/01/0000 00:00',
+          audioDownloadDateTimeOne: frenchDateTimeFormat.format(DateTime.now()),
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: unselectedLocalPlaylistTitle,
           audioDuration: '0:00:05.9',
@@ -41758,6 +41775,8 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
+       dateTimeNow = DateTime.now();
+
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
@@ -41785,7 +41804,7 @@ void main() {
           audioSubTitlesAcceptableLst: [
             "0:00:17.5 175.3 KB imported on 25/08/2025 at 17:52",
             "0:00:17.7 176.6 KB imported on 25/08/2025 at 17:22",
-            '0:00:01.1 10.8 KB converted on 01/01/0000 at 00:00',
+            '0:00:01.1 10.8 KB converted on ${frenchDateFormat.format(dateTimeNow)} at ${timeFormat.format(dateTimeNow)}',
           ],
           firstAudioListTileIndex: 3,
         );
@@ -41796,7 +41815,7 @@ void main() {
           tester: tester,
           audioType: AudioType.textToSpeech,
           validVideoTitleOrAudioTitle: enteredFileNameNoExt,
-          audioDownloadDateTimeOne: '01/01/0000 00:00',
+          audioDownloadDateTimeOne: frenchDateTimeFormat.format(DateTime.now()),
           isAudioPlayable: true,
           audioEnclosingPlaylistTitle: unselectedLocalPlaylistTitle,
           audioDuration: '0:00:01.1',
@@ -41975,6 +41994,8 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
+        DateTime dateTimeNow = DateTime.now();
+
         // Close the warning dialog
         await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
         await tester.pumpAndSettle();
@@ -41998,7 +42019,7 @@ void main() {
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
           tester: tester,
           audioSubTitlesAcceptableLst: [
-            '0:00:17.0 170.1 KB converted on 01/01/0000 at 00:00', // Placeholder for the first conversion}',
+            '0:00:17.0 170.1 KB converted on ${frenchDateFormat.format(dateTimeNow)} at ${timeFormat.format(dateTimeNow)}', // Placeholder for the first conversion}',
           ],
           firstAudioListTileIndex: 5,
         );
@@ -42080,6 +42101,8 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
+        DateTime dateTimeNow = DateTime.now();
+
         // Close the warning dialog
         await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
         await tester.pumpAndSettle();
@@ -42104,7 +42127,7 @@ void main() {
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
           tester: tester,
           audioSubTitlesAcceptableLst: [
-            '0:00:11.9 119.4 KB converted on 01/01/0000 at 00:00', // Placeholder for the first conversion
+            '0:00:11.9 119.4 KB converted on ${frenchDateFormat.format(dateTimeNow)} at ${timeFormat.format(dateTimeNow)}', // Placeholder for the first conversion
           ],
           firstAudioListTileIndex: 5,
         );
@@ -50207,7 +50230,8 @@ void main() {
             tester: tester,
             audioType: AudioType.extracted,
             validVideoTitleOrAudioTitle: extractedAudioTitle,
-            audioDownloadDateTimeOne: '01/01/0000 00:00',
+            audioDownloadDateTimeOne:
+                frenchDateTimeFormat.format(DateTime.now()),
             isAudioPlayable: true,
             videoUrl: "https://www.youtube.com/watch?v=eXc6isyEKsw",
             audioEnclosingPlaylistTitle: targetPlaylistTitle,
@@ -50985,7 +51009,8 @@ void main() {
             tester: tester,
             audioType: AudioType.extracted,
             validVideoTitleOrAudioTitle: extractedAudioTitle,
-            audioDownloadDateTimeOne: '01/01/0000 00:00',
+            audioDownloadDateTimeOne:
+                frenchDateTimeFormat.format(DateTime.now()),
             isAudioPlayable: true,
             videoUrl: "https://www.youtube.com/watch?v=7GukCEXM03k",
             audioEnclosingPlaylistTitle: targetPlaylistTitle,

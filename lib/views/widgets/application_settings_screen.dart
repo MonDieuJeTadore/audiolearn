@@ -4,6 +4,7 @@ import 'package:audiolearn/models/help_item.dart';
 import 'package:audiolearn/viewmodels/playlist_list_vm.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
 import 'package:volume_controller/volume_controller.dart';
 import '../../l10n/app_localizations.dart';
@@ -45,6 +46,7 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
   final TextEditingController _playVolumeInPercentageController =
       TextEditingController();
   final FocusNode _focusNodePlayVolumeModificationTextField = FocusNode();
+  final FocusNode _keyboardListenerFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -113,6 +115,7 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
     _mp3ZipFileSizeLimitInMbController.dispose();
     _playVolumeInPercentageController.dispose();
     _focusNodePlayVolumeModificationTextField.dispose();
+    _keyboardListenerFocusNode.dispose();
 
     super.dispose();
   }
@@ -129,125 +132,115 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
       _focusNodePlayVolumeModificationTextField,
     );
 
-    return Theme(
-      data: themeProviderVMlistenFalse.currentTheme == AppTheme.dark
-          ? ScreenMixin.themeDataDark
-          : ScreenMixin.themeDataLight,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            key: const Key('appSettingsBackButton'),
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              if (_applicationDialogPlaylistRootPath.isNotEmpty &&
-                  _applicationDialogPlaylistRootPath !=
-                      widget.settingsDataService.get(
-                          settingType: SettingType.dataLocation,
-                          settingSubType: DataLocation.playlistRootPath)) {
-                // If the playlist root path was modified but the user
-                // clicks on the back button instead of the save button,
-                // a warning is displayed to prevent losing the modified
-                // playlist root path.
-                Provider.of<WarningMessageVM>(
-                  context,
-                  listen: false,
-                ).signalUnsavedModifiedPlaylistRootPath(
-                  playlistRootPath: _applicationDialogPlaylistRootPath,
-                );
-              } else {
-                Navigator.of(context).pop();
-              }
-            },
-            tooltip: 'Back',
+    return KeyboardListener(
+      focusNode: _keyboardListenerFocusNode, // Required to capture keyboard events
+      // Must be different from the FocusNode of the TextField to avoid screen opening
+      // error.
+      onKeyEvent: (event) {
+        if (event is KeyDownEvent) {
+          if (event.logicalKey == LogicalKeyboardKey.enter ||
+              event.logicalKey == LogicalKeyboardKey.numpadEnter) {
+            // executing the same code as in the 'Save'
+            // TextButton onPressed callback
+            _handleSaveButton(context);
+            Navigator.of(context).pop();
+          }
+        }
+      },
+      child: Theme(
+        data: themeProviderVMlistenFalse.currentTheme == AppTheme.dark
+            ? ScreenMixin.themeDataDark
+            : ScreenMixin.themeDataLight,
+        child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              key: const Key('appSettingsBackButton'),
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                if (_applicationDialogPlaylistRootPath.isNotEmpty &&
+                    _applicationDialogPlaylistRootPath !=
+                        widget.settingsDataService.get(
+                            settingType: SettingType.dataLocation,
+                            settingSubType: DataLocation.playlistRootPath)) {
+                  // If the playlist root path was modified but the user
+                  // clicks on the back button instead of the save button,
+                  // a warning is displayed to prevent losing the modified
+                  // playlist root path.
+                  Provider.of<WarningMessageVM>(
+                    context,
+                    listen: false,
+                  ).signalUnsavedModifiedPlaylistRootPath(
+                    playlistRootPath: _applicationDialogPlaylistRootPath,
+                  );
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+              tooltip: 'Back',
+            ),
+            title: Text(
+              AppLocalizations.of(context)!.appSettingsDialogTitle,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+            ),
+            centerTitle: true,
           ),
-          title: Text(
-            AppLocalizations.of(context)!.appSettingsDialogTitle,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-          ),
-          centerTitle: true,
-        ),
-        body: Column(
-          children: [
-            // Content at the top
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            AppLocalizations.of(context)!
-                                .setAudioPlaySpeedDialogTitle,
+          body: Column(
+            children: [
+              // Content at the top
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .setAudioPlaySpeedDialogTitle,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            height: 37,
-                            child: _buildSetAudioSpeedTextButton(context),
+                          Expanded(
+                            child: SizedBox(
+                              height: 37,
+                              child: _buildSetAudioSpeedTextButton(context),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            AppLocalizations.of(context)!.playlistRootpathLabel,
-                          ),
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            height: 37,
-                            child: _buildOpenDirectoryIconButton(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Text(
-                        _applicationDialogPlaylistRootPath,
-                        key: const Key('playlistsRootPathText'),
+                        ],
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: createFlexibleEditableRowFunction(
-                            context: context,
-                            valueTextFieldWidgetKey:
-                                const Key('mp3ZipFileSizeLimitInMb'),
-                            label: AppLocalizations.of(context)!
-                                .mp3ZipFileSizeLimitInMbLabel,
-                            labelAndTextFieldTooltip:
-                                AppLocalizations.of(context)!
-                                    .mp3ZipFileSizeLimitInMbTooltip,
-                            controller: _mp3ZipFileSizeLimitInMbController,
-                            labelFlexValue: 4,
-                            editableFieldFlexValue: 1,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              AppLocalizations.of(context)!.playlistRootpathLabel,
+                            ),
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            child: SizedBox(
+                              height: 37,
+                              child: _buildOpenDirectoryIconButton(context),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  if (Platform.isWindows) ...[
+                    SizedBox(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          _applicationDialogPlaylistRootPath,
+                          key: const Key('playlistsRootPathText'),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -258,67 +251,93 @@ class _ApplicationSettingsScreenState extends State<ApplicationSettingsScreen>
                             child: createFlexibleEditableRowFunction(
                               context: context,
                               valueTextFieldWidgetKey:
-                                  const Key('playVolumeInPercentage'),
+                                  const Key('mp3ZipFileSizeLimitInMb'),
                               label: AppLocalizations.of(context)!
-                                  .playVolumeInPercentageLabel,
+                                  .mp3ZipFileSizeLimitInMbLabel,
                               labelAndTextFieldTooltip:
                                   AppLocalizations.of(context)!
-                                      .playVolumeInPercentageTooltip,
-                              controller: _playVolumeInPercentageController,
+                                      .mp3ZipFileSizeLimitInMbTooltip,
+                              controller: _mp3ZipFileSizeLimitInMbController,
                               labelFlexValue: 4,
-                              textFieldFocusNode:
-                                  _focusNodePlayVolumeModificationTextField,
                               editableFieldFlexValue: 1,
-                              isFieldContentSelected: true,
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ]
-                ],
+                    if (Platform.isWindows) ...[
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: createFlexibleEditableRowFunction(
+                                context: context,
+                                valueTextFieldWidgetKey:
+                                    const Key('playVolumeInPercentage'),
+                                label: AppLocalizations.of(context)!
+                                    .playVolumeInPercentageLabel,
+                                labelAndTextFieldTooltip:
+                                    AppLocalizations.of(context)!
+                                        .playVolumeInPercentageTooltip,
+                                controller: _playVolumeInPercentageController,
+                                labelFlexValue: 4,
+                                textFieldFocusNode:
+                                    _focusNodePlayVolumeModificationTextField,
+                                editableFieldFlexValue: 1,
+                                isFieldContentSelected: true,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]
+                  ],
+                ),
               ),
-            ),
-            // Spacer to push buttons to the bottom
-            const Spacer(),
-            // Save and Cancel buttons at the bottom
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    key: const Key('saveButton'),
-                    onPressed: () async {
-                      await _handleSaveButton(context);
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      AppLocalizations.of(context)!.saveButton,
-                      style: (themeProviderVMlistenFalse.currentTheme ==
-                              AppTheme.dark)
-                          ? kTextButtonStyleDarkMode
-                          : kTextButtonStyleLightMode,
+              // Spacer to push buttons to the bottom
+              const Spacer(),
+              // Save and Cancel buttons at the bottom
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      key: const Key('saveButton'),
+                      onPressed: () async {
+                        await _handleSaveButton(context);
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.saveButton,
+                        style: (themeProviderVMlistenFalse.currentTheme ==
+                                AppTheme.dark)
+                            ? kTextButtonStyleDarkMode
+                            : kTextButtonStyleLightMode,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 16), // Space between the buttons
-                  TextButton(
-                    key: const Key('cancelButton'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      AppLocalizations.of(context)!.cancelButton,
-                      style: (themeProviderVMlistenFalse.currentTheme ==
-                              AppTheme.dark)
-                          ? kTextButtonStyleDarkMode
-                          : kTextButtonStyleLightMode,
+                    const SizedBox(width: 16), // Space between the buttons
+                    TextButton(
+                      key: const Key('cancelButton'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.cancelButton,
+                        style: (themeProviderVMlistenFalse.currentTheme ==
+                                AppTheme.dark)
+                            ? kTextButtonStyleDarkMode
+                            : kTextButtonStyleLightMode,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1900,8 +1900,8 @@ abstract class AppLocalizations {
   /// No description provided for @commentCreationDateTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Comment creation date'**
-  String get commentCreationDateTooltip;
+  /// **'Comment creation date/time {creationDateTime}'**
+  String commentCreationDateTooltip(Object creationDateTime);
 
   /// No description provided for @commentUpdateDateTooltip.
   ///
@@ -3804,8 +3804,14 @@ abstract class AppLocalizations {
   /// No description provided for @convertedAudioDateTimeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Converted text first date time'**
+  /// **'Converted text first date/time'**
   String get convertedAudioDateTimeLabel;
+
+  /// No description provided for @convertedAudioDateTimeLabelTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Date and time when the audio was created from text. If the audio was recreated from updated text or using a different voice, the recreation date and time can be found in the last comment associated with the audio.'**
+  String get convertedAudioDateTimeLabelTooltip;
 
   /// No description provided for @fromMp3ZipFileUsedToRestoreUniquePlaylist.
   ///

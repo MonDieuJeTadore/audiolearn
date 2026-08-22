@@ -644,8 +644,9 @@ class _PlaylistCommentListDialogState extends State<PlaylistCommentListDialog>
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Tooltip(
-                  message:
-                      AppLocalizations.of(context)!.commentCreationDateTooltip,
+                  message: AppLocalizations.of(context)!
+                      .commentCreationDateTooltip(dateFormatVMlistenFalse
+                          .formatDateTime(comment.creationDateTime)),
                   child: Text(
                     // comment creation date Text. This date is
                     // displayed with 2 chars for the year in order

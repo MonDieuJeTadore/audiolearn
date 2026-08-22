@@ -1086,7 +1086,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get atLeast => 'au moins ';
 
   @override
-  String get commentCreationDateTooltip => 'Date de création du commentaire';
+  String commentCreationDateTooltip(Object creationDateTime) {
+    return 'Date et heure de création du commentaire $creationDateTime';
+  }
 
   @override
   String get commentUpdateDateTooltip => 'Date de mise à jour du commentaire';
@@ -2392,6 +2394,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get convertedAudioDateTimeLabel => 'Date/heure prem conversion';
+
+  @override
+  String get convertedAudioDateTimeLabelTooltip =>
+      'Date et heure auxquelles l\'audio a été créé à partir du texte. Si l\'audio a été recréé à partir d\'un texte mis à jour ou en utilisant une voix différente, la date et l\'heure de recréation sont disponibles dans le dernier commentaire associé à l\'audio.';
 
   @override
   String fromMp3ZipFileUsedToRestoreUniquePlaylist(Object zipFilePathNName) {

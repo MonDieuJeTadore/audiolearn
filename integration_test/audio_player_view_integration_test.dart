@@ -1460,7 +1460,7 @@ void main() {
       await _goBackToPlaylistDownloadViewToCheckAudioStateAndIcon(
         tester: tester,
         audioTitle: lastDownloadedAudioTitle,
-        audioStateExpectedValue: "Non écouté",
+        audioStateExpectedValue: "non écouté",
         expectedAudioRightIcon: Icons.play_arrow,
         expectedAudioRightIconColor: kDarkAndLightEnabledIconColor,
         expectedAudioRightIconSurroundedColor: Colors.black,

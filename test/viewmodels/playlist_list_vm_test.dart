@@ -1018,16 +1018,16 @@ void main() {
       );
 
       List<String> expectedZipContent = [
-        "playlists\\Empty\\Empty.json",
-        "playlists\\local\\local.json",
-        "playlists\\local_comment\\local_comment.json",
-        "playlists\\local_delete_comment\\comments\\240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.json",
-        "playlists\\local_delete_comment\\local_delete_comment.json",
-        "playlists\\S8 audio\\comments\\240528-130636-Interview de Chat GPT  - IA, intelligence, philosophie, géopolitique, post-vérité... 24-01-12.json",
-        "playlists\\S8 audio\\comments\\240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.json",
-        "playlists\\S8 audio\\comments\\240722-081104-Quand Aurélien Barrau va dans une école de management 23-09-10.json",
-        "playlists\\S8 audio\\comments\\New file name.json",
-        "playlists\\S8 audio\\S8 audio.json",
+        "playlists/Empty/Empty.json",
+        "playlists/local/local.json",
+        "playlists/local_comment/local_comment.json",
+        "playlists/local_delete_comment/comments/240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.json",
+        "playlists/local_delete_comment/local_delete_comment.json",
+        "playlists/S8 audio/comments/240528-130636-Interview de Chat GPT  - IA, intelligence, philosophie, géopolitique, post-vérité... 24-01-12.json",
+        "playlists/S8 audio/comments/240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.json",
+        "playlists/S8 audio/comments/240722-081104-Quand Aurélien Barrau va dans une école de management 23-09-10.json",
+        "playlists/S8 audio/comments/New file name.json",
+        "playlists/S8 audio/S8 audio.json",
         "settings.json",
       ];
 
@@ -1141,8 +1141,8 @@ void main() {
         );
 
         List<String> expectedZipContent = [
-          "playlists\\local\\240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
-          "playlists\\http_local\\250318-165814-Really short video 23-07-01.mp3",
+          "playlists/local/240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
+          "playlists/http_local/250318-165814-Really short video 23-07-01.mp3",
         ];
 
         List<String> zipFilePathNamesLst = await DirUtil.listPathFileNamesInZip(
@@ -1256,7 +1256,7 @@ void main() {
         );
 
         List<String> expectedZipContent = [
-          "playlists\\http_local\\250318-165814-Really short video 23-07-01.mp3",
+          "playlists/http_local/250318-165814-Really short video 23-07-01.mp3",
         ];
 
         List<String> zipFilePathNamesLst = await DirUtil.listPathFileNamesInZip(

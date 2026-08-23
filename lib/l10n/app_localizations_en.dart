@@ -1080,11 +1080,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String commentCreationDateTooltip(Object creationDateTime) {
-    return 'Comment creation date/time $creationDateTime';
+    return 'Comment creation date/time $creationDateTime.';
   }
 
   @override
-  String get commentUpdateDateTooltip => 'Comment last update date';
+  String commentUpdateDateTooltip(Object creationDateTime) {
+    return 'Comment last update date/time $creationDateTime.';
+  }
 
   @override
   String get playlistCommentMenu => 'Audio Comments ...';
@@ -2034,7 +2036,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String noAudioMp3WereSavedToZip(Object audioDownloadFromDateTime) {
-    return 'No audio MP3 file was saved to ZIP since no audio was downloaded on or after $audioDownloadFromDateTime.';
+    return 'No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $audioDownloadFromDateTime.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after $audioDownloadFromDateTime.';
   }
 
   @override

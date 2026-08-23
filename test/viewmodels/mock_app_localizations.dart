@@ -948,9 +948,6 @@ class MockAppLocalizations extends AppLocalizations {
       "Update comment start or end position";
 
   @override
-  String get commentUpdateDateTooltip => "Comment last update date";
-
-  @override
   String get playlistCommentMenu => "Comments of playlist audio ...";
 
   @override
@@ -3380,4 +3377,10 @@ class MockAppLocalizations extends AppLocalizations {
     Object creationDateTime,
   ) =>
       "Comment creation date/time $creationDateTime";
+
+  @override
+  String commentUpdateDateTooltip(
+    Object creationDateTime,
+  ) =>
+      "Comment last update date/time $creationDateTime.";
 }

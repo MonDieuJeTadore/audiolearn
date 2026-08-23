@@ -1154,7 +1154,8 @@ class _CommentListAddDialogContentState
                 (comment.lastUpdateDateTime != comment.creationDateTime)
                     ? Tooltip(
                         message: AppLocalizations.of(context)!
-                            .commentUpdateDateTooltip,
+                            .commentUpdateDateTooltip(dateFormatVMlistenFalse
+                          .formatDateTime(comment.lastUpdateDateTime)),
                         child: Text(
                           // comment update date Text. This date is
                           // displayed with 2 chars for the year in order

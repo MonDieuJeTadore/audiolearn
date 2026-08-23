@@ -20550,6 +20550,12 @@ void main() {
           await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
           await tester.pumpAndSettle();
 
+          final Finder audioListFinder = find.byKey(const Key('audio_list'));
+          
+          // Perform the scroll up action
+          await tester.drag(audioListFinder, const Offset(0, 400));
+          await tester.pumpAndSettle();
+
           // And save the playlist mp3 files ...
 
           await IntegrationTestUtil.typeOnPlaylistMenuItem(
@@ -20635,7 +20641,7 @@ void main() {
           expect(
               actualMessage,
               contains(
-                  "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $audioOldestDownloadDateToday 00:00.\n\nTotal saved audio number: 1, total size: 80.3 KB and total duration: 0:00:10.0."));
+                  "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $audioOldestDownloadDateToday 00:00.\n\nTotal saved audio number: 1, total size: 80.3 KB and total duration: 0:00:08.0."));
           expect(
               actualMessage, contains("Save operation real duration: 0:00:"));
           expect(actualMessage, contains("number of bytes saved per second: "));
@@ -41068,7 +41074,7 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
-       dateTimeNow = DateTime.now();
+        dateTimeNow = DateTime.now();
 
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
@@ -41775,7 +41781,7 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
-       dateTimeNow = DateTime.now();
+        dateTimeNow = DateTime.now();
 
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,

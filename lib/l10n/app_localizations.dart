@@ -1726,7 +1726,7 @@ abstract class AppLocalizations {
   /// No description provided for @alreadyDownloadedAudiosHelpTitle.
   ///
   /// In en, this message translates to:
-  /// **'Already Downloaded or Imported Audio'**
+  /// **'Already downloaded or imported Audio'**
   String get alreadyDownloadedAudiosHelpTitle;
 
   /// No description provided for @alreadyDownloadedAudiosHelpContent.
@@ -3798,7 +3798,7 @@ abstract class AppLocalizations {
   /// No description provided for @audioExtractedInfoDialogTitle.
   ///
   /// In en, this message translates to:
-  /// **'Audio Extracted through Comments Info'**
+  /// **'Audio extracted through Comments Info'**
   String get audioExtractedInfoDialogTitle;
 
   /// No description provided for @convertedAudioDateTimeLabel.

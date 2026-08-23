@@ -1900,14 +1900,14 @@ abstract class AppLocalizations {
   /// No description provided for @commentCreationDateTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Comment creation date/time {creationDateTime}'**
+  /// **'Comment creation date/time {creationDateTime}.'**
   String commentCreationDateTooltip(Object creationDateTime);
 
   /// No description provided for @commentUpdateDateTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Comment last update date'**
-  String get commentUpdateDateTooltip;
+  /// **'Comment last update date/time {creationDateTime}.'**
+  String commentUpdateDateTooltip(Object creationDateTime);
 
   /// No description provided for @playlistCommentMenu.
   ///
@@ -3303,7 +3303,7 @@ abstract class AppLocalizations {
   /// No description provided for @noAudioMp3WereSavedToZip.
   ///
   /// In en, this message translates to:
-  /// **'No audio MP3 file was saved to ZIP since no audio was downloaded on or after {audioDownloadFromDateTime}.'**
+  /// **'No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after {audioDownloadFromDateTime}.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after {audioDownloadFromDateTime}.'**
   String noAudioMp3WereSavedToZip(Object audioDownloadFromDateTime);
 
   /// No description provided for @savePlaylistAudioMp3FilesToZipMenu.

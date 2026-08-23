@@ -977,7 +977,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get alreadyDownloadedAudiosHelpTitle =>
-      'Already Downloaded or Imported Audio';
+      'Already downloaded or imported Audio';
 
   @override
   String get alreadyDownloadedAudiosHelpContent =>
@@ -2365,7 +2365,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get audioExtractedInfoDialogTitle =>
-      'Audio Extracted through Comments Info';
+      'Audio extracted through Comments Info';
 
   @override
   String get convertedAudioDateTimeLabel => 'Converted text first date/time';

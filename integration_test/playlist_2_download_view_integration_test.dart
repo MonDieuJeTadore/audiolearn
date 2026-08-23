@@ -20187,7 +20187,7 @@ void main() {
             matching: find.byType(TextField),
           );
 
-          // Now change the download date in the dialog
+          // Now change the download date to today's date in the dialog
           final String audioOldestDownloadDateToday =
               DateFormat('dd/MM/yyyy').format(DateTime.now());
           final String audioOldestDownloadDateTodayForFileNName =
@@ -20206,7 +20206,9 @@ void main() {
 
           // Now tap on the confirm dialog which indicates the estimated
           // save audio mp3 to zip duration ok buton to accept the save
-          // execution.
+          // execution. Since the 'aaa' text-to-speech audio comment was
+          // modified today after 00:00 time, this audio will be the unique
+          // audio added to the created mp3 zip.
           await tester.tap(find.byKey(const Key('confirmButton')));
           await tester.pump();
 
@@ -20551,7 +20553,7 @@ void main() {
           await tester.pumpAndSettle();
 
           final Finder audioListFinder = find.byKey(const Key('audio_list'));
-          
+
           // Perform the scroll up action
           await tester.drag(audioListFinder, const Offset(0, 400));
           await tester.pumpAndSettle();

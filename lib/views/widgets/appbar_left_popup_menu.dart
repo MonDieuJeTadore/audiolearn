@@ -217,6 +217,12 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                 ),
               ),
               PopupMenuItem<AudioPopupMenuAction>(
+                key: const Key('popup_menu_modify_audio_listened_date'),
+                value: AudioPopupMenuAction.modifyAudioListenedDate,
+                child: Text(
+                    AppLocalizations.of(context)!.modifyAudioListenedDateMenu),
+              ),
+              PopupMenuItem<AudioPopupMenuAction>(
                 key: const Key('popup_menu_delete_audio'),
                 value: AudioPopupMenuAction.deleteAudio,
                 child: Text(AppLocalizations.of(context)!.deleteAudio),
@@ -484,6 +490,21 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                       audio: audio,
                       audioModificationType:
                           AudioModificationType.playableEveryNDays,
+                    );
+                  },
+                );
+                break;
+              case AudioPopupMenuAction.modifyAudioListenedDate:
+                await showDialog<String?>(
+                  context: context,
+                  barrierDismissible:
+                      false, // This line prevents the dialog from closing when
+                  //            tapping outside the dialog
+                  builder: (BuildContext context) {
+                    return AudioModificationDialog(
+                      audio: audio,
+                      audioModificationType:
+                          AudioModificationType.modifyAudioListenedDate,
                     );
                   },
                 );

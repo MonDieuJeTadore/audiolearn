@@ -17592,13 +17592,13 @@ void main() {
 
       // Verify ZIP content
       final List<String> expectedJsonFileNames = [
-        'playlists\\Local restore- short - test - playlist\\comments\\250518-164039-morning _ cinematic video 23-07-01.json',
-        'playlists\\Local restore- short - test - playlist\\comments\\250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
-        'playlists\\Local restore- short - test - playlist\\Local restore- short - test - playlist.json',
-        'playlists\\Local restore- short - test - playlist\\pictures\\250518-164035-Really short video 23-07-01.json',
-        'playlists\\Local restore- short - test - playlist\\pictures\\250518-164039-morning _ cinematic video 23-07-01.json',
-        'playlists\\Local restore- short - test - playlist\\pictures\\250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
-        'pictures\\pictureAudioMap.json',
+        'playlists/Local restore- short - test - playlist/comments/250518-164039-morning _ cinematic video 23-07-01.json',
+        'playlists/Local restore- short - test - playlist/comments/250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
+        'playlists/Local restore- short - test - playlist/Local restore- short - test - playlist.json',
+        'playlists/Local restore- short - test - playlist/pictures/250518-164035-Really short video 23-07-01.json',
+        'playlists/Local restore- short - test - playlist/pictures/250518-164039-morning _ cinematic video 23-07-01.json',
+        'playlists/Local restore- short - test - playlist/pictures/250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
+        'pictures/pictureAudioMap.json',
       ];
 
       int i = 0;
@@ -17612,12 +17612,12 @@ void main() {
       // Check for specific expected pictures if you know their names
       expect(
         jpgFiles,
-        contains('pictures\\Jean-Pierre.jpg'),
+        contains('pictures/Jean-Pierre.jpg'),
       );
       expect(
         jpgFiles,
         contains(
-            'pictures\\Bora_Bora_2560_1440_Youtube_2 - Voyage vers l\'Inde intérieure.jpg'),
+            'pictures/Bora_Bora_2560_1440_Youtube_2 - Voyage vers l\'Inde intérieure.jpg'),
       );
       expect(
         jpgFiles,
@@ -17754,11 +17754,11 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Saved to ZIP all playlists audio MP3 files downloaded from $oldestAudioDownloadDateTime.\n\nTotal saved audio number: 5, total size: 64.47 MB and total duration: 2:40:27.2."));
+                "Saved to ZIP all playlists audio MP3 files downloaded from $oldestAudioDownloadDateTime.\n\nTotal saved audio number: 5, total size: 64.47 MB and total duration: 2:10:37.5."));
         expect(
             actualMessage,
             contains(
-                "Total saved audio number: 5, total size: 64.47 MB and total duration: 2:40:27.2."));
+                "Total saved audio number: 5, total size: 64.47 MB and total duration: 2:10:37.5."));
         expect(actualMessage, contains("Save operation real duration: "));
         expect(actualMessage, contains("number of bytes saved per second: "));
         expect(actualMessage, contains("number of created ZIP file(s): 1."));
@@ -17780,8 +17780,8 @@ void main() {
           "playlists/Saint François d'Assise/250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
           "playlists/Saint François d'Assise/250713-143130-Saint François d'Assise, le jongleur de Dieu 20-10-03.mp3",
           "playlists/Saint François d'Assise/250713-143125-4 octobre  - Saint François, le Saint qui a Transformé l'Église et le Monde 24-10-03.mp3",
-          "playlists\\Exo chants chrétiens\\250713-144410-EXO - Ta bienveillance [avec paroles] 13-01-29.mp3",
-          "playlists\\Exo chants chrétiens\\250713-144321-SI TU VEUX LE LOUER - EXO 17-05-31.mp3",
+          "playlists/Exo chants chrétiens/250713-144410-EXO - Ta bienveillance [avec paroles] 13-01-29.mp3",
+          "playlists/Exo chants chrétiens/250713-144321-SI TU VEUX LE LOUER - EXO 17-05-31.mp3",
         ];
 
         List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
@@ -17947,7 +17947,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Saved to ZIP all playlists audio MP3 files downloaded from $audioOldestDownloadDateTime.\n\nTotal saved audio number: 3, total size: 15.49 MB and total duration: 0:22:38.0."));
+                "Saved to ZIP all playlists audio MP3 files downloaded from $audioOldestDownloadDateTime.\n\nTotal saved audio number: 3, total size: 15.49 MB and total duration: 0:20:22.2."));
         // expect(
         //     actualMessage,
         //     contains(
@@ -17994,8 +17994,8 @@ void main() {
 
         List<String> expectedZipContentLst = [
           "playlists/Saint François d'Assise/250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
-          "playlists\\Exo chants chrétiens\\250713-144410-EXO - Ta bienveillance [avec paroles] 13-01-29.mp3",
-          "playlists\\Exo chants chrétiens\\250713-144321-SI TU VEUX LE LOUER - EXO 17-05-31.mp3",
+          "playlists/Exo chants chrétiens/250713-144410-EXO - Ta bienveillance [avec paroles] 13-01-29.mp3",
+          "playlists/Exo chants chrétiens/250713-144321-SI TU VEUX LE LOUER - EXO 17-05-31.mp3",
         ];
 
         List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(

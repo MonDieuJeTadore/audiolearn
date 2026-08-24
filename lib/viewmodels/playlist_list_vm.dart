@@ -3517,7 +3517,8 @@ class PlaylistListVM extends ChangeNotifier {
       _audioMp3SaveUniquePlaylistName = '';
     }
 
-    final stopwatch = Stopwatch()..start();
+    final stopwatch = Stopwatch()..start(); // Start the stopwatch to measure the duration
+    //                                         of the saving operation
 
     // Start the timer and saving state before processing files
     _isSavingMp3 = true;
@@ -4021,7 +4022,9 @@ class PlaylistListVM extends ChangeNotifier {
 
     if (audioFile.existsSync()) {
       // Start timing the zip creation process
-      final stopwatch = Stopwatch()..start();
+      final stopwatch = Stopwatch()..start(); // Start the stopwatch to measure the duration
+      //                                         of the saving operation
+
 
       // Read the file and add it to the archive
       List<int> audioBytes = await audioFile.readAsBytes();

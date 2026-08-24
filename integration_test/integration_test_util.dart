@@ -3316,7 +3316,7 @@ class IntegrationTestUtil {
               find.text("Informations sur l'audio téléchargé"), findsOneWidget);
           expect(find.text('Chaîne Youtube'), findsOneWidget);
           expect(find.text('Titre vidéo original'), findsOneWidget);
-          expect(find.text('Date mise en ligne'), findsOneWidget);
+          expect(find.text('Date mise en ligne vidéo'), findsOneWidget);
           expect(find.text('Date/heure téléchargement'), findsOneWidget);
           expect(find.text('Jouable'), findsOneWidget);
           expect(find.text('URL vidéo'), findsOneWidget);

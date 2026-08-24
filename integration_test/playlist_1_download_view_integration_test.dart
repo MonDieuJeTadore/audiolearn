@@ -23604,7 +23604,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify the dialog title
-      expect(find.text('Playable Every n Days'), findsOneWidget);
+      expect(find.text('Playable every n Days'), findsOneWidget);
 
       // Verify the dialog comment
       expect(

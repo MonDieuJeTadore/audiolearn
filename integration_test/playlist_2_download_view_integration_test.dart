@@ -17777,9 +17777,9 @@ void main() {
         );
 
         List<String> expectedZipContentLst = [
-          "playlists\\Saint François d'Assise\\250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
-          "playlists\\Saint François d'Assise\\250713-143130-Saint François d'Assise, le jongleur de Dieu 20-10-03.mp3",
-          "playlists\\Saint François d'Assise\\250713-143125-4 octobre  - Saint François, le Saint qui a Transformé l'Église et le Monde 24-10-03.mp3",
+          "playlists/Saint François d'Assise/250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
+          "playlists/Saint François d'Assise/250713-143130-Saint François d'Assise, le jongleur de Dieu 20-10-03.mp3",
+          "playlists/Saint François d'Assise/250713-143125-4 octobre  - Saint François, le Saint qui a Transformé l'Église et le Monde 24-10-03.mp3",
           "playlists\\Exo chants chrétiens\\250713-144410-EXO - Ta bienveillance [avec paroles] 13-01-29.mp3",
           "playlists\\Exo chants chrétiens\\250713-144321-SI TU VEUX LE LOUER - EXO 17-05-31.mp3",
         ];
@@ -17993,7 +17993,7 @@ void main() {
         );
 
         List<String> expectedZipContentLst = [
-          "playlists\\Saint François d'Assise\\250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
+          "playlists/Saint François d'Assise/250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
           "playlists\\Exo chants chrétiens\\250713-144410-EXO - Ta bienveillance [avec paroles] 13-01-29.mp3",
           "playlists\\Exo chants chrétiens\\250713-144321-SI TU VEUX LE LOUER - EXO 17-05-31.mp3",
         ];
@@ -18114,7 +18114,7 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "No audio MP3 file was saved to ZIP since no audio was downloaded on or after $tooRecentAudioDownloadDateTime.",
+              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $tooRecentAudioDownloadDateTime.",
         );
 
         List<String> zipLst = DirUtil.listFileNamesInDir(
@@ -18535,11 +18535,11 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $oldestAudioDownloadDateTime.\n\nTotal saved audio number: 3, total size: 53.12 MB and total duration: 2:29:08.5."));
+                "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $oldestAudioDownloadDateTime.\n\nTotal saved audio number: 3, total size: 53.12 MB and total duration: 1:59:18.8."));
         expect(
             actualMessage,
             contains(
-                "Total saved audio number: 3, total size: 53.12 MB and total duration: 2:29:08.5."));
+                "Total saved audio number: 3, total size: 53.12 MB and total duration: 1:59:18.8."));
         expect(actualMessage, contains("Save operation real duration: 0:00:"));
         expect(actualMessage, contains("number of bytes saved per second: "));
         expect(actualMessage, contains("number of created ZIP file(s): 1."));
@@ -18555,9 +18555,9 @@ void main() {
         );
 
         List<String> expectedZipContentLst = [
-          "playlists\\Saint François d'Assise\\250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
-          "playlists\\Saint François d'Assise\\250713-143130-Saint François d'Assise, le jongleur de Dieu 20-10-03.mp3",
-          "playlists\\Saint François d'Assise\\250713-143125-4 octobre  - Saint François, le Saint qui a Transformé l'Église et le Monde 24-10-03.mp3",
+          "playlists/Saint François d'Assise/250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
+          "playlists/Saint François d'Assise/250713-143130-Saint François d'Assise, le jongleur de Dieu 20-10-03.mp3",
+          "playlists/Saint François d'Assise/250713-143125-4 octobre  - Saint François, le Saint qui a Transformé l'Église et le Monde 24-10-03.mp3",
         ];
 
         List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
@@ -18686,11 +18686,11 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $audioOldestDownloadDateTime.\n\nTotal saved audio number: 1, total size: 4.14 MB and total duration: 0:11:19.3."));
+                "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $audioOldestDownloadDateTime.\n\nTotal saved audio number: 1, total size: 4.14 MB and total duration: 0:09:03.5."));
         expect(
             actualMessage,
             contains(
-                "Total saved audio number: 1, total size: 4.14 MB and total duration: 0:11:19.3."));
+                "Total saved audio number: 1, total size: 4.14 MB and total duration: 0:09:03.5."));
         expect(
             actualMessage, contains("Save operation real duration: 0:00:00"));
         expect(actualMessage, contains("number of bytes saved per second: "));
@@ -18707,7 +18707,7 @@ void main() {
         );
 
         List<String> expectedZipContentLst = [
-          "playlists\\Saint François d'Assise\\250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
+          "playlists/Saint François d'Assise/250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
         ];
 
         List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
@@ -18828,7 +18828,7 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "No audio MP3 file was saved to ZIP since no audio was downloaded on or after $tooRecentAudioDownloadDateTime.",
+              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $tooRecentAudioDownloadDateTime.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after 15/07/2025 14:31.",
         );
 
         List<String> zipLst = DirUtil.listFileNamesInDir(
@@ -19398,7 +19398,7 @@ void main() {
           expect(
               actualMessage,
               contains(
-                  "Saved to ZIP all playlists audio MP3 files downloaded from $audioOldestDownloadDateToday 00:00.\n\nTotal saved audio number: 1, total size: 80.3 KB and total duration: 0:00:10.0."));
+                  "Saved to ZIP all playlists audio MP3 files downloaded from $audioOldestDownloadDateToday 00:00.\n\nTotal saved audio number: 1, total size: 80.3 KB and total duration: 0:00:08.0."));
           expect(
               actualMessage, contains("Save operation real duration: 0:00:"));
           expect(actualMessage, contains("number of bytes saved per second: "));
@@ -19818,7 +19818,7 @@ void main() {
           expect(
               actualMessage,
               contains(
-                  "Saved to ZIP all playlists audio MP3 files downloaded from $audioOldestDownloadDateToday 00:00.\n\nTotal saved audio number: 1, total size: 80.3 KB and total duration: 0:00:10.0."));
+                  "Saved to ZIP all playlists audio MP3 files downloaded from $audioOldestDownloadDateToday 00:00.\n\nTotal saved audio number: 1, total size: 80.3 KB and total duration: 0:00:08.0."));
           expect(
               actualMessage, contains("Save operation real duration: 0:00:"));
           expect(actualMessage, contains("number of bytes saved per second: "));
@@ -20241,7 +20241,7 @@ void main() {
           expect(
               actualMessage,
               contains(
-                  "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $audioOldestDownloadDateToday 00:00.\n\nTotal saved audio number: 1, total size: 80.3 KB and total duration: 0:00:10.0."));
+                  "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $audioOldestDownloadDateToday 00:00.\n\nTotal saved audio number: 1, total size: 80.3 KB and total duration: 0:00:08.0."));
           expect(
               actualMessage, contains("Save operation real duration: 0:00:"));
           expect(actualMessage, contains("number of bytes saved per second: "));

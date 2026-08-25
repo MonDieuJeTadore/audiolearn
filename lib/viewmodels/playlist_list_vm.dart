@@ -3644,6 +3644,7 @@ class PlaylistListVM extends ChangeNotifier {
       if (currentBatchSize + audioInfo.audio.audioFileSize >
               zipFileSizeLimitInBytes &&
           currentBatch.isNotEmpty) {
+
         // FIXED: Increment BEFORE calling _saveArchiveBatchToFile
         _numberOfCreatedZipFiles++;
 
@@ -3812,7 +3813,7 @@ class PlaylistListVM extends ChangeNotifier {
           excludedTooLargeAudioFilesValueLst[0] +=
               audioFileSize; // Convert to MB and accumulate
           excludedTooLargeAudioFilesValueLst[1] +=
-              audioInfo.audio.audioDuration; // Accumulate duration
+              audioInfo.audio.durationImpactedByPlaySpeed(); // Accumulate duration
           continue; // Skip files that are larger than the limit
         }
 

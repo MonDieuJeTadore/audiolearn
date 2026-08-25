@@ -13786,7 +13786,7 @@ void main() {
         final String modifiedPlaylistRootPath =
             '$kApplicationPathWindowsTest${path.separator}newDirectory${path.separator}playlists';
         String newDirectoryPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C://development//flutter//audiolearn//test//data//audio\",\"DataLocation.playlistRootPath\":\"C://development//flutter//audiolearn//test//data//audio//newDirectory//playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
         const String modifiedDirSelectedPlaylistTitle =
             "local_not_empty_download_single_video";
 
@@ -13816,7 +13816,7 @@ void main() {
         // Now, reset the playlist root path to the initial value
 
         String audioPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C://development//flutter//audiolearn//test//data//audio\",\"DataLocation.playlistRootPath\":\"C://development//flutter//audiolearn//test//data//audio//playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         // With clicking on 'Confirm' button to accept restoring
         // the previous playlist titles order
@@ -13844,7 +13844,7 @@ void main() {
         // The playlist titles order is the initial one since 'Cancel'
         // will be clicked
         newDirectoryPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C://development//flutter//audiolearn//test//data//audio\",\"DataLocation.playlistRootPath\":\"C://development//flutter//audiolearn//test//data//audio//newDirectory//playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         // With clicking on 'Cancel' button to refuse restoring
         // the previous playlist titles order
@@ -13899,7 +13899,7 @@ void main() {
         ];
 
         audioPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C://development//flutter//audiolearn//test//data//audio\",\"DataLocation.playlistRootPath\":\"C://development//flutter//audiolearn//test//data//audio//playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         // Now reset the playlist root path to the initial value
         // with clicking on 'Cancel' button to refuse restoring
@@ -14019,7 +14019,7 @@ void main() {
         ];
 
         String newDirectoryPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, audio_player_view_2_shorts_test, local_3, local_audio_playlist_2]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, audio_player_view_2_shorts_test, local_3, local_audio_playlist_2]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C://development//flutter//audiolearn//test//data//audio\",\"DataLocation.playlistRootPath\":\"C://development//flutter//audiolearn//test//data//audio//newDirectory//playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         await _changePlaylistRootPathAndSaveAppSettings(
           tester: tester,
@@ -14059,7 +14059,7 @@ void main() {
         // the previous playlist titles order
 
         String audioPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, local_empty_download_single_video, local_not_empty_download_single_video]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, local_empty_download_single_video, local_not_empty_download_single_video]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C://development//flutter//audiolearn//test//data//audio\",\"DataLocation.playlistRootPath\":\"C://development//flutter//audiolearn//test//data//audio//playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         await _changePlaylistRootPathAndSaveAppSettings(
           tester: tester,
@@ -14086,7 +14086,7 @@ void main() {
         ];
 
         newDirectoryPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, audio_player_view_2_shorts_test, local_3, local_audio_playlist_2]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, audio_player_view_2_shorts_test, local_3, local_audio_playlist_2]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C://development//flutter//audiolearn//test//data//audio\",\"DataLocation.playlistRootPath\":\"C://development//flutter//audiolearn//test//data//audio//newDirectory//playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         await _changePlaylistRootPathAndSaveAppSettings(
           tester: tester,
@@ -14282,7 +14282,7 @@ void main() {
         // Nothing should change.
 
         String audioPlaylistsExpectedSettingsContent =
-            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C://development//flutter//audiolearn//test//data//audio\",\"DataLocation.playlistRootPath\":\"C://development//flutter//audiolearn//test//data//audio//playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
 
         await _changePlaylistRootPathAndSaveAppSettings(
           tester: tester,
@@ -15214,7 +15214,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Total saved audio number: 3, total size: 783.1 KB and total duration: 0:02:08.0."));
+                "Total saved audio number: 3, total size: 783.1 KB and total duration: 0:01:42.4."));
         expect(actualMessage, contains("Save operation real duration: "));
         expect(actualMessage, contains("number of bytes saved per second: "));
         expect(actualMessage, contains("number of created ZIP file(s): 1."));
@@ -15234,9 +15234,9 @@ void main() {
         );
 
         List<String> expectedZipContentLst = [
-          'playlists\\local\\240110-181805-Really short video 23-07-01.mp3',
-          'playlists\\local\\240110-181810-morning _ cinematic video 23-07-01.mp3',
-          'playlists\\S8 audio\\240110-181810-morning _ cinematic video 23-07-01.mp3'
+          'playlists/local/240110-181805-Really short video 23-07-01.mp3',
+          'playlists/local/240110-181810-morning _ cinematic video 23-07-01.mp3',
+          'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3'
         ];
 
         List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
@@ -15383,7 +15383,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Total saved audio number: 3, total size: 783.1 KB and total duration: 0:02:08.0."));
+                "Total saved audio number: 3, total size: 783.1 KB and total duration: 0:01:42.4."));
         expect(actualMessage, contains("Save operation real duration: "));
         expect(actualMessage, contains("number of bytes saved per second: "));
         expect(actualMessage, contains("number of created ZIP file(s): 1."));
@@ -15403,9 +15403,9 @@ void main() {
         );
 
         List<String> expectedZipContentLst = [
-          'playlists\\local\\240110-181805-Really short video 23-07-01.mp3',
-          'playlists\\local\\240110-181810-morning _ cinematic video 23-07-01.mp3',
-          'playlists\\S8 audio\\240110-181810-morning _ cinematic video 23-07-01.mp3'
+          'playlists/local/240110-181805-Really short video 23-07-01.mp3',
+          'playlists/local/240110-181810-morning _ cinematic video 23-07-01.mp3',
+          'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3'
         ];
 
         List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
@@ -15540,7 +15540,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Total saved audio number: 5, total size: 5.53 MB and total duration: 0:15:06.0."));
+                "Total saved audio number: 5, total size: 5.53 MB and total duration: 0:12:04.8."));
         expect(actualMessage, contains("Save operation real duration: "));
         expect(actualMessage, contains("number of bytes saved per second: "));
         expect(actualMessage, contains("number of created ZIP file(s): 3."));
@@ -15551,7 +15551,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
+                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio/240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
 
         List<String> zipLst = DirUtil.listFileNamesInDir(
           directoryPath:
@@ -15561,15 +15561,15 @@ void main() {
 
         List<List<String>> expectedZipContentLst = [
           [
-            'playlists\\local\\240701-163521-Jancovici m\'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3',
-            'playlists\\local\\240110-181805-Really short video 23-07-01.mp3',
+            'playlists/local/240701-163521-Jancovici m\'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3',
+            'playlists/local/240110-181805-Really short video 23-07-01.mp3',
           ],
           [
-            'playlists\\local\\240110-181810-morning _ cinematic video 23-07-01.mp3',
-            'playlists\\S8 audio\\240110-181810-morning _ cinematic video 23-07-01.mp3',
+            'playlists/local/240110-181810-morning _ cinematic video 23-07-01.mp3',
+            'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3',
           ],
           [
-            'playlists\\S8 audio\\240701-163521-Jancovici m\'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3',
+            'playlists/S8 audio/240701-163521-Jancovici m\'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3',
           ],
         ];
 
@@ -15703,7 +15703,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Total saved audio number: 1, total size: 360.8 KB and total duration: 0:00:59.0."));
+                "Total saved audio number: 1, total size: 360.8 KB and total duration: 0:00:47.2."));
         expect(actualMessage, contains("Save operation real duration: "));
         expect(actualMessage, contains("number of bytes saved per second: "));
         expect(actualMessage, contains("number of created ZIP file(s): 1."));
@@ -15714,7 +15714,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Those files are too large to be included in the MP3 saved ZIP file and so were not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB;\nS8 audio\\240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3, 2.37 MB."));
+                "Those files are too large to be included in the MP3 saved ZIP file and so were not saved:\nS8 audio/240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB;\nS8 audio/240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3, 2.37 MB."));
 
         List<String> zipLst = DirUtil.listFileNamesInDir(
           directoryPath:
@@ -15723,7 +15723,7 @@ void main() {
         );
 
         List<String> expectedZipContentLst = [
-          'playlists\\S8 audio\\240110-181810-morning _ cinematic video 23-07-01.mp3'
+          'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3'
         ];
 
         List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
@@ -15798,7 +15798,7 @@ void main() {
           appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
         );
 
-        // And reduce the ZIP file size limit to 2.6 MB
+        // And reduce the ZIP file size limit to 1 MB
 
         // Find the TextField using the Key
         final Finder textFieldFinder =
@@ -15872,7 +15872,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Total saved audio number: 1, total size: 360.8 KB and total duration: 0:00:59.0."));
+                "Total saved audio number: 1, total size: 360.8 KB and total duration: 0:00:47.2."));
         expect(actualMessage, contains("Save operation real duration: "));
         expect(actualMessage, contains("number of bytes saved per second: "));
         expect(actualMessage, contains("number of created ZIP file(s): 1."));
@@ -15883,7 +15883,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
+                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio/240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
 
         List<String> zipLst = DirUtil.listFileNamesInDir(
           directoryPath:
@@ -15892,7 +15892,7 @@ void main() {
         );
 
         List<String> expectedZipContentLst = [
-          'playlists\\S8 audio\\240110-181810-morning _ cinematic video 23-07-01.mp3'
+          'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3'
         ];
 
         List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
@@ -16029,7 +16029,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Total saved audio number: 2, total size: 2.73 MB and total duration: 0:07:28.0."));
+                "Total saved audio number: 2, total size: 2.73 MB and total duration: 0:04:26.8."));
         expect(actualMessage, contains("Save operation real duration: "));
         expect(actualMessage, contains("number of bytes saved per second: "));
         expect(actualMessage, contains("number of created ZIP file(s): 2."));
@@ -16040,7 +16040,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
+                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio/240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
 
         List<String> zipLst = DirUtil.listFileNamesInDir(
           directoryPath:
@@ -16050,10 +16050,10 @@ void main() {
 
         List<List<String>> expectedZipContentLst = [
           [
-            'playlists\\S8 audio\\240110-181810-morning _ cinematic video 23-07-01.mp3',
+            'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3',
           ],
           [
-            'playlists\\S8 audio\\240701-163521-Jancovici m\'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3',
+            'playlists/S8 audio/240701-163521-Jancovici m\'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3',
           ],
         ];
 
@@ -16154,14 +16154,14 @@ void main() {
         );
 
         List<String> expectedZipContentLst = [
-          "playlists\\audio_learn_test_download_2_small_videos\\audio_learn_test_download_2_small_videos.json",
-          "playlists\\audio_learn_test_download_2_small_videos\\comments\\230628-033811-audio learn test short video one 23-06-10.json",
-          "playlists\\audio_learn_test_download_2_small_videos\\comments\\230628-033813-audio learn test short video two 23-06-10.json",
-          "playlists\\audio_player_view_2_shorts_test\\audio_player_view_2_shorts_test.json",
-          "playlists\\local_3\\local_3.json",
-          "playlists\\local_audio_playlist_2\\local_audio_playlist_2.json",
+          "playlists/audio_learn_test_download_2_small_videos/audio_learn_test_download_2_small_videos.json",
+          "playlists/audio_learn_test_download_2_small_videos/comments/230628-033811-audio learn test short video one 23-06-10.json",
+          "playlists/audio_learn_test_download_2_small_videos/comments/230628-033813-audio learn test short video two 23-06-10.json",
+          "playlists/audio_player_view_2_shorts_test/audio_player_view_2_shorts_test.json",
+          "playlists/local_3/local_3.json",
+          "playlists/local_audio_playlist_2/local_audio_playlist_2.json",
           "settings.json",
-          'pictures\\pictureAudioMap.json',
+          'pictures/pictureAudioMap.json',
         ];
 
         List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
@@ -16797,15 +16797,15 @@ void main() {
         );
 
         List<String> expectedZipContentLst = [
-          "playlists\\audio_learn_test_download_2_small_videos\\audio_learn_test_download_2_small_videos.json",
-          "playlists\\audio_learn_test_download_2_small_videos\\comments\\230628-033811-audio learn test short video one 23-06-10.json",
-          "playlists\\audio_learn_test_download_2_small_videos\\comments\\230628-033813-audio learn test short video two 23-06-10.json",
-          "playlists\\audio_player_view_2_shorts_test\\audio_player_view_2_shorts_test.json",
-          "playlists\\local_3\\local_3.json",
-          "playlists\\local_audio_playlist_2\\local_audio_playlist_2.json",
+          "playlists/audio_learn_test_download_2_small_videos/audio_learn_test_download_2_small_videos.json",
+          "playlists/audio_learn_test_download_2_small_videos/comments/230628-033811-audio learn test short video one 23-06-10.json",
+          "playlists/audio_learn_test_download_2_small_videos/comments/230628-033813-audio learn test short video two 23-06-10.json",
+          "playlists/audio_player_view_2_shorts_test/audio_player_view_2_shorts_test.json",
+          "playlists/local_3/local_3.json",
+          "playlists/local_audio_playlist_2/local_audio_playlist_2.json",
           "settings.json",
-          "pictures\\pictureAudioMap.json",
-          "pictures\\230628-033811-audio learn test short video one 23-06-10.jpg"
+          "pictures/pictureAudioMap.json",
+          "pictures/230628-033811-audio learn test short video one 23-06-10.jpg"
         ];
 
         List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
@@ -17467,13 +17467,13 @@ void main() {
 
       // Verify ZIP content
       final List<String> expectedJsonFileNames = [
-        'playlists\\Restore- short - test - playlist\\comments\\250518-164039-morning _ cinematic video 23-07-01.json',
-        'playlists\\Restore- short - test - playlist\\comments\\250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
-        'playlists\\Restore- short - test - playlist\\pictures\\250518-164035-Really short video 23-07-01.json',
-        'playlists\\Restore- short - test - playlist\\pictures\\250518-164039-morning _ cinematic video 23-07-01.json',
-        'playlists\\Restore- short - test - playlist\\pictures\\250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
-        'playlists\\Restore- short - test - playlist\\Restore- short - test - playlist.json',
-        'pictures\\pictureAudioMap.json',
+        'playlists/Restore- short - test - playlist/comments/250518-164039-morning _ cinematic video 23-07-01.json',
+        'playlists/Restore- short - test - playlist/comments/250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
+        'playlists/Restore- short - test - playlist/pictures/250518-164035-Really short video 23-07-01.json',
+        'playlists/Restore- short - test - playlist/pictures/250518-164039-morning _ cinematic video 23-07-01.json',
+        'playlists/Restore- short - test - playlist/pictures/250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
+        'playlists/Restore- short - test - playlist/Restore- short - test - playlist.json',
+        'pictures/pictureAudioMap.json',
       ];
 
       int i = 0;
@@ -17487,16 +17487,16 @@ void main() {
       // Check for specific expected pictures if you know their names
       expect(
         jpgFiles,
-        contains('pictures\\Jean-Pierre.jpg'),
+        contains('pictures/Jean-Pierre.jpg'),
       );
       expect(
         jpgFiles,
         contains(
-            'pictures\\Bora_Bora_2560_1440_Youtube_2 - Voyage vers l\'Inde intérieure.jpg'),
+            'pictures/Bora_Bora_2560_1440_Youtube_2 - Voyage vers l\'Inde intérieure.jpg'),
       );
       expect(
         jpgFiles,
-        contains('pictures\\Jésus le Dieu vivant.jpg'),
+        contains('pictures/Jésus le Dieu vivant.jpg'),
       );
 
       // Purge the test playlist directory so that the created test
@@ -17621,7 +17621,7 @@ void main() {
       );
       expect(
         jpgFiles,
-        contains('pictures\\Jésus le Dieu vivant.jpg'),
+        contains('pictures/Jésus le Dieu vivant.jpg'),
       );
 
       // Purge the test playlist directory so that the created test
@@ -21003,7 +21003,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 5 playlist, 6 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows audioLearn local selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 1.',
+                  'Restored 5 playlist, 6 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Windows audioLearn local selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 1.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -21481,7 +21481,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 4 playlist, 5 comment and 2 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows audioLearn local selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
+                  'Restored 4 playlist, 5 comment and 2 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Windows audioLearn local selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -21889,7 +21889,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 5 playlist, 5 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows audioLearn S8 audio selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 1.',
+                  'Restored 5 playlist, 5 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Windows audioLearn S8 audio selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 1.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -22079,7 +22079,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 4 playlist, 5 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 6 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows audioLearn S8 audio selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
+                  'Restored 4 playlist, 5 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 6 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Windows audioLearn S8 audio selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -22306,7 +22306,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 5 playlist, 6 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows audioLearn local selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 1.',
+                  'Restored 5 playlist, 6 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Windows audioLearn local selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 1.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -22813,7 +22813,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 4 playlist, 5 comment and 2 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows audioLearn local selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
+                  'Restored 4 playlist, 5 comment and 2 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Windows audioLearn local selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -23258,7 +23258,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 5 playlist, 5 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows audioLearn S8 audio selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 1.',
+                  'Restored 5 playlist, 5 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 9 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Windows audioLearn S8 audio selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 1.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -23456,7 +23456,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 4 playlist, 5 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 6 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows audioLearn S8 audio selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
+                  'Restored 4 playlist, 5 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 6 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Windows audioLearn S8 audio selected.zip".\n\nDeleted 1 playlist(s)\n  "A restaurer"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.\n\nSince the playlists\n  "Empty",\n  "local_comment",\n  "local_delete_comment",\n  "S8 audio"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -23547,7 +23547,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 0 playlist saved individually, 2 comment and 2 picture JSON files as well as 2 picture JPG file(s) in the application pictures directory and 2 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows S8 audio.zip".',
+                'Restored 0 playlist saved individually, 2 comment and 2 picture JSON files as well as 2 picture JPG file(s) in the application pictures directory and 2 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/audio/Windows S8 audio.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -23685,7 +23685,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 0 playlist, 3 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows 2 existing playlists with new audios.zip".',
+                'Restored 0 playlist, 3 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Windows 2 existing playlists with new audios.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -23887,7 +23887,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows Prières du Maître.zip".',
+                'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows Prières du Maître.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -24064,7 +24064,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows Prières du Maître.zip".',
+                'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows Prières du Maître.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -24240,7 +24240,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 2 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows sort_and_filter_audio_dialog_widget_test_playlists.zip".',
+                'Restored 2 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows sort_and_filter_audio_dialog_widget_test_playlists.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -24428,7 +24428,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 2 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows sort_and_filter_audio_dialog_widget_test_playlists.zip".',
+                'Restored 2 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows sort_and_filter_audio_dialog_widget_test_playlists.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -24612,7 +24612,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\\\Windows Prières du Maître.zip".',
+                'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests//Windows Prières du Maître.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -24650,7 +24650,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 2 playlist, 5 comment and 4 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 5 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows audioLearn_2025-05-11_13_16.zip".\n\nSince the playlists\n  "A restaurer",\n  "local"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
+                'Restored 2 playlist, 5 comment and 4 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 5 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows audioLearn_2025-05-11_13_16.zip".\n\nSince the playlists\n  "A restaurer",\n  "local"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -24867,7 +24867,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\\\Windows Prières du Maître.zip".',
+                'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests//Windows Prières du Maître.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -24905,7 +24905,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 2 playlist, 5 comment and 4 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 5 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows audioLearn_2025-05-11_13_16.zip".\n\nSince the playlists\n  "A restaurer",\n  "local"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
+                'Restored 2 playlist, 5 comment and 4 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 5 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows audioLearn_2025-05-11_13_16.zip".\n\nSince the playlists\n  "A restaurer",\n  "local"\nwere created, they are positioned at the end of the playlist list starting at position 2.',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -25127,7 +25127,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 2 playlist, 1 comment and 4 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows restore_multiple_playlists_and_pictures.zip".',
+                'Restored 2 playlist, 1 comment and 4 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows restore_multiple_playlists_and_pictures.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -25248,7 +25248,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 2 playlist, 1 comment and 4 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows restore_multiple_playlists_and_pictures.zip".',
+                'Restored 2 playlist, 1 comment and 4 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows restore_multiple_playlists_and_pictures.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -25271,7 +25271,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 0 playlist, 0 comment and 0 picture JSON files as well as 1 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows restore_multiple_playlists_and_pictures.zip".',
+                'Restored 0 playlist, 0 comment and 0 picture JSON files as well as 1 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows restore_multiple_playlists_and_pictures.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -25364,7 +25364,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows Restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows Restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -25715,7 +25715,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows Restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows Restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -26067,7 +26067,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows Local restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows Local restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -26417,7 +26417,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows Local restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows Local restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -26736,7 +26736,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows Restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows Restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -26789,7 +26789,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 2 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 2 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -26885,7 +26885,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows Restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows Restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -26934,7 +26934,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 1 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Windows Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 1 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Windows Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -27056,7 +27056,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 3 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières initialization.zip".',
+                  'Restored 1 playlist saved individually, 3 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/audio/Windows Prières initialization.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -27133,7 +27133,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 0 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 1 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières comment restoration.zip".',
+                  'Restored 0 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 1 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/audio/Windows Prières comment restoration.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -27254,7 +27254,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 2 playlist, 5 comment and 4 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 8 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières and local initialization.zip".',
+                  'Restored 2 playlist, 5 comment and 4 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 8 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Windows Prières and local initialization.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -27366,7 +27366,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 0 playlist, 2 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 1 added plus 0 deleted plus 4 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Windows Prières and local comment restoration.zip".',
+                  'Restored 0 playlist, 2 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 1 added plus 0 deleted plus 4 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Windows Prières and local comment restoration.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -29043,7 +29043,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -29088,7 +29088,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -29196,7 +29196,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -29241,7 +29241,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -29374,7 +29374,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -29725,7 +29725,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -30046,7 +30046,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -30090,7 +30090,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -30137,7 +30137,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Prières du Maître.zip".\n\nSince the playlist\n  "Prières du Maître"\nwas created, it is positioned at the end of the playlist list at position 3.',
+                  'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Prières du Maître.zip".\n\nSince the playlist\n  "Prières du Maître"\nwas created, it is positioned at the end of the playlist list at position 3.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -30246,7 +30246,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Restore- short - test - playlist.zip".',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Restore- short - test - playlist.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -30294,7 +30294,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
+                  'Restored 1 playlist saved individually, 2 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 3 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Local restore- short - test - playlist.zip".\n\nSince the playlist\n  "Local restore- short - test - playlist"\nwas created, it is positioned at the end of the playlist list at position 2.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -30341,7 +30341,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android Prières du Maître.zip".\n\nSince the playlist\n  "Prières du Maître"\nwas created, it is positioned at the end of the playlist list at position 3.',
+                  'Restored 1 playlist, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android Prières du Maître.zip".\n\nSince the playlist\n  "Prières du Maître"\nwas created, it is positioned at the end of the playlist list at position 3.',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -30511,7 +30511,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 3 playlist, 7 comment and 7 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 8 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android audioLearn_multiple_playlists.zip".',
+                  'Restored 3 playlist, 7 comment and 7 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 8 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android audioLearn_multiple_playlists.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -30707,7 +30707,7 @@ void main() {
             await IntegrationTestUtil.verifyAndCloseWarningDialog(
               tester: tester,
               warningDialogMessage:
-                  'Restored 3 playlist, 7 comment and 7 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 8 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android audioLearn_multiple_playlists.zip".',
+                  'Restored 3 playlist, 7 comment and 7 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 8 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android audioLearn_multiple_playlists.zip".',
               isWarningConfirming: true,
               warningTitle: 'CONFIRMATION',
             );
@@ -30866,7 +30866,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 0 playlist saved individually, 2 comment and 2 picture JSON files as well as 2 picture JPG file(s) in the application pictures directory and 2 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Android S8 audio.zip".',
+                'Restored 0 playlist saved individually, 2 comment and 2 picture JSON files as well as 2 picture JPG file(s) in the application pictures directory and 2 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/audio/Android S8 audio.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -30955,7 +30955,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 0 playlist saved individually, 0 comment and 0 picture JSON files as well as 1 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Android S8 audio.zip".',
+                'Restored 0 playlist saved individually, 0 comment and 0 picture JSON files as well as 1 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/audio/Android S8 audio.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -31027,7 +31027,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 0 playlist, 3 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Android 2 existing playlists with new audios.zip".',
+                'Restored 0 playlist, 3 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Android 2 existing playlists with new audios.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -31177,7 +31177,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 1 playlist saved individually, 3 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Android Prières initialization.zip".',
+                'Restored 1 playlist saved individually, 3 comment and 3 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/audio/Android Prières initialization.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -31251,7 +31251,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 0 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 1 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Android Prières comment restoration.zip".',
+                'Restored 0 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 1 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/audio/Android Prières comment restoration.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -31370,7 +31370,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 2 playlist, 5 comment and 4 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 8 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Android Prières and local initialization.zip".',
+                'Restored 2 playlist, 5 comment and 4 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 8 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Android Prières and local initialization.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -31480,7 +31480,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 0 playlist, 2 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 1 added plus 0 deleted plus 4 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\Android Prières and local comment restoration.zip".',
+                'Restored 0 playlist, 2 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 1 added plus 0 deleted plus 4 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/Android Prières and local comment restoration.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -31699,7 +31699,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 2 playlist, 1 comment and 4 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android restore_multiple_playlists_and_pictures.zip".',
+                'Restored 2 playlist, 1 comment and 4 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android restore_multiple_playlists_and_pictures.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -31820,7 +31820,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 2 playlist, 1 comment and 4 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android restore_multiple_playlists_and_pictures.zip".',
+                'Restored 2 playlist, 1 comment and 4 picture JSON files as well as 3 picture JPG file(s) in the application pictures directory and 12 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android restore_multiple_playlists_and_pictures.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -31843,7 +31843,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                'Restored 0 playlist, 0 comment and 0 picture JSON files as well as 1 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\saved\\zip_files_for_restore_tests\\Android restore_multiple_playlists_and_pictures.zip".',
+                'Restored 0 playlist, 0 comment and 0 picture JSON files as well as 1 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/saved/zip_files_for_restore_tests/Android restore_multiple_playlists_and_pictures.zip".',
             isWarningConfirming: true,
             warningTitle: 'CONFIRMATION',
           );
@@ -34691,7 +34691,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\urgent_actus_17-12-2023.zip".',
+            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/audio/urgent_actus_17-12-2023.zip".',
         isWarningConfirming: true,
         warningTitle: 'CONFIRMATION',
       );
@@ -34867,7 +34867,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\urgent_actus_17-12-2023.zip".',
+            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/audio/urgent_actus_17-12-2023.zip".',
         isWarningConfirming: true,
         warningTitle: 'CONFIRMATION',
       );
@@ -35047,7 +35047,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\urgent_actus_17-12-2023.zip".',
+            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/audio/urgent_actus_17-12-2023.zip".',
         isWarningConfirming: true,
         warningTitle: 'CONFIRMATION',
       );
@@ -35204,7 +35204,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\urgent_actus_17-12-2023.zip".',
+            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:/development/flutter/audiolearn/test/data/audio/urgent_actus_17-12-2023.zip".',
         isWarningConfirming: true,
         warningTitle: 'CONFIRMATION',
       );
@@ -35359,7 +35359,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            'Restored 2 playlist, 4 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 10 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\audioLearn_2025-09-07_07_45_02.zip".',
+            'Restored 2 playlist, 4 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 10 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:/development/flutter/audiolearn/test/data/audio/audioLearn_2025-09-07_07_45_02.zip".',
         isWarningConfirming: true,
         warningTitle: 'CONFIRMATION',
       );
@@ -36179,12 +36179,12 @@ void main() {
       'Save and restore playlist and mp3 to and from different playlists root path',
       () {
     testWidgets(
-        '''From audio\\playlists, saving multiple playlists and their mp3 as well as saving
+        '''From audio/playlists, saving multiple playlists and their mp3 as well as saving
            a unique playlist and its mp3. Then, restoring the previously saved zip's to
-           audio\\parent_1\\parent_1_1\\playlists. Then, in audio\\parent_1\\
-           parent_1_1\\playlists, add a picture to one audio and verify where the jpg file was
+           audio/parent_1/parent_1_1/playlists. Then, in audio/parent_1/
+           parent_1_1/playlists, add a picture to one audio and verify where the jpg file was
            stored. Then, do multiple and unique playlist and mp3 saving and restore the
-           saved zip's to audio\\playlists. This will verify that the playlist and mp3 saving and
+           saved zip's to audio/playlists. This will verify that the playlist and mp3 saving and
            restoring works correctly when the playlists root path is changed.
            
            The saved mp3 are not all played at the same speed. This verifies that the saved
@@ -36276,7 +36276,7 @@ void main() {
       MockFilePicker mockFilePicker = MockFilePicker();
       FilePicker.platform = mockFilePicker;
 
-      // Change the playlist root path to the 'parent_1\\parent_1_1\\playlists'
+      // Change the playlist root path to the 'parent_1/parent_1_1/playlists'
       // directory in order to restore the previously saved zip file there.
       // This will verify that the playlist and mp3 restoration works correctly
       // when the playlist root path is changed
@@ -36289,8 +36289,8 @@ void main() {
         pathToSelectStr: modifiedPlaylistRootPath,
       );
 
-      // Now restore in 'parent_1\\parent_1_1\\playlists' the multiple playlists
-      // previously saved in 'audio\\saved' dir.
+      // Now restore in 'parent_1/parent_1_1/playlists' the multiple playlists
+      // previously saved in 'audio/saved' dir.
 
       List<String> playlistTitles = [
         "Dieu je T'adore",
@@ -36316,8 +36316,8 @@ void main() {
         audioTitlesOrderedLst: ['Seigneur'],
       );
 
-      // Now restore in 'parent_1\\parent_1_1\\playlists' the mp3 of multiple
-      // playlists previously saved in 'audio\\saved\\MP3' dir.
+      // Now restore in 'parent_1/parent_1_1/playlists' the mp3 of multiple
+      // playlists previously saved in 'audio/saved/MP3' dir.
 
       String mp3RestorableZipDirectory =
           '$savedZipFilePath${path.separator}MP3';
@@ -36375,7 +36375,7 @@ void main() {
         restoreUniquePlaylistTitle: 'Local',
       );
 
-      // Save the playlists contained in 'parent_1\\parent_1_1\\playlists'
+      // Save the playlists contained in 'parent_1/parent_1_1/playlists'
       // with their comments and pictures to a zip file
 
       saveZipFilePath =
@@ -36415,7 +36415,7 @@ void main() {
         ],
       );
 
-      // Save a unique playlist contained in 'parent_1\\parent_1_1\\playlists'
+      // Save a unique playlist contained in 'parent_1/parent_1_1/playlists'
       // with its comments and pictures to a zip file
 
       playlistToSaveTitle = "Dieu je T'adore";
@@ -54586,7 +54586,7 @@ Future<void> _restoreMultipleOrIndividualPlaylist({
   await IntegrationTestUtil.verifyAndCloseWarningDialog(
     tester: tester,
     warningDialogMessage:
-        '$saveFromPartMessage "$savedZipFilePath\\$savedMultipleOrUniquePlaylistZipName".$saveSincePartMessage',
+        '$saveFromPartMessage "$savedZipFilePath/$savedMultipleOrUniquePlaylistZipName".$saveSincePartMessage',
     isWarningConfirming: true,
     warningTitle: 'CONFIRMATION',
   );
@@ -57052,7 +57052,7 @@ String _extractMp3ZipFileName({
   required String zipStartFileName,
 }) {
   final RegExp mp3ZipRegex = RegExp(
-      '${zipStartFileName}_mp3_from_\\d{4}-\\d{2}-\\d{2}_\\d{2}_\\d{2}_\\d{2}_on_\\d{4}-\\d{2}-\\d{2}_\\d{2}_\\d{2}_\\d{2}\\.zip');
+      '${zipStartFileName}_mp3_from_/d{4}-/d{2}-/d{2}_/d{2}_/d{2}_/d{2}_on_/d{4}-/d{2}-/d{2}_/d{2}_/d{2}_/d{2}/.zip');
   final Match? match = mp3ZipRegex.firstMatch(confirmationMessage);
   return match?.group(0) ?? '';
 }

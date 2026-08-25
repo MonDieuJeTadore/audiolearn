@@ -3295,7 +3295,7 @@ class IntegrationTestUtil {
 
           break;
         case AudioType.extracted:
-          expect(find.text('Audio Extracted through Comments Info'),
+          expect(find.text('Audio extracted through Comments Info'),
               findsOneWidget);
           expect(find.text('Youtube channel'), findsNothing);
           expect(find.text('Audio title'), findsOneWidget);

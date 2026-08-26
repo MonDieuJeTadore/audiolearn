@@ -4596,7 +4596,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            "2 filtered playlist audios were repositioned to start and the first listenable audio was selected.",
+            "2 playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: 0:57.",
         isWarningConfirming: true,
       );
 

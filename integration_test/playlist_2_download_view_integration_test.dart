@@ -55410,12 +55410,8 @@ Future<void> _restorePaylistsAndTheirMp3({
   String mp3RestorableZipFilePathName;
 
   if (sourceRootPath.contains(kSavedPlaylistsDirName)) {
-    if (restorableMp3ZipFileName.isEmpty) {
-      mp3RestorableZipFilePathName = '$sourceRootPath${path.separator}MP3';
-    } else {
       mp3RestorableZipFilePathName =
           '$sourceRootPath${path.separator}MP3${path.separator}$restorableMp3ZipFileName';
-    }
   } else {
     mp3RestorableZipFilePathName =
         '$sourceRootPath${path.separator}$restorableMp3ZipFileName';

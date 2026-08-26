@@ -18114,7 +18114,7 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $tooRecentAudioDownloadDateTime.",
+              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $tooRecentAudioDownloadDateTime.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after 15/07/2025 14:31.",
         );
 
         List<String> zipLst = DirUtil.listFileNamesInDir(

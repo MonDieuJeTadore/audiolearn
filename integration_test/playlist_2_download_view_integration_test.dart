@@ -15551,7 +15551,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio/240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
+                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
 
         List<String> zipLst = DirUtil.listFileNamesInDir(
           directoryPath:
@@ -15714,7 +15714,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Those files are too large to be included in the MP3 saved ZIP file and so were not saved:\nS8 audio/240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB;\nS8 audio/240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3, 2.37 MB."));
+                "Those files are too large to be included in the MP3 saved ZIP file and so were not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB;\nS8 audio\\240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3, 2.37 MB."));
 
         List<String> zipLst = DirUtil.listFileNamesInDir(
           directoryPath:
@@ -15883,7 +15883,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio/240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
+                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
 
         List<String> zipLst = DirUtil.listFileNamesInDir(
           directoryPath:
@@ -16029,7 +16029,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "Total saved audio number: 2, total size: 2.73 MB and total duration: 0:04:26.8."));
+                "Total saved audio number: 2, total size: 2.73 MB and total duration: 0:05:58.4."));
         expect(actualMessage, contains("Save operation real duration: "));
         expect(actualMessage, contains("number of bytes saved per second: "));
         expect(actualMessage, contains("number of created ZIP file(s): 2."));
@@ -16040,7 +16040,7 @@ void main() {
         expect(
             actualMessage,
             contains(
-                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio/240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
+                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
 
         List<String> zipLst = DirUtil.listFileNamesInDir(
           directoryPath:

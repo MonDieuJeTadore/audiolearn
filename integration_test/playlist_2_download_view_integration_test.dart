@@ -3287,7 +3287,6 @@ void main() {
         await tester.pumpAndSettle();
 
         playlistDisplayedAudioTitlesLst = [
-          "La surpopulation mondiale par Jancovici et Barrau",
           "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
           "La résilience insulaire par Fiona Roche",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
@@ -3344,7 +3343,6 @@ void main() {
         );
 
         List<String> playlistDisplayedAudioTitlesLst = [
-          "La surpopulation mondiale par Jancovici et Barrau",
           "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
           "La résilience insulaire par Fiona Roche",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
@@ -3423,12 +3421,11 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: playlistsTitles,
-          firstAudioListTileIndex: 4,
+          firstAudioListTileIndex: 3,
         );
 
         // And verify the displayd audio titles list
         playlistDisplayedAudioTitlesLst = [
-          "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
           "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
           "Les besoins artificiels par R.Keucheyan",
@@ -3459,7 +3456,6 @@ void main() {
 
         // And verify the displayd audio titles list
         playlistDisplayedAudioTitlesLst = [
-          "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
           "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
           "Les besoins artificiels par R.Keucheyan",
@@ -3704,7 +3700,6 @@ void main() {
         await tester.pumpAndSettle();
 
         playlistDisplayedAudioTitlesLst = [
-          "La surpopulation mondiale par Jancovici et Barrau",
           "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
           "La résilience insulaire par Fiona Roche",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",

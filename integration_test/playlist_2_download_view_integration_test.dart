@@ -37311,47 +37311,8 @@ void main() {
           plusMinusSeconds: 1,
         );
 
-        // To ensure that the audio audioRemainingDuration
-        // is updated ...
-
-
-      // Now we open the AudioPlayableListDialog by tapping on the
-      // audio title
-      await tester.tap(find.text("$audioAlreadyUsingPictureTitle\n24:07"));
-      await tester.pumpAndSettle();
-
-      // // Select an Audio in the AudioPlayableListDialog
-      // await IntegrationTestUtil.selectAudioInAudioPlayableDialog(
-      //   tester: tester,
-      //   audioToSelectTitle: audioToSelectInAudioListTitle,
-      // );
-
-      // Now we are back on the AudioPlayerView displaying the selected
-      // audio to play. We reopen the AudioPlayableListDialog
-      // by tapping on the audio title.
-      // await tester.tap(find.text("$audioToSelectInAudioListTitle\n5:11"));
-      // await tester.pumpAndSettle();
-
-      // Then select the previously playing audio in order to open it in
-      // the AudioPlayerView
-      await IntegrationTestUtil.selectAudioInAudioPlayableDialog(
-        tester: tester,
-        audioToSelectTitle: audioAlreadyUsingPictureTitle,
-      );
-
-
-
-
-
         Text audioRemainingDurationText = tester.widget<Text>(
             find.byKey(const Key('audioPlayerViewAudioRemainingDuration')));
-
-        IntegrationTestUtil.verifyPositionWithAcceptableDifferenceSeconds(
-          tester: tester,
-          actualPositionTimeStr: audioRemainingDurationText.data!,
-          expectedPositionTimeStr: '0:21',
-          plusMinusSeconds: 1,
-        );
 
         // Now, tap on the maximize icon button to reset the comment
         // add list dialog
@@ -37360,6 +37321,24 @@ void main() {
         );
         await tester.tap(maximizeButtonFinder);
         await tester.pumpAndSettle();
+
+        // Now close the comment list dialog
+        await tester.tap(find.byKey(const Key('closeDialogTextButton')));
+        await tester.pumpAndSettle();
+
+        // Tap on the Undo button
+        // To ensure that the audio audioRemainingDuration
+        // is updated ...
+
+        await tester.tap(find.byKey(const Key('audioPlayerViewUndoButton')));
+        await tester.pumpAndSettle();
+
+        IntegrationTestUtil.verifyPositionWithAcceptableDifferenceSeconds(
+          tester: tester,
+          actualPositionTimeStr: audioRemainingDurationText.data!,
+          expectedPositionTimeStr: '0:21',
+          plusMinusSeconds: 1,
+        );
 
         // Now play the comment whose end position corresponds to the
         // audio end.
@@ -37778,7 +37757,7 @@ void main() {
       );
     });
   });
-  group('Change playlist audio quality tests', () {
+  group('(download). Change playlist audio quality tests', () {
     testWidgets(
         '''Spoken changed to musical quality. Then, restart the application to verify
            that the audio quality checkbox state was preserved.''',

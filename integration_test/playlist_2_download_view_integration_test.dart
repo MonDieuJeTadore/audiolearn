@@ -55410,8 +55410,8 @@ Future<void> _restorePaylistsAndTheirMp3({
   String mp3RestorableZipFilePathName;
 
   if (sourceRootPath.contains(kSavedPlaylistsDirName)) {
-      mp3RestorableZipFilePathName =
-          '$sourceRootPath${path.separator}MP3${path.separator}$restorableMp3ZipFileName';
+    mp3RestorableZipFilePathName =
+        '$sourceRootPath${path.separator}MP3${path.separator}$restorableMp3ZipFileName';
   } else {
     mp3RestorableZipFilePathName =
         '$sourceRootPath${path.separator}$restorableMp3ZipFileName';
@@ -57052,7 +57052,11 @@ String _extractMp3ZipFileName({
   required String zipStartFileName,
 }) {
   final RegExp mp3ZipRegex = RegExp(
-      '${zipStartFileName}_mp3_from_/d{4}-/d{2}-/d{2}_/d{2}_/d{2}_/d{2}_on_/d{4}-/d{2}-/d{2}_/d{2}_/d{2}_/d{2}/.zip');
+    '${RegExp.escape(zipStartFileName)}_mp3_from_'
+    r'\d{4}-\d{2}-\d{2}_\d{2}_\d{2}_\d{2}_on_'
+    r'\d{4}-\d{2}-\d{2}_\d{2}_\d{2}_\d{2}'
+    r'\.zip',
+  );
   final Match? match = mp3ZipRegex.firstMatch(confirmationMessage);
   return match?.group(0) ?? '';
 }

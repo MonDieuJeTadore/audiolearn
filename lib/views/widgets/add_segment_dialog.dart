@@ -85,7 +85,7 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
     final silence = TimeFormatUtil.parseFlexible(
       _silenceDurationController.text,
     );
-    final playSpeed = double.tryParse(_playSpeedController.text) ?? 1.0;
+    final playSpeed = double.tryParse(_playSpeedController.text) ?? 0.1; // the value 0.1 will cause an error to be displayed
     final fadeInDuration = TimeFormatUtil.parseFlexible(
       // NEW
       _fadeInDurationController.text,

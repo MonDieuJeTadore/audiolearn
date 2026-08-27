@@ -980,7 +980,7 @@ class PlaylistListVM extends ChangeNotifier {
     } else if (selectedPlaylistIndexBeforeMoving < positionNumberToMove) {
       moveSelectedPlaylistDown(
         positionNumberToMove:
-            positionNumberToMove - selectedPlaylistIndexBeforeMoving,
+            positionNumberToMove - selectedPlaylistIndexBeforeMoving - 1,
       );
     }
   }

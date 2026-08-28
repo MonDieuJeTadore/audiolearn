@@ -403,8 +403,7 @@ class AudioExtractorService {
             '-y',
           ].join(' ');
 
-          final reencodeSess =
-              await FFmpegKit.execute(reencodeCmd);
+          final reencodeSess = await FFmpegKit.execute(reencodeCmd);
           if (!ReturnCode.isSuccess(
             await reencodeSess.getReturnCode(),
           )) {
@@ -577,6 +576,14 @@ class AudioExtractorService {
     // 1. Add volume filter if gain is specified
     if (gainDb.abs() > 1e-6) {
       filters.add('volume=${gainDb}dB');
+    }
+
+    // NEW: 1b. Per-segment linear volume, applied as the base level
+    //          before any fades so fade ramps scale from this level.
+    const double volumeThreshold = 0.001;
+    if ((segment.volume - 1.0).abs() > volumeThreshold) {
+      filters.add('volume=${segment.volume.toStringAsFixed(4)}');
+      logger.i('Volume filter: volume=${segment.volume.toStringAsFixed(4)}');
     }
 
     const double threshold = 0.05;

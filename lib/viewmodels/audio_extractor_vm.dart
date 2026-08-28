@@ -115,6 +115,7 @@ class AudioExtractorVM extends ChangeNotifier {
       soundReductionDuration: TimeFormatUtil.normalizeToTenths(
         segment.soundReductionDuration,
       ),
+      volume: segment.volume,
       commentId: segment.commentId,
       commentTitle: segment.commentTitle,
       deleted: segment.deleted,
@@ -151,6 +152,7 @@ class AudioExtractorVM extends ChangeNotifier {
         soundReductionDuration: TimeFormatUtil.normalizeToTenths(
           segment.soundReductionDuration,
         ),
+        volume: segment.volume,
         commentId: segment.commentId,
         commentTitle: segment.commentTitle,
         deleted: segment.deleted,
@@ -402,6 +404,7 @@ class AudioExtractorVM extends ChangeNotifier {
               TimeFormatUtil.normalizeToTenths(segment.soundReductionPosition),
           soundReductionDuration:
               TimeFormatUtil.normalizeToTenths(segment.soundReductionDuration),
+          volume: segment.volume,
           commentId: commentId,
           commentTitle: segment.commentTitle,
           deleted: segment.deleted,
@@ -613,6 +616,7 @@ class AudioExtractorVM extends ChangeNotifier {
             soundReductionDuration: TimeFormatUtil.normalizeToTenths(
               s.soundReductionDuration,
             ),
+            volume: s.volume,
             commentId: s.commentId,
             commentTitle: s.commentTitle,
             deleted: s.deleted,
@@ -681,6 +685,7 @@ class AudioExtractorVM extends ChangeNotifier {
             soundReductionDuration: TimeFormatUtil.normalizeToTenths(
               s.soundReductionDuration,
             ),
+            volume: s.volume,
             commentId: s.commentId,
             commentTitle: s.commentTitle,
             deleted: s.deleted,
@@ -848,6 +853,7 @@ class AudioExtractorVM extends ChangeNotifier {
       fadeInDuration: 0.0,
       soundReductionPosition: 0.0,
       soundReductionDuration: 0.0,
+      volume: audio.audioPlayVolume,
       commentId:
           'full_audio_${audio.audioFileName}_${DateTime.now().microsecondsSinceEpoch}',
       commentTitle: audio.validVideoTitle,

@@ -1,6 +1,7 @@
 // lib/views/widgets/add_segment_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../constants.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/audio_segment.dart';
 import '../../utils/time_format_util.dart';
@@ -9,11 +10,13 @@ import '../../utils/time_text_input_formatter.dart';
 class AddSegmentDialog extends StatefulWidget {
   final double maxDuration;
   final AudioSegment? existingSegment;
+  final double currentAudioVolume; // NEW: audio.audioPlayVolume, used as preset
 
   const AddSegmentDialog({
     super.key,
     required this.maxDuration,
     this.existingSegment,
+    this.currentAudioVolume = 1.0, // NEW
   });
 
   @override
@@ -28,6 +31,7 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
   late final TextEditingController _fadeInDurationController; // NEW
   late final TextEditingController _soundReductionPositionController;
   late final TextEditingController _soundReductionDurationController;
+  late final TextEditingController _volumeController; // NEW
 
   @override
   void initState() {
@@ -65,6 +69,12 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
         widget.existingSegment?.soundReductionDuration ?? 0,
       ),
     );
+    // NEW: preset to the segment's own volume if it has one, otherwise
+    // to the audio's current play volume.
+    _volumeController = TextEditingController(
+      text: (widget.existingSegment?.volume ?? widget.currentAudioVolume)
+          .toStringAsFixed(2),
+    );
   }
 
   @override
@@ -76,6 +86,7 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
     _fadeInDurationController.dispose();
     _soundReductionPositionController.dispose();
     _soundReductionDurationController.dispose();
+    _volumeController.dispose(); // NEW
     super.dispose();
   }
 
@@ -85,7 +96,8 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
     final silence = TimeFormatUtil.parseFlexible(
       _silenceDurationController.text,
     );
-    final playSpeed = double.tryParse(_playSpeedController.text) ?? 0.1; // the value 0.1 will cause an error to be displayed
+    final playSpeed = double.tryParse(_playSpeedController.text) ??
+        0.1; // the value 0.1 will cause an error to be displayed
     final fadeInDuration = TimeFormatUtil.parseFlexible(
       // NEW
       _fadeInDurationController.text,
@@ -98,6 +110,7 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
     );
     final commentId = widget.existingSegment?.commentId ?? '';
     final commentTitle = widget.existingSegment?.commentTitle ?? '';
+    final volume = double.tryParse(_volumeController.text) ?? -1.0; // NEW
 
     if (start < 0 || start > widget.maxDuration - 0.1) {
       _showError(
@@ -171,6 +184,14 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
       }
     }
 
+    // NEW validation, placed alongside the playSpeed check
+    if (volume < kMinSegmentVolume || volume > kMaxSegmentVolume) {
+      _showError(
+        "${AppLocalizations.of(context)!.invalidVolumeError(kMinSegmentVolume.toStringAsFixed(1), kMaxSegmentVolume.toStringAsFixed(2))}.",
+      );
+      return;
+    }
+
     Navigator.of(context).pop(
       AudioSegment(
         startPosition: start,
@@ -180,6 +201,7 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
         fadeInDuration: fadeInDuration,
         soundReductionPosition: soundReductionPosition,
         soundReductionDuration: soundReductionDuration,
+        volume: volume, // NEW
         commentId: commentId,
         commentTitle: commentTitle,
 
@@ -340,6 +362,19 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
                       border: OutlineInputBorder(),
                     ),
                   ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    key: const Key('volumeTextField'),
+                    controller: _volumeController,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.volumeLabel,
+                      hintText: '1.0',
+                      border: OutlineInputBorder(),
+                      helperText: AppLocalizations.of(context)!.volumeHelperText,
+                      helperMaxLines: 2,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
                   const SizedBox(height: 12),
                   Text(
                     AppLocalizations.of(context)!.volumeFadeInOptional,

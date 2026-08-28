@@ -2681,15 +2681,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fadeStartPositionTooltip =>
-      'Defines how long the audio fades in from 0% to 100% at the start of the comment.';
+      'Set how long the audio fades in from 0% to 100% at the start of the comment.';
 
   @override
   String get soundReductionPositionTooltip =>
-      'Defines the position where the audio starts fading out from 100% to 0%.';
+      'Set the position where the audio starts fading out from 100% to 0%.';
 
   @override
   String get soundReductionDurationTooltip =>
-      'Defines how long the audio fades out from 100% to 0%. Ideally, the fade-out start position plus its duration should match the comment end position.';
+      'Set how long the audio fades out from 100% to 0%. Ideally, the fade-out start position plus its duration should match the comment end position.';
 
   @override
   String get volumeFadeOutOptional => 'Volume fade-out (optional)';
@@ -2711,6 +2711,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get fadeDurationHelperText =>
       'Duration to fade volume from 100% to 0%';
+
+  @override
+  String get volumeLabel => 'Volume (0.1 to 1.0)';
+
+  @override
+  String get volumeHelperText => 'Set the volume of this audio part';
 
   @override
   String endPositionError(Object startPosition) {
@@ -2747,6 +2753,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String soundPositionPlusDurationBeyondEndError(Object value1, Object value2) {
     return 'Sound reduction of $value1 must complete before or at the comment end position ($value2)';
+  }
+
+  @override
+  String invalidVolumeError(Object value1, Object value2) {
+    return 'Sound volume must be beetween $value1 and $value2';
   }
 
   @override
@@ -2838,7 +2849,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extractAudioPlaySpeedTooltip =>
-      'Defines the play speed of this comment audio extraction part';
+      'Set the play speed of this comment audio extraction part';
+
+  @override
+  String get volumeTooltip =>
+      'Set the volume of this comment audio extraction part';
 
   @override
   String get invalidPlaySpeedError =>

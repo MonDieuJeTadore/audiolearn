@@ -4303,19 +4303,19 @@ abstract class AppLocalizations {
   /// No description provided for @fadeStartPositionTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Defines how long the audio fades in from 0% to 100% at the start of the comment.'**
+  /// **'Set how long the audio fades in from 0% to 100% at the start of the comment.'**
   String get fadeStartPositionTooltip;
 
   /// No description provided for @soundReductionPositionTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Defines the position where the audio starts fading out from 100% to 0%.'**
+  /// **'Set the position where the audio starts fading out from 100% to 0%.'**
   String get soundReductionPositionTooltip;
 
   /// No description provided for @soundReductionDurationTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Defines how long the audio fades out from 100% to 0%. Ideally, the fade-out start position plus its duration should match the comment end position.'**
+  /// **'Set how long the audio fades out from 100% to 0%. Ideally, the fade-out start position plus its duration should match the comment end position.'**
   String get soundReductionDurationTooltip;
 
   /// No description provided for @volumeFadeOutOptional.
@@ -4353,6 +4353,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Duration to fade volume from 100% to 0%'**
   String get fadeDurationHelperText;
+
+  /// No description provided for @volumeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume (0.1 to 1.0)'**
+  String get volumeLabel;
+
+  /// No description provided for @volumeHelperText.
+  ///
+  /// In en, this message translates to:
+  /// **'Set the volume of this audio part'**
+  String get volumeHelperText;
 
   /// No description provided for @endPositionError.
   ///
@@ -4401,6 +4413,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sound reduction of {value1} must complete before or at the comment end position ({value2})'**
   String soundPositionPlusDurationBeyondEndError(Object value1, Object value2);
+
+  /// No description provided for @invalidVolumeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound volume must be beetween {value1} and {value2}'**
+  String invalidVolumeError(Object value1, Object value2);
 
   /// No description provided for @loadedComments.
   ///
@@ -4549,8 +4567,14 @@ abstract class AppLocalizations {
   /// No description provided for @extractAudioPlaySpeedTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Defines the play speed of this comment audio extraction part'**
+  /// **'Set the play speed of this comment audio extraction part'**
   String get extractAudioPlaySpeedTooltip;
+
+  /// No description provided for @volumeTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Set the volume of this comment audio extraction part'**
+  String get volumeTooltip;
 
   /// No description provided for @invalidPlaySpeedError.
   ///

@@ -547,6 +547,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                 fadeInDuration: comment.fadeInDuration,
                 soundReductionPosition: comment.soundReductionPosition,
                 soundReductionDuration: comment.soundReductionDuration,
+                volume: comment.volume, // NEW
                 commentId: comment.id,
                 commentTitle: comment.title,
                 deleted: comment.deleted,
@@ -570,6 +571,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
               fadeInDuration: 0.0,
               soundReductionPosition: 0.0,
               soundReductionDuration: 0.0,
+              volume: audio.audioPlayVolume, // NEW
               commentId:
                   'full_audio_${audio.audioFileName}_${DateTime.now().microsecondsSinceEpoch}',
               commentTitle: audio.validVideoTitle,
@@ -1053,6 +1055,8 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                   builder: (_) => AddSegmentDialog(
                     maxDuration: audioExtractorVM.audioFile.duration,
                     existingSegment: segment,
+                    currentAudioVolume:
+                        widget.currentAudio.audioPlayVolume, // NEW
                   ),
                 );
 
@@ -1215,6 +1219,8 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                                     .audio.audioDuration.inMilliseconds /
                                 1000.0,
                             existingSegment: segment,
+                            currentAudioVolume:
+                                widget.currentAudio.audioPlayVolume, // NEW
                           ),
                         );
 
@@ -1381,6 +1387,17 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                         .extractAudioPlaySpeedTooltip,
                     child: Text(
                       "${AppLocalizations.of(context)!.extractAudioPlaySpeed}: ${segment.playSpeed}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ),
+                  Tooltip(
+                    message: AppLocalizations.of(context)!.volumeTooltip,
+                    child: Text(
+                      "${AppLocalizations.of(context)!.volumeLabel}: ${segment.volume.toStringAsFixed(2)}",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
@@ -1849,6 +1866,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
           fadeInDuration: 0.0,
           soundReductionPosition: 0.0,
           soundReductionDuration: 0.0,
+          volume: currentAudio.audioPlayVolume, // NEW
           commentId: 'full_audio_${DateTime.now().microsecondsSinceEpoch}',
           commentTitle: currentAudio.validVideoTitle,
           deleted: false,
@@ -1901,6 +1919,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
               fadeInDuration: comment.fadeInDuration,
               soundReductionPosition: comment.soundReductionPosition,
               soundReductionDuration: comment.soundReductionDuration,
+              volume: comment.volume, // NEW
               commentId: comment.id,
               commentTitle: comment.title,
               deleted: comment.deleted,
@@ -2186,6 +2205,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
       fadeInDuration: segment.fadeInDuration,
       soundReductionPosition: segment.soundReductionPosition,
       soundReductionDuration: segment.soundReductionDuration,
+      volume: segment.volume,
       commentId:
           'duplicated_${segment.commentId}_${DateTime.now().microsecondsSinceEpoch}',
       commentTitle:
@@ -2257,6 +2277,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
       fadeInDuration: segment.fadeInDuration,
       soundReductionPosition: segment.soundReductionPosition,
       soundReductionDuration: segment.soundReductionDuration,
+      volume: segment.volume,
       commentId:
           'duplicated_${segment.commentId}_${DateTime.now().microsecondsSinceEpoch}',
       commentTitle: 'To extract ${segment.commentTitle}',

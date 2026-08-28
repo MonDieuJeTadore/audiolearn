@@ -3383,4 +3383,21 @@ class MockAppLocalizations extends AppLocalizations {
     Object creationDateTime,
   ) =>
       "Comment last update date/time $creationDateTime.";
+
+  @override
+  String invalidVolumeError(
+    Object value1,
+    Object value2,
+  ) =>
+      "Sound volume must be beetween $value1 and $value2";
+
+  @override
+  String get volumeLabel => "Volume (0.1 to 0.99)";
+
+  @override
+  String get volumeHelperText => "Set the volume of this audio part";
+
+  @override
+  String get volumeTooltip =>
+      "Defines the volume of this comment audio extraction part";
 }

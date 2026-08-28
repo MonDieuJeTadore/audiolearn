@@ -1,5 +1,6 @@
 import '../utils/date_time_util.dart';
 
+// lib/models/comment.dart
 class Comment {
   String id;
   String title;
@@ -11,6 +12,7 @@ class Comment {
   double fadeInDuration;
   double soundReductionPosition;
   double soundReductionDuration;
+  double volume; // NEW
   bool deleted;
   late DateTime creationDateTime;
   late DateTime lastUpdateDateTime;
@@ -25,6 +27,7 @@ class Comment {
     this.fadeInDuration = 0.0,
     this.soundReductionPosition = 0.0,
     this.soundReductionDuration = 0.0,
+    this.volume = 1.0, // NEW
     this.deleted = false,
   })  : id = "${title}_${DateTime.now().microsecondsSinceEpoch.toString()}",
         creationDateTime =
@@ -32,8 +35,6 @@ class Comment {
     lastUpdateDateTime = creationDateTime;
   }
 
-  /// This constructor requires all instance variables. It is used
-  /// by the fromJson factory constructor.
   Comment.fullConstructor({
     required this.id,
     required this.title,
@@ -45,6 +46,7 @@ class Comment {
     required this.fadeInDuration,
     required this.soundReductionPosition,
     required this.soundReductionDuration,
+    required this.volume, // NEW
     required this.creationDateTime,
     required this.lastUpdateDateTime,
     required this.deleted,
@@ -64,13 +66,13 @@ class Comment {
       fadeInDuration: json['fadeInDuration'] ?? 0.0,
       soundReductionPosition: json['soundReductionPosition'] ?? 0.0,
       soundReductionDuration: json['soundReductionDuration'] ?? 0.0,
+      volume: json['volume'] ?? 1.0, // NEW — old files without the field default to 1.0
       deleted: json['deleted'] ?? false,
       creationDateTime: DateTime.parse(json['creationDateTime']),
       lastUpdateDateTime: DateTime.parse(json['lastUpdateDateTime']),
     );
   }
 
-  // Method: converts an instance of Comment to a JSON object
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -84,6 +86,7 @@ class Comment {
       'fadeInDuration': fadeInDuration,
       'soundReductionPosition': soundReductionPosition,
       'soundReductionDuration': soundReductionDuration,
+      'volume': volume, // NEW
       'deleted': deleted,
       'creationDateTime': creationDateTime.toIso8601String(),
       'lastUpdateDateTime': lastUpdateDateTime.toIso8601String(),
@@ -91,13 +94,8 @@ class Comment {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-
-    return other is Comment && other.id == id;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is Comment && other.id == id);
 
   @override
   int get hashCode => id.hashCode;

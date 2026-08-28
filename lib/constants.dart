@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 const String kApplicationName = "AudioLearn";
 const String kApplicationNameForAboutView =
     "Audio Learn"; // Enables better readability
-const String kApplicationVersion = "3.6.11";
+const String kApplicationVersion = "3.6.12";
 
 enum PopupMenuButtonType {
   openSortFilterAudioDialog,
@@ -100,6 +100,11 @@ final Color kDarkAndLightDisabledIconColor = Colors.grey.shade600;
 const Color kButtonColor = Color(0xFF3D3EC2);
 const Color kScreenButtonColor = kSliderThumbColorInDarkMode;
 const double kAudioDefaultPlayVolume = 0.5;
+
+// Matches the accepted range of Audio.audioPlayVolume
+const double kMinSegmentVolume = 0.1;
+const double kMaxSegmentVolume = 1.0;
+
 const double kDropdownMenuItemMaxWidth = 90;
 const double kConfirmActionDialogSmallerFontSize = 20;
 

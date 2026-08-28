@@ -2708,15 +2708,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get fadeStartPositionTooltip =>
-      'Définit la durée de l\'augmentation du volume de 0 % à 100 % au début du commentaire.';
+      'Definis la durée de l\'augmentation du volume de 0 % à 100 % au début du commentaire.';
 
   @override
   String get soundReductionPositionTooltip =>
-      'Définit la position à laquelle le son commence à diminuer de 100 % à 0 %.';
+      'Definis la position à laquelle le son commence à diminuer de 100 % à 0 %.';
 
   @override
   String get soundReductionDurationTooltip =>
-      'Définit la durée de la diminution de volume de 100 % à 0 %. Idéalement, la position de début de la diminution de volume additionnée à sa durée doit correspondre à la position de fin du commentaire.';
+      'Definis la durée de la diminution de volume de 100 % à 0 %. Idéalement, la position de début de la diminution de volume additionnée à sa durée doit correspondre à la position de fin du commentaire.';
 
   @override
   String get volumeFadeOutOptional =>
@@ -2739,6 +2739,12 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get fadeDurationHelperText =>
       'Durée pour faire baisser le volume de 100% à 0%';
+
+  @override
+  String get volumeLabel => 'Volume (0.1 to 1.0)';
+
+  @override
+  String get volumeHelperText => 'Définition du volume de cette partie audio';
 
   @override
   String endPositionError(Object startPosition) {
@@ -2775,6 +2781,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String soundPositionPlusDurationBeyondEndError(Object value1, Object value2) {
     return 'La diminution du son de $value1 doit se terminer avant ou à la fin du commentaire ($value2)';
+  }
+
+  @override
+  String invalidVolumeError(Object value1, Object value2) {
+    return 'Le volume doit être entre $value1 et $value2';
   }
 
   @override
@@ -2869,7 +2880,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get extractAudioPlaySpeedTooltip =>
-      'Définit la vitesse de lecture de cette partie d\'extraction du commentaire audio';
+      'Definis la vitesse de lecture de cette partie d\'extraction du commentaire audio';
+
+  @override
+  String get volumeTooltip =>
+      'Definis le volume de cette partie d\'extraction du commentaire audio';
 
   @override
   String get invalidPlaySpeedError =>
@@ -3095,7 +3110,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playVolumeInPercentageTooltip =>
-      'Définit le volume de lecture Windows appliqué au démarrage d\'AudioLearn. Lorsque l\'application est fermée, le volume de lecture précédent est restauré.';
+      'Definis le volume de lecture Windows appliqué au démarrage d\'AudioLearn. Lorsque l\'application est fermée, le volume de lecture précédent est restauré.';
 
   @override
   String get restoringPlaylistsFromZipProgression =>

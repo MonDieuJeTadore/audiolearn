@@ -176,6 +176,7 @@ class AudioExtractorVM extends ChangeNotifier {
       comment.fadeInDuration = normalizedSegment.fadeInDuration;
       comment.soundReductionPosition = normalizedSegment.soundReductionPosition;
       comment.soundReductionDuration = normalizedSegment.soundReductionDuration;
+      comment.volume = normalizedSegment.volume;
       comment.deleted = normalizedSegment.deleted;
 
       if (updateAudioCommentsLst) {
@@ -433,6 +434,7 @@ class AudioExtractorVM extends ChangeNotifier {
           comment.fadeInDuration = normalized.fadeInDuration;
           comment.soundReductionPosition = normalized.soundReductionPosition;
           comment.soundReductionDuration = normalized.soundReductionDuration;
+          comment.volume = normalized.volume;
           comment.deleted = normalized.deleted;
 
           commentVMlistenTrue.updateAudioCommentsLst(
@@ -881,6 +883,7 @@ class AudioExtractorVM extends ChangeNotifier {
       fadeInDuration: defaultSegment.fadeInDuration,
       soundReductionPosition: defaultSegment.soundReductionPosition,
       soundReductionDuration: defaultSegment.soundReductionDuration,
+      volume: defaultSegment.volume,
       deleted: false,
     );
     defaultComment.id = defaultSegment.commentId;

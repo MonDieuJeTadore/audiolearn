@@ -102,6 +102,7 @@ const Color kScreenButtonColor = kSliderThumbColorInDarkMode;
 const double kAudioDefaultPlayVolume = 0.5;
 
 // Matches the accepted range of Audio.audioPlayVolume
+// in the AddSegmentDialog
 const double kMinSegmentVolume = 0.5;
 const double kMaxSegmentVolume = 2.0;
 

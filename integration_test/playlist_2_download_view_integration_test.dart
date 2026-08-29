@@ -18,6 +18,7 @@ import 'package:audiolearn/viewmodels/playlist_list_vm.dart';
 import 'package:audiolearn/viewmodels/warning_message_vm.dart';
 import 'package:audiolearn/views/widgets/audio_extractor_screen.dart';
 import 'package:audiolearn/views/widgets/audio_sort_filter_dialog.dart';
+import 'package:audiolearn/views/widgets/add_segment_dialog.dart';
 import 'package:audiolearn/views/widgets/playlist_rename_dialog.dart';
 import 'package:audiolearn/views/widgets/set_value_to_target_dialog.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -49436,6 +49437,14 @@ void main() {
               commentReductionPositionTextFieldFinder, '0:25.0');
           await tester.pumpAndSettle();
 
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
           // Modify the reduction duration to 0:05.0
           Finder commentReductionDurationTextFieldFinder =
               find.byKey(const Key('soundReductionDurationTextField'));
@@ -49487,6 +49496,14 @@ void main() {
           await tester.tap(commentReductionPositionTextFieldFinder);
           await tester.enterText(
               commentReductionPositionTextFieldFinder, '4:20.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
           await tester.pumpAndSettle();
 
           // Modify the reduction duration to 0:06.0

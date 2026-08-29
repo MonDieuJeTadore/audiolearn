@@ -345,6 +345,7 @@ class CommentVM extends ChangeNotifier {
               updatedComment.soundReductionPosition;
           existingComment.soundReductionDuration =
               updatedComment.soundReductionDuration;
+              existingComment.volume = updatedComment.volume;
           existingComment.deleted = updatedComment.deleted;
           existingComment.lastUpdateDateTime =
               updatedComment.lastUpdateDateTime;

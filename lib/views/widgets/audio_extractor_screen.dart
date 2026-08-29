@@ -724,6 +724,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
           fadeInDuration: segment.fadeInDuration,
           soundReductionPosition: segment.soundReductionPosition,
           soundReductionDuration: segment.soundReductionDuration,
+          volume: segment.volume,
           deleted: segment.deleted,
         );
         comment.id = segment.commentId;
@@ -2229,6 +2230,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
       fadeInDuration: duplicatedSegment.fadeInDuration,
       soundReductionPosition: duplicatedSegment.soundReductionPosition,
       soundReductionDuration: duplicatedSegment.soundReductionDuration,
+      volume: segment.volume,
       deleted: false,
     );
     duplicatedComment.id = duplicatedSegment.commentId;
@@ -2309,6 +2311,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
       fadeInDuration: duplicatedSegment.fadeInDuration,
       soundReductionPosition: duplicatedSegment.soundReductionPosition,
       soundReductionDuration: duplicatedSegment.soundReductionDuration,
+      volume: segment.volume,
       deleted: false,
     );
     duplicatedComment.id = duplicatedSegment.commentId;

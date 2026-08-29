@@ -4357,7 +4357,7 @@ abstract class AppLocalizations {
   /// No description provided for @volumeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Volume (0.5 to 2.0)'**
+  /// **'Volume (0.1 to 2.0)'**
   String get volumeLabel;
 
   /// No description provided for @endPositionError.

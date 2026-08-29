@@ -2713,7 +2713,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Duration to fade volume from 100% to 0%';
 
   @override
-  String get volumeLabel => 'Volume (0.5 to 2.0)';
+  String get volumeLabel => 'Volume (0.1 to 2.0)';
 
   @override
   String endPositionError(Object startPosition) {

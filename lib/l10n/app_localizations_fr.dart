@@ -2741,7 +2741,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Durée pour faire baisser le volume de 100% à 0%';
 
   @override
-  String get volumeLabel => 'Volume (0.5 to 2.0)';
+  String get volumeLabel => 'Volume (0.5 à 2.0)';
 
   @override
   String endPositionError(Object startPosition) {

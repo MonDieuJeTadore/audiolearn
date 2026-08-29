@@ -49743,6 +49743,14 @@ void main() {
               commentReductionPositionTextFieldFinder, '0:25.0');
           await tester.pumpAndSettle();
 
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
           // Modify the reduction duration to 0:05.0
           Finder commentReductionDurationTextFieldFinder =
               find.byKey(const Key('soundReductionDurationTextField'));
@@ -49837,6 +49845,14 @@ void main() {
           await tester.tap(commentReductionPositionTextFieldFinder);
           await tester.enterText(
               commentReductionPositionTextFieldFinder, '4:20.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
           await tester.pumpAndSettle();
 
           // Modify the reduction duration to 0:06.0
@@ -50111,6 +50127,14 @@ void main() {
               commentReductionPositionTextFieldFinder, '0:25.0');
           await tester.pumpAndSettle();
 
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
           // Modify the reduction duration to 0:05.0
           Finder commentReductionDurationTextFieldFinder =
               find.byKey(const Key('soundReductionDurationTextField'));
@@ -50163,6 +50187,14 @@ void main() {
           await tester.tap(commentReductionPositionTextFieldFinder);
           await tester.enterText(
               commentReductionPositionTextFieldFinder, '4:20.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
           await tester.pumpAndSettle();
 
           // Modify the reduction duration to 0:06.0
@@ -50565,6 +50597,14 @@ void main() {
               commentReductionPositionTextFieldFinder, '0:25.0');
           await tester.pumpAndSettle();
 
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
           // Modify the reduction duration to 0:05.0
           Finder commentReductionDurationTextFieldFinder =
               find.byKey(const Key('soundReductionDurationTextField'));
@@ -50617,6 +50657,14 @@ void main() {
           await tester.tap(commentReductionPositionTextFieldFinder);
           await tester.enterText(
               commentReductionPositionTextFieldFinder, '4:20.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
           await tester.pumpAndSettle();
 
           // Modify the reduction duration to 0:06.0
@@ -50792,6 +50840,14 @@ void main() {
               commentReductionPositionTextFieldFinder, '24:06.5');
           await tester.pumpAndSettle();
 
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
           // Modify the reduction duration to 0:03.5
           Finder commentReductionDurationTextFieldFinder =
               find.byKey(const Key('soundReductionDurationTextField'));
@@ -50942,6 +50998,14 @@ void main() {
           await tester.tap(commentReductionPositionTextFieldFinder);
           await tester.enterText(
               commentReductionPositionTextFieldFinder, '24:06.5');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
           await tester.pumpAndSettle();
 
           // Modify the reduction duration to 0:03.5
@@ -51275,6 +51339,14 @@ void main() {
           await tester.tap(commentReductionPositionTextFieldFinder);
           await tester.enterText(
               commentReductionPositionTextFieldFinder, '24:06.5');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
           await tester.pumpAndSettle();
 
           // Modify the reduction duration to 0:03.5
@@ -51939,6 +52011,14 @@ void main() {
         await tester.tap(commentReductionPositionTextFieldFinder);
         await tester.enterText(
             commentReductionPositionTextFieldFinder, '2:10.1');
+        await tester.pumpAndSettle();
+
+        // Necessary to drag down vertically the add s4egment dialog
+        await tester.drag(
+          find.byType(AddSegmentDialog),
+          const Offset(
+              0, -500), // Negative value for vertical drag to scroll down
+        );
         await tester.pumpAndSettle();
 
         // Modify the reduction duration to 0:09.9
@@ -52952,6 +53032,14 @@ void main() {
           doNotTapOnSaveButton: true,
         );
 
+        // Necessary to drag down vertically the add s4egment dialog
+        await tester.drag(
+          find.byType(AddSegmentDialog),
+          const Offset(
+              0, -500), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
         // Now modify the Volume fade-out duration to -0:00.1 and verify
         // the error message
         await _verifyExistenceOfErrorMessage(
@@ -53150,6 +53238,14 @@ void main() {
             commentReductionPositionTextFieldFinder, '0:20.6');
         await tester.pumpAndSettle();
 
+        // Necessary to drag down vertically the add s4egment dialog
+        await tester.drag(
+          find.byType(AddSegmentDialog),
+          const Offset(
+              0, -500), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
         // Modify the reduction duration to 0:08.0
         Finder commentReductionDurationTextFieldFinder =
             find.byKey(const Key('soundReductionDurationTextField'));
@@ -53328,6 +53424,14 @@ void main() {
         await tester.tap(commentReductionPositionTextFieldFinder);
         await tester.enterText(
             commentReductionPositionTextFieldFinder, '0:20.0');
+        await tester.pumpAndSettle();
+
+        // Necessary to drag down vertically the add s4egment dialog
+        await tester.drag(
+          find.byType(AddSegmentDialog),
+          const Offset(
+              0, -500), // Negative value for vertical drag to scroll down
+        );
         await tester.pumpAndSettle();
 
         // Modify the reduction duration to 0:08.6

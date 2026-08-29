@@ -111,6 +111,7 @@ void main() {
           fadeInDuration: 0.0,
           soundReductionPosition: 170.0,
           soundReductionDuration: 11.0,
+          volume: 1.0,
           creationDateTime: DateTime.parse('2025-12-21T17:16:30.000'),
           lastUpdateDateTime: DateTime.parse('2025-12-22T05:47:28.517838'),
           deleted: false,
@@ -127,6 +128,7 @@ void main() {
           fadeInDuration: 0.0,
           soundReductionPosition: 0.0,
           soundReductionDuration: 0.0,
+          volume: 1.0,
           creationDateTime: DateTime.parse('2025-12-22T11:41:48.000'),
           lastUpdateDateTime: DateTime.parse('2025-12-22T16:07:01.000'),
           deleted: false,
@@ -142,6 +144,7 @@ void main() {
           fadeInDuration: 9.0,
           soundReductionPosition: 311.0,
           soundReductionDuration: 9.8,
+          volume: 1.0,
           creationDateTime: DateTime.parse('2025-12-21T17:25:17.000'),
           lastUpdateDateTime: DateTime.parse('2026-01-02T14:57:29.867823'),
           deleted: true,
@@ -196,6 +199,7 @@ void main() {
           fadeInDuration: 0.0,
           soundReductionPosition: 0.0,
           soundReductionDuration: 0.0,
+          volume: 1.0,
           creationDateTime: DateTime.parse('2023-03-26T00:05:32.000'),
           lastUpdateDateTime: DateTime.parse('2024-05-19T15:23:51.000'),
           deleted: false,
@@ -212,6 +216,7 @@ void main() {
           fadeInDuration: 0.0,
           soundReductionPosition: 0.0,
           soundReductionDuration: 0.0,
+          volume: 1.0,
           creationDateTime: DateTime.parse('2024-05-19T14:49:03.000'),
           lastUpdateDateTime: DateTime.parse('2024-05-19T14:49:03.000'),
           deleted: false,
@@ -227,6 +232,7 @@ void main() {
           fadeInDuration: 0.0,
           soundReductionPosition: 0.0,
           soundReductionDuration: 0.0,
+          volume: 1.0,
           creationDateTime: DateTime.parse('2023-03-24T20:05:32.000'),
           lastUpdateDateTime: DateTime.parse('2024-05-19T14:46:05.000'),
           deleted: false,
@@ -364,6 +370,7 @@ void main() {
         fadeInDuration: 0.0,
         soundReductionPosition: 0.0,
         soundReductionDuration: 0.0,
+        volume: 1.0,
         creationDateTime: DateTime.parse('2024-05-27T13:14:32.000'),
         lastUpdateDateTime: DateTime.parse('2024-08-01T11:42:36.000'),
         deleted: false,
@@ -379,6 +386,7 @@ void main() {
         fadeInDuration: 0.0,
         soundReductionPosition: 0.0,
         soundReductionDuration: 0.0,
+        volume: 1.0,
         creationDateTime: DateTime.parse('2025-06-06 12:48:25.000'),
         lastUpdateDateTime: DateTime.parse('2025-06-07 17:51:22.000'),
         deleted: false,
@@ -786,7 +794,8 @@ void main() {
       // the returned Commentlist should have three element
       expect(commentLst.length, 3);
 
-      commentToModify.playSpeed = 1.0; // play speed is not modified by modifyComment
+      commentToModify.playSpeed =
+          1.0; // play speed is not modified by modifyComment
       _validateComment(commentLst[2], commentToModify);
       expect(commentLst[2].lastUpdateDateTime,
           DateTimeUtil.getDateTimeLimitedToSeconds(DateTime.now()));

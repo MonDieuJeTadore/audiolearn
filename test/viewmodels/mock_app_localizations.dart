@@ -3397,4 +3397,7 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get volumeTooltip =>
       "Defines the volume of this comment audio extraction part";
+
+  @override
+  String get volumeEditLabel => "Volume (0.2 to 2.0)";
 }

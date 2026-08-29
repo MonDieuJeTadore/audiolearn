@@ -367,7 +367,7 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
                     key: const Key('volumeTextField'),
                     controller: _volumeController,
                     decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.volumeLabel,
+                      labelText: AppLocalizations.of(context)!.volumeEditLabel,
                       hintText: '1.0',
                       border: OutlineInputBorder(),
                     ),

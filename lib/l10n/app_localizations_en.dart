@@ -767,12 +767,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String increaseAudioVolumeIconButtonTooltip(Object percentValue) {
-    return 'Increase the audio volume (currently $percentValue). Disabled when maximum volume is reached.';
+    return 'Increase the audio volume (currently $percentValue). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.';
   }
 
   @override
   String decreaseAudioVolumeIconButtonTooltip(Object percentValue) {
-    return 'Decrease the audio volume (currently $percentValue). Disabled when minimum volume is reached.';
+    return 'Decrease the audio volume (currently $percentValue). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.';
   }
 
   @override
@@ -2713,7 +2713,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Duration to fade volume from 100% to 0%';
 
   @override
-  String get volumeLabel => 'Volume (0.1 to 1.0)';
+  String get volumeLabel => 'Volume (0.5 to 2.0)';
 
   @override
   String endPositionError(Object startPosition) {

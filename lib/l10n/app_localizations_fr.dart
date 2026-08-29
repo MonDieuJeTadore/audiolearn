@@ -771,12 +771,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String increaseAudioVolumeIconButtonTooltip(Object percentValue) {
-    return 'Augmenter le volume audio (actuellement $percentValue). Le bouton est désactivé lorsque le volume maximum est atteint.';
+    return 'Augmenter le volume audio (actuellement $percentValue). Le volume normal vaut 50 %. Le bouton est désactivé lorsque le volume maximum (100 %%) est atteint.';
   }
 
   @override
   String decreaseAudioVolumeIconButtonTooltip(Object percentValue) {
-    return 'Diminuer le volume audio (actuellement $percentValue). Le bouton est désactivé lorsque le volume minimum est atteint.';
+    return 'Diminuer le volume audio (actuellement $percentValue). Le volume normal vaut 50 %. Le bouton est désactivé lorsque le volume minimum (10 %) est atteint.';
   }
 
   @override
@@ -2741,7 +2741,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Durée pour faire baisser le volume de 100% à 0%';
 
   @override
-  String get volumeLabel => 'Volume (0.1 to 1.0)';
+  String get volumeLabel => 'Volume (0.5 to 2.0)';
 
   @override
   String endPositionError(Object startPosition) {

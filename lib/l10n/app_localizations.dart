@@ -1386,13 +1386,13 @@ abstract class AppLocalizations {
   /// No description provided for @increaseAudioVolumeIconButtonTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Increase the audio volume (currently {percentValue}). Disabled when maximum volume is reached.'**
+  /// **'Increase the audio volume (currently {percentValue}). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.'**
   String increaseAudioVolumeIconButtonTooltip(Object percentValue);
 
   /// No description provided for @decreaseAudioVolumeIconButtonTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Decrease the audio volume (currently {percentValue}). Disabled when minimum volume is reached.'**
+  /// **'Decrease the audio volume (currently {percentValue}). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.'**
   String decreaseAudioVolumeIconButtonTooltip(Object percentValue);
 
   /// No description provided for @resetSortFilterOptionsTooltip.
@@ -4357,7 +4357,7 @@ abstract class AppLocalizations {
   /// No description provided for @volumeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Volume (0.1 to 1.0)'**
+  /// **'Volume (0.5 to 2.0)'**
   String get volumeLabel;
 
   /// No description provided for @endPositionError.

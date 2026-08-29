@@ -102,8 +102,8 @@ const Color kScreenButtonColor = kSliderThumbColorInDarkMode;
 const double kAudioDefaultPlayVolume = 0.5;
 
 // Matches the accepted range of Audio.audioPlayVolume
-const double kMinSegmentVolume = 0.1;
-const double kMaxSegmentVolume = 1.0;
+const double kMinSegmentVolume = 0.5;
+const double kMaxSegmentVolume = 2.0;
 
 const double kDropdownMenuItemMaxWidth = 90;
 const double kConfirmActionDialogSmallerFontSize = 20;

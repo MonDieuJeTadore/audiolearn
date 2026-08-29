@@ -103,7 +103,7 @@ const double kAudioDefaultPlayVolume = 0.5;
 
 // Matches the accepted range of Audio.audioPlayVolume
 // in the AddSegmentDialog
-const double kMinSegmentVolume = 0.5;
+const double kMinSegmentVolume = 0.1;
 const double kMaxSegmentVolume = 2.0;
 
 const double kDropdownMenuItemMaxWidth = 90;

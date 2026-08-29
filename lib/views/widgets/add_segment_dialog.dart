@@ -370,8 +370,6 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
                       labelText: AppLocalizations.of(context)!.volumeLabel,
                       hintText: '1.0',
                       border: OutlineInputBorder(),
-                      helperText: AppLocalizations.of(context)!.volumeHelperText,
-                      helperMaxLines: 2,
                     ),
                   ),
                   const SizedBox(height: 12),

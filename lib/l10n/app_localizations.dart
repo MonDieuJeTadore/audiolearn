@@ -4360,12 +4360,6 @@ abstract class AppLocalizations {
   /// **'Volume (0.1 to 1.0)'**
   String get volumeLabel;
 
-  /// No description provided for @volumeHelperText.
-  ///
-  /// In en, this message translates to:
-  /// **'Set the volume of this audio part'**
-  String get volumeHelperText;
-
   /// No description provided for @endPositionError.
   ///
   /// In en, this message translates to:

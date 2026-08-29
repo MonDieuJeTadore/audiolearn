@@ -2716,9 +2716,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get volumeLabel => 'Volume (0.1 to 1.0)';
 
   @override
-  String get volumeHelperText => 'Set the volume of this audio part';
-
-  @override
   String endPositionError(Object startPosition) {
     return 'End position must be after start position ($startPosition) and not exceed';
   }

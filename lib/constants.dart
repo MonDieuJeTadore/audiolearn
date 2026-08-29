@@ -102,8 +102,11 @@ const Color kScreenButtonColor = kSliderThumbColorInDarkMode;
 const double kAudioDefaultPlayVolume = 0.5;
 
 // Matches the accepted range of Audio.audioPlayVolume
-// in the AddSegmentDialog
-const double kMinSegmentVolume = 0.1;
+// in the AddSegmentDialog. In the audio player view,
+// the initial volume is set to 50 % and can be ajusted
+// to 10 % till 100 %. This is equivalent to the initial
+// volume of 1.0 adjustable to 0.2 till 2.0.
+const double kMinSegmentVolume = 0.2;
 const double kMaxSegmentVolume = 2.0;
 
 const double kDropdownMenuItemMaxWidth = 90;

@@ -366,64 +366,56 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                                   ],
                                 ),
                               ],
-                              (_extractingMultipleAudios)
-                                  ? const SizedBox
-                                      .shrink() // multiple audios are extracted in saved/MP3 dir.
-                                  //           No playlist option is displayed.
-                                  : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        createCheckboxRowFunction(
-                                          // displaying music quality checkbox
-                                          checkBoxWidgetKey:
-                                              const Key('onDirectoryCheckBox'),
-                                          context: context,
-                                          label: AppLocalizations.of(context)!
-                                              .inDirectoryLabel,
-                                          labelTooltip:
-                                              AppLocalizations.of(context)!
-                                                  .inDirectoryLabelTooltip,
-                                          value: _extractInDirectory,
-                                          onChangedFunction: (bool? value) {
-                                            setState(() {
-                                              _extractInDirectory =
-                                                  value ?? false;
-                                              _extractInPlaylist =
-                                                  !_extractInDirectory;
-                                            });
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  createCheckboxRowFunction(
+                                    // displaying music quality checkbox
+                                    checkBoxWidgetKey:
+                                        const Key('onDirectoryCheckBox'),
+                                    context: context,
+                                    label: AppLocalizations.of(context)!
+                                        .inDirectoryLabel,
+                                    labelTooltip: AppLocalizations.of(context)!
+                                        .inDirectoryLabelTooltip,
+                                    value: _extractInDirectory,
+                                    onChangedFunction: (bool? value) {
+                                      setState(() {
+                                        _extractInDirectory = value ?? false;
+                                        _extractInPlaylist =
+                                            !_extractInDirectory;
+                                      });
 
-                                            if (!_extractInDirectory) {
-                                              // Clear the directory not selected error
-                                              audioExtractorVM.setError('');
-                                            }
-                                          },
-                                        ),
-                                        createCheckboxRowFunction(
-                                          // displaying music quality checkbox
-                                          checkBoxWidgetKey:
-                                              const Key('inPlaylistCheckBox'),
-                                          context: context,
-                                          label: AppLocalizations.of(context)!
-                                              .inPlaylistLabel,
-                                          labelTooltip:
-                                              AppLocalizations.of(context)!
-                                                  .inPlaylistLabelTooltip,
-                                          value: _extractInPlaylist,
-                                          onChangedFunction: (bool? value) {
-                                            setState(() {
-                                              _extractInPlaylist =
-                                                  value ?? false;
-                                              _extractInDirectory =
-                                                  !_extractInPlaylist;
-                                            });
+                                      if (!_extractInDirectory) {
+                                        // Clear the directory not selected error
+                                        audioExtractorVM.setError('');
+                                      }
+                                    },
+                                  ),
+                                  createCheckboxRowFunction(
+                                    // displaying music quality checkbox
+                                    checkBoxWidgetKey:
+                                        const Key('inPlaylistCheckBox'),
+                                    context: context,
+                                    label: AppLocalizations.of(context)!
+                                        .inPlaylistLabel,
+                                    labelTooltip: AppLocalizations.of(context)!
+                                        .inPlaylistLabelTooltip,
+                                    value: _extractInPlaylist,
+                                    onChangedFunction: (bool? value) {
+                                      setState(() {
+                                        _extractInPlaylist = value ?? false;
+                                        _extractInDirectory =
+                                            !_extractInPlaylist;
+                                      });
 
-                                            // Clear the directory not selected error
-                                            audioExtractorVM.setError('');
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                                      // Clear the directory not selected error
+                                      audioExtractorVM.setError('');
+                                    },
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                     if (audioExtractorVM.extractionResult.isProcessing)
@@ -1984,26 +1976,74 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
         }
       }
 
-      // Generate filename for multi-audio extraction
       final int totalSegments = audioExtractorVM.totalSegmentCountMultiAudio;
       String extractedMp3FileName =
           'multi_${audioExtractorVM.multiAudios.length}_audios_${totalSegments}_segments.mp3';
 
-      if (_extractInMusicQuality) {
+      if (_extractInMusicQuality && _extractInDirectory) {
         extractedMp3FileName =
             "${AppLocalizations.of(context)!.inMusicQuality}_$extractedMp3FileName";
       }
 
       extractedMp3FileName = PathUtil.sanitizeFileName(extractedMp3FileName);
 
-      await audioExtractorVM.extractMultiAudioToDirectory(
-        context: context,
-        settingsDataService: settingsDataService,
-        inMusicQuality: _extractInMusicQuality,
-        extractedMp3FileName: extractedMp3FileName,
-      );
+      if (_extractInDirectory) {
+        await audioExtractorVM.extractMultiAudioToDirectory(
+          context: context,
+          settingsDataService: settingsDataService,
+          inMusicQuality: _extractInMusicQuality,
+          extractedMp3FileName: extractedMp3FileName,
+        );
+      } else {
+        // Extract to playlist — same flow as single-audio mode
+        showDialog<dynamic>(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => PlaylistOneSelectableDialog(
+            usedFor: PlaylistOneSelectableDialogUsedFor
+                .fromCommentsExtractedMp3AddedToPlaylist,
+            warningMessageVM: Provider.of<WarningMessageVM>(
+              context,
+              listen: false,
+            ),
+            excludedPlaylist: widget.currentAudio.enclosingPlaylist!,
+          ),
+        ).then((resultMap) async {
+          if (resultMap is String && resultMap == 'cancel') return;
 
-      return;
+          final Playlist? targetPlaylist = resultMap['selectedPlaylist'];
+          if (targetPlaylist == null) return;
+
+          final AudioDownloadVM audioDownloadVMlistenFalse =
+              Provider.of<AudioDownloadVM>(context, listen: false);
+
+          // For playlist extraction the file name is simpler
+          final String playlistMp3FileName = PathUtil.sanitizeFileName(
+            'multi_${audioExtractorVM.multiAudios.length}_audios.mp3',
+          );
+
+          final bool wasAdded =
+              await audioExtractorVM.extractMultiAudioToPlaylist(
+            context: context,
+            audioDownloadVMlistenFalse: audioDownloadVMlistenFalse,
+            currentAudio: widget.currentAudio,
+            targetPlaylist: targetPlaylist,
+            extractedMp3FileName: playlistMp3FileName,
+            inMusicQuality: _extractInMusicQuality,
+            totalDuration: audioExtractorVM.totalDurationMultiAudio,
+          );
+
+          if (!wasAdded) {
+            audioExtractorVM.setError(
+              AppLocalizations.of(context)!
+                  .extractedAudioNotAddedToPlaylistMessage(
+                      targetPlaylist.title),
+            );
+          }
+        });
+      }
+
+      return; // keep the early return so the single-audio code below is skipped
     }
 
     if (audioExtractorVM.multiInputs.isEmpty) {

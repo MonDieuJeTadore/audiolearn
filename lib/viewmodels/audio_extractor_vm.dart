@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:audiolearn/constants.dart';
 import 'package:audiolearn/services/settings_data_service.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:path/path.dart' as path;
 
 import '../l10n/app_localizations.dart';
@@ -73,6 +74,8 @@ class AudioExtractorVM extends ChangeNotifier {
   bool get isMultiAudioMode => _multiAudios.isNotEmpty;
   double? _previewSegmentDuration;
   double? get previewSegmentDuration => _previewSegmentDuration;
+
+  final Logger _logger = Logger();
 
   void setAudioFile({
     required String path,
@@ -357,6 +360,14 @@ class AudioExtractorVM extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Clears the processing state without overwriting a success or error result.
+  void stopProcessing() {
+    if (_extractionResult.isProcessing) {
+      _extractionResult = ExtractionResult.initial();
+      notifyListeners();
+    }
+  }
+
   void setMultiAudios(List<AudioWithSegments> audiosWithSegments) {
     _multiAudios.clear();
     _multiAudios.addAll(audiosWithSegments);
@@ -577,6 +588,70 @@ class AudioExtractorVM extends ChangeNotifier {
       );
 
       notifyListeners();
+    }
+  }
+
+  /// Extracts all multi-audio segments concatenated into one MP3
+  /// and adds the result to [targetPlaylist], exactly like
+  /// [extractMP3ToPlaylist] does for single-audio mode.
+  Future<bool> extractMultiAudioToPlaylist({
+    required BuildContext context,
+    required AudioDownloadVM audioDownloadVMlistenFalse,
+    required Audio currentAudio,
+    required Playlist targetPlaylist,
+    required String extractedMp3FileName,
+    required bool inMusicQuality,
+    required double totalDuration,
+  }) async {
+    startProcessing();
+
+    try {
+      // Convert AudioWithSegments to InputSegments for the service
+      final List<InputSegments> inputs = _multiAudios.map((audioWithSeg) {
+        return InputSegments(
+          inputPath: audioWithSeg.audio.filePathName,
+          segments: audioWithSeg.segments
+              .where((s) => !s.deleted)
+              .toList(), // ✅ Filter deleted
+          gainDb: 0.0,
+        );
+      }).toList();
+
+      final String outputPath =
+          '${targetPlaylist.downloadPath}${Platform.pathSeparator}$extractedMp3FileName';
+
+      final bitrate = inMusicQuality ? '192k' : '64k';
+
+      final Map<String, dynamic> result =
+          await AudioExtractorService.extractFromMultipleInputs(
+        inputs: inputs,
+        outputPath: outputPath,
+        encoderBitrate: bitrate,
+      );
+
+      if (result['success'] != true) {
+        setError(result['message'] ?? 'Multi-audio extraction failed');
+        return false;
+      }
+
+      // Register the new audio in the target playlist, same as single-audio
+      await audioDownloadVMlistenFalse.addExtractedAudioFileToPlaylist(
+        sourcePlaylist: currentAudio.enclosingPlaylist,
+        targetPlaylist: targetPlaylist,
+        filePathNameToAdd: outputPath,
+        inMusicQuality: inMusicQuality,
+        totalDuration: totalDuration,
+      );
+
+      setExtractionSuccess(outputPath: outputPath);
+
+      return true;
+    } catch (e, stack) {
+      _logger.e('extractMultiAudioToPlaylist error: $e\n$stack');
+      setError('Multi-audio playlist extraction failed: $e');
+      return false;
+    } finally {
+      stopProcessing();
     }
   }
 

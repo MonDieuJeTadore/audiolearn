@@ -887,8 +887,7 @@ class AudioDownloadVM extends ChangeNotifier {
         continue;
       }
 
-      DateTime? videoUploadDate =
-          fullVideo.uploadDate ?? fullVideo.publishDate;
+      DateTime? videoUploadDate = fullVideo.uploadDate ?? fullVideo.publishDate;
 
       final String compactVideoDescription = _createCompactVideoDescription(
         videoDescription: fullVideo.description,
@@ -921,7 +920,7 @@ class AudioDownloadVM extends ChangeNotifier {
         // download progress starts at 100 % !
         _audioDownloadProgress = 0.0;
         _lastSecondAudioDownloadSpeed = 0;
-        
+
         notifyListeners();
       }
 
@@ -2295,7 +2294,8 @@ class AudioDownloadVM extends ChangeNotifier {
   /// This method is called when the user wish to add the extracted audio
   /// to an existing playlist.
   Future<void> addExtractedAudioFileToPlaylist({
-    required Audio currentAudio,
+    Audio? currentAudio,
+    Playlist? sourcePlaylist,
     required Playlist targetPlaylist,
     required String filePathNameToAdd,
     required bool inMusicQuality,
@@ -2312,6 +2312,7 @@ class AudioDownloadVM extends ChangeNotifier {
     // playlist downloaded audio list and playable audio list.
     Audio extractedAudio = await _createExtractedAudio(
       currentAudio: currentAudio,
+      sourcePlaylist: sourcePlaylist,
       targetPlaylist: targetPlaylist,
       totalDuration: totalDuration,
       targetFilePathName: targetFilePathName,
@@ -2324,24 +2325,26 @@ class AudioDownloadVM extends ChangeNotifier {
       extractedAudio,
     );
 
-    CommentVM commentVM = CommentVM(
-      isTest: _settingsDataService.isTest,
-    );
-    PictureVM pictureVM = PictureVM(
-      settingsDataService: _settingsDataService,
-    );
+    if (currentAudio != null) {
+      CommentVM commentVM = CommentVM(
+        isTest: _settingsDataService.isTest,
+      );
+      PictureVM pictureVM = PictureVM(
+        settingsDataService: _settingsDataService,
+      );
 
-    // Copying the audio comment file if it exists
-    commentVM.copyAudioCommentFileToTargetPlaylist(
-      audio: currentAudio,
-      targetPlaylistPath: targetPlaylist.downloadPath,
-    );
+      // Copying the audio comment file if it exists
+      commentVM.copyAudioCommentFileToTargetPlaylist(
+        audio: currentAudio,
+        targetPlaylistPath: targetPlaylist.downloadPath,
+      );
 
-    // Copying the audio picture file if it exists
-    pictureVM.copyAudioPictureJsonFileToTargetPlaylist(
-      audio: currentAudio,
-      targetPlaylist: targetPlaylist,
-    );
+      // Copying the audio picture file if it exists
+      pictureVM.copyAudioPictureJsonFileToTargetPlaylist(
+        audio: currentAudio,
+        targetPlaylist: targetPlaylist,
+      );
+    }
 
     notifyListeners();
 
@@ -2754,7 +2757,8 @@ class AudioDownloadVM extends ChangeNotifier {
   }
 
   Future<Audio> _createExtractedAudio({
-    required Audio currentAudio,
+    Audio? currentAudio,
+    Playlist? sourcePlaylist,
     required Playlist targetPlaylist,
     required double totalDuration,
     required String targetFilePathName,
@@ -2768,7 +2772,7 @@ class AudioDownloadVM extends ChangeNotifier {
       enclosingPlaylist: targetPlaylist,
       originalVideoTitle: audioTitle,
       compactVideoDescription: '',
-      videoUrl: currentAudio.videoUrl,
+      videoUrl: (currentAudio != null) ? currentAudio.videoUrl : '',
       audioDownloadDateTime: DateTime.now(),
       audioDownloadDuration: null,
       videoUploadDate: null,
@@ -2788,8 +2792,9 @@ class AudioDownloadVM extends ChangeNotifier {
     // physical extracted audio file name.
     extractedAudio.audioFileName = extractedFileName;
     extractedAudio.audioType = AudioType.extracted;
-    extractedAudio.extractedFromPlaylistTitle =
-        currentAudio.enclosingPlaylist!.title;
+    extractedAudio.extractedFromPlaylistTitle = (currentAudio != null)
+        ? currentAudio.enclosingPlaylist!.title
+        : sourcePlaylist?.title;
 
     return extractedAudio;
   }

@@ -797,6 +797,17 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
         }
 
         return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart $audioDownloadDurationSubtitlePart';
+      case SortingOption.playableEveryNDays:
+        return _applyDefault(
+          context: context,
+          dateFormatVMlistenTrue: dateFormatVMlistenTrue,
+          audioDuration: audioDuration,
+          finalSubtitlePart: _lastListenedDateTimeOrPlayableEveryNDays(
+                      context: context,
+                      dateFormatVMlistenTrue: dateFormatVMlistenTrue,
+                      audioDuration: audioDuration,
+                    )
+        );
       default:
         return _applyDefault(
           context: context,

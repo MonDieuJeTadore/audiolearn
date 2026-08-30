@@ -397,7 +397,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                   validationFunctionArgs: [
                     playlistListVMlistenFalse.listOfSelectablePlaylists.length,
                   ],
-                  isCursorAtStart: true,
+                  isCursorAtStartAndTextNotSelected: true,
                   maxLinesForDialogTitle:
                       3, // To avoid overflow if the title is in french.
                 );
@@ -724,7 +724,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                   validationFunctionArgs: [
                     dateFormatVMlistenFalse,
                   ],
-                  isCursorAtStart: true,
+                  isCursorAtStartAndTextNotSelected: true,
                   helpItemsLst: savePlaylistMp3HelpItemsLst,
                 );
               },
@@ -1182,7 +1182,6 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                   validationFunctionArgs: [
                     dateFormatVMlistenFalse,
                   ],
-                  isCursorAtStart: true,
                 );
               },
             ).then((resultStringLst) async {
@@ -1227,7 +1226,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                   checkboxLabelLst: [],
                   validationFunction: validatePlayableEveryNDaysValue,
                   validationFunctionArgs: [],
-                  isCursorAtStart: true,
+                  isCursorAtStartAndTextNotSelected: true,
                 );
               },
             ).then((resultStringLst) async {
@@ -1278,7 +1277,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                   validationFunctionArgs: [
                     dateFormatVMlistenFalse,
                   ],
-                  isCursorAtStart: true,
+                  isCursorAtStartAndTextNotSelected: true,
                 );
               },
             ).then((resultStringLst) async {

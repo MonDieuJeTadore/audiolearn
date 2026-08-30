@@ -47,14 +47,14 @@ class SetValueToTargetDialog extends StatefulWidget {
   final List<dynamic>
       validationFunctionArgs; // Arguments for the validation function
   final bool canAllCheckBoxBeUnchecked;
-  final bool isCursorAtStart; // If true, the cursor is at the start of the
+  final bool isCursorAtStartAndTextNotSelected; // If true, the cursor is at the start of the
   //                             TextField containing the passed value.
   final bool isValueStringUsed; // Indicates if the passed value field is used.
   //                               Is used to determine if clicking on Enter
   //                               should close the dialog or not.
   final bool areCheckboxesOnRow;
 
-  final bool isEditableTextFieldSelected; // If true, the passed value contained
+  final bool isEditableTextFieldSelectedIfCursorNotAtStart; // If true, the passed value contained
   //                                         in the TextField is selected.
 
   final int
@@ -88,10 +88,10 @@ class SetValueToTargetDialog extends StatefulWidget {
     this.checkboxIndexSetToTrue = -1,
     this.isPassedValueEditable = true,
     this.canAllCheckBoxBeUnchecked = false,
-    this.isCursorAtStart = false,
+    this.isCursorAtStartAndTextNotSelected = false,
     this.helpItemsLst = const [],
     this.areCheckboxesOnRow = true, // if false, checkboxes are on column
-    this.isEditableTextFieldSelected = true,
+    this.isEditableTextFieldSelectedIfCursorNotAtStart = true,
     this.maxLinesForDialogTitle = 2,
   }) : isValueStringUsed = passedValueFieldLabel.isNotEmpty;
 
@@ -126,7 +126,7 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
       // Ensure focus after dialog is fully built
       if (widget.passedValueFieldLabel.isNotEmpty) {
         _focusNodePassedValueTextField.requestFocus();
-        if (widget.isEditableTextFieldSelected) {
+        if (widget.isEditableTextFieldSelectedIfCursorNotAtStart) {
           // Select the text in the TextField if isEditableTextFieldSelected is true
           _passedValueTextEditingController.selection = TextSelection(
             baseOffset: 0,
@@ -233,7 +233,7 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
                               widget.passedValueFieldTooltip,
                           controller: _passedValueTextEditingController,
                           textFieldFocusNode: _focusNodePassedValueTextField,
-                          isCursorAtStart: widget.isCursorAtStart,
+                          isCursorAtStart: widget.isCursorAtStartAndTextNotSelected,
                         )
                       : createInfoRowFunction(
                           context: context,

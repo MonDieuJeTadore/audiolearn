@@ -49869,7 +49869,7 @@ void main() {
           await tester.tap(saveEditedCommentButtonFinder);
           await tester.pumpAndSettle();
 
-          // Necessary to drag up vertically to make visible the edit
+          // Necessary to drag down vertically to make visible the edit
           // icon button of the 1st comment
           await tester.drag(
             find.byType(AudioExtractorScreen),

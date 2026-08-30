@@ -951,7 +951,7 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                   validationFunctionArgs: [
                     dateFormatVMlistenFalse,
                   ],
-                  isCursorAtStart: true,
+                  isCursorAtStartAndTextNotSelected: true,
                   helpItemsLst: savePlaylistsMp3HelpItemsLst,
                 );
               },

@@ -2061,8 +2061,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get emptyDateErrorMessage =>
-      'Defining an empty date or date/time download date is not possible.';
+  String get emptyDateErrorMessage => 'Defining an empty date is not possible.';
 
   @override
   String savingUniquePlaylistAudioMp3(Object playlistTitle) {
@@ -3181,7 +3180,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playableOnDateTitleExplanation =>
-      'The defined date will be used as last playable date to obtain the filtered audios number and their total playable duration,';
+      'The defined date will be used as next playable date to obtain the filtered audios number and their total playable duration at this date.';
 
   @override
   String get definePlayableOnDateTitleTooltip => 'Tooltip to define !';
@@ -3194,6 +3193,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String invalidDateFormatErrorMessage(Object dateStr) {
     return '$dateStr does not respect the date only format.';
+  }
+
+  @override
+  String invalidDateErrorMessage(Object dateStr) {
+    return 'The date $dateStr is invalid.';
   }
 
   @override

@@ -1805,13 +1805,17 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
       return InvalidValueState
           .dateFormatInvalid; // This will prevent the dialog from closing
     } else {
-      final DateFormat format = DateFormat(dateFormatVM.selectedDateFormat);
-      final DateTime parsedDate = format.parseStrict(enteredDateStr);
+      final String parsedDateStr =
+          "${parsedDate!.day}/${parsedDate!.month}/${parsedDate!.year}";
+      final String stripLeadingZeros = enteredDateStr
+          .split('/')
+          .map((part) => part.replaceFirst(RegExp(r'^0+(?=\d)'), ''))
+          .join('/');
 
       // parseStrict only enforces the format shape, not calendar validity.
       // E.g. '31/09/2026' with dd/MM/yyyy silently overflows into
       // '01/10/2026'. Re-formatting and comparing catches that case.
-      if (format.format(parsedDate) != enteredDateStr) {
+      if (parsedDateStr != stripLeadingZeros) {
         return InvalidValueState
             .dateInvalid; // This will prevent the dialog from closing
       }

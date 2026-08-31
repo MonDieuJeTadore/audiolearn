@@ -2079,7 +2079,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get emptyDateErrorMessage =>
-      'Definir une date ou date heure:minute de téléchargement vide n\'est pas possible.';
+      'Définir une date vide n\'est pas possible.';
 
   @override
   String savingUniquePlaylistAudioMp3(Object playlistTitle) {
@@ -3213,12 +3213,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Obtenir le nombre d\'audios filtrés ainsi que leur durée jouable totale à la date ...';
 
   @override
-  String get definePlayableOnDateTitle =>
-      'Définir la date/heure de dernière écoute';
+  String get definePlayableOnDateTitle => 'Définir la date d\'écoute';
 
   @override
   String get playableOnDateTitleExplanation =>
-      'La date/heure définie sera appliquée à chaque audio filtré.';
+      'La date définie sera utilisée comme date de prochaine écoute et sera appliquée à chaque audio filtré afin de déterminer le nombre d\'audios jouables ainsi que leur durée totale.';
 
   @override
   String get definePlayableOnDateTitleTooltip =>
@@ -3231,7 +3230,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String invalidDateFormatErrorMessage(Object dateStr) {
-    return '$dateStr ne respecte pas le format date (en plus sans heure:minute).';
+    return '$dateStr ne respecte pas le format date.';
+  }
+
+  @override
+  String invalidDateErrorMessage(Object dateStr) {
+    return 'La date $dateStr est invalide.';
   }
 
   @override

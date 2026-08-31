@@ -105,12 +105,10 @@ class DateFormatVM extends ChangeNotifier {
 
     try {
       final DateFormat format = DateFormat(_selectedDateFormat);
-      final DateTime parsedDate = format.parseStrict(dateStr);
-
-      // parseStrict only enforces the format shape, not calendar validity.
-      // E.g. '31/09/2026' with dd/MM/yyyy silently overflows into
-      // '01/10/2026'. Re-formatting and comparing catches that case.
-      return parsedDate;
+      // Non-strict parse: out-of-range calendar values (e.g. day 31 in a
+      // 30-day month) are normalized/rolled over instead of throwing,
+      // e.g. '31/09/2026' -> DateTime(2026, 10, 1).
+      return format.parse(dateStr);
     } catch (_) {
       return null;
     }

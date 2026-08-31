@@ -3400,4 +3400,10 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get volumeEditLabel => "Volume (0.2 to 2.0)";
+
+  @override
+  String invalidDateErrorMessage(
+    Object dateStr,
+  ) =>
+      "The date $dateStr is invalid.";
 }

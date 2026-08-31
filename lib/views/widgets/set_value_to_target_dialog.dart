@@ -17,6 +17,7 @@ enum InvalidValueState {
   positionTooSmall,
   dateTimeFormatInvalid,
   dateFormatInvalid,
+  dateInvalid,
   enteredDateEmpty,
   enteredDayNumberEmpty,
   enteredDayNumberInvalid,
@@ -314,8 +315,9 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
       return; // the SetValueToTargetDialog is not closed
     } else if (_invalidValueState == InvalidValueState.dateTimeFormatInvalid ||
         _invalidValueState == InvalidValueState.dateFormatInvalid ||
+        _invalidValueState == InvalidValueState.dateInvalid ||
         _invalidValueState == InvalidValueState.enteredDateEmpty) {
-      // The case if the entered date format was defined as invalid
+      // The case if the entered date or date format was defined as invalid
       // in the _createResultList() method or is empty.
 
       return; // the SetValueToTargetDialog is not closed
@@ -447,6 +449,15 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
         case InvalidValueState.dateFormatInvalid:
           warningMessageVM.setError(
             errorType: ErrorType.dateFormatError,
+            errorArgOne: enteredStr,
+          );
+
+          _passedValueTextEditingController.text = enteredStr;
+
+          return [""];
+        case InvalidValueState.dateInvalid:
+          warningMessageVM.setError(
+            errorType: ErrorType.dateInvalidError,
             errorArgOne: enteredStr,
           );
 

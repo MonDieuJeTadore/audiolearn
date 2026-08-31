@@ -3339,7 +3339,7 @@ abstract class AppLocalizations {
   /// No description provided for @emptyDateErrorMessage.
   ///
   /// In en, this message translates to:
-  /// **'Defining an empty date or date/time download date is not possible.'**
+  /// **'Defining an empty date is not possible.'**
   String get emptyDateErrorMessage;
 
   /// No description provided for @savingUniquePlaylistAudioMp3.
@@ -5107,7 +5107,7 @@ abstract class AppLocalizations {
   /// No description provided for @playableOnDateTitleExplanation.
   ///
   /// In en, this message translates to:
-  /// **'The defined date will be used as last playable date to obtain the filtered audios number and their total playable duration,'**
+  /// **'The defined date will be used as next playable date to obtain the filtered audios number and their total playable duration at this date.'**
   String get playableOnDateTitleExplanation;
 
   /// No description provided for @definePlayableOnDateTitleTooltip.
@@ -5127,6 +5127,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{dateStr} does not respect the date only format.'**
   String invalidDateFormatErrorMessage(Object dateStr);
+
+  /// No description provided for @invalidDateErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The date {dateStr} is invalid.'**
+  String invalidDateErrorMessage(Object dateStr);
 
   /// No description provided for @filteredAudioNumberAndDurationOnDate.
   ///

@@ -103,9 +103,14 @@ class DateFormatVM extends ChangeNotifier {
       return null;
     }
 
-    // Try parsing the date string using each format.
     try {
-      return DateFormat(_selectedDateFormat).parseStrict(dateStr);
+      final DateFormat format = DateFormat(_selectedDateFormat);
+      final DateTime parsedDate = format.parseStrict(dateStr);
+
+      // parseStrict only enforces the format shape, not calendar validity.
+      // E.g. '31/09/2026' with dd/MM/yyyy silently overflows into
+      // '01/10/2026'. Re-formatting and comparing catches that case.
+      return parsedDate;
     } catch (_) {
       return null;
     }

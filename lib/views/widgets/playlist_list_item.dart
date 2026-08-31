@@ -7,6 +7,7 @@ import 'package:audiolearn/viewmodels/audio_player_vm.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../l10n/app_localizations.dart';
@@ -1178,7 +1179,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                   passedValueStr:
                       dateFormatVMlistenFalse.formatDate(DateTime.now()),
                   checkboxLabelLst: [],
-                  validationFunction: validateDateFormat,
+                  validationFunction: validateDateValueOrFormat,
                   validationFunctionArgs: [
                     dateFormatVMlistenFalse,
                   ],
@@ -1787,7 +1788,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
     return InvalidValueState.none;
   }
 
-  InvalidValueState validateDateFormat(
+  InvalidValueState validateDateValueOrFormat(
     DateFormatVM dateFormatVM,
     String enteredDateStr,
   ) {
@@ -1803,6 +1804,17 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
     if (parsedDate == null) {
       return InvalidValueState
           .dateFormatInvalid; // This will prevent the dialog from closing
+    } else {
+      final DateFormat format = DateFormat(dateFormatVM.selectedDateFormat);
+      final DateTime parsedDate = format.parseStrict(enteredDateStr);
+
+      // parseStrict only enforces the format shape, not calendar validity.
+      // E.g. '31/09/2026' with dd/MM/yyyy silently overflows into
+      // '01/10/2026'. Re-formatting and comparing catches that case.
+      if (format.format(parsedDate) != enteredDateStr) {
+        return InvalidValueState
+            .dateInvalid; // This will prevent the dialog from closing
+      }
     }
 
     return InvalidValueState.none;

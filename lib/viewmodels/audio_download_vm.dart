@@ -3260,7 +3260,11 @@ class AudioDownloadVM extends ChangeNotifier {
       try {
         manifest = await _youtubeExplode!.videos.streams.getManifest(
           id,
-          ytClients: [yt.YoutubeApiClient.ios, yt.YoutubeApiClient.androidVr],
+          ytClients: [
+            yt.YoutubeApiClient.ios,
+            yt.YoutubeApiClient.androidVr,
+//            yt.YoutubeApiClient.androidSdkless, // no correction. No more error message
+          ],
         );
         return manifest;
       } catch (e) {

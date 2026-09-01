@@ -25,6 +25,7 @@ import '../models/text_to_mp3_audio_file.dart';
 import '../models/comment.dart';
 import '../services/settings_data_service.dart';
 import '../services/json_data_service.dart';
+import '../services/yt_dlp_service.dart';
 import '../models/audio.dart';
 import '../models/playlist.dart';
 import '../utils/dir_util.dart';
@@ -877,15 +878,28 @@ class AudioDownloadVM extends ChangeNotifier {
 
       yt.Video fullVideo;
       try {
-        fullVideo = await _youtubeExplode!.videos.get(playlistVideo.id);
-      } catch (e) {
-        notifyDownloadError(
-          errorType: ErrorType.downloadAudioYoutubeError,
-          errorArgOne: e.toString(),
-          errorArgTwo: playlistVideo.title,
+        Logger().i(
+          '3 - Getting full video information: ${playlistVideo.id}',
         );
+
+        fullVideo = await _youtubeExplode!.videos.get(playlistVideo.id).timeout(
+              const Duration(seconds: 20),
+            );
+
+        Logger().i(
+          '4 - Full video obtained: ${fullVideo.title}',
+        );
+      } catch (e) {
+        Logger().e(
+          'Unable to obtain full video ${playlistVideo.id}: $e',
+        );
+
         continue;
       }
+
+      Logger().i(
+        '5 - Starting audio download: ${fullVideo.title}',
+      );
 
       DateTime? videoUploadDate = fullVideo.uploadDate ?? fullVideo.publishDate;
 
@@ -1425,7 +1439,15 @@ class AudioDownloadVM extends ChangeNotifier {
     yt.Video youtubeVideo;
 
     try {
-      youtubeVideo = await _youtubeExplode!.videos.get(videoId);
+      Logger().i('A - Getting video information: $videoId');
+
+      youtubeVideo = await _youtubeExplode!.videos.get(videoId).timeout(
+            const Duration(seconds: 20),
+          );
+
+      Logger().i(
+        'B - Video information obtained: ${youtubeVideo.title}',
+      );
     } on SocketException catch (e) {
       notifyDownloadError(
         errorType: ErrorType.noInternet,
@@ -1503,6 +1525,9 @@ class AudioDownloadVM extends ChangeNotifier {
     }
 
     try {
+      Logger().i(
+        'C - Calling _downloadAudioFile()...',
+      );
       final ok = await _downloadAudioFile(
         youtubeVideoId: youtubeVideo.id,
         audio: audio,
@@ -3251,27 +3276,20 @@ class AudioDownloadVM extends ChangeNotifier {
 
   /// Prefer M4A (AAC) then best audioOnly
   /// Get manifest with mobile clients and simple retries (handles recent YT changes).
-  Future<yt.StreamManifest> _getManifestWithClients(yt.VideoId id) async {
-    const maxAttempts = 3;
-    int attempt = 0;
-    late yt.StreamManifest manifest;
-    while (true) {
-      attempt++;
-      try {
-        manifest = await _youtubeExplode!.videos.streams.getManifest(
-          id,
-          ytClients: [
-            yt.YoutubeApiClient.ios,
-            yt.YoutubeApiClient.androidVr,
-//            yt.YoutubeApiClient.androidSdkless, // no correction. No more error message
-          ],
-        );
-        return manifest;
-      } catch (e) {
-        if (attempt >= maxAttempts) rethrow;
-        await Future.delayed(Duration(milliseconds: 400 * attempt));
-      }
-    }
+  Future<yt.StreamManifest> _getManifestWithClients(
+    yt.VideoId videoId,
+  ) async {
+    return _youtubeExplode!.videos.streams.getManifest(
+      videoId,
+      requireWatchPage: false,
+      ytClients: [
+        yt.YoutubeApiClient.androidVr,
+        // yt.YoutubeApiClient.androidSdkless,
+        yt.YoutubeApiClient.ios,
+      ],
+    ).timeout(
+      const Duration(seconds: 20),
+    );
   }
 
   /// Prefer M4A (AAC) then best audioOnly; choose highest/lowest bitrate per quality.
@@ -3305,7 +3323,6 @@ class AudioDownloadVM extends ChangeNotifier {
         (a, b) => a.bitrate.bitsPerSecond < b.bitrate.bitsPerSecond ? a : b);
   }
 
-  /// Download stream to a temp file with progress; then transcode to MP3.
   Future<bool> _downloadAudioFile({
     required yt.VideoId youtubeVideoId,
     required Audio audio,
@@ -3315,22 +3332,227 @@ class AudioDownloadVM extends ChangeNotifier {
       _currentDownloadingAudio = audio;
     }
 
-    yt.StreamManifest manifest;
+    if (Platform.isWindows) {
+      return _downloadAudioFileWithYtDlp(
+        youtubeVideoId: youtubeVideoId,
+        audio: audio,
+        redownloading: redownloading,
+      );
+    }
+
+    // Temporary Android fallback while the native yt-dlp Android
+    // integration is being implemented.
+    return _downloadAudioFileWithYoutubeExplode(
+      youtubeVideoId: youtubeVideoId,
+      audio: audio,
+      redownloading: redownloading,
+    );
+  }
+
+  Future<bool> _downloadAudioFileWithYtDlp({
+    required yt.VideoId youtubeVideoId,
+    required Audio audio,
+    required bool redownloading,
+  }) async {
+    final String videoUrl = audio.videoUrl;
+    final String temporaryBaseFileName = '${audio.validVideoTitle}_yt_dlp_tmp';
+
+    final Stopwatch stopwatch = Stopwatch()..start();
+
+    _audioDownloadProgress = 0.0;
+    _lastSecondAudioDownloadSpeed = 0;
+    _isAudioDownloading = true;
+
+    notifyListeners();
+
+    YtDlpDownloadResult result;
+
     try {
-      manifest = await _getManifestWithClients(youtubeVideoId);
+      result = await YtDlpService.downloadAudio(
+        videoUrl: videoUrl,
+        targetDirectory: audio.enclosingPlaylist!.downloadPath,
+        temporaryBaseFileName: temporaryBaseFileName,
+        onProgress: (double progress) {
+          _audioDownloadProgress = progress / 100.0;
+          notifyListeners();
+        },
+      );
     } catch (e) {
+      _isAudioDownloading = false;
+
       notifyDownloadError(
         errorType: ErrorType.downloadAudioYoutubeError,
         errorArgOne: e.toString(),
         errorArgTwo: audio.originalVideoTitle,
       );
-      downloadingPlaylistUrls = []; // reset guard
+
       return false;
+    }
+
+    if (!result.success || result.downloadedFilePath == null) {
+      _isAudioDownloading = false;
+
+      notifyDownloadError(
+        errorType: ErrorType.downloadAudioYoutubeError,
+        errorArgOne: result.output,
+        errorArgTwo: audio.originalVideoTitle,
+      );
+
+      return false;
+    }
+
+    final String downloadedFilePath = result.downloadedFilePath!;
+
+    final File downloadedFile = File(downloadedFilePath);
+
+    if (!downloadedFile.existsSync()) {
+      _isAudioDownloading = false;
+
+      notifyDownloadError(
+        errorType: ErrorType.downloadAudioYoutubeError,
+        errorArgOne:
+            'yt-dlp completed but the downloaded audio file was not found.',
+        errorArgTwo: audio.originalVideoTitle,
+      );
+
+      return false;
+    }
+
+    if (!redownloading) {
+      audio.audioFileSize = downloadedFile.lengthSync();
+    }
+
+    _isAudioDownloading = false;
+    _isDownloadedAudioConvertingToMp3 = true;
+
+    notifyListeners();
+
+    final String mp3Path = audio.filePathName;
+
+    final String targetBitrate = isHighQuality ? '192k' : '64k';
+
+    final int sampleRate = 44100;
+    final int channels = isHighQuality ? 2 : 1;
+
+    final bool conversionSucceeded = await _FfmpegFacade.convertToMp3(
+      inputPath: downloadedFilePath,
+      outputPath: mp3Path,
+      bitrate: targetBitrate,
+      sampleRate: sampleRate,
+      channels: channels,
+    );
+
+    _isDownloadedAudioConvertingToMp3 = false;
+
+    if (!conversionSucceeded) {
+      notifyDownloadError(
+        errorType: ErrorType.downloadAudioYoutubeError,
+        errorArgOne: 'FFmpeg failed to convert the downloaded audio to MP3.',
+        errorArgTwo: audio.originalVideoTitle,
+      );
+
+      return false;
+    }
+
+    try {
+      downloadedFile.deleteSync();
+    } catch (_) {
+      // The temporary file is not essential after MP3 conversion.
+    }
+
+    final File mp3File = File(mp3Path);
+
+    if (!mp3File.existsSync()) {
+      notifyDownloadError(
+        errorType: ErrorType.downloadAudioYoutubeError,
+        errorArgOne: 'The converted MP3 file was not created.',
+        errorArgTwo: audio.originalVideoTitle,
+      );
+
+      return false;
+    }
+
+    if (!redownloading) {
+      audio.audioFileSize = mp3File.lengthSync();
+    }
+
+    stopwatch.stop();
+
+    audio.downloadDuration = stopwatch.elapsed;
+
+    _audioDownloadProgress = 1.0;
+    _lastSecondAudioDownloadSpeed = 0;
+
+    notifyListeners();
+
+    return true;
+  }
+
+  /// Download stream to a temp file with progress; then transcode to MP3.
+  Future<bool> _downloadAudioFileWithYoutubeExplode({
+    required yt.VideoId youtubeVideoId,
+    required Audio audio,
+    bool redownloading = false,
+  }) async {
+    Logger().i(
+      'D - _downloadAudioFile() started for $youtubeVideoId',
+    );
+
+    if (!redownloading) {
+      _currentDownloadingAudio = audio;
+    }
+
+    yt.StreamManifest manifest;
+    try {
+      Logger().i(
+        'E - Getting stream manifest...',
+      );
+
+      manifest = await _getManifestWithClients(
+        youtubeVideoId,
+      );
+
+      Logger().i(
+        'F - Stream manifest obtained. '
+        '${manifest.audioOnly.length} audio streams found.',
+      );
+    } catch (e, stackTrace) {
+      Logger().e(
+        'Failed to get YouTube stream manifest for $youtubeVideoId',
+        error: e,
+        stackTrace: stackTrace,
+      );
+
+      notifyDownloadError(
+        errorType: ErrorType.downloadAudioYoutubeError,
+        errorArgOne: e.toString(),
+        errorArgTwo: audio.originalVideoTitle,
+      );
+
+      downloadingPlaylistUrls = [];
+      return false;
+    }
+
+    for (final yt.AudioOnlyStreamInfo stream in manifest.audioOnly) {
+      Logger().i(
+        'Audio stream: '
+        'itag=${stream.tag}, '
+        'container=${stream.container.name}, '
+        'bitrate=${stream.bitrate.bitsPerSecond}, '
+        'size=${stream.size.totalBytes}',
+      );
     }
 
     final yt.AudioOnlyStreamInfo streamInfo = await _pickBestAudioStream(
       manifest: manifest,
       highQuality: isHighQuality,
+    );
+
+    Logger().i(
+      'Selected audio stream: '
+      'itag=${streamInfo.tag}, '
+      'container=${streamInfo.container.name}, '
+      'bitrate=${streamInfo.bitrate.bitsPerSecond}',
     );
 
     // Temp file for container (m4a/webm)

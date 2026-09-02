@@ -3391,7 +3391,10 @@ class AudioDownloadVM extends ChangeNotifier {
 
     if (!result.success || result.downloadedFilePath == null) {
       _isAudioDownloading = false;
+      notifyListeners();
 
+      // If YtDlpService.downloadAudio fails, the error has
+      // been captured in result.output.
       notifyDownloadError(
         errorType: ErrorType.downloadAudioYoutubeError,
         errorArgOne: result.output,

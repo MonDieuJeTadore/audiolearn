@@ -3431,9 +3431,7 @@ class AudioDownloadVM extends ChangeNotifier {
     notifyListeners();
 
     final String mp3Path = audio.filePathName;
-
     final String targetBitrate = isHighQuality ? '192k' : '64k';
-
     final int sampleRate = 44100;
     final int channels = isHighQuality ? 2 : 1;
 
@@ -3482,6 +3480,7 @@ class AudioDownloadVM extends ChangeNotifier {
     stopwatch.stop();
 
     audio.downloadDuration = stopwatch.elapsed;
+    audio.isAudioMusicQuality = isHighQuality;
 
     _audioDownloadProgress = 1.0;
     _lastSecondAudioDownloadSpeed = 0;

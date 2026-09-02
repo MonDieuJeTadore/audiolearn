@@ -38,18 +38,14 @@ class YtDlpService {
 
     final String outputTemplate =
         '$targetDirectory${Platform.pathSeparator}$temporaryBaseFileName.%(ext)s';
-
     final List<String> arguments = [
       '--newline',
       '--no-playlist',
-
       // Download the best available audio-only stream.
       '-f',
       'bestaudio/best',
-
       '--output',
       outputTemplate,
-
       videoUrl,
     ];
 
@@ -61,9 +57,7 @@ class YtDlpService {
 
     final StringBuffer completeOutput = StringBuffer();
     String? downloadedFilePath;
-
     final RegExp progressRegExp = RegExp(r'\[download\]\s+(\d+(?:\.\d+)?)%');
-
     final RegExp destinationRegExp =
         RegExp(r'\[download\] Destination:\s+(.+)$');
 
@@ -73,7 +67,6 @@ class YtDlpService {
         .listen(
       (String line) {
         completeOutput.writeln(line);
-
         final Match? progressMatch = progressRegExp.firstMatch(line);
 
         if (progressMatch != null) {

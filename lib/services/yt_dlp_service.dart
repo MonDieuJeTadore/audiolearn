@@ -332,14 +332,14 @@ class YtDlpService {
 
       return YtDlpDownloadResult(
         success: response['success'] == true,
-        downloadedFilePath: response['downloadedFilePath'] as String?,
+        downloadedFilePath: response['downloadedFilePath']?.toString(),
         output: response['output']?.toString() ?? '',
       );
-    } catch (e) {
+    } on PlatformException catch (e) {
       return YtDlpDownloadResult(
         success: false,
         downloadedFilePath: null,
-        output: e.toString(),
+        output: '${e.code}: ${e.message}\n${e.details ?? ''}',
       );
     }
   }

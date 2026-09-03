@@ -76,4 +76,6 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation 'dev.ffmpegkit-maintained:yt-dlp-android:2.0.2'
+}

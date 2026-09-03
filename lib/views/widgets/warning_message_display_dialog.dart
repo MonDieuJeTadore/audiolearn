@@ -93,6 +93,24 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
             }
 
             return const SizedBox.shrink();
+          case ErrorType.obtainingYoutubePlaylistVideosError:
+            String exceptionMessage = _warningMessageVM.errorArgOne;
+            String playlistTitle = _warningMessageVM.errorArgTwo;
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _displayWarningDialog(
+                context: _context,
+                message: AppLocalizations.of(context)!
+                    .obtainingYoutubePlaylistVideosError(
+                  playlistTitle,
+                  exceptionMessage,
+                ),
+                warningMessageVM: _warningMessageVM,
+                themeProviderVM: themeProviderVM,
+              );
+            });
+
+            return const SizedBox.shrink();
           case ErrorType.importingMp4Error:
             String exceptionMessage = _warningMessageVM.errorArgOne;
             String videoTitle = _warningMessageVM.errorArgTwo;
@@ -236,8 +254,7 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
               _displayWarningDialog(
                 context: _context,
                 message: AppLocalizations.of(context)!
-                    .invalidDateErrorMessage(
-                        _warningMessageVM.errorArgOne),
+                    .invalidDateErrorMessage(_warningMessageVM.errorArgOne),
                 warningMessageVM: _warningMessageVM,
                 themeProviderVM: themeProviderVM,
               );

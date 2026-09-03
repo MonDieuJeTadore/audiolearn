@@ -42,6 +42,9 @@ kotlin {
     compilerOptions {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
     }
+    dependencies {
+        implementation("dev.ffmpegkit-maintained:yt-dlp-android:2.0.2")
+    }
 }
 
 flutter {

@@ -266,6 +266,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String obtainingYoutubePlaylistVideosError(
+      Object playlistTitle, Object exceptionMessage) {
+    return 'Obtaining the video list of the playlist \"$playlistTitle\" from Youtube FAILED: \"$exceptionMessage\".';
+  }
+
+  @override
   String downloadAudioYoutubeErrorExceptionMessageOnly(
       Object exceptionMessage) {
     return 'Error downloading audio from Youtube: \"$exceptionMessage\".';

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/services.dart';
 
 class YtDlpDownloadResult {
   final bool success;
@@ -14,10 +15,169 @@ class YtDlpDownloadResult {
   });
 }
 
+class YtDlpPlaylistVideo {
+  final String id;
+  final String title;
+  final String url;
+
+  const YtDlpPlaylistVideo({
+    required this.id,
+    required this.title,
+    required this.url,
+  });
+}
+
 class YtDlpService {
+  static const MethodChannel _androidChannel =
+      MethodChannel('audiolearn/yt_dlp');
+
   static String get executablePath {
     // yt-dlp.exe is located in the directory which contains audiolearn.exe
     return "C:${Platform.pathSeparator}Program Files${Platform.pathSeparator}audiolearn${Platform.pathSeparator}yt-dlp.exe";
+  }
+
+  static Future<List<YtDlpPlaylistVideo>> getPlaylistVideos({
+    required String playlistUrl,
+  }) async {
+    if (Platform.isWindows) {
+      return _getPlaylistVideosWindows(
+        playlistUrl: playlistUrl,
+      );
+    }
+
+    if (Platform.isAndroid) {
+      return _getPlaylistVideosAndroid(
+        playlistUrl: playlistUrl,
+      );
+    }
+
+    throw UnsupportedError(
+      'yt-dlp is not supported on this platform.',
+    );
+  }
+
+  static Future<List<YtDlpPlaylistVideo>> _getPlaylistVideosWindows({
+    required String playlistUrl,
+  }) async {
+    if (!Platform.isWindows) {
+      throw UnsupportedError(
+        'This yt-dlp implementation currently supports Windows only.',
+      );
+    }
+
+    final List<String> arguments = [
+      '--flat-playlist',
+      '--dump-single-json',
+      '--no-warnings',
+      playlistUrl,
+    ];
+
+    final ProcessResult result = await Process.run(
+      executablePath,
+      arguments,
+      runInShell: false,
+    );
+
+    if (result.exitCode != 0) {
+      throw Exception(
+        'Unable to retrieve YouTube playlist with yt-dlp.\n'
+        '${result.stderr}',
+      );
+    }
+
+    final dynamic decoded = jsonDecode(result.stdout.toString());
+
+    if (decoded is! Map<String, dynamic>) {
+      throw Exception(
+        'Invalid playlist JSON returned by yt-dlp.',
+      );
+    }
+
+    final dynamic entriesValue = decoded['entries'];
+
+    if (entriesValue is! List) {
+      return [];
+    }
+
+    final List<YtDlpPlaylistVideo> videos = [];
+
+    for (final dynamic entry in entriesValue) {
+      if (entry is! Map<String, dynamic>) {
+        continue;
+      }
+
+      final String id = entry['id']?.toString() ?? '';
+
+      if (id.isEmpty) {
+        continue;
+      }
+
+      final String title = entry['title']?.toString() ?? '';
+      final String url = 'https://www.youtube.com/watch?v=$id';
+
+      videos.add(
+        YtDlpPlaylistVideo(
+          id: id,
+          title: title,
+          url: url,
+        ),
+      );
+    }
+
+    return videos;
+  }
+
+  static Future<List<YtDlpPlaylistVideo>> _getPlaylistVideosAndroid({
+    required String playlistUrl,
+  }) async {
+    try {
+      final List<dynamic>? result =
+          await _androidChannel.invokeMethod<List<dynamic>>(
+        'getPlaylistVideos',
+        {
+          'playlistUrl': playlistUrl,
+        },
+      );
+
+      if (result == null) {
+        return [];
+      }
+
+      final List<YtDlpPlaylistVideo> videos = [];
+
+      for (final dynamic item in result) {
+        if (item is! Map) {
+          continue;
+        }
+
+        final String id = item['id']?.toString() ?? '';
+
+        if (id.isEmpty) {
+          continue;
+        }
+
+        final String title = item['title']?.toString() ?? '';
+        final String url =
+            item['url']?.toString() ?? 'https://www.youtube.com/watch?v=$id';
+
+        videos.add(
+          YtDlpPlaylistVideo(
+            id: id,
+            title: title,
+            url: url,
+          ),
+        );
+      }
+
+      return videos;
+    } on PlatformException catch (e) {
+      throw Exception(
+        'Unable to retrieve YouTube playlist on Android.\n'
+        'Code: ${e.code}\n'
+        'Message: ${e.message}\n'
+        'Details: ${e.details}',
+      );
+    }
   }
 
   /// Downloads the best available audio stream without converting it.
@@ -30,12 +190,35 @@ class YtDlpService {
     required String temporaryBaseFileName,
     void Function(double progress)? onProgress,
   }) async {
-    if (!Platform.isWindows) {
-      throw UnsupportedError(
-        'This yt-dlp implementation currently supports Windows only.',
+    if (Platform.isWindows) {
+      return _downloadAudioWindows(
+        videoUrl: videoUrl,
+        targetDirectory: targetDirectory,
+        temporaryBaseFileName: temporaryBaseFileName,
+        onProgress: onProgress,
       );
     }
 
+    if (Platform.isAndroid) {
+      return _downloadAudioAndroid(
+        videoUrl: videoUrl,
+        targetDirectory: targetDirectory,
+        temporaryBaseFileName: temporaryBaseFileName,
+        onProgress: onProgress,
+      );
+    }
+
+    throw UnsupportedError(
+      'yt-dlp is not supported on this platform.',
+    );
+  }
+
+  static Future<YtDlpDownloadResult> _downloadAudioWindows({
+    required String videoUrl,
+    required String targetDirectory,
+    required String temporaryBaseFileName,
+    void Function(double progress)? onProgress,
+  }) async {
     final String outputTemplate =
         '$targetDirectory${Platform.pathSeparator}$temporaryBaseFileName.%(ext)s';
     final List<String> arguments = [
@@ -120,6 +303,45 @@ class YtDlpService {
       downloadedFilePath: downloadedFilePath,
       output: completeOutput.toString(),
     );
+  }
+
+  static Future<YtDlpDownloadResult> _downloadAudioAndroid({
+    required String videoUrl,
+    required String targetDirectory,
+    required String temporaryBaseFileName,
+    void Function(double progress)? onProgress,
+  }) async {
+    try {
+      final Map<dynamic, dynamic>? response =
+          await _androidChannel.invokeMethod<Map<dynamic, dynamic>>(
+        'downloadAudio',
+        {
+          'videoUrl': videoUrl,
+          'targetDirectory': targetDirectory,
+          'temporaryBaseFileName': temporaryBaseFileName,
+        },
+      );
+
+      if (response == null) {
+        return const YtDlpDownloadResult(
+          success: false,
+          downloadedFilePath: null,
+          output: 'No response received from Android yt-dlp.',
+        );
+      }
+
+      return YtDlpDownloadResult(
+        success: response['success'] == true,
+        downloadedFilePath: response['downloadedFilePath'] as String?,
+        output: response['output']?.toString() ?? '',
+      );
+    } catch (e) {
+      return YtDlpDownloadResult(
+        success: false,
+        downloadedFilePath: null,
+        output: e.toString(),
+      );
+    }
   }
 
   static String? _findDownloadedFile({

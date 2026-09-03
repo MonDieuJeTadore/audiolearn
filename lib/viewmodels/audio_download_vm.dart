@@ -871,12 +871,28 @@ class AudioDownloadVM extends ChangeNotifier {
     // downloaded audio files
     final AudioPlayer audioPlayer = AudioPlayer();
 
-    var id = youtubePlaylist.id; // more efficient
-    await for (final yt.Video playlistVideo
-        in _youtubeExplode!.playlists.getVideos(id)) {
-      _audioDownloadError = false;
+    List<YtDlpPlaylistVideo> playlistVideos;
 
+    try {
+      playlistVideos = await YtDlpService.getPlaylistVideos(
+        playlistUrl: playlistUrl,
+      );
+    } catch (e) {
+      downloadingPlaylistUrls.remove(playlistUrl);
+
+      notifyDownloadError(
+        errorType: ErrorType.obtainingYoutubePlaylistVideosError,
+        errorArgOne: e.toString(),
+        errorArgTwo: playlistTitle,
+      );
+
+      return;
+    }
+
+    for (final YtDlpPlaylistVideo playlistVideo in playlistVideos) {
+      _audioDownloadError = false;
       yt.Video fullVideo;
+
       try {
         Logger().i(
           '3 - Getting full video information: ${playlistVideo.id}',
@@ -3332,7 +3348,7 @@ class AudioDownloadVM extends ChangeNotifier {
       _currentDownloadingAudio = audio;
     }
 
-    if (Platform.isWindows) {
+    if (Platform.isWindows || Platform.isAndroid) {
       return _downloadAudioFileWithYtDlp(
         youtubeVideoId: youtubeVideoId,
         audio: audio,
@@ -3340,12 +3356,8 @@ class AudioDownloadVM extends ChangeNotifier {
       );
     }
 
-    // Temporary Android fallback while the native yt-dlp Android
-    // integration is being implemented.
-    return _downloadAudioFileWithYoutubeExplode(
-      youtubeVideoId: youtubeVideoId,
-      audio: audio,
-      redownloading: redownloading,
+    throw UnsupportedError(
+      'Audio download is not supported on this platform.',
     );
   }
 
@@ -3405,7 +3417,6 @@ class AudioDownloadVM extends ChangeNotifier {
     }
 
     final String downloadedFilePath = result.downloadedFilePath!;
-
     final File downloadedFile = File(downloadedFilePath);
 
     if (!downloadedFile.existsSync()) {

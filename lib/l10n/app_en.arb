@@ -154,6 +154,14 @@
       "exceptionMessage": {}
     }
   },
+  "obtainingYoutubePlaylistVideosError": "Obtaining the video list of the playlist \"{playlistTitle}\" from Youtube FAILED: \"{exceptionMessage}\".",
+  "@obtainingYoutubePlaylistVideosError": {
+    "description": "Warning announcing that obtaining the video list contained in the Youtube playlist failed.",
+    "placeholders": {
+      "playlistTitle": {},
+      "exceptionMessage": {}
+    }
+  },
   "downloadAudioYoutubeErrorExceptionMessageOnly": "Error downloading audio from Youtube: \"{exceptionMessage}\".",
   "@downloadAudioYoutubeErrorExceptionMessageOnly": {
     "description": "Warning announcing that downloading the audios from Youtube failed.",

@@ -184,6 +184,18 @@
       }
     }
   },
+  "obtainingYoutubePlaylistVideosError": "ÉCHEC de l'obtention de la liste des videos contenues dans la playlist Youtube \"{playlistTitle}\": \"{exceptionMessage}\".",
+  "@obtainingYoutubePlaylistVideosError": {
+    "description": "Message d'erreur indiquant qu'obtenir la liste de vidéo contenues dans la playlist Youtube playlist a échoué.",
+    "placeholders": {
+      "playlistTitle":  {
+        "type": "Object"
+      },
+      "exceptionMessage": {
+        "type": "Object"
+      }
+    }
+  },
   "downloadAudioYoutubeErrorExceptionMessageOnly": "Erreur de téléchargement audio Youtube: \"{exceptionMessage}\".",
   "@downloadAudioYoutubeErrorExceptionMessageOnly": {
     "description": "Message d'erreur affiché lorsqu'une erreur se produit lors du téléchargement audio Youtube",

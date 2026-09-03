@@ -3406,4 +3406,11 @@ class MockAppLocalizations extends AppLocalizations {
     Object dateStr,
   ) =>
       "The date $dateStr is invalid.";
+
+  @override
+  String obtainingYoutubePlaylistVideosError(
+    Object playlistTitle,
+    Object exceptionMessage,
+  ) =>
+      "Obtaining the video list of the playlist \"$playlistTitle\" from Youtube FAILED: \"$exceptionMessage\".";
 }

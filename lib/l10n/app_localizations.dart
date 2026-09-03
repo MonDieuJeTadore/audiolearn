@@ -544,6 +544,13 @@ abstract class AppLocalizations {
   /// **'Downloading the audio of the video \"{videoTitle}\" from Youtube FAILED: \"{exceptionMessage}\".'**
   String downloadAudioYoutubeError(Object videoTitle, Object exceptionMessage);
 
+  /// Warning announcing that obtaining the video list contained in the Youtube playlist failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Obtaining the video list of the playlist \"{playlistTitle}\" from Youtube FAILED: \"{exceptionMessage}\".'**
+  String obtainingYoutubePlaylistVideosError(
+      Object playlistTitle, Object exceptionMessage);
+
   /// Warning announcing that downloading the audios from Youtube failed.
   ///
   /// In en, this message translates to:

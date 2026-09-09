@@ -286,7 +286,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String downloadAudioFileAlreadyOnAudioDirectory(
       Object audioValidVideoTitle, Object fileName, Object playlistTitle) {
-    return 'L\'audio \"$audioValidVideoTitle\" est contenu dans le fichier \"$fileName\" se trouvant dans le répertoire de la playlist cible \"$playlistTitle\" et ne sera donc pas re-téléchargé.';
+    return 'L\'audio \"$audioValidVideoTitle\" est contenu dans le fichier \"$fileName\" se trouvant dans le répertoire de la playlist cible \"$playlistTitle\" et ne sera donc pas retéléchargé.';
   }
 
   @override
@@ -1283,7 +1283,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String notRedownloadAudioFilesInPlaylistDirectory(
       Object number, Object playlistTitle) {
-    return '$number audios sont déjà contenus dans le répertoire de la playlist cible \"$playlistTitle\" et n\'ont donc pas été re-téléchargés.';
+    return '$number audios sont déjà contenus dans le répertoire de la playlist cible \"$playlistTitle\" et n\'ont donc pas été retéléchargés.';
   }
 
   @override
@@ -1779,7 +1779,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get restorePlaylistAndCommentsFromZipTooltip =>
-      'En fonction du contenu du fichier ZIP sélectionné, restaure une ou plusieurs playlists, leurs commentaires, photos ainsi que les paramètres de l\'application s\'ils sont inclus dans le fichier ZIP. Les fichiers audio n\'étant pas inclus dans ce fichier, ils ne sont pas restaurés.';
+      'En fonction du contenu du fichier ZIP sélectionné, cela restaure une ou plusieurs playlists, leurs commentaires, photos ainsi que les paramètres de l\'application s\'ils sont inclus dans le fichier ZIP. Les fichiers audio n\'étant pas inclus dans ce fichier ZIP, ils ne sont pas restaurés. Le menu \"Restaurer les audios MP3 des playlists depuis un ou plusieurs fichier(s) ZIP ...\" ou \"Restaurer les audios MP3 de la playlist depuis un ou plusieurs fichier(s) ZIP ...\" pour la playlist individuelle permet de restaurer les fichiers audio';
 
   @override
   String get appDataCouldNotBeRestoredFromZip =>
@@ -1792,7 +1792,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String deleteFilteredAudioFromPlaylistAsWellConfirmationTitle(
       Object sortFilterParmsName, Object playlistTitle) {
-    return 'Supprimer les audios filtrés par le paramètre \"$sortFilterParmsName\" de la playlist \"$playlistTitle\" également (pourront être re-téléchargés si ils se trouvent sur la playlist Youtube)';
+    return 'Supprimer les audios filtrés par le paramètre \"$sortFilterParmsName\" de la playlist \"$playlistTitle\" également (pourront être retéléchargés si ils se trouvent sur la playlist Youtube)';
   }
 
   @override
@@ -1806,12 +1806,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get redownloadFilteredAudioTooltip =>
-      'Les audios filtrés sont re-téléchargés sous leurs noms de fichiers d\'origine.';
+      'Les audios filtrés sont retéléchargés sous leurs noms de fichiers d\'origine.';
 
   @override
   String redownloadedAudioNumbersConfirmation(Object playlistTitle,
       Object redownloadedAudioNumber, Object notRedownloadedAudioNumber) {
-    return '\"$redownloadedAudioNumber\" audios ont été re-téléchargés dans la playlist \"$playlistTitle\". \"$notRedownloadedAudioNumber\" audios n\'ont pas été re-téléchargés du fait qu\'ils sont déjà presents dans le répertoire de la playlist.';
+    return '\"$redownloadedAudioNumber\" audios ont été retéléchargés dans la playlist \"$playlistTitle\". \"$notRedownloadedAudioNumber\" audios n\'ont pas été retéléchargés du fait qu\'ils sont déjà presents dans le répertoire de la playlist.';
   }
 
   @override
@@ -1820,7 +1820,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String redownloadedAudioConfirmation(
       Object playlistTitle, Object redownloadedAudioTitle) {
-    return 'L\'audio \"$redownloadedAudioTitle\" a été re-téléchargé dans la playlist \"$playlistTitle\".';
+    return 'L\'audio \"$redownloadedAudioTitle\" a été retéléchargé dans la playlist \"$playlistTitle\".';
   }
 
   @override
@@ -1832,7 +1832,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String audioNotRedownloadedWarning(
       Object playlistTitle, Object redownloadedAudioTitle) {
-    return 'L\'audio \"$redownloadedAudioTitle\" N\'A PAS été re-téléchargé dans la playlist \"$playlistTitle\" du fait que le fichier audio est déjà présent dans le répertoire de la playlist.';
+    return 'L\'audio \"$redownloadedAudioTitle\" N\'A PAS été retéléchargé dans la playlist \"$playlistTitle\" du fait que le fichier audio est déjà présent dans le répertoire de la playlist.';
   }
 
   @override
@@ -1847,7 +1847,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get setPlaylistAudioQualityTooltip =>
-      'La qualité audio sélectionnée sera appliquée aux prochains fichiers audio téléchargés. Si la qualité audio doit être appliquée aux fichiers audio déjà téléchargés, ces fichiers doivent être supprimés \"de la playlist également\" afin qu\'ils puissent être re-téléchargés avec la qualité audio modifiée.';
+      'La qualité audio sélectionnée sera appliquée aux prochains fichiers audio téléchargés. Si la qualité audio doit être appliquée aux fichiers audio déjà téléchargés, ces fichiers doivent être supprimés \"de la playlist également\" afin qu\'ils puissent être retéléchargés avec la qualité audio modifiée.';
 
   @override
   String get setPlaylistAudioQualityDialogTitle =>
@@ -1943,7 +1943,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playlistRestorationFirstHelpTitle =>
-      'Situation particuliaire où, après avoir restauré les playlists à partir d\'un fichier ZIP, vous avez exécuté la fonction de mise à jour des fichiers playlist JSON en ayant activé la case à cocher \"Effacer les fichiers audio supprimés\". Comme lors de la restauration à partir d\'un fichier ZIP les fichiers audio ne sont pas restaurés, en applicant la fonction de mise à jour avec l\'effacement des fichiers audio activé, les audios ne sont plus disponibles dans l\'application pour être re-téléchargés.';
+      'Situation particuliaire où, après avoir restauré les playlists à partir d\'un fichier ZIP, vous avez exécuté la fonction de mise à jour des fichiers playlist JSON en ayant activé la case à cocher \"Effacer les fichiers audio supprimés\". Comme lors de la restauration à partir d\'un fichier ZIP les fichiers audio ne sont pas restaurés, en applicant la fonction de mise à jour avec l\'effacement des fichiers audio activé, les audios ne sont plus disponibles dans l\'application pour être retéléchargés.';
 
   @override
   String get playlistRestorationFirstHelpContent =>
@@ -1951,7 +1951,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playlistRestorationSecondHelpTitle =>
-      'Une fois les playlists affectées supprimées, restaurez-les à nouveau à partir du fichier ZIP. Ensuite, vous pouvez retélécharger les fichiers audio non lisibles via le menu de la playlist \"Traiter audios filtrés\" puis le sous-menu \"Retélécharger les audios filtrés\". Si le paramètre de filtre de tri \"défaut\" est sélectionné, tous les fichiers audio non lisibles seront retéléchargés. Pour limiter les fichiers retéléchargés, sélectionnez ou définissez un paramètre de filtre de tri spécifique.';
+      'Une fois les playlists affectées supprimées, restaurez-les à nouveau à partir du fichier ZIP. Ensuite, vous pouvez appliquer le menu \"Restaurer les audios MP3 des playlists depuis un ou plusieurs fichier(s) ZIP ...\" ou \"Restaurer les audios MP3 de la playlist depuis un ou plusieurs fichier(s) ZIP ...\" pour la playlist individuelle afin de restaurer les fichiers audio ou alors retélécharger les fichiers audio non lisibles via le menu de la playlist \"Traiter audios filtrés\" puis le sous-menu \"Retélécharger les audios filtrés\". Si le paramètre de filtre de tri \"défaut\" est sélectionné, tous les fichiers audio non lisibles seront retéléchargés. Pour limiter les fichiers retéléchargés, sélectionnez ou définissez un paramètre de filtre de tri spécifique.';
 
   @override
   String get playlistJsonFilesUpdateDialogTitle =>
@@ -1959,7 +1959,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playlistJsonFilesUpdateExplanation =>
-      'Important: si vous avez restauré une sauvegarde ZIP ET ajouté manuellement des playlists par la suite, soyez prudent lors de la mise à jour. Lorsque vous exécutez \"Mettre à jour les fichiers playlist JSON\", les fichiers audio restaurés qui n\'ont pas été re-téléchargés disparaîtront de vos playlists. Pour préserver ces fichiers et conserver la possibilité de les retélécharger, assurez-vous que la case à cocher \"Effacer les fichiers audio supprimés\" reste DÉCOCHÉE avant la mise à jour.';
+      'Important: si vous avez restauré une sauvegarde ZIP ET ajouté manuellement des playlists par la suite, soyez prudent lors de la mise à jour. Lorsque vous exécutez \"Mettre à jour les fichiers playlist JSON\", les fichiers audio restaurés qui n\'ont pas été retéléchargés disparaîtront de vos playlists. Pour préserver ces fichiers et conserver la possibilité de les retélécharger, assurez-vous que la case à cocher \"Effacer les fichiers audio supprimés\" reste DÉCOCHÉE avant la mise à jour.';
 
   @override
   String get removeDeletedAudioFiles => 'Effacer les fichiers audio\nsupprimés';
@@ -2503,7 +2503,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String confirmAudioFromPlaylistDeletion(
       Object audioTitle, Object playlistTitle) {
-    return 'Supprimez l\'audio \"$audioTitle\" de la playlist \"$playlistTitle\" définie sur le site Youtube, sinon l\'audio sera téléchargé à nouveau lors du prochain téléchargement de la playlist. Ou alors cliquez sur \"Annuler\" et choisissez \"Supprimer l\'audio ...\" au lieu de \"Supprimer l\'audio de la playlist également ...\". Ainsi, l\'audio sera supprimé de la liste des audios jouables, mais restera dans la liste des audios téléchargés, ce qui évitera son re-téléchargement.';
+    return 'Supprimez l\'audio \"$audioTitle\" de la playlist \"$playlistTitle\" définie sur le site Youtube, sinon l\'audio sera téléchargé à nouveau lors du prochain téléchargement de la playlist. Ou alors cliquez sur \"Annuler\" et choisissez \"Supprimer l\'audio ...\" au lieu de \"Supprimer l\'audio de la playlist également ...\". Ainsi, l\'audio sera supprimé de la liste des audios jouables, mais restera dans la liste des audios téléchargés, ce qui évitera son retéléchargement.';
   }
 
   @override

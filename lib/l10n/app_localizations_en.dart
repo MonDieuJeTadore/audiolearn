@@ -1767,7 +1767,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restorePlaylistAndCommentsFromZipTooltip =>
-      'According to the content of the selected ZIP file, restoring a unique or multiple playlists, their audio comments, pictures and, if awailable, the application settings. The audio files are not included in the ZIP file.';
+      'According to the content of the selected ZIP file, this restores a unique or multiple playlists, their audio comments, pictures and, if awailable, the application settings. Since the audio files are not included in the ZIP file, they are not restored. The menu \"Restore Playlists Audios MP3 from one or several ZIP File(s)  ...\" enables to restore the audio files';
 
   @override
   String get appDataCouldNotBeRestoredFromZip =>
@@ -1936,7 +1936,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playlistRestorationSecondHelpTitle =>
-      'After deleting the affected playlists, restore them again from the ZIP file. Afterwards, you can re-download audio files that are not playable using the playlist menu \"Filtered Audios Actions ...\" and the submenu \"Redownload filtered Audios\". If the sort filter parameter is set to \"default\", all non-playable audio files will be re-downloaded. To limit which files are re-downloaded, select or define a specific sort filter parameter.';
+      'After deleting the affected playlists, restore them again from the ZIP file. Afterwards, you can use the menu \"Restore Playlists Audios MP3 from one or several ZIP File(s)  ...\" or you can re-download audio files that are not playable using the playlist menu \"Filtered Audios Actions ...\" and the submenu \"Redownload filtered Audios\". If the sort filter parameter is set to \"default\", all non-playable audio files will be re-downloaded. To limit which files are re-downloaded, select or define a specific sort filter parameter.';
 
   @override
   String get playlistJsonFilesUpdateDialogTitle => 'Playlist JSON Files Update';

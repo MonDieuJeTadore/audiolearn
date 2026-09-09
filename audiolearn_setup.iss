@@ -1,5 +1,5 @@
 #define MyAppName "AudioLearn"
-#define MyAppVersion "3.5.81"
+#define MyAppVersion "3.6.24"
 #define MyAppPublisher "Jean-Pierre Schnyder"
 #define MyAppURL ""
 #define MyAppExeName "audiolearn.exe"
@@ -39,6 +39,12 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; \
 [Files]
 Source: "C:\development\flutter\audiolearn\build\windows\x64\runner\Release\*"; \
   DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+; yt-dlp.exe
+Source: "tools\yt-dlp\yt-dlp.exe"; DestDir: "{app}"; Flags: ignoreversion
+
+; Le répertoire _internal (récursif)
+Source: "tools\yt-dlp\_internal\*"; DestDir: "{app}\_internal"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

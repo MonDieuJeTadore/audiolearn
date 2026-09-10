@@ -1932,7 +1932,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playlistRestorationFirstHelpContent =>
-      'To resolve this issue, you need to delete the playlists affected by the loss of their audio files. Here are two methods for deleting these playlists:\n\n1 - Deletion through the application\nEach  playlist has a menu. Use its last element \"Delete Playlist ...\".\n\n2 - Manual deletion (recommended if multiple playlists must be deleted)\nNavigate to the application\'s storage directory in which the playlist directories are present. Select the folders to be removed and delete the selected group.';
+      'To resolve this issue, you need to delete the playlists affected by the loss of their audio files. Here are two methods for deleting these playlists:\n\n1 - Deletion through the application\nEach playlist has a menu. Use its element \"Delete Playlist ...\".\n\n2 - Manual deletion (recommended if multiple playlists must be deleted)\nNavigate to the application\'s storage directory in which the playlist directories are present. Select the folders to be removed and delete the selected group.';
 
   @override
   String get playlistRestorationSecondHelpTitle =>

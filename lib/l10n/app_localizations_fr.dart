@@ -1947,7 +1947,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playlistRestorationFirstHelpContent =>
-      'Pour résoudre ce problème, supprimez les playlists impactées par l\'effacement de leurs audios. Deux moyens de suppression peuvent être utilisés:\n\n1 - Suppression dans l\'application\nChaque playlist dispose d\'un menu. Son dernier élément \"Supprimer la playlist ...\" permet d\'effectuer la suppression.\n\n2 - Suppression manuelle\nSi le nombre de playlists est élevé, il est plus productif de se rendre dans le répertoire de l\'application qui contient les playlists, de sélectionner les playlists à effacer et de supprimer le groupe sélectionné.';
+      'Pour résoudre ce problème, supprimez les playlists impactées par l\'effacement de leurs audios. Deux moyens de suppression peuvent être utilisés:\n\n1 - Suppression dans l\'application\nChaque playlist dispose d\'un menu. Son élément \"Supprimer la playlist ...\" permet d\'effectuer la suppression.\n\n2 - Suppression manuelle\nSi le nombre de playlists est élevé, il est plus productif de se rendre dans le répertoire de l\'application qui contient les playlists, de sélectionner les playlists à effacer et de supprimer le groupe sélectionné.';
 
   @override
   String get playlistRestorationSecondHelpTitle =>

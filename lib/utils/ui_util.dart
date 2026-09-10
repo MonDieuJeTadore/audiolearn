@@ -539,6 +539,11 @@ class UiUtil {
   ///
   /// If the date time or the date parsing fails, it returns a list
   /// containing only null.
+  /// Otherwise, the list contains
+  ///   the parsed date time or date,
+  ///   the evaluated duration,
+  ///   a boolean indicating whether the parsed time was invalid.
+  /// 
   static Future<List<dynamic>> obtainAudioMp3SavingToZipDuration({
     required PlaylistListVM playlistListVMlistenFalse,
     required DateFormatVM dateFormatVMlistenFalse,
@@ -564,6 +569,8 @@ class UiUtil {
       );
     }
 
+    bool isDateOkAndTimeInvalid = false;
+
     if (parseDateTimeStrUsinAppDateFormat == null &&
         parseDateStrUsinAppDateFormat == null) {
       warningMessageVMlistenFalse.setError(
@@ -573,12 +580,8 @@ class UiUtil {
 
       return [null];
     } else if (parseDateStrUsinAppDateFormat != null) {
-      warningMessageVMlistenFalse.setError(
-        errorType: ErrorType.dateOkAndTimeError,
-        errorArgOne: oldestAudioDownloadDateFormattedStr,
-      );
-
       parseDateTimeStrUsinAppDateFormat = parseDateStrUsinAppDateFormat;
+      isDateOkAndTimeInvalid = true;
     }
 
     Duration audioMp3SavingToZipDuration =
@@ -590,6 +593,7 @@ class UiUtil {
     return [
       parseDateTimeStrUsinAppDateFormat,
       audioMp3SavingToZipDuration,
+      isDateOkAndTimeInvalid,
     ];
   }
 

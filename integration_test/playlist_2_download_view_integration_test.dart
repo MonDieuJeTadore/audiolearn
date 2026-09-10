@@ -18924,7 +18924,7 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "Defining an empty date or date/time download date is not possible.",
+              "Defining an empty date is not possible.",
         );
 
         await IntegrationTestUtil.verifySetValueToTargetDialog(
@@ -25580,6 +25580,14 @@ void main() {
             await tester.tap(targetAudioListTileLeadingMenuIconButton);
             await tester.pumpAndSettle();
 
+            // Scroll down
+            await tester.drag(
+              find
+                  .byType(Material)
+                  .last, // The popup menu is wrapped in Material
+              const Offset(0, -300),
+            );
+
             // Now find the popup menu item and tap on it
             final Finder popupDisplayAudioInfoMenuItemFinder =
                 find.byKey(const Key("popup_menu_redownload_delete_audio"));
@@ -25930,6 +25938,14 @@ void main() {
             // Tap the leading menu icon button to open the popup menu
             await tester.tap(targetAudioListTileLeadingMenuIconButton);
             await tester.pumpAndSettle();
+
+            // Scroll down
+            await tester.drag(
+              find
+                  .byType(Material)
+                  .last, // The popup menu is wrapped in Material
+              const Offset(0, -300),
+            );
 
             // Now find the popup menu item and tap on it
             final Finder popupDisplayAudioInfoMenuItemFinder =
@@ -26283,6 +26299,14 @@ void main() {
             await tester.tap(targetAudioListTileLeadingMenuIconButton);
             await tester.pumpAndSettle();
 
+            // Scroll down
+            await tester.drag(
+              find
+                  .byType(Material)
+                  .last, // The popup menu is wrapped in Material
+              const Offset(0, -300),
+            );
+
             // Now find the popup menu item and tap on it
             final Finder popupDisplayAudioInfoMenuItemFinder =
                 find.byKey(const Key("popup_menu_redownload_delete_audio"));
@@ -26632,6 +26656,14 @@ void main() {
             // Tap the leading menu icon button to open the popup menu
             await tester.tap(targetAudioListTileLeadingMenuIconButton);
             await tester.pumpAndSettle();
+
+            // Scroll down
+            await tester.drag(
+              find
+                  .byType(Material)
+                  .last, // The popup menu is wrapped in Material
+              const Offset(0, -300),
+            );
 
             // Now find the popup menu item and tap on it
             final Finder popupDisplayAudioInfoMenuItemFinder =
@@ -29590,6 +29622,14 @@ void main() {
             await tester.tap(targetAudioListTileLeadingMenuIconButton);
             await tester.pumpAndSettle();
 
+            // Scroll down
+            await tester.drag(
+              find
+                  .byType(Material)
+                  .last, // The popup menu is wrapped in Material
+              const Offset(0, -300),
+            );
+
             // Now find the popup menu item and tap on it
             final Finder popupDisplayAudioInfoMenuItemFinder =
                 find.byKey(const Key("popup_menu_redownload_delete_audio"));
@@ -29940,6 +29980,14 @@ void main() {
             // Tap the leading menu icon button to open the popup menu
             await tester.tap(targetAudioListTileLeadingMenuIconButton);
             await tester.pumpAndSettle();
+
+            // Scroll down
+            await tester.drag(
+              find
+                  .byType(Material)
+                  .last, // The popup menu is wrapped in Material
+              const Offset(0, -300),
+            );
 
             // Now find the popup menu item and tap on it
             final Finder popupDisplayAudioInfoMenuItemFinder =
@@ -37821,7 +37869,7 @@ void main() {
         movedToPlaylistTitle: '',
         copiedFromPlaylistTitle: '',
         copiedToPlaylistTitle: '',
-        audioDuration: '0:00:09.9',
+        audioDuration: '0:00:09.8',
         isMusicQuality: true, // Is musical quality
       );
 
@@ -37930,7 +37978,7 @@ void main() {
         movedToPlaylistTitle: '',
         copiedFromPlaylistTitle: '',
         copiedToPlaylistTitle: '',
-        audioDuration: '0:00:09.9',
+        audioDuration: '0:00:09.8',
         isMusicQuality: true, // Is musical quality
       );
 
@@ -37982,7 +38030,7 @@ void main() {
         movedToPlaylistTitle: '',
         copiedFromPlaylistTitle: '',
         copiedToPlaylistTitle: '',
-        audioDuration: '0:00:59.0', // was 0:00:58.5 before fix
+        audioDuration: '0:00:58.9', // was 0:00:58.5 before fix
         isMusicQuality: false, // Is musical quality
       );
 

@@ -2067,6 +2067,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String dateOkAndTimeErrorMessage(Object dateStr) {
+    return 'Since the time format in $dateStr is invalid, only the date with 00:00 time is used.';
+  }
+
+  @override
   String get emptyDateErrorMessage => 'Defining an empty date is not possible.';
 
   @override

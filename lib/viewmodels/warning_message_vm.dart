@@ -293,6 +293,8 @@ enum ErrorType {
 
   dateTimeFormatError, // Error in the date time format.
 
+  dateOkAndTimeError, // Date ok but error in the time format
+
   dateFormatError, // Error in the date format.
 
   dateInvalidError, // Error if the date is invalid (example 31/09/2026 - 31 september).

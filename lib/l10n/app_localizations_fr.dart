@@ -2084,6 +2084,11 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String dateOkAndTimeErrorMessage(Object dateStr) {
+    return 'Comme le format heure:minute dans $dateStr est invalide, seule la date avec une heure:minute 00:00 est utilisée.';
+  }
+
+  @override
   String get emptyDateErrorMessage =>
       'Définir une date vide n\'est pas possible.';
 

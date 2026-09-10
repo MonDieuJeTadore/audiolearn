@@ -3413,4 +3413,10 @@ class MockAppLocalizations extends AppLocalizations {
     Object exceptionMessage,
   ) =>
       "Obtaining the video list of the playlist \"$playlistTitle\" from Youtube FAILED: \"$exceptionMessage\".";
+
+  @override
+  String dateOkAndTimeErrorMessage(
+    Object dateStr,
+  ) =>
+      "Since the time format in $dateStr is invalid, only the date with 00:00 time is used.";
 }

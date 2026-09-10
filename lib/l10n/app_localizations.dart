@@ -3343,6 +3343,12 @@ abstract class AppLocalizations {
   /// **'{dateStr} does not respect the date or date/time format.'**
   String invalidDateTimeFormatErrorMessage(Object dateStr);
 
+  /// No description provided for @dateOkAndTimeErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Since the time format in {dateStr} is invalid, only the date with 00:00 time is used.'**
+  String dateOkAndTimeErrorMessage(Object dateStr);
+
   /// No description provided for @emptyDateErrorMessage.
   ///
   /// In en, this message translates to:

@@ -236,6 +236,19 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
             });
 
             return const SizedBox.shrink();
+          case ErrorType.dateOkAndTimeError:
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _displayWarningDialog(
+                context: _context,
+                message: AppLocalizations.of(context)!
+                    .dateOkAndTimeErrorMessage(
+                        _warningMessageVM.errorArgOne),
+                warningMessageVM: _warningMessageVM,
+                themeProviderVM: themeProviderVM,
+              );
+            });
+
+            return const SizedBox.shrink();
           case ErrorType.dateFormatError:
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _displayWarningDialog(

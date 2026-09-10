@@ -550,33 +550,45 @@ class UiUtil {
     // we try to parse it as a date time first, then as a date.
     // If both parsing attempts fail, we display an error message.
 
-    DateTime? parseDateTimeOrDateStrUsinAppDateFormat =
+    DateTime? parseDateTimeStrUsinAppDateFormat =
         dateFormatVMlistenFalse.parseDateTimeStrUsinAppDateFormat(
       dateTimeStr: oldestAudioDownloadDateFormattedStr,
     );
 
-    parseDateTimeOrDateStrUsinAppDateFormat ??=
-        dateFormatVMlistenFalse.parseDateStrUsinAppDateFormat(
-      dateStr: oldestAudioDownloadDateFormattedStr,
-    );
+    DateTime? parseDateStrUsinAppDateFormat;
 
-    if (parseDateTimeOrDateStrUsinAppDateFormat == null) {
+    if (parseDateTimeStrUsinAppDateFormat == null) {
+      parseDateStrUsinAppDateFormat =
+          dateFormatVMlistenFalse.parseDateStrUsinAppDateFormat(
+        dateStr: oldestAudioDownloadDateFormattedStr,
+      );
+    }
+
+    if (parseDateTimeStrUsinAppDateFormat == null &&
+        parseDateStrUsinAppDateFormat == null) {
       warningMessageVMlistenFalse.setError(
         errorType: ErrorType.dateTimeFormatError,
         errorArgOne: oldestAudioDownloadDateFormattedStr,
       );
 
       return [null];
+    } else if (parseDateStrUsinAppDateFormat != null) {
+      warningMessageVMlistenFalse.setError(
+        errorType: ErrorType.dateOkAndTimeError,
+        errorArgOne: oldestAudioDownloadDateFormattedStr,
+      );
+
+      parseDateTimeStrUsinAppDateFormat = parseDateStrUsinAppDateFormat;
     }
 
     Duration audioMp3SavingToZipDuration =
         await playlistListVMlistenFalse.evaluateSavingAudioMp3FileToZipDuration(
       listOfPlaylists: playlistsLst,
-      fromAudioDownloadDateTime: parseDateTimeOrDateStrUsinAppDateFormat,
+      fromAudioDownloadDateTime: parseDateTimeStrUsinAppDateFormat!,
     );
 
     return [
-      parseDateTimeOrDateStrUsinAppDateFormat,
+      parseDateTimeStrUsinAppDateFormat,
       audioMp3SavingToZipDuration,
     ];
   }

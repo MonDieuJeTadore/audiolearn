@@ -756,6 +756,14 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
                   resultsLst[0]! as DateTime;
               Duration audioMp3SavingToZipDuration = resultsLst[1] as Duration;
 
+              if (resultsLst[2] as bool) {
+                // The parsed date has no specific time, treat it as a date only
+                warningMessageVMlistenFalse.setError(
+                  errorType: ErrorType.dateOkAndTimeError,
+                  errorArgOne: oldestAudioDownloadDateFormattedStr,
+                );
+              }
+              
               // Use the global navigator context which is always valid,
               // even after an async gap on Android.
               final BuildContext validContext =

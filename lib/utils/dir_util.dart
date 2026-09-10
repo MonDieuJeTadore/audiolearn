@@ -811,7 +811,8 @@ class DirUtil {
   }
 
   /// Return false in case the file to rename does not exist or if a file named
-  /// as newFileName already exists. In those cases, no file is renamed.
+  /// as newFileName already exists (and is a different file). In those cases,
+  /// no file is renamed.
   static bool renameFile({
     required String fileToRenameFilePathName,
     required String newFileName,
@@ -828,20 +829,42 @@ class DirUtil {
     // Create the new file path with the new file name
     String newFilePathName = path.join(dirPath, newFileName);
 
-    // Check if a file with the new name already exists
-    if (File(newFilePathName).existsSync()) {
+    bool targetExists = File(newFilePathName).existsSync();
+
+    // Determine if the "existing" target file is actually the same file as
+    // the source, just with a different case (happens on case-insensitive
+    // file systems like Windows or default macOS APFS).
+    bool isCaseOnlyRename = targetExists &&
+        path.equals(fileToRenameFilePathName, newFilePathName) &&
+        fileToRenameFilePathName != newFilePathName;
+
+    if (targetExists && !isCaseOnlyRename) {
+      // A genuinely different file already exists with that name.
       return false;
     }
 
-    // Rename the file
-    sourceFile.renameSync(newFilePathName);
+    if (isCaseOnlyRename) {
+      // Direct rename can be a no-op on case-insensitive file systems,
+      // so go through a temporary name first.
+      String tempFilePathName = path.join(
+        dirPath,
+        '${newFileName}_tmp_${DateTime.now().millisecondsSinceEpoch}',
+      );
+
+      sourceFile.renameSync(tempFilePathName);
+      File(tempFilePathName).renameSync(newFilePathName);
+    } else {
+      // Normal rename, no name conflict.
+      sourceFile.renameSync(newFilePathName);
+    }
 
     return true;
   }
 
-  /// Returns '':
+  /// Returns '' if
   /// - the directory to rename does not exist; or
-  /// - a directory with the new name already exists.
+  /// - a directory with the new name already exists (and is a different
+  ///   directory).
   ///
   /// Otherwise renames the directory and returns the
   /// renamed directory path.
@@ -859,14 +882,36 @@ class DirUtil {
     final String parent = existingDir.parent.path;
     final String newPath = path.join(parent, newDirectoryName);
 
-    // Check if destination already exists
     final newDir = Directory(newPath);
-    if (newDir.existsSync()) {
+    bool targetExists = newDir.existsSync();
+
+    // Determine if the "existing" target directory is actually the same
+    // directory as the source, just with a different case (happens on
+    // case-insensitive file systems like Windows or default macOS APFS).
+    bool isCaseOnlyRename = targetExists &&
+        path.equals(directoryToRenamePath, newPath) &&
+        directoryToRenamePath != newPath;
+
+    if (targetExists && !isCaseOnlyRename) {
+      // A genuinely different directory already exists with that name.
       return '';
     }
 
     try {
-      existingDir.renameSync(newPath);
+      if (isCaseOnlyRename) {
+        // Direct rename can be a no-op on case-insensitive file systems,
+        // so go through a temporary name first.
+        final String tempPath = path.join(
+          parent,
+          '${newDirectoryName}_tmp_${DateTime.now().millisecondsSinceEpoch}',
+        );
+
+        existingDir.renameSync(tempPath);
+        Directory(tempPath).renameSync(newPath);
+      } else {
+        existingDir.renameSync(newPath);
+      }
+
       return newPath;
     } catch (e) {
       logger.e('Error renaming directory: $e');

@@ -16,6 +16,7 @@ enum InvalidValueState {
   positionTooBig,
   positionTooSmall,
   dateTimeFormatInvalid,
+  dateOkButTimeFormatInvalid,
   dateFormatInvalid,
   dateInvalid,
   enteredDateEmpty,
@@ -446,6 +447,11 @@ class _SetValueToTargetDialogState extends State<SetValueToTargetDialog>
           _passedValueTextEditingController.text = enteredStr;
 
           return [""];
+        case InvalidValueState.dateOkButTimeFormatInvalid:
+          _passedValueTextEditingController.text = enteredStr;
+
+          return [enteredStr,
+                  'time format invalid'];
         case InvalidValueState.dateFormatInvalid:
           warningMessageVM.setError(
             errorType: ErrorType.dateFormatError,

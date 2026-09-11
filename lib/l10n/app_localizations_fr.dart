@@ -777,7 +777,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String increaseAudioVolumeIconButtonTooltip(Object percentValue) {
-    return 'Augmenter le volume audio (actuellement $percentValue). Le volume normal vaut 50 %. Le bouton est désactivé lorsque le volume maximum (100 %%) est atteint.';
+    return 'Augmenter le volume audio (actuellement $percentValue). Le volume normal vaut 50 %. Le bouton est désactivé lorsque le volume maximum (100 %) est atteint.';
   }
 
   @override

@@ -507,7 +507,7 @@
   "exclude": "Exclure les audios ",
   "fullyPlayed": "terminés",
   "audio": "audio",
-  "increaseAudioVolumeIconButtonTooltip": "Augmenter le volume audio (actuellement {percentValue}). Le volume normal vaut 50 %. Le bouton est désactivé lorsque le volume maximum (100 %%) est atteint.",
+  "increaseAudioVolumeIconButtonTooltip": "Augmenter le volume audio (actuellement {percentValue}). Le volume normal vaut 50 %. Le bouton est désactivé lorsque le volume maximum (100 %) est atteint.",
   "decreaseAudioVolumeIconButtonTooltip": "Diminuer le volume audio (actuellement {percentValue}). Le volume normal vaut 50 %. Le bouton est désactivé lorsque le volume minimum (10 %) est atteint.",
   "resetSortFilterOptionsTooltip": "Réinitialiser les paramètres de tri et de filtrage.",
   "clickToSetAscendingOrDescendingTooltip": "Cliquez pour définir l'ordre de tri croissant ou décroissant.",

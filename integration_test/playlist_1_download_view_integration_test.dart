@@ -8570,7 +8570,7 @@ void main() {
         confirmActionDialogTitle:
             "Confirmez la suppression de l'audio \"$copiedAudioTitle\" de la playlist Youtube",
         confirmActionDialogMessagePossibleLst: [
-          "Supprimez l'audio \"$copiedAudioTitle\" de la playlist \"$youtubeAudioTargetPlaylistTitle\" définie sur le site Youtube, sinon l'audio sera téléchargé à nouveau lors du prochain téléchargement de la playlist. Ou alors cliquez sur \"Annuler\" et choisissez \"Supprimer l'audio ...\" au lieu de \"Supprimer l'audio de la playlist également ...\". Ainsi, l'audio sera supprimé de la liste des audios jouables, mais restera dans la liste des audios téléchargés, ce qui évitera son re-téléchargement.",
+          "Supprimez l'audio \"$copiedAudioTitle\" de la playlist \"$youtubeAudioTargetPlaylistTitle\" définie sur le site Youtube, sinon l'audio sera téléchargé à nouveau lors du prochain téléchargement de la playlist. Ou alors cliquez sur \"Annuler\" et choisissez \"Supprimer l'audio ...\" au lieu de \"Supprimer l'audio de la playlist également ...\". Ainsi, l'audio sera supprimé de la liste des audios jouables, mais restera dans la liste des audios téléchargés, ce qui évitera son retéléchargement.",
         ],
         closeDialogWithConfirmButton: true,
       );
@@ -8953,7 +8953,7 @@ void main() {
         confirmActionDialogTitle:
             "Confirmez la suppression de l'audio \"$copiedAudioTitle\" de la playlist Youtube",
         confirmActionDialogMessagePossibleLst: [
-          "Supprimez l'audio \"$copiedAudioTitle\" de la playlist \"$youtubeAudioTargetPlaylistTitle\" définie sur le site Youtube, sinon l'audio sera téléchargé à nouveau lors du prochain téléchargement de la playlist. Ou alors cliquez sur \"Annuler\" et choisissez \"Supprimer l'audio ...\" au lieu de \"Supprimer l'audio de la playlist également ...\". Ainsi, l'audio sera supprimé de la liste des audios jouables, mais restera dans la liste des audios téléchargés, ce qui évitera son re-téléchargement.",
+          "Supprimez l'audio \"$copiedAudioTitle\" de la playlist \"$youtubeAudioTargetPlaylistTitle\" définie sur le site Youtube, sinon l'audio sera téléchargé à nouveau lors du prochain téléchargement de la playlist. Ou alors cliquez sur \"Annuler\" et choisissez \"Supprimer l'audio ...\" au lieu de \"Supprimer l'audio de la playlist également ...\". Ainsi, l'audio sera supprimé de la liste des audios jouables, mais restera dans la liste des audios téléchargés, ce qui évitera son retéléchargement.",
         ],
         closeDialogWithConfirmButton: true,
       );

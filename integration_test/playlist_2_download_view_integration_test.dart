@@ -6621,20 +6621,20 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                "La playlist \"$playlistToMoveTitle\" a été déplacée de la position 7 à la position 12.",
+                "La playlist \"$playlistToMoveTitle\" a été déplacée de la position 7 à la position 11.",
             isWarningConfirming: true,
           );
 
           // And verify the order of the playlist titles.
 
           const List<String> playlistsTitles = [
+            "local_15",
             "local_2",
             "local_3",
             "local_4",
-            "local_5",
             "local_14",
+            "local_5",
             "local_6",
-            "local_7",
           ];
 
           // Ensure that since the search icon button was used,
@@ -6657,7 +6657,7 @@ void main() {
 
           // Verify the the selected playlist text tooltip in french which
           // contains its position
-          expect(find.text('Position de la playlist: 12'), findsOneWidget);
+          expect(find.text('Position de la playlist: 11'), findsOneWidget);
 
           // Purge the test playlist directory so that the created test
           // files are not uploaded to GitHub
@@ -6707,20 +6707,20 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                "The playlist \"$playlistToMoveTitle\" was moved from position 7 to position 12.",
+                "The playlist \"$playlistToMoveTitle\" was moved from position 7 to position 11.",
             isWarningConfirming: true,
           );
 
           // And verify the order of the playlist titles.
 
           const List<String> playlistsTitles = [
+            "local_15",
             "local_2",
             "local_3",
             "local_4",
-            "local_5",
             "local_14",
+            "local_5",
             "local_6",
-            "local_7",
           ];
 
           // Ensure that since the search icon button was used,
@@ -6743,7 +6743,7 @@ void main() {
 
           // Verify the the selected playlist text tooltip in englishwhich
           // contains its position
-          expect(find.text('Playlist position: 12'), findsOneWidget);
+          expect(find.text('Playlist position: 11'), findsOneWidget);
 
           // Purge the test playlist directory so that the created test
           // files are not uploaded to GitHub
@@ -6798,7 +6798,7 @@ void main() {
           await IntegrationTestUtil.verifyAndCloseWarningDialog(
             tester: tester,
             warningDialogMessage:
-                "The playlist \"$playlistToMoveTitle\" was moved from position 1 to position 16.",
+                "The playlist \"$playlistToMoveTitle\" was moved from position 1 to position 15.",
             isWarningConfirming: true,
           );
 
@@ -6810,8 +6810,8 @@ void main() {
             "local_6",
             "local_7",
             "local_8",
-            "local_9",
             "Jeunes pianistes extraordinaires",
+            "local_9",
           ];
 
           // Ensure that since the search icon button was used,
@@ -6834,7 +6834,7 @@ void main() {
 
           // Verify the the selected playlist text tooltip in englishwhich
           // contains its position
-          expect(find.text('Playlist position: 16'), findsOneWidget);
+          expect(find.text('Playlist position: 15'), findsOneWidget);
 
           // Purge the test playlist directory so that the created test
           // files are not uploaded to GitHub
@@ -7248,8 +7248,8 @@ void main() {
             "local_13",
             "local_14",
             "local_15",
-            "local_3",
             "local_2",
+            "local_3",
             "local_4",
             "local_5",
           ];
@@ -7274,7 +7274,7 @@ void main() {
 
           // Verify the the selected playlist text tooltip in englishwhich
           // contains its position
-          expect(find.text('Playlist position: 10'), findsOneWidget);
+          expect(find.text('Playlist position: 9'), findsOneWidget);
 
           // Purge the test playlist directory so that the created test
           // files are not uploaded to GitHub
@@ -18131,6 +18131,135 @@ void main() {
         );
       });
       testWidgets(
+          '''Set download date/time with incorret download time format after the last download date. The set
+             value is 14/07/2025 1831. The integration test verifies the displayed warning indicating that
+             no audio mp3 was saved to ZIP.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists Audio's MP3 to ZIP File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
+
+        const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
+
+        expect(find.text(oldestAudioDownloadDateTime), findsOneWidget);
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        // Verify that the TextField is focused using its focus node
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+        expect(textField.focusNode?.hasFocus, isTrue,
+            reason: 'TextField should be focused when dialog opens');
+
+        // Now change the download date in the dialog
+        const String validDateFormat = '15/07/2025';
+        const String invalidTimeFormat = '1431';
+        final String invalidTooRecentAudioDownloadDateTime = '$validDateFormat $invalidTimeFormat';
+        textField.controller!.text = invalidTooRecentAudioDownloadDateTime;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed error warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Since the time format in $invalidTooRecentAudioDownloadDateTime is invalid, only the date with 00:00 time is used.",
+        );
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:00.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
+
+        // Verify the displayed warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $validDateFormat 00:00.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after $validDateFormat 00:00.",
+        );
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        expect(
+          zipLst.length,
+          0,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
           '''Empty the download date. The integration test verifies the displayed error warning indicating
             that an empty download date is not possible.''',
           (WidgetTester tester) async {
@@ -18207,8 +18336,7 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "Defining an empty date or date/time download date is not possible.",
-        );
+              "Defining an empty date is not possible.");
 
         await IntegrationTestUtil.verifySetValueToTargetDialog(
           tester: tester,
@@ -18326,8 +18454,8 @@ void main() {
         );
       });
       testWidgets(
-          '''Set incorrect download date/time format. The integration test verifies the displayed error warning indicating
-            that an unacceptable download date/time format is not possible.''',
+          '''Set incorrect download time format. The integration test verifies the displayed error warning indicating
+            that the unacceptable download time format is replacd by 00:00.''',
           (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
@@ -18391,7 +18519,9 @@ void main() {
             tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
 
         // Now enter an invalid download date/time in the dialog
-        const String invalidDateTimeFormat = '29/09/2025 1508';
+        const String validDateFormat = '13/07/2025';
+        const String invalidTimeFormat = '1508';
+        final String invalidDateTimeFormat = '$validDateFormat $invalidTimeFormat';
         textField.controller!.text = invalidDateTimeFormat;
         await tester.pumpAndSettle();
 
@@ -18403,19 +18533,32 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "$invalidDateTimeFormat does not respect the date or date/time format.",
+              "Since the time format in $invalidDateTimeFormat is invalid, only the date with 00:00 time is used.",
         );
 
-        await IntegrationTestUtil.verifySetValueToTargetDialog(
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
           tester: tester,
-          dialogTitle: 'Set the download Date',
-          dialogMessage:
-              'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:",
+          ],
+          useContains: true,
+          closeDialogWithConfirmButton: true,
         );
 
-        // Tap on the cancel button of the set value to target dialog
-        await tester.tap(find.byKey(const Key('setValueToTargetCancelButton')));
+        // Wait for completion
         await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP all playlists audio MP3 files downloaded from $validDateFormat 00:00.\n\nTotal saved audio number: 5, total size: 64.47 MB and total duration: 2:10:37.5."));
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
@@ -18824,7 +18967,7 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $tooRecentAudioDownloadDateTime.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after 15/07/2025 14:31.",
+              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $tooRecentAudioDownloadDateTime.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after $tooRecentAudioDownloadDateTime.",
         );
 
         List<String> zipLst = DirUtil.listFileNamesInDir(
@@ -18837,6 +18980,122 @@ void main() {
           zipLst.length,
           0,
         );
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Set download date/time with incorret download time format after the last download date. The set
+             value is 29/09/2025 1831. The integration test verifies the displayed warning indicating that
+             no audio mp3 was saved to ZIP.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        const String playlistToSaveTitle = "Saint François d'Assise";
+
+        // Type on the playlist popup menu item to save its audio
+        // mp3 files to zip
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToSaveTitle,
+          playlistMenuKeyStr: 'popup_menu_save_playlist_audio_mp3_files_to_zip',
+          dragToBottom: true,
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+        // Now enter an invalid download date/time in the dialog
+        const String validDateFormat = '29/09/2025';
+        const String invalidTimeFormat = '1508';
+        final String invalidDateTimeFormat = '$validDateFormat $invalidTimeFormat';
+        textField.controller!.text = invalidDateTimeFormat;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed error warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Since the time format in $invalidDateTimeFormat is invalid, only the date with 00:00 time is used.",
+        );
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:",
+          ],
+          useContains: true,
+          closeDialogWithConfirmButton: true,
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        // Verify the displayed warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $validDateFormat 00:00.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after $validDateFormat 00:00.",
+        );
+
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -19047,8 +19306,8 @@ void main() {
         );
       });
       testWidgets(
-          '''Set incorrect download date/time format. The integration test verifies the displayed error warning indicating
-            that an unacceptable download date/time format is not possible.''',
+          '''Set incorrect download time format. The integration test verifies the displayed error warning indicating
+            that the unacceptable download time format is replacd by 00:00.''',
           (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
@@ -19116,7 +19375,9 @@ void main() {
             tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
 
         // Now enter an invalid download date/time in the dialog
-        const String invalidDateTimeFormat = '29/09/2025 1508';
+        const String validDateFormat = '13/07/2025';
+        const String invalidTimeFormat = '1508';
+        final String invalidDateTimeFormat = '$validDateFormat $invalidTimeFormat';
         textField.controller!.text = invalidDateTimeFormat;
         await tester.pumpAndSettle();
 
@@ -19128,19 +19389,32 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "$invalidDateTimeFormat does not respect the date or date/time format.",
+              "Since the time format in $invalidDateTimeFormat is invalid, only the date with 00:00 time is used.",
         );
 
-        await IntegrationTestUtil.verifySetValueToTargetDialog(
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
           tester: tester,
-          dialogTitle: 'Set the download Date',
-          dialogMessage:
-              'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:",
+          ],
+          useContains: true,
+          closeDialogWithConfirmButton: true,
         );
 
-        // Tap on the cancel button of the set value to target dialog
-        await tester.tap(find.byKey(const Key('setValueToTargetCancelButton')));
+        // Wait for completion
         await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $validDateFormat 00:00.\n\nTotal saved audio number: 3, total size: 53.12 MB and total duration: 1:59:18.8."));
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub

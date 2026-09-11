@@ -12254,7 +12254,7 @@ void main() {
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
-          commentPositionTextButtonInTenthSecondsMin: 46337,
+          commentPositionTextButtonInTenthSecondsMin: 46334,
           commentPositionTextButtonInTenthSecondsMax: 46351,
           audioPlayerViewAudioPositionMin: '1:17:14',
           audioPlayerViewAudioPositionMax: '1:17:15',
@@ -12272,10 +12272,10 @@ void main() {
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
-          commentPositionTextButtonInTenthSecondsMin: 92654,
-          commentPositionTextButtonInTenthSecondsMax: 92671,
-          audioPlayerViewAudioPositionMin: '2:34:26',
-          audioPlayerViewAudioPositionMax: '2:34:26',
+          commentPositionTextButtonInTenthSecondsMin: 46334,
+          commentPositionTextButtonInTenthSecondsMax: 46351,
+          audioPlayerViewAudioPositionMin: '1:17:14',
+          audioPlayerViewAudioPositionMax: '1:17:15',
         );
 
         // Now update the comment
@@ -13049,9 +13049,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 50.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 50.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 50.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 50.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       for (int i = 0; i < 5; i++) {
@@ -13072,9 +13072,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: true,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 100.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 100.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 100.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 100.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Now return to the playlist download page and select the second audio
@@ -13111,9 +13111,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 50.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 50.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 50.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 50.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       for (int i = 0; i < 5; i++) {
@@ -13134,9 +13134,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: true,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 10.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 10.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 10.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 10.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Now return to the playlist download page and re-select the first
@@ -13174,9 +13174,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: true,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 100.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 100.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 100.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 100.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Tap once on the volume down button to set the audio volume to 90 %
@@ -13196,9 +13196,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 90.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 90.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 90.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 90.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Now return to the playlist download page and re-select the second
@@ -13236,9 +13236,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: true,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 10.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 10.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 10.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 10.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Tap once on the volume up button to set the audio volume to 20 %
@@ -13258,9 +13258,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 20.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 20.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 20.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 20.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Purge the test playlist directory so that the created test
@@ -13327,9 +13327,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 50.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 50.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 50.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 50.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       for (int i = 0; i < 5; i++) {
@@ -13350,9 +13350,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: true,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 100.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 100.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 100.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 100.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Now, open the AudioPlayableListDialog by tapping on the
@@ -13387,9 +13387,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 50.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 50.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 50.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 50.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       for (int i = 0; i < 5; i++) {
@@ -13410,9 +13410,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: true,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 10.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 10.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 10.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 10.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Now, open the AudioPlayableListDialog by tapping on the
@@ -13447,9 +13447,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: true,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 100.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 100.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 100.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 100.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Tap once on the volume down button to set the audio volume to 90 %
@@ -13469,9 +13469,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 90.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 90.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 90.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 90.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Now, open the AudioPlayableListDialog by tapping on the
@@ -13506,9 +13506,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: true,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 10.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 10.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 10.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 10.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Tap once on the volume up button to set the audio volume to 20 %
@@ -13528,9 +13528,9 @@ void main() {
         isAudioVolumeUpButtonDisabled: false,
         isAudioVolumeDownButtonDisabled: false,
         volumeUpIconButtonTooltipMessage:
-            "Increase the audio volume (currently 20.0 %). Disabled when maximum volume is reached.",
+            "Increase the audio volume (currently 20.0 %). The normal volume is 50 %. Disabled when maximum volume (100 %) is reached.",
         volumeDownIconButtonTooltipMessage:
-            "Decrease the audio volume (currently 20.0 %). Disabled when minimum volume is reached.",
+            "Decrease the audio volume (currently 20.0 %). The normal volume is 50 %. Disabled when minimum volume (10 %) is reached.",
       );
 
       // Purge the test playlist directory so that the created test

@@ -966,6 +966,17 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
 
               String oldestAudioDownloadDateFormattedStr = resultStringLst[0];
 
+              if (resultStringLst.length == 2 &&
+                  resultStringLst[1] == 'time format invalid') {
+                Provider.of<WarningMessageVM>(
+                  context,
+                  listen: false,
+                ).setError(
+                  errorType: ErrorType.dateOkAndTimeError,
+                  errorArgOne: oldestAudioDownloadDateFormattedStr,
+                );
+              }
+
               final List<Playlist> listOfSelectablePlaylists =
                   playlistListVMlistenFalse.listOfSelectablePlaylists;
 
@@ -1107,18 +1118,29 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
     }
 
     // Try to parse as date time first
-    DateTime? parsedDateTime = dateFormatVM.parseDateTimeStrUsinAppDateFormat(
+    DateTime? parseDateTimeStrUsinAppDateFormat =
+        dateFormatVM.parseDateTimeStrUsinAppDateFormat(
       dateTimeStr: enteredDateTimeStr,
     );
 
     // If that fails, try to parse as date only
-    parsedDateTime ??= dateFormatVM.parseDateStrUsinAppDateFormat(
-      dateStr: enteredDateTimeStr,
-    );
+    DateTime? parseDateStrUsinAppDateFormat;
 
-    if (parsedDateTime == null) {
+    if (parseDateTimeStrUsinAppDateFormat == null) {
+      parseDateStrUsinAppDateFormat =
+          dateFormatVM.parseDateStrUsinAppDateFormat(
+        dateStr: enteredDateTimeStr,
+      );
+    }
+
+    if (parseDateTimeStrUsinAppDateFormat == null &&
+        parseDateStrUsinAppDateFormat == null) {
       return InvalidValueState
           .dateTimeFormatInvalid; // This will prevent the dialog from closing
+    } else if (parseDateStrUsinAppDateFormat != null) {
+      // If only the date was parsed successfully, it means the time part format was invalid
+      return InvalidValueState
+          .dateOkButTimeFormatInvalid; // This will not prevent the dialog from closing
     }
 
     return InvalidValueState.none;

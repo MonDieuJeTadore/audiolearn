@@ -224,7 +224,9 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                           key: const Key('playPauseIconButton'),
                           onPressed: () async {
                             if (audioPlayerVMlistenFalse.isPlaying) {
-                              await audioPlayerVMlistenFalse.pause();
+                              await audioPlayerVMlistenFalse.pause(
+                                resetCommentEndPositionInTenthOfSeconds: false,
+                              );
 
                               // Modify the comment end position if the end position is before the current audio position.
                               if (commentVMlistenFalse
@@ -311,7 +313,12 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                                     // comment end position is reached.
                                     WidgetsBinding.instance
                                         .addPostFrameCallback((_) {
-                                      audioPlayerVMlistenFalse.pause();
+                                      audioPlayerVMlistenFalse.pause(
+                                        resetCommentEndPositionInTenthOfSeconds:
+                                            false, // if the comment end position whose end position
+                                        //            equals the audio duration is reached, the
+                                        //            next audio does not start playing.
+                                      );
                                     });
                                   }
                                 }
@@ -661,7 +668,12 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
               // action which will not block the widget tree
               // rendering.
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                audioPlayerVMlistenFalse.pause();
+                audioPlayerVMlistenFalse.pause(
+                  resetCommentEndPositionInTenthOfSeconds:
+                      false, // if the comment end position whose end position
+                  //            equals the audio duration is reached, the
+                  //            next audio does not start playing.
+                );
               });
             }
 

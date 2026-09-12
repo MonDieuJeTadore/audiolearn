@@ -581,7 +581,9 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     double scrollPositionNumber = playlistToScrollPosition.toDouble();
 
     if (playlistToScrollPosition > 50) {
-      scrollPositionNumber *= 0.675;
+      scrollPositionNumber *= 0.72;
+    } else if (playlistToScrollPosition > 40) {
+      scrollPositionNumber *= 0.69;
     } else if (playlistToScrollPosition > 25) {
       scrollPositionNumber *= 0.68;
     } else if (playlistToScrollPosition > 20) {
@@ -592,7 +594,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       scrollPositionNumber *= 0.6;
     }
 
-    double offset = scrollPositionNumber * widget.playlistItemHeight;
+    double offset = scrollPositionNumber * widget.playlistItemHeight * 1.343;
 
     if (_playlistScrollController.hasClients) {
       _playlistScrollController.jumpTo(0.0);

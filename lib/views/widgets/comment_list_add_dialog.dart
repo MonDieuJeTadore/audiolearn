@@ -553,8 +553,9 @@ class _CommentListAddDialogContentState
       WidgetsBinding.instance.addPostFrameCallback((_) {
         audioPlayerVMlistenFalse.pause(
           resetCommentEndPositionInTenthOfSeconds:
-              false, // Solves playing comment whose
-          //            end position is audio duration
+              false, // if the comment end position whose end position
+          //            equals the audio duration is reached, the
+          //            next audio does not start playing.
         );
       });
     }
@@ -1040,8 +1041,9 @@ class _CommentListAddDialogContentState
                               .addPostFrameCallback((_) async {
                             await audioPlayerVMlistenFalse.pause(
                               resetCommentEndPositionInTenthOfSeconds:
-                                  false, // Solves playing comment whose
-                              //            end position is audio duration
+                                  false, // if the comment end position whose end position
+                              //            equals the audio duration is reached, the
+                              //            next audio does not start playing.
                             );
                           });
                         }
@@ -1155,7 +1157,7 @@ class _CommentListAddDialogContentState
                     ? Tooltip(
                         message: AppLocalizations.of(context)!
                             .commentUpdateDateTooltip(dateFormatVMlistenFalse
-                          .formatDateTime(comment.lastUpdateDateTime)),
+                                .formatDateTime(comment.lastUpdateDateTime)),
                         child: Text(
                           // comment update date Text. This date is
                           // displayed with 2 chars for the year in order

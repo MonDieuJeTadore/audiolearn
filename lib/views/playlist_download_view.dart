@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:audiolearn/utils/duration_expansion.dart';
@@ -594,7 +595,15 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       scrollPositionNumber *= 0.6;
     }
 
-    double offset = scrollPositionNumber * widget.playlistItemHeight * 1.343;
+    double multiplier = 1.0;
+
+    if (Platform.isWindows) {
+      multiplier = 1.343;
+    } else if (Platform.isAndroid) {
+      multiplier = 0.9;
+    }
+
+    double offset = scrollPositionNumber * widget.playlistItemHeight * multiplier;
 
     if (_playlistScrollController.hasClients) {
       _playlistScrollController.jumpTo(0.0);

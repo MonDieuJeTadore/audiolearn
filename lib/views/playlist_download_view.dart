@@ -78,6 +78,13 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   late PlaylistListVM _playlistListVMlistenTrue;
   int _selectedSortFilterAudioNumber = 0;
 
+  // A Map in the State class that stores one key per playlist.
+  final Map<int, GlobalKey> _playlistItemKeys = {};
+
+  GlobalKey _keyForIndex(int index) {
+    return _playlistItemKeys.putIfAbsent(index, () => GlobalKey());
+  }
+
   @override
   initState() {
     super.initState();
@@ -489,12 +496,11 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
           itemBuilder: (context, index) {
             Playlist playlist = upToDateSelectablePlaylists[index];
             return Builder(
+              key: _keyForIndex(index), // <-- added
               builder: (listTileContext) {
                 return Tooltip(
-                  message:
-                      AppLocalizations.of(context)!.playlistPositionTooltip(
-                    index + 1,
-                  ),
+                  message: AppLocalizations.of(context)!
+                      .playlistPositionTooltip(index + 1),
                   child: PlaylistListItem(
                     settingsDataService: widget.settingsDataService,
                     playlist: playlist,
@@ -520,6 +526,45 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   }
 
   void _scrollToSelectedPlaylist({
+    required PlaylistListVM playlistListVMlistenFalse,
+    required AudioDownloadVM audioDownloadVMlistenTrue,
+  }) {
+    if (audioDownloadVMlistenTrue.isAudioDownloading) {
+      // When an audio is downloading, the list of playlist must not
+      // scroll to the current playlist, what happens if this test
+      // is not performed.
+      return;
+    }
+
+    int playlistToScrollPosition =
+        playlistListVMlistenFalse.determinePlaylistToScrollPosition();
+
+    // ... (garder la logique de noScrollPositionValue si besoin) ...
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final key = _playlistItemKeys[playlistToScrollPosition];
+      final ctx = key?.currentContext;
+      if (ctx != null) {
+        Scrollable.ensureVisible(
+          ctx,
+          duration: kScrollDuration,
+          curve: Curves.easeInOut,
+          alignment: 0.1, // 0 = tout en haut, 1 = tout en bas ; ajustable
+        );
+      } else {
+        // item pas encore construit (hors de la fenêtre de rendu),
+        // on relance après le prochain frame comme avant
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => _scrollToSelectedPlaylist(
+            playlistListVMlistenFalse: playlistListVMlistenFalse,
+            audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
+          ),
+        );
+      }
+    });
+  }
+
+  void _scrollToSelectedPlaylistOld({
     required PlaylistListVM playlistListVMlistenFalse,
     required AudioDownloadVM audioDownloadVMlistenTrue,
   }) {
@@ -567,7 +612,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         false;
 
     if (isPlaylistListExpanded &&
-        playlistToScrollPosition != 0 && // the case if aplaylist located
+        playlistToScrollPosition != 0 && // the case if a playlist located
         //                                  at the bottom of the list is
         //                                  moved at top by typing on the
         //                                  moved down icon button
@@ -603,7 +648,8 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       multiplier = 0.9;
     }
 
-    double offset = scrollPositionNumber * widget.playlistItemHeight * multiplier;
+    double offset =
+        scrollPositionNumber * widget.playlistItemHeight * multiplier;
 
     if (_playlistScrollController.hasClients) {
       _playlistScrollController.jumpTo(0.0);
@@ -1480,7 +1526,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   }) {
     if (_selectedSortFilterParametersName !=
         AppLocalizations.of(context)!.sortFilterParametersDefaultName) {
-        // The case if default or défaut is selected in the dropdown button list
+      // The case if default or défaut is selected in the dropdown button list
       _selectedSortFilterParametersName = playlistListVMlistenFalseOrTrue
           .getSelectedPlaylistAudioSortFilterParmsNameForView(
         audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,

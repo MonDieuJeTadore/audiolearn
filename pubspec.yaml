@@ -76,6 +76,7 @@ dependencies:
   code_builder: ^4.11.1
   shared_preferences: ^2.5.4
   ffi: ^2.2.0
+  scrollable_positioned_list: ^0.3.8
 
 dev_dependencies:
   flutter_test:

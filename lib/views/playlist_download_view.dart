@@ -349,7 +349,16 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
 
     Expanded expanded = Expanded(
       child: ScrollablePositionedList.builder(
-        key: const Key('audio_list'),
+        // Keying on the playlist identity (not a constant key) forces
+        // Flutter to create a fresh ScrollablePositionedList state whenever
+        // the selected playlist changes. Without this, the widget's
+        // internal state (last known item anchor/offset) is reused across
+        // different playlists; if the previous playlist was empty, that
+        // internal state can end up anchored on an invalid index (-1),
+        // which then throws a RangeError once a non-empty playlist is
+        // selected again and the internal state tries to reconcile that
+        // stale anchor against the new item count.
+        key: ValueKey('audio_list_${playlist?.id ?? ''}'),
         itemScrollController: _audioItemScrollController,
         itemPositionsListener: _audioItemPositionsListener,
         itemCount: _selectedPlaylistPlayableAudioLst.length,
@@ -413,7 +422,11 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         );
       }
 
-      _jumpAudioListToTop();
+      // Deferred (see comment below) for the same reason as the
+      // non-empty-position case.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _jumpAudioListToTop(retryCount: 0);
+      });
 
       return;
     }
@@ -427,7 +440,22 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       return;
     }
 
-    _scrollAudioListToIndex(index: audioToScrollPosition, retryCount: 0);
+    // The selected playlist's ScrollablePositionedList is keyed on the
+    // playlist identity (see _buildExpandedAudioList), so switching
+    // playlists disposes the previous list widget and creates a new
+    // one. Right after that key change, _audioItemScrollController can
+    // momentarily still report isAttached == true while actually
+    // pointing at the outgoing (soon to be disposed) list instance -
+    // Flutter hasn't finished detaching it within the current build
+    // pass yet. Calling scrollTo() on it at that moment silently does
+    // nothing (no exception, no scroll), and since it looked
+    // "attached", nothing triggers a retry. Deferring this very first
+    // call to after the frame completes lets the detach/attach cycle
+    // settle first, so isAttached reflects the new (correct) list
+    // instance by the time we check it.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollAudioListToIndex(index: audioToScrollPosition, retryCount: 0);
+    });
   }
 
   /// Scrolls to the top of the audio list. Retries on the next frame if

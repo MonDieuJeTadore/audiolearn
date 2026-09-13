@@ -324,7 +324,7 @@ class _MyHomePageState extends State<MyHomePage>
         top: false,
         child: Column(
           children: [
-            _buildPageView(_screenWidgetLst[_currentIndex]),
+            _buildPageView(),
             _buildBottomScreenIconButtonRow(
               themeProvider: themeProviderVMlistenTrue,
               audioPlayerVMlistenedFalse: audioPlayerVMlistenFalse,
@@ -337,17 +337,26 @@ class _MyHomePageState extends State<MyHomePage>
 
   /// This method builds the PageView widget which enables to drag
   /// to the PlaylistDownloadView and the AudioPlayerView screens.
-  Expanded _buildPageView(StatefulWidget screenWidget) {
+  Expanded _buildPageView() {
     return Expanded(
       // PageView enables changing screen by dragging
       child: PageView.builder(
-        itemCount:
-            _screenNavigationIconLst.length, // specifies the number of pages
-        //                           that can be swiped by dragging left or right
+        itemCount: _screenNavigationIconLst.length,
         controller: _pageController,
         onPageChanged: onPageChangedFunction,
         itemBuilder: (context, index) {
-          return screenWidget;
+          // Each page slot must always get its own dedicated widget
+          // instance, matching the requested index - never the
+          // currently selected screen regardless of index. Returning
+          // the same widget instance for two different page slots (as
+          // was done before by ignoring `index` and always returning
+          // the "current" screen widget) caused Flutter to call
+          // createState() twice on that same widget instance whenever
+          // PageView pre-built the adjacent page, silently creating
+          // two competing State objects and leaving one of them
+          // orphaned - a source of erratic, hard-to-reproduce bugs
+          // whenever crossing between pages.
+          return _screenWidgetLst[index];
         },
       ),
     );

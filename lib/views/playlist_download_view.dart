@@ -525,148 +525,114 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     }
   }
 
+  /// Scrolls the playlist list so that the selected playlist becomes
+  /// visible.
+  ///
+  /// This is done in two phases:
+  ///  1. A coarse jumpTo(), computed from the estimated item height. This
+  ///     doesn't need to be pixel accurate: its only purpose is to force
+  ///     the lazy ListView.builder to build the items located around the
+  ///     target position (otherwise, if the target playlist was never
+  ///     built - e.g. after the playlist list was hidden and shown again,
+  ///     after the playlist was moved far away in the list, or after
+  ///     navigating back to this screen - its GlobalKey has no
+  ///     BuildContext yet and Scrollable.ensureVisible() cannot do
+  ///     anything with it).
+  ///  2. Once the target playlist item is built, Scrollable.ensureVisible()
+  ///     performs the exact, pixel accurate scroll to it.
   void _scrollToSelectedPlaylist({
     required PlaylistListVM playlistListVMlistenFalse,
     required AudioDownloadVM audioDownloadVMlistenTrue,
   }) {
     if (audioDownloadVMlistenTrue.isAudioDownloading) {
-      // When an audio is downloading, the list of playlist must not
-      // scroll to the current playlist, what happens if this test
-      // is not performed.
+      // When an audio is downloading, the list of playlists must not be
+      // scrolled to the current playlist. Without this test, a bug
+      // happens.
       return;
     }
 
     int playlistToScrollPosition =
         playlistListVMlistenFalse.determinePlaylistToScrollPosition();
 
-    // ... (garder la logique de noScrollPositionValue si besoin) ...
+    if (playlistToScrollPosition == -1) {
+      // No playlist is selected, so no scrolling is required.
+      return;
+    }
 
+    if (!_playlistScrollController.hasClients) {
+      // The scroll controller isn't attached to any scroll view yet.
+      // Schedule a callback to try again after the next frame.
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _scrollToSelectedPlaylist(
+          playlistListVMlistenFalse: playlistListVMlistenFalse,
+          audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
+        ),
+      );
+
+      return;
+    }
+
+    // Phase 1: coarse jump so that the target item (and its neighbours)
+    // get built by the lazy ListView.builder. The estimated offset does
+    // not need to be exact.
+    double estimatedOffset =
+        playlistToScrollPosition * widget.playlistItemHeight;
+    double maxScrollExtent = _playlistScrollController.position.maxScrollExtent;
+
+    _playlistScrollController.jumpTo(
+      estimatedOffset.clamp(0.0, maxScrollExtent),
+    );
+
+    // Phase 2: fine-tune the scroll position once the target item is
+    // built.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final key = _playlistItemKeys[playlistToScrollPosition];
-      final ctx = key?.currentContext;
-      if (ctx != null) {
-        Scrollable.ensureVisible(
-          ctx,
-          duration: kScrollDuration,
-          curve: Curves.easeInOut,
-          alignment: 0.1, // 0 = tout en haut, 1 = tout en bas ; ajustable
-        );
-      } else {
-        // item pas encore construit (hors de la fenêtre de rendu),
-        // on relance après le prochain frame comme avant
-        WidgetsBinding.instance.addPostFrameCallback(
-          (_) => _scrollToSelectedPlaylist(
-            playlistListVMlistenFalse: playlistListVMlistenFalse,
-            audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
-          ),
-        );
-      }
+      _ensureSelectedPlaylistItemIsVisible(
+        playlistToScrollPosition: playlistToScrollPosition,
+        retryCount: 0,
+      );
     });
   }
 
-  void _scrollToSelectedPlaylistOld({
-    required PlaylistListVM playlistListVMlistenFalse,
-    required AudioDownloadVM audioDownloadVMlistenTrue,
+  /// Called after the coarse jump performed by _scrollToSelectedPlaylist().
+  /// Looks up the target playlist item's GlobalKey context and, once
+  /// available, calls Scrollable.ensureVisible() to precisely scroll to
+  /// it. If the context is not yet available (this can happen on the
+  /// very first frame following the jumpTo() call), a few more frames are
+  /// given to the framework to build the item, up to a bounded number of
+  /// retries so this can never loop forever.
+  void _ensureSelectedPlaylistItemIsVisible({
+    required int playlistToScrollPosition,
+    required int retryCount,
   }) {
-    List<Playlist> selectablePlaylists;
-    String searchSentence = playlistListVMlistenFalse.searchSentence;
-    int playlistToScrollPosition = 0;
-    int noScrollPositionValue = 0; // position value avoiding scrolling down
+    final GlobalKey? key = _playlistItemKeys[playlistToScrollPosition];
+    final BuildContext? itemContext = key?.currentContext;
 
-    if (audioDownloadVMlistenTrue.isAudioDownloading) {
-      // When an audio is downloading, the list of playlist must not
-      // scrolled to the current playlist, what happens if this test
-      // is not performed.
-      return;
-    }
-
-    if (playlistListVMlistenFalse.wasSearchButtonClicked &&
-        searchSentence.isNotEmpty) {
-      noScrollPositionValue = -1;
-      selectablePlaylists = playlistListVMlistenFalse
-          .getUpToDateSelectablePlaylists()
-          .where((playlist) => playlist.title
-              .toLowerCase()
-              .contains(searchSentence.toLowerCase()))
-          .toList();
-      for (int i = 0; i < selectablePlaylists.length; i++) {
-        if (selectablePlaylists[i].isSelected) {
-          playlistToScrollPosition = i;
-          break;
-        }
-      }
-    } else {
-      noScrollPositionValue = 3;
-      playlistToScrollPosition =
-          playlistListVMlistenFalse.determinePlaylistToScrollPosition();
-    }
-
-    // When the download playlist view is displayed, the playlist list
-    // is collapsed or expanded. This corresponds to the state stored in the
-    // app settings file. This state is modified by the user when he clicks
-    // on the playlist toggle button.
-    bool isPlaylistListExpanded = widget.settingsDataService.get(
-            settingType: SettingType.playlists,
-            settingSubType:
-                Playlists.arePlaylistsDisplayedInPlaylistDownloadView) ??
-        false;
-
-    if (isPlaylistListExpanded &&
-        playlistToScrollPosition != 0 && // the case if a playlist located
-        //                                  at the bottom of the list is
-        //                                  moved at top by typing on the
-        //                                  moved down icon button
-        playlistToScrollPosition <= noScrollPositionValue) {
-      // This avoids scrolling down when the selected playlist is
-      // in the top part of the list of playlists. Without that, the
-      // list is unusefully scrolled down and the user has to scroll
-      // up to see a selected top playlist.
-      return;
-    }
-
-    double scrollPositionNumber = playlistToScrollPosition.toDouble();
-
-    if (playlistToScrollPosition > 50) {
-      scrollPositionNumber *= 0.72;
-    } else if (playlistToScrollPosition > 40) {
-      scrollPositionNumber *= 0.69;
-    } else if (playlistToScrollPosition > 25) {
-      scrollPositionNumber *= 0.68;
-    } else if (playlistToScrollPosition > 20) {
-      scrollPositionNumber *= 0.69;
-    } else if (playlistToScrollPosition > 10) {
-      scrollPositionNumber *= 0.67;
-    } else if (playlistToScrollPosition > noScrollPositionValue) {
-      scrollPositionNumber *= 0.6;
-    }
-
-    double multiplier = 1.0;
-
-    if (Platform.isWindows) {
-      multiplier = 1.343;
-    } else if (Platform.isAndroid) {
-      multiplier = 0.9;
-    }
-
-    double offset =
-        scrollPositionNumber * widget.playlistItemHeight * multiplier;
-
-    if (_playlistScrollController.hasClients) {
-      _playlistScrollController.jumpTo(0.0);
-      _playlistScrollController.animateTo(
-        offset,
+    if (itemContext != null) {
+      Scrollable.ensureVisible(
+        itemContext,
         duration: kScrollDuration,
         curve: Curves.easeInOut,
+        alignment: 0.1, // 0.0 = top of viewport, 1.0 = bottom
       );
-    } else {
-      // The scroll controller isn't attached to any scroll views.
-      // Schedule a callback to try again after the next frame.
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => _scrollToSelectedPlaylist(
-                playlistListVMlistenFalse: playlistListVMlistenFalse,
-                audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
-              ));
+
+      return;
     }
+
+    const int maxRetryNumber = 5;
+
+    if (retryCount >= maxRetryNumber) {
+      // Giving up: this should not happen since the coarse jump performed
+      // by _scrollToSelectedPlaylist() should have caused the target item
+      // to be built by now.
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _ensureSelectedPlaylistItemIsVisible(
+        playlistToScrollPosition: playlistToScrollPosition,
+        retryCount: retryCount + 1,
+      );
+    });
   }
 
   /// If an audio is downloading, the download progression is displayed.

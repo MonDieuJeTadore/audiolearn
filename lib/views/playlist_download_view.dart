@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:audiolearn/utils/duration_expansion.dart';
@@ -7,6 +6,7 @@ import 'package:audiolearn/viewmodels/audio_player_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../l10n/app_localizations.dart';
 
 import '../constants.dart';
@@ -66,7 +66,10 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     with ScreenMixin {
   final TextEditingController _playlistUrlOrSearchController =
       TextEditingController();
-  final ScrollController _audioScrollController = ScrollController();
+  final ItemScrollController _audioItemScrollController =
+      ItemScrollController();
+  final ItemPositionsListener _audioItemPositionsListener =
+      ItemPositionsListener.create();
   final ScrollController _playlistScrollController = ScrollController();
   List<Audio> _selectedPlaylistPlayableAudioLst = [];
   bool _wasSortFilterAudioSettingsApplied = false;
@@ -116,7 +119,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     _debounce?.cancel();
     _playlistUrlOrSearchController.removeListener(_onTextChanged);
     _playlistUrlOrSearchController.dispose();
-    _audioScrollController.dispose();
     _playlistScrollController.dispose();
 
     super.dispose();
@@ -346,9 +348,10 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     }
 
     Expanded expanded = Expanded(
-      child: ListView.builder(
+      child: ScrollablePositionedList.builder(
         key: const Key('audio_list'),
-        controller: _audioScrollController,
+        itemScrollController: _audioItemScrollController,
+        itemPositionsListener: _audioItemPositionsListener,
         itemCount: _selectedPlaylistPlayableAudioLst.length,
         itemBuilder: (BuildContext context, int index) {
           final audio = _selectedPlaylistPlayableAudioLst[index];
@@ -374,6 +377,14 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     return expanded;
   }
 
+  /// Scrolls the audio list so that the current or past played audio
+  /// item becomes visible.
+  ///
+  /// Uses ScrollablePositionedList.scrollTo(), which reliably jumps to an
+  /// arbitrary index even when item heights vary a lot (long audio titles
+  /// wrap on several lines), unlike a plain ListView.builder + jumpTo()
+  /// which can only estimate an offset from an average item height and
+  /// therefore drifts for lists with very variable item heights.
   void _scrollToCurrentAudioItem({
     required PlaylistListVM playlistListVMlistenTrue,
     required AudioDownloadVM audioDownloadVMlistenTrue,
@@ -384,35 +395,25 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       // be displayed at the top of the audio list.
       _doNotScroll = true;
     } else {
-      // necessary, otherwise _selectedSortFilterParametersName will be set
-      // to default after an audio was downloaded. It will not be possible
-      // to add a selected SF parm to the current playlist.
+      // Necessary, otherwise _selectedSortFilterParametersName will be
+      // set to default after an audio was downloaded. It will not be
+      // possible to add a selected SF parm to the current playlist.
       _doNotScroll = false;
     }
 
     if (_doNotScroll) {
       if (playlistListVMlistenTrue.uniqueSelectedPlaylist ==
           playlistListVMlistenTrue.downloadingPlaylist) {
-        // In this case, the default sort and filter parameters are applied.
-        // This guarantees that the newly downloaded audio will be displayed
-        // at the top of the audio list.
+        // In this case, the default sort and filter parameters are
+        // applied. This guarantees that the newly downloaded audio will
+        // be displayed at the top of the audio list.
         _applyDefaultAudioSortFilterParms(
           playlistListVMlistenFalseOrTrue: playlistListVMlistenTrue,
-          notifyListeners: false, // was true, but caused error in the
-          //                         application due to the fact that the
-          //                         audio list was updated while the
-          //                         audio list was being built.
+          notifyListeners: false,
         );
       }
 
-      if (_audioScrollController.hasClients) {
-        _audioScrollController.jumpTo(0.0);
-        _audioScrollController.animateTo(
-          0.0, // offset
-          duration: kScrollDuration,
-          curve: Curves.easeInOut,
-        );
-      }
+      _jumpAudioListToTop();
 
       return;
     }
@@ -420,65 +421,61 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     int audioToScrollPosition =
         playlistListVMlistenTrue.determineAudioToScrollPosition();
 
-    // When the download playlist view is displayed, the playlist list
-    // is collapsed or expanded. This corresponds to the state stored in the
-    // app settings file. This state is modified by the user when he clicks
-    // on the playlist toggle button.
-    bool isPlaylistListExpanded = widget.settingsDataService.get(
-            settingType: SettingType.playlists,
-            settingSubType:
-                Playlists.arePlaylistsDisplayedInPlaylistDownloadView) ??
-        false;
+    if (audioToScrollPosition <= 0) {
+      // Either no audio is selected, or the current audio is already
+      // the first one in the list: nothing to scroll to.
+      return;
+    }
 
-    double scrollPositionNumber = audioToScrollPosition.toDouble();
+    _scrollAudioListToIndex(index: audioToScrollPosition, retryCount: 0);
+  }
 
-    if (audioToScrollPosition > 300) {
-      if (!isPlaylistListExpanded) {
-        scrollPositionNumber *= 1.23 / 1.29;
-      } else {
-        scrollPositionNumber *= 1.23 / 1.244;
+  /// Scrolls to the top of the audio list. Retries on the next frame if
+  /// the list isn't attached yet.
+  void _jumpAudioListToTop({int retryCount = 0}) {
+    if (!_audioItemScrollController.isAttached) {
+      if (retryCount >= 10) {
+        return;
       }
-    } else if (audioToScrollPosition > 200) {
-      scrollPositionNumber *= 1.21;
-    } else {
-      scrollPositionNumber *= 1.125;
-    }
 
-    if (!isPlaylistListExpanded) {
-      // the list of playlists is collapsed ...
-      scrollPositionNumber *= widget.playlistNotExpandedScrollAugmentation;
-    } else {
-      // the list of playlists is expanded ...
-      scrollPositionNumber *= widget.playlistExpandedScrollAugmentation;
-    }
-
-    double offset = scrollPositionNumber * widget.audioItemHeight;
-
-    if (playlistListVMlistenTrue
-        .getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
-          audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
-        )
-        .isNotEmpty) {
-      offset *= 20.0; // The case if playlist menu 'Rewind all Audios to Start'
-      //               was applied
-    }
-
-    if (_audioScrollController.hasClients) {
-      _audioScrollController.jumpTo(0.0);
-      _audioScrollController.animateTo(
-        offset,
-        duration: kScrollDuration,
-        curve: Curves.easeInOut,
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _jumpAudioListToTop(retryCount: retryCount + 1),
       );
-    } else {
-      // The scroll controller isn't attached to any scroll views.
-      // Schedule a callback to try again after the next frame.
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => _scrollToCurrentAudioItem(
-                playlistListVMlistenTrue: playlistListVMlistenTrue,
-                audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
-              ));
+
+      return;
     }
+
+    _audioItemScrollController.jumpTo(index: 0);
+  }
+
+  /// Scrolls the audio list to the passed index. Retries on the next
+  /// frame if the list isn't attached yet (this happens right after the
+  /// screen State is recreated, e.g. when navigating back to this page).
+  void _scrollAudioListToIndex({
+    required int index,
+    required int retryCount,
+  }) {
+    if (!_audioItemScrollController.isAttached) {
+      if (retryCount >= 10) {
+        return;
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _scrollAudioListToIndex(
+          index: index,
+          retryCount: retryCount + 1,
+        ),
+      );
+
+      return;
+    }
+
+    _audioItemScrollController.scrollTo(
+      index: index,
+      duration: kScrollDuration,
+      curve: Curves.easeInOut,
+      alignment: 0.1, // 0.0 = top of viewport, 1.0 = bottom
+    );
   }
 
   Widget _buildExpandedPlaylistList({

@@ -10613,7 +10613,6 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // And verify the order of the playlist audio titles
           List<String>
               audioTitlesSortedDownloadDateDescendingDefaultSortFilterParms = [
-            "morning _ cinematic video",
             "Really short video",
             "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
             "La résilience insulaire par Fiona Roche",
@@ -10627,6 +10626,16 @@ void playlistDownloadViewSortFilterIntegrationTest() {
                 audioTitlesSortedDownloadDateDescendingDefaultSortFilterParms,
           );
 
+          List<String>
+              audioPlayableListAudioTitlesSortedDownloadDateDescendingDefaultSortFilterParms = [
+            "morning _ cinematic video",
+            "Really short video",
+            "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+            "La résilience insulaire par Fiona Roche",
+            "Les besoins artificiels par R.Keucheyan",
+            "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
+          ];
+
           // Verify also the audio playable list dialog title and content
           await _verifyAudioPlayableList(
             tester: tester,
@@ -10634,7 +10643,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
                 "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique\n5:11",
             sortFilterParmsName: 'default',
             audioTitlesLst:
-                audioTitlesSortedDownloadDateDescendingDefaultSortFilterParms,
+                audioPlayableListAudioTitlesSortedDownloadDateDescendingDefaultSortFilterParms,
           );
 
           // Return to the playlist download view
@@ -11846,6 +11855,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // Verify the order of the playlist audio titles
 
         List<String> audioTitlesSortedByTitleAscending = [
+          "Les besoins artificiels par R.Keucheyan",
           "La résilience insulaire par Fiona Roche",
           "La surpopulation mondiale par Jancovici et Barrau",
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
@@ -11862,6 +11872,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio subtitles
 
         List<String> audioSubTitlesSortedByTitleAscending = [
+          "0:15:16.0 6.98 MB at 2.28 MB/sec on 07/01/2024 at 08:16 video upload date 05/01/2024",
           "0:10:52.0 4.97 MB at 2.67 MB/sec on 07/01/2024 at 08:16 video upload date 03/01/2024",
           "0:06:06.4 2.79 MB at 2.73 MB/sec on 07/01/2024 at 16:36 video upload date 03/12/2023",
           "0:16:25.6 7.51 MB at 2.44 MB/sec on 26/12/2023 at 09:45 video upload date 03/12/2023",
@@ -19199,6 +19210,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           ];
 
+          // Find the audio list widget using its key
+          final Finder listFinder = find.byKey(const Key('audio_list'));
+          // Perform the scroll up action
+          await tester.drag(listFinder, const Offset(0, 600));
+          await tester.pumpAndSettle();
+
           // Verify the displayed audio list after selecting the 'listenedNoCom'
           // Sort/Filter parms.
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -19260,6 +19277,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           List<String> audioTitleToCopyLst = [
             "3 fois où Aurélien Barrau tire à balles réelles sur les riches",
           ];
+
+          // Find the audio list widget using its key
+          final Finder listFinder = find.byKey(const Key('audio_list'));
+          // Perform the scroll up action
+          await tester.drag(listFinder, const Offset(0, 600));
+          await tester.pumpAndSettle();
 
           // Verify the displayed audio list after selecting the 'listenedNoCom'
           // Sort/Filter parms.
@@ -19387,6 +19410,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             "3 fois où Aurélien Barrau tire à balles réelles sur les riches",
           ];
 
+          // Find the audio list widget using its key
+          final Finder listFinder = find.byKey(const Key('audio_list'));
+          // Perform the scroll up action
+          await tester.drag(listFinder, const Offset(0, 600));
+          await tester.pumpAndSettle();
+
           // Verify the displayed audio list after selecting the 'listenedNoCom'
           // Sort/Filter parms.
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -19449,6 +19478,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
             "3 fois où Aurélien Barrau tire à balles réelles sur les riches",
           ];
+
+          // Find the audio list widget using its key
+          final Finder listFinder = find.byKey(const Key('audio_list'));
+          // Perform the scroll up action
+          await tester.drag(listFinder, const Offset(0, 600));
+          await tester.pumpAndSettle();
 
           // Verify the displayed audio list after selecting the 'listenedNoCom'
           // Sort/Filter parms.

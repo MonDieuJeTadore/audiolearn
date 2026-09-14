@@ -399,19 +399,28 @@ class _MyHomePageState extends State<MyHomePage>
   /// This function causes PageView to drag to the screen
   /// associated to the passed index.
   Future<void> changePage(int index) async {
-    await onPageChangedFunction(index);
+    setState(() {
+      _currentIndex = index;
+    });
 
-    // _pageController is the PageView controller
-    if (_pageController.hasClients) {
-      // Using if (_pageController.hasClients) ensures that the PageController
-      // is in a valid state before attempting to perform operations on it,
-      // which can help to avoid errors and makes the code more robust.
-      await _pageController.animateToPage(
-        index,
-        duration: pageTransitionDuration, // Use constant
-        curve: pageTransitionCurve, // Use constant
-      );
+    if (index == ScreenMixin.PLAYLIST_DOWNLOAD_VIEW_DRAGGABLE_INDEX) {
+      // Force the audio list to fully recreate its scroll state each
+      // time this screen becomes visible again - otherwise, navigating
+      // back to it (e.g. from AudioPlayerView) can leave the list
+      // scrolled to a stale position.
+      final PlaylistDownloadView playlistDownloadView =
+          _screenWidgetLst[ScreenMixin.PLAYLIST_DOWNLOAD_VIEW_DRAGGABLE_INDEX]
+              as PlaylistDownloadView;
+
+      playlistDownloadView.playlistDownloadViewState
+          .refreshAudioListForCorrectScrollPosition();
     }
+
+    await _pageController.animateToPage(
+      index,
+      duration: kScrollDuration,
+      curve: Curves.easeInOut,
+    );
   }
 
   /// This function is passed as the onPageChanged: parameter

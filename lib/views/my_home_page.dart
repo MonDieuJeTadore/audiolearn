@@ -75,13 +75,11 @@ class _MyHomePageState extends State<MyHomePage>
   final List<AudioLearnAppViewType> _audioLearnAppViewTypeLst = [
     AudioLearnAppViewType.playlistDownloadView,
     AudioLearnAppViewType.audioPlayerView,
-    // AudioLearnAppViewType.audioExtractorView,
   ];
 
   final List<Key> _screenNavigationIconButtonKeyLst = [
     const Key('playlistDownloadViewIconButton'),
     const Key('audioPlayerViewIconButton'),
-    // const Key('audioExtractorIconButton'),
   ];
 
   // contains a list of widgets which build the AppBar title. Each

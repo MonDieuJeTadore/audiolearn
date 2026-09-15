@@ -305,6 +305,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     );
   }
 
+  /// Works better on Windows than on Android
   Widget _buildExpandedAudioList({
     required PlaylistListVM playlistListVMlistenTrue,
     required AudioDownloadVM audioDownloadVMlistenTrue,

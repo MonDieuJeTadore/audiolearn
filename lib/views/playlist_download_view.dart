@@ -84,17 +84,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   // A Map in the State class that stores one key per playlist.
   final Map<int, GlobalKey> _playlistItemKeys = {};
 
-  int _scrollRequestGeneration = 0;
-
-  // Incremented whenever the audio ScrollablePositionedList must be
-  // fully recreated (not just rebuilt) to discard any stale internal
-  // scrolling state. This reproduces, without any ViewModel side
-  // effects, the same fix that was empirically observed to work
-  // manually: deselecting and reselecting the current playlist forces
-  // Flutter to dispose and recreate the widget (see the ValueKey usage
-  // below), which resets ScrollablePositionedList's internal state.
-  int _audioListRebuildEpoch = 0;
-
   GlobalKey _keyForIndex(int index) {
     return _playlistItemKeys.putIfAbsent(index, () => GlobalKey());
   }
@@ -359,26 +348,9 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
           playlist.playableAudioLst[playlist.currentOrPastPlayableAudioIndex];
     }
 
-    // Determined directly from _selectedPlaylistPlayableAudioLst - the
-    // exact list being rendered below - instead of asking
-    // PlaylistListVM.determineAudioToScrollPosition() to independently
-    // recompute a sorted/filtered list. That method can end up using a
-    // different sort/filter parameters name than the one used to build
-    // _selectedPlaylistPlayableAudioLst (the ViewModel falls back to its
-    // own internal map when none is passed, while this View uses its own
-    // local _selectedPlaylistAudioSortFilterParmsName field, which can
-    // diverge - e.g. it is reset to '' whenever the playlist list is
-    // collapsed). Computing the index locally guarantees the scroll
-    // target always matches what is actually displayed.
-    int currentAudioIndexInDisplayedList = (currentAudio != null)
-        ? _selectedPlaylistPlayableAudioLst.indexOf(currentAudio)
-        : -1;
-
     Expanded expanded = Expanded(
       child: ScrollablePositionedList.builder(
-        key: ValueKey(
-          'audio_list_${playlist?.id ?? ''}_$_audioListRebuildEpoch',
-        ),
+        key: const Key('audio_list'),
         itemScrollController: _audioItemScrollController,
         itemPositionsListener: _audioItemPositionsListener,
         itemCount: _selectedPlaylistPlayableAudioLst.length,
@@ -401,25 +373,9 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     _scrollToCurrentAudioItem(
       playlistListVMlistenTrue: playlistListVMlistenTrue,
       audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
-      currentAudioIndexInDisplayedList: currentAudioIndexInDisplayedList,
     );
 
     return expanded;
-  }
-
-  /// Forces the audio list's ScrollablePositionedList to be fully
-  /// recreated on the next build, discarding any stale internal
-  /// scrolling state. Call this right before this view becomes visible
-  /// again (e.g. when navigating back to it from AudioPlayerView) or
-  /// once the app's cold-start loading has settled.
-  void refreshAudioListForCorrectScrollPosition() {
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _audioListRebuildEpoch++;
-    });
   }
 
   /// Scrolls the audio list so that the current or past played audio
@@ -433,79 +389,58 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   void _scrollToCurrentAudioItem({
     required PlaylistListVM playlistListVMlistenTrue,
     required AudioDownloadVM audioDownloadVMlistenTrue,
-    required int currentAudioIndexInDisplayedList,
   }) {
-    // Each call gets a new generation number. Since several ViewModels
-    // can finish loading asynchronously in quick succession right after
-    // app startup, _buildExpandedAudioList() (and therefore this method)
-    // can be called several times in a row before the very first scroll
-    // attempt has completed, each time with a potentially different
-    // target index (the audio list and/or sort/filter parameters may
-    // still be incomplete on the earlier calls). Without this guard, an
-    // older call's retry chain (waiting for the scroll controller to
-    // attach) could finish after the newest, correct one, overwriting
-    // the right scroll position with a stale target. Any scheduled
-    // retry checks this generation number and silently gives up if a
-    // newer request has superseded it.
-    final int requestGeneration = ++_scrollRequestGeneration;
-
     if (audioDownloadVMlistenTrue.isAudioDownloading) {
+      // When an audio is downloading, the list is not scrolled to the
+      // current audio item. This enables the newly downloaded audio to
+      // be displayed at the top of the audio list.
       _doNotScroll = true;
     } else {
+      // Necessary, otherwise _selectedSortFilterParametersName will be
+      // set to default after an audio was downloaded. It will not be
+      // possible to add a selected SF parm to the current playlist.
       _doNotScroll = false;
     }
 
     if (_doNotScroll) {
       if (playlistListVMlistenTrue.uniqueSelectedPlaylist ==
           playlistListVMlistenTrue.downloadingPlaylist) {
+        // In this case, the default sort and filter parameters are
+        // applied. This guarantees that the newly downloaded audio will
+        // be displayed at the top of the audio list.
         _applyDefaultAudioSortFilterParms(
           playlistListVMlistenFalseOrTrue: playlistListVMlistenTrue,
           notifyListeners: false,
         );
       }
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _jumpAudioListToTop(
-          requestGeneration: requestGeneration,
-          retryCount: 0,
-        );
-      });
+      _jumpAudioListToTop();
 
       return;
     }
 
-    if (currentAudioIndexInDisplayedList <= 0) {
+    int audioToScrollPosition =
+        playlistListVMlistenTrue.determineAudioToScrollPosition();
+
+    if (audioToScrollPosition <= 0) {
+      // Either no audio is selected, or the current audio is already
+      // the first one in the list: nothing to scroll to.
       return;
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollAudioListToIndex(
-        index: currentAudioIndexInDisplayedList,
-        requestGeneration: requestGeneration,
-        retryCount: 0,
-      );
-    });
+    _scrollAudioListToIndex(index: audioToScrollPosition, retryCount: 0);
   }
 
-  void _jumpAudioListToTop({
-    required int requestGeneration,
-    required int retryCount,
-  }) {
-    if (requestGeneration != _scrollRequestGeneration) {
-      // A newer scroll request has superseded this one: abandon it.
-      return;
-    }
-
+  /// Scrolls to the top of the audio list. Retries on the next frame if
+  /// the list isn't attached yet.
+  void _jumpAudioListToTop({int retryCount = 0}) {
     if (!_audioItemScrollController.isAttached) {
       if (retryCount >= 10) {
         return;
       }
 
       WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _jumpAudioListToTop(
-          requestGeneration: requestGeneration,
-          retryCount: retryCount + 1,
-        ),
+        (_) => _jumpAudioListToTop(retryCount: retryCount + 1),
       );
 
       return;
@@ -514,16 +449,13 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     _audioItemScrollController.jumpTo(index: 0);
   }
 
+  /// Scrolls the audio list to the passed index. Retries on the next
+  /// frame if the list isn't attached yet (this happens right after the
+  /// screen State is recreated, e.g. when navigating back to this page).
   void _scrollAudioListToIndex({
     required int index,
-    required int requestGeneration,
     required int retryCount,
   }) {
-    if (requestGeneration != _scrollRequestGeneration) {
-      // A newer scroll request has superseded this one: abandon it.
-      return;
-    }
-
     if (!_audioItemScrollController.isAttached) {
       if (retryCount >= 10) {
         return;
@@ -532,7 +464,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => _scrollAudioListToIndex(
           index: index,
-          requestGeneration: requestGeneration,
           retryCount: retryCount + 1,
         ),
       );
@@ -544,7 +475,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       index: index,
       duration: kScrollDuration,
       curve: Curves.easeInOut,
-      alignment: 0.1,
+      alignment: 0.1, // 0.0 = top of viewport, 1.0 = bottom
     );
   }
 

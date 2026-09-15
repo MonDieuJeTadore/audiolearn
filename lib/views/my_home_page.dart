@@ -322,7 +322,7 @@ class _MyHomePageState extends State<MyHomePage>
         top: false,
         child: Column(
           children: [
-            _buildPageView(),
+            _buildPageView(_screenWidgetLst[_currentIndex]),
             _buildBottomScreenIconButtonRow(
               themeProvider: themeProviderVMlistenTrue,
               audioPlayerVMlistenedFalse: audioPlayerVMlistenFalse,
@@ -335,26 +335,17 @@ class _MyHomePageState extends State<MyHomePage>
 
   /// This method builds the PageView widget which enables to drag
   /// to the PlaylistDownloadView and the AudioPlayerView screens.
-  Expanded _buildPageView() {
+  Expanded _buildPageView(StatefulWidget screenWidget) {
     return Expanded(
       // PageView enables changing screen by dragging
       child: PageView.builder(
-        itemCount: _screenNavigationIconLst.length,
+        itemCount:
+            _screenNavigationIconLst.length, // specifies the number of pages
+        //                           that can be swiped by dragging left or right
         controller: _pageController,
         onPageChanged: onPageChangedFunction,
         itemBuilder: (context, index) {
-          // Each page slot must always get its own dedicated widget
-          // instance, matching the requested index - never the
-          // currently selected screen regardless of index. Returning
-          // the same widget instance for two different page slots (as
-          // was done before by ignoring `index` and always returning
-          // the "current" screen widget) caused Flutter to call
-          // createState() twice on that same widget instance whenever
-          // PageView pre-built the adjacent page, silently creating
-          // two competing State objects and leaving one of them
-          // orphaned - a source of erratic, hard-to-reproduce bugs
-          // whenever crossing between pages.
-          return _screenWidgetLst[index];
+          return screenWidget;
         },
       ),
     );
@@ -397,28 +388,19 @@ class _MyHomePageState extends State<MyHomePage>
   /// This function causes PageView to drag to the screen
   /// associated to the passed index.
   Future<void> changePage(int index) async {
-    setState(() {
-      _currentIndex = index;
-    });
+    await onPageChangedFunction(index);
 
-    if (index == ScreenMixin.PLAYLIST_DOWNLOAD_VIEW_DRAGGABLE_INDEX) {
-      // Force the audio list to fully recreate its scroll state each
-      // time this screen becomes visible again - otherwise, navigating
-      // back to it (e.g. from AudioPlayerView) can leave the list
-      // scrolled to a stale position.
-      final PlaylistDownloadView playlistDownloadView =
-          _screenWidgetLst[ScreenMixin.PLAYLIST_DOWNLOAD_VIEW_DRAGGABLE_INDEX]
-              as PlaylistDownloadView;
-
-      playlistDownloadView.playlistDownloadViewState
-          .refreshAudioListForCorrectScrollPosition();
+    // _pageController is the PageView controller
+    if (_pageController.hasClients) {
+      // Using if (_pageController.hasClients) ensures that the PageController
+      // is in a valid state before attempting to perform operations on it,
+      // which can help to avoid errors and makes the code more robust.
+      await _pageController.animateToPage(
+        index,
+        duration: pageTransitionDuration, // Use constant
+        curve: pageTransitionCurve, // Use constant
+      );
     }
-
-    await _pageController.animateToPage(
-      index,
-      duration: kScrollDuration,
-      curve: Curves.easeInOut,
-    );
   }
 
   /// This function is passed as the onPageChanged: parameter

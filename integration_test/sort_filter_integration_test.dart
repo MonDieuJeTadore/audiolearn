@@ -3593,8 +3593,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             await tester.pumpAndSettle();
 
             // Tap on the Extracted checkbox to unselect it. This deselect
-            // Extracted without reselect Downloaded since the Converted
-            // checkbox remains selected.
+            // the Extracted checkbox and reselect the Downloaded and Import.
+            // checkboxes.
             await tester.tap(find.byKey(const Key('filterExtractedCheckbox')));
             await tester.pumpAndSettle();
 
@@ -6175,13 +6175,19 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio titles
 
         List<String> audioTitlesSortedByDateTimeListenedDescending = [
+          "Les besoins artificiels par R.Keucheyan",
           "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "La résilience insulaire par Fiona Roche",
           "La surpopulation mondiale par Jancovici et Barrau",
-          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
         ];
+
+        // Find the audio list widget using its key
+        final Finder listFinder = find.byKey(const Key('audio_list'));
+        // Perform the scroll up action
+        await tester.drag(listFinder, const Offset(0, 600));
+        await tester.pumpAndSettle();
 
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
@@ -6666,6 +6672,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
         ];
+
+        // Find the audio list widget using its key
+        final Finder listFinder = find.byKey(const Key('audio_list'));
+        // Perform the scroll up action
+        await tester.drag(listFinder, const Offset(0, 600));
+        await tester.pumpAndSettle();
 
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
@@ -7494,6 +7506,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             "Really short video",
           ];
 
+          // Find the audio list widget using its key
+          Finder listFinder = find.byKey(const Key('audio_list'));
+          // Perform the scroll up action
+          await tester.drag(listFinder, const Offset(0, 600));
+          await tester.pumpAndSettle();
+
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
             tester: tester,
             audioOrPlaylistTitlesOrderedLst: audioTitlesSortedByTitleAscending,
@@ -7535,8 +7553,14 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             "La résilience insulaire par Fiona Roche",
             "La surpopulation mondiale par Jancovici et Barrau",
             "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
-            // "Les besoins artificiels par R.Keucheyan"
+            "Les besoins artificiels par R.Keucheyan"
           ];
+
+          // Find the audio list widget using its key
+          listFinder = find.byKey(const Key('audio_list'));
+          // Perform the scroll up action
+          await tester.drag(listFinder, const Offset(0, 600));
+          await tester.pumpAndSettle();
 
           // And verify the order of the playlist audio titles
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -9359,7 +9383,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           "La résilience insulaire par Fiona Roche",
           "La surpopulation mondiale par Jancovici et Barrau",
           "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
-          // "Les besoins artificiels par R.Keucheyan"
+          "Les besoins artificiels par R.Keucheyan"
         ];
 
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -9389,11 +9413,17 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           playlistToSelectTitle: 'local',
         );
 
-        // Now return to the playlist download view
+        // Return to the playlist download view
         appScreenNavigationButton =
             find.byKey(const ValueKey('playlistDownloadViewIconButton'));
         await tester.tap(appScreenNavigationButton);
-        await tester.pumpAndSettle();
+        // await tester.pumpAndSettle();
+        await tester.pump();
+        await tester.tap(
+            appScreenNavigationButton); // Necessary to avoid "Failed assertion:
+        //                                 line 171 pos 12: '_positions.isNotEmpty'"
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
 
         // Click on playlist toggle button to display the playlist list
         await tester.tap(find.byKey(const Key('playlist_toggle_button')));
@@ -9415,6 +9445,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           tester: tester,
           dropdownButtonSelectedTitle: titleAscendingSFparmsName,
         );
+
+        // Find the audio list widget using its key
+        final Finder listFinder = find.byKey(const Key('audio_list'));
+        // Perform the scroll up action
+        await tester.drag(listFinder, const Offset(0, 600));
+        await tester.pumpAndSettle();
 
         // And verify the order of the playlist audio titles
 
@@ -10429,8 +10465,6 @@ void playlistDownloadViewSortFilterIntegrationTest() {
 
           List<String>
               audioTitlesSortedDownloadDateDescendingDefaultSortFilterParms = [
-            "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
-            "La surpopulation mondiale par Jancovici et Barrau",
             "La résilience insulaire par Fiona Roche",
             "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
             "Les besoins artificiels par R.Keucheyan",
@@ -10570,9 +10604,9 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             confirmOrCancelAction: true, // Confirm button is tapped
           );
 
-          // Now verifying that the playlist data dialog still contains
+          // Now verifying that the playlist info dialog still contains
           // the saved to playlist sort filter values. This is useful
-          // if the user wants to recreste and reapply the deleted sort/
+          // if the user wants to recreate and reapply the deleted sort/
           // filter parms
 
           // Tap on playlist button to expand the list of playlists
@@ -10613,7 +10647,6 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // And verify the order of the playlist audio titles
           List<String>
               audioTitlesSortedDownloadDateDescendingDefaultSortFilterParms = [
-            "morning _ cinematic video",
             "Really short video",
             "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
             "La résilience insulaire par Fiona Roche",
@@ -10627,26 +10660,36 @@ void playlistDownloadViewSortFilterIntegrationTest() {
                 audioTitlesSortedDownloadDateDescendingDefaultSortFilterParms,
           );
 
+          List<String> audioPlayableList = [
+            "morning _ cinematic video",
+            "Really short video",
+            "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+            "La résilience insulaire par Fiona Roche",
+            "Les besoins artificiels par R.Keucheyan",
+            "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
+          ];
+
           // Verify also the audio playable list dialog title and content
           await _verifyAudioPlayableList(
             tester: tester,
             currentAudioTitle:
                 "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique\n5:11",
             sortFilterParmsName: 'default',
-            audioTitlesLst:
-                audioTitlesSortedDownloadDateDescendingDefaultSortFilterParms,
+            audioTitlesLst: audioPlayableList,
           );
 
           // Return to the playlist download view
           Finder appScreenNavigationButton =
               find.byKey(const ValueKey('playlistDownloadViewIconButton'));
           await tester.tap(appScreenNavigationButton);
-          await tester.pumpAndSettle();
+          await tester.pump();
+          // await tester.pump(const Duration(milliseconds: 500)); // causes _switchToPlaylist failure !
 
           // Now switch back to the 'S8 audio' playlist
           await _switchToPlaylist(
             tester: tester,
             playlistTitle: 'S8 audio',
+            usePumpInsteadOfPumpAndSettle: true,
           );
 
           // Verify that the 'default' dropdown button sort/filter parms is
@@ -10658,8 +10701,6 @@ void playlistDownloadViewSortFilterIntegrationTest() {
 
           // And verify the order of the playlist audio titles
           audioTitlesSortedDownloadDateDescendingDefaultSortFilterParms = [
-            "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
-            "La surpopulation mondiale par Jancovici et Barrau",
             "La résilience insulaire par Fiona Roche",
             "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
             "Les besoins artificiels par R.Keucheyan",
@@ -10673,6 +10714,16 @@ void playlistDownloadViewSortFilterIntegrationTest() {
                 audioTitlesSortedDownloadDateDescendingDefaultSortFilterParms,
           );
 
+          audioTitlesSortedDownloadDateDescendingDefaultSortFilterParms = [
+            "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+            "La surpopulation mondiale par Jancovici et Barrau",
+            "La résilience insulaire par Fiona Roche",
+            "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
+            "Les besoins artificiels par R.Keucheyan",
+            "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
+            "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
+          ];
+
           // Verify also the audio playable list dialog title and content
           await _verifyAudioPlayableList(
             tester: tester,
@@ -10681,13 +10732,20 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             sortFilterParmsName: 'default',
             audioTitlesLst:
                 audioTitlesSortedDownloadDateDescendingDefaultSortFilterParms,
+            usePumpInsteadOfPumpAndSettle: true,
           );
 
           // Return to the playlist download view
           appScreenNavigationButton =
               find.byKey(const ValueKey('playlistDownloadViewIconButton'));
           await tester.tap(appScreenNavigationButton);
-          await tester.pumpAndSettle();
+          // await tester.pumpAndSettle();
+          await tester.pump();
+          await tester.tap(
+              appScreenNavigationButton); // Necessary to avoid "Failed assertion:
+          //                                              line 171 pos 12: '_positions.isNotEmpty'"
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 500));
 
           // Now recreate the 'Title asc' sort/filter parms
 
@@ -10774,7 +10832,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             "La résilience insulaire par Fiona Roche",
             "La surpopulation mondiale par Jancovici et Barrau",
             "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
-            // "Les besoins artificiels par R.Keucheyan"
+            "Les besoins artificiels par R.Keucheyan"
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -11846,6 +11904,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // Verify the order of the playlist audio titles
 
         List<String> audioTitlesSortedByTitleAscending = [
+          "Les besoins artificiels par R.Keucheyan",
           "La résilience insulaire par Fiona Roche",
           "La surpopulation mondiale par Jancovici et Barrau",
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
@@ -11862,6 +11921,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         // And verify the order of the playlist audio subtitles
 
         List<String> audioSubTitlesSortedByTitleAscending = [
+          "0:15:16.0 6.98 MB at 2.28 MB/sec on 07/01/2024 at 08:16 video upload date 05/01/2024",
           "0:10:52.0 4.97 MB at 2.67 MB/sec on 07/01/2024 at 08:16 video upload date 03/01/2024",
           "0:06:06.4 2.79 MB at 2.73 MB/sec on 07/01/2024 at 16:36 video upload date 03/12/2023",
           "0:16:25.6 7.51 MB at 2.44 MB/sec on 26/12/2023 at 09:45 video upload date 03/12/2023",
@@ -19185,6 +19245,11 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             matching: find.byType(Text),
           );
 
+          // Find the audio list widget using its key
+          final Finder listFinder = find.byKey(const Key('audio_list'));
+          // Perform the scroll up action
+          await tester.drag(listFinder, const Offset(0, 600));
+          await tester.pumpAndSettle();
           await tester.tap(dropDownButtonTextFinder);
           await tester.pumpAndSettle();
 
@@ -19246,6 +19311,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             of: dropDownButtonFinder,
             matching: find.byType(Text),
           );
+
+          // Find the audio list widget using its key
+          final Finder listFinder = find.byKey(const Key('audio_list'));
+          // Perform the scroll up action
+          await tester.drag(listFinder, const Offset(0, 600));
+          await tester.pumpAndSettle();
 
           await tester.tap(dropDownButtonTextFinder);
           await tester.pumpAndSettle();
@@ -19361,6 +19432,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           await tester.tap(find.byKey(const Key('playlist_toggle_button')));
           await tester.pumpAndSettle();
 
+          // Find the audio list widget using its key
+          final Finder listFinder = find.byKey(const Key('audio_list'));
+          // Perform the scroll up action
+          await tester.drag(listFinder, const Offset(0, 600));
+          await tester.pumpAndSettle();
+
           // Now tap on the current dropdown button item to open the dropdown
           // button items list
 
@@ -19422,6 +19499,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           // is not opened, checking that a ListTile with the title of
           // the playlist was added to the list will fail
           await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+          await tester.pumpAndSettle();
+
+          // Find the audio list widget using its key
+          final Finder listFinder = find.byKey(const Key('audio_list'));
+          // Perform the scroll up action
+          await tester.drag(listFinder, const Offset(0, 600));
           await tester.pumpAndSettle();
 
           // Now tap on the current dropdown button item to open the dropdown
@@ -19843,16 +19926,29 @@ Future<void> _selectAndRemoveSortFilterParmsToPlaylist({
 Future<void> _switchToPlaylist({
   required WidgetTester tester,
   required String playlistTitle,
+  bool usePumpInsteadOfPumpAndSettle = false,
 }) async {
   // Now select the local playlist in order to apply the created
   // sort/filter parms to it
 
   // Tap on audio playplaylist button to expand the
   // list of playlists
-  await tester.tap(find.byKey(const Key('playlist_toggle_button')));
-  await tester.pumpAndSettle(const Duration(milliseconds: 200));
+  final Finder playlistToggleButton =
+      find.byKey(const Key('playlist_toggle_button'));
+  await tester.tap(playlistToggleButton);
 
-  // Select the 'local' playlist
+  if (usePumpInsteadOfPumpAndSettle) {
+    await tester.pump();
+    await tester.tap(
+        playlistToggleButton); // Necessary, otherwise the previously tapped button
+    //                            remains selected !
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+  } else {
+    await tester.pumpAndSettle(const Duration(milliseconds: 200));
+  }
+
+  // Select the playlistTitle playlist
 
   await IntegrationTestUtil.selectPlaylist(
     tester: tester,
@@ -19862,7 +19958,13 @@ Future<void> _switchToPlaylist({
   // Tap on audio player view playlist button to contract the
   // list of playlists
   await tester.tap(find.byKey(const Key('playlist_toggle_button')));
-  await tester.pumpAndSettle(const Duration(milliseconds: 200));
+
+  if (usePumpInsteadOfPumpAndSettle) {
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+  } else {
+    await tester.pumpAndSettle(const Duration(milliseconds: 200));
+  }
 }
 
 Future<void> _verifyAudioPlayableList({
@@ -19870,6 +19972,7 @@ Future<void> _verifyAudioPlayableList({
   required String currentAudioTitle,
   required String sortFilterParmsName,
   required List<String> audioTitlesLst,
+  bool usePumpInsteadOfPumpAndSettle = false,
 }) async {
   // Going to the audio player view
   Finder appScreenNavigationButton =
@@ -19905,8 +20008,17 @@ Future<void> _verifyAudioPlayableList({
   );
 
   // Tap on the Close button to close the AudioPlayableListDialog
-  await tester.tap(find.byKey(const Key('closeTextButton')));
-  await tester.pumpAndSettle();
+  final Finder closeTextButton = find.byKey(const Key('closeTextButton'));
+  await tester.tap(closeTextButton);
+
+  if (usePumpInsteadOfPumpAndSettle) {
+    await tester.pump();
+    await tester.tap(closeTextButton); // Necessary
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+  } else {
+    await tester.pumpAndSettle();
+  }
 }
 
 Future<void> _removeSortingItem({

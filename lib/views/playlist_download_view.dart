@@ -355,6 +355,9 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         itemPositionsListener: _audioItemPositionsListener,
         itemCount: _selectedPlaylistPlayableAudioLst.length,
         itemBuilder: (BuildContext context, int index) {
+          if (index == -1) {
+            return const SizedBox.shrink();
+          }
           final audio = _selectedPlaylistPlayableAudioLst[index];
           return AudioListItem(
             settingsDataService: widget.settingsDataService,

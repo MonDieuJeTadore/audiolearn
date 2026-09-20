@@ -21327,8 +21327,7 @@ void main() {
       testWidgets(
           '''Set download date/time with incorret download time format after the last download date. The set
              value is 14/07/2025 1831. The integration test verifies the displayed warning indicating that
-             no audio mp3 was saved to ZIP.''',
-          (WidgetTester tester) async {
+             no audio mp3 was saved to ZIP.''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -21402,7 +21401,8 @@ void main() {
         // Now change the download date in the dialog
         const String validDateFormat = '15/07/2025';
         const String invalidTimeFormat = '1431';
-        final String invalidTooRecentAudioDownloadDateTime = '$validDateFormat $invalidTimeFormat';
+        final String invalidTooRecentAudioDownloadDateTime =
+            '$validDateFormat $invalidTimeFormat';
         textField.controller!.text = invalidTooRecentAudioDownloadDateTime;
         await tester.pumpAndSettle();
 
@@ -21528,9 +21528,8 @@ void main() {
 
         // Verify the displayed error warning dialog
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
-          tester: tester,
-          warningDialogMessage:
-              "Defining an empty date is not possible.");
+            tester: tester,
+            warningDialogMessage: "Defining an empty date is not possible.");
 
         await IntegrationTestUtil.verifySetValueToTargetDialog(
           tester: tester,
@@ -21715,7 +21714,8 @@ void main() {
         // Now enter an invalid download date/time in the dialog
         const String validDateFormat = '13/07/2025';
         const String invalidTimeFormat = '1508';
-        final String invalidDateTimeFormat = '$validDateFormat $invalidTimeFormat';
+        final String invalidDateTimeFormat =
+            '$validDateFormat $invalidTimeFormat';
         textField.controller!.text = invalidDateTimeFormat;
         await tester.pumpAndSettle();
 
@@ -22183,8 +22183,7 @@ void main() {
       testWidgets(
           '''Set download date/time with incorret download time format after the last download date. The set
              value is 29/09/2025 1831. The integration test verifies the displayed warning indicating that
-             no audio mp3 was saved to ZIP.''',
-          (WidgetTester tester) async {
+             no audio mp3 was saved to ZIP.''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -22253,7 +22252,8 @@ void main() {
         // Now enter an invalid download date/time in the dialog
         const String validDateFormat = '29/09/2025';
         const String invalidTimeFormat = '1508';
-        final String invalidDateTimeFormat = '$validDateFormat $invalidTimeFormat';
+        final String invalidDateTimeFormat =
+            '$validDateFormat $invalidTimeFormat';
         textField.controller!.text = invalidDateTimeFormat;
         await tester.pumpAndSettle();
 
@@ -22376,8 +22376,7 @@ void main() {
         // Verify the displayed error warning dialog
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
-          warningDialogMessage:
-              "Defining an empty date is not possible.",
+          warningDialogMessage: "Defining an empty date is not possible.",
         );
 
         await IntegrationTestUtil.verifySetValueToTargetDialog(
@@ -22571,7 +22570,8 @@ void main() {
         // Now enter an invalid download date/time in the dialog
         const String validDateFormat = '13/07/2025';
         const String invalidTimeFormat = '1508';
-        final String invalidDateTimeFormat = '$validDateFormat $invalidTimeFormat';
+        final String invalidDateTimeFormat =
+            '$validDateFormat $invalidTimeFormat';
         textField.controller!.text = invalidDateTimeFormat;
         await tester.pumpAndSettle();
 
@@ -31480,7 +31480,354 @@ void main() {
       });
     });
   });
+  group('Audio playable day usage and definition tests', () {
+    testWidgets(
+        '''3 audios playable. First. the 'Rewind all Audios to Start' playlist menu is executed
+           and the displayed total playable duration which depends of the playable today or not
+           audios duration is verifyed. The second audio is playable this day. After playing the
+           first audio, the second audio starts playing. But since it is playable every 2 days,
+           it will not be played after that the first audio is replayed the second time and
+           reaches its end. The test verifies now that the second audio is not played and that
+           the third audio is played instead. Finally, the second audio playable every day which
+           was 2 is set to 1 and so will be playable every day. This is tested after rexecuting
+           the 'Rewind all Audios to Start' playlist menu.''',
+        (WidgetTester tester) async {
+      const String localPlaylistTitle = 'local';
+      const String firstAudioTitle = "1_audio learn test short video one";
+      const String secondAudioTitle = "2_morning _ cinematic video";
+      const String thirdAudioTitle = "3_textToSpeech";
 
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'day_number_play_test',
+        selectedPlaylistTitle: localPlaylistTitle,
+      );
+
+      // First, tap on the 'Rewind all Audios to Start' playlist menu item
+      // Rewind 1 'local" playlist audios to start position
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
+        tester: tester,
+        playlistToRewindTitle: localPlaylistTitle,
+        numberOfRewindedAudio: 1,
+        expectedTotalPlayableDuration: "1:12",
+      );
+
+      // Then, get the first downloaded Audio ListTile Text
+      // widget finder and tap on it
+      Finder firstDownloadedAudioListTileTextWidgetFinder =
+          find.text(firstAudioTitle);
+
+      await tester.tap(firstDownloadedAudioListTileTextWidgetFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Tap twice on the forward 10 seconds icon button
+      Finder forwardTenSecondsIconButton = find.byKey(
+        const Key('audioPlayerViewForward10sButton'),
+      );
+      await tester.tap(forwardTenSecondsIconButton);
+      await tester.pumpAndSettle();
+      await tester
+          .tap(forwardTenSecondsIconButton); // Tap twice to forward 20 seconds
+      await tester.pumpAndSettle();
+
+      // Now play the audio and wait n seconds to verify that the
+      // second audio is playable this day
+      await tester.tap(find.byIcon(Icons.play_arrow));
+      await tester.pumpAndSettle();
+
+      // Ensure that the audio position is updated
+      for (int i = 0; i < 5; i++) {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        await tester.pumpAndSettle();
+      }
+
+      // Tap on pause icon button to stop the audio player
+      await tester.tap(find.byIcon(Icons.pause));
+      await tester.pumpAndSettle();
+
+      // Verify that the second audio is played after the first audio
+      // reaches its end and that the second audio is playable this day.
+      // The second vaudio is playable every 2 days and so it is
+      // playable this day since the last played date is 20/07/2026
+      // and the current date is greater than 20/07/2026 + 2 days.
+      expect(
+        find.text("$secondAudioTitle\n0:30"),
+        findsOneWidget,
+      );
+
+      // Go back to the playlist download view
+      await tester.tap(find.byKey(const Key('playlistDownloadViewIconButton')));
+      await tester.pumpAndSettle();
+
+      // Since the second audio is not playable this day because it was
+      // playade before and is playable every 2 days, the third audio should
+      // be played instead.
+      // Now, retap on the 'Rewind all Audios to Start' playlist menu
+      // item. Rewind 2 'local" playlist audios to start position
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
+        tester: tester,
+        playlistToRewindTitle: localPlaylistTitle,
+        numberOfRewindedAudio: 2,
+        expectedTotalPlayableDuration: "0:42", // The second audio is not
+        // playable this day and so 1:12 - 0:30 = 0:42 is the total playable
+        // duration of the playlist
+      );
+
+      // Then, get the first downloaded Audio ListTile Text
+      // widget finder and tap on it
+      firstDownloadedAudioListTileTextWidgetFinder = find.text(firstAudioTitle);
+
+      await tester.tap(firstDownloadedAudioListTileTextWidgetFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Tap twice on the forward 10 seconds icon button
+      forwardTenSecondsIconButton = find.byKey(
+        const Key('audioPlayerViewForward10sButton'),
+      );
+      await tester.tap(forwardTenSecondsIconButton);
+      await tester.pumpAndSettle();
+      await tester
+          .tap(forwardTenSecondsIconButton); // Tap twice to forward 20 seconds
+      await tester.pumpAndSettle();
+
+      // Now play the audio and wait n seconds to verify that the
+      // third audio is playable this day
+      await tester.tap(find.byIcon(Icons.play_arrow));
+      await tester.pumpAndSettle();
+
+      // Ensure that the audio position is updated
+      for (int i = 0; i < 5; i++) {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        await tester.pumpAndSettle();
+      }
+
+      // Tap on pause icon button to stop the audio player
+      await tester.tap(find.byIcon(Icons.pause));
+      await tester.pumpAndSettle();
+
+      // Verify that the third audio was played after the first audio
+      expect(
+        find.text("$thirdAudioTitle\n0:18"),
+        findsOneWidget,
+      );
+
+      // Go back to the playlist download view
+      await tester.tap(find.byKey(const Key('playlistDownloadViewIconButton')));
+      await tester.pumpAndSettle();
+
+      // On the second audio menu, tap on the 'Define that the Audio is
+      // playable every n Days ...' item menu
+
+      // First, find the Audio sublist ListTile Text widget
+      final Finder secondAudioTitleTextWidgetFinder =
+          find.text(secondAudioTitle);
+
+      // Then obtain the Audio ListTile widget enclosing the Text widget by
+      // finding its ancestor
+      final Finder secondAudioListTileWidgetFinder = find.ancestor(
+        of: secondAudioTitleTextWidgetFinder,
+        matching: find.byType(ListTile),
+      );
+
+      // Now find the leading menu icon button of the Audio ListTile
+      // and tap on it
+      final Finder secondAudioListTileLeadingMenuIconButton = find.descendant(
+        of: secondAudioListTileWidgetFinder,
+        matching: find.byIcon(Icons.menu),
+      );
+
+      // Tap the leading menu icon button to open the popup menu
+      await tester.tap(secondAudioListTileLeadingMenuIconButton);
+      await tester.pumpAndSettle();
+
+      // Now find the define playable every n days popup menu item
+      // and tap on it
+      final Finder popupMoveAudioMenuItem =
+          find.byKey(const Key("popup_menu_define_playable_every_n_days"));
+
+      await tester.tap(popupMoveAudioMenuItem);
+      await tester.pumpAndSettle();
+
+      // Verify the dialog title
+      expect(find.text('Playable every n Days'), findsOneWidget);
+
+      // Verify the dialog comment
+      expect(
+          find.text(
+              '1 is set by default indicating that the audio is playable every day.\nLast played date: ${DateFormat('dd/MM/yyyy').format(DateTime.now())}.'),
+          findsOneWidget);
+
+      // Find the TextField using the Key
+      final Finder textFieldFinder =
+          find.byKey(const Key('audioModificationTextField'));
+
+      // Retrieve the TextField widget
+      final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+      // Verify the initial value of the TextField
+
+      expect(textField.controller!.text, "2");
+
+      // Enter the only playing day number 1 in the TextField to make
+      // the second audio playable every day
+
+      const String audioPosition = '1';
+
+      await tester.enterText(
+        textFieldFinder,
+        audioPosition,
+      );
+      await tester.pumpAndSettle();
+
+      // Now tap the 'Modify'' button
+      await tester.tap(find.byKey(const Key('audioModificationButton')));
+      await tester.pumpAndSettle();
+
+      // Finally, retap on the 'Rewind all Audios to Start' playlist
+      // menu item Rewind 1 'local" playlist audios to start position
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
+        tester: tester,
+        playlistToRewindTitle: localPlaylistTitle,
+        numberOfRewindedAudio: 2,
+        expectedTotalPlayableDuration: "1:12",
+      );
+
+      // Then, get the first downloaded Audio ListTile Text
+      // widget finder and tap on it
+      firstDownloadedAudioListTileTextWidgetFinder = find.text(firstAudioTitle);
+
+      await tester.tap(firstDownloadedAudioListTileTextWidgetFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Tap twice on the forward 10 seconds icon button
+      forwardTenSecondsIconButton = find.byKey(
+        const Key('audioPlayerViewForward10sButton'),
+      );
+      await tester.tap(forwardTenSecondsIconButton);
+      await tester.pumpAndSettle();
+      await tester
+          .tap(forwardTenSecondsIconButton); // Tap twice to forward 20 seconds
+      await tester.pumpAndSettle();
+
+      // Now play the audio and wait n seconds to verify that the
+      // second audio is playable this day
+      await tester.tap(find.byIcon(Icons.play_arrow));
+      await tester.pumpAndSettle();
+
+      // Ensure that the audio position is updated
+      for (int i = 0; i < 6; i++) {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        await tester.pumpAndSettle();
+      }
+
+      // Tap on pause icon button to stop the audio player
+      await tester.tap(find.byIcon(Icons.pause));
+      await tester.pumpAndSettle();
+
+      // Verify that the second audio is played after the first audio
+      // reaches its end and that the second audio is playable this day
+      // since it is now playable every day.
+      expect(
+        find.text("$secondAudioTitle\n0:30"),
+        findsOneWidget,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''Using sub menu 'Rewind filtered Audios to Start' located in the playlist 'Filtered
+           Audios Actions ...' menu. 3 audios are playable. First, the displayed total playable
+           duration which depends of the playable today or not audios duration is verifyed. The
+           second audio is playable this day. After playing the first audio, the second audio
+           starts playing.''', (WidgetTester tester) async {
+      const String localPlaylistTitle = 'local';
+      const String firstAudioTitle = "1_audio learn test short video one";
+      const String secondAudioTitle = "2_morning _ cinematic video";
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'day_number_play_test',
+        selectedPlaylistTitle: localPlaylistTitle,
+      );
+
+      // Open the 'Rewind filtered Audios to Start' dialog by clicking
+      // first on the 'Filtered Audio Actions ...' playlist menu item and then
+      // on the 'Rewind filtered Audios to Start' sub-menu item
+      await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+        tester: tester,
+        playlistTitle: localPlaylistTitle,
+        playlistSubMenuKeyStr: 'popup_menu_rewind_filtered_audio_to_start',
+      );
+
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "3 playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: 1:12.",
+        isWarningConfirming: true,
+      );
+
+      // Then, get the first downloaded Audio ListTile Text
+      // widget finder and tap on it
+      Finder firstDownloadedAudioListTileTextWidgetFinder =
+          find.text(firstAudioTitle);
+
+      await tester.tap(firstDownloadedAudioListTileTextWidgetFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Tap twice on the forward 10 seconds icon button
+      Finder forwardTenSecondsIconButton = find.byKey(
+        const Key('audioPlayerViewForward10sButton'),
+      );
+      await tester.tap(forwardTenSecondsIconButton);
+      await tester.pumpAndSettle();
+      await tester
+          .tap(forwardTenSecondsIconButton); // Tap twice to forward 20 seconds
+      await tester.pumpAndSettle();
+
+      // Now play the audio and wait n seconds to verify that the
+      // second audio is playable this day
+      await tester.tap(find.byIcon(Icons.play_arrow));
+      await tester.pumpAndSettle();
+
+      // Ensure that the audio position is updated
+      for (int i = 0; i < 5; i++) {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        await tester.pumpAndSettle();
+      }
+
+      // Tap on pause icon button to stop the audio player
+      await tester.tap(find.byIcon(Icons.pause));
+      await tester.pumpAndSettle();
+
+      // Verify that the second audio is played after the first audio
+      // reaches its end and that the second audio is playable this day.
+      // The second vaudio is playable every 2 days and so it is
+      // playable this day since the last played date is 20/07/2026
+      // and the current date is greater than 20/07/2026 + 2 days.
+      expect(
+        find.text("$secondAudioTitle\n0:30"),
+        findsOneWidget,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
 }
 
 Future<void> _tapPlaylistCheckboxIfNotAlreadyChecked({
@@ -32659,6 +33006,7 @@ Map _loadSettingsMap() {
 
   return settingsMap;
 }
+
 Future<void> verifyCommentAndReturnToPlaylistDownloadView({
   required WidgetTester tester,
   required String expectedCommentTitle,

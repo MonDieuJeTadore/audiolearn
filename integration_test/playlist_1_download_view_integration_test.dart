@@ -24,7 +24,6 @@ import 'package:audiolearn/main.dart' as app;
 
 import '../test/viewmodels/mock_audio_download_vm.dart';
 import 'integration_test_util.dart';
-import 'sort_filter_integration_test.dart';
 
 void main() {
   // Necessary to avoid FatalFailureException (FatalFailureException: Failed
@@ -33,8 +32,6 @@ void main() {
   // which broke the library.
   // If this issue persists, please report it on the project's GitHub page.
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-
-  playlistDownloadViewSortFilterIntegrationTest();
 
   const String youtubePlaylistId = 'PLzwWSJNcZTMTSAE8iabVB6BCAfFGHHfah';
   const String youtubePlaylistUrl =

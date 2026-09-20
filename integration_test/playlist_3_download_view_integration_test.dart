@@ -1255,5 +1255,26 @@ void main() {
       );
     });
   });
+}
 
+Future<void> _tapPlaylistCheckboxIfNotAlreadyChecked({
+  required Finder playlistListTileWidgetFinder,
+  required WidgetTester widgetTester,
+}) async {
+  final Finder youtubePlaylistListTileCheckboxWidgetFinder = find.descendant(
+    of: playlistListTileWidgetFinder,
+    matching: find.byType(Checkbox),
+  );
+
+  // Retrieve the Checkbox widget
+  final Checkbox checkbox = widgetTester
+      .widget<Checkbox>(youtubePlaylistListTileCheckboxWidgetFinder);
+
+  // Check if the checkbox is checked
+  if (checkbox.value == null || !checkbox.value!) {
+    // Tap the ListTile Playlist checkbox to select it
+    // so that the playlist audio are listed
+    await widgetTester.tap(youtubePlaylistListTileCheckboxWidgetFinder);
+    await widgetTester.pumpAndSettle();
+  }
 }

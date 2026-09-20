@@ -3610,6 +3610,12 @@ void main() {
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
+      await tester.pumpAndSettle();
+
       // First, get the ListTile Text widget finder of the audio
       // to be selected and tap on it
       final Finder toSelectAudioListTileTextWidgetFinder =
@@ -3674,6 +3680,12 @@ void main() {
       // of playlists which may hide the audio title we want to
       // tap on
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
       await tester.pumpAndSettle();
 
       // First, get the ListTile Text widget finder of the audio
@@ -3741,6 +3753,12 @@ void main() {
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
+      await tester.pumpAndSettle();
+
       // First, get the ListTile Text widget finder of the audio
       // to be selected and tap on it
       final Finder toSelectAudioListTileTextWidgetFinder =
@@ -3803,9 +3821,13 @@ void main() {
       // of playlists which may hide the audio title we want to
       // tap on
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
-      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
-        tester: tester,
-      );
+      await tester.pumpAndSettle();
+
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
+      await tester.pumpAndSettle();
 
       // First, get the ListTile Text widget finder of the audio
       // to be selected and tap on it
@@ -3868,6 +3890,12 @@ void main() {
       // of playlists which may hide the audio title we want to
       // tap on
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
       await tester.pumpAndSettle();
 
       // First, get the ListTile Text widget finder of the audio
@@ -3936,6 +3964,12 @@ void main() {
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
+      await tester.pumpAndSettle();
+
       // First, get the ListTile Text widget finder of the audio
       // to be selected and tap on it
       final Finder toSelectAudioListTileTextWidgetFinder =
@@ -4000,6 +4034,12 @@ void main() {
       // of playlists which may hide the audio title we want to
       // tap on
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
       await tester.pumpAndSettle();
 
       // First, get the ListTile Text widget finder of the audio
@@ -4110,6 +4150,12 @@ void main() {
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
+      await tester.pumpAndSettle();
+
       // First, get the ListTile Text widget finder of the audio
       // to be selected and tap on it
       final Finder toSelectAudioListTileTextWidgetFinder =
@@ -4182,6 +4228,12 @@ void main() {
       // of playlists which may hide the audio title we want to
       // tap on
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
       await tester.pumpAndSettle();
 
       // First, get the ListTile Text widget finder of the audio
@@ -4257,6 +4309,12 @@ void main() {
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
+      await tester.pumpAndSettle();
+
       // First, get the ListTile Text widget finder of the audio
       // to be selected and tap on it
       final Finder toSelectAudioListTileTextWidgetFinder =
@@ -4330,6 +4388,12 @@ void main() {
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
+      await tester.pumpAndSettle();
+
       // First, get the ListTile Text widget finder of the audio
       // to be selected and tap on it
       final Finder toSelectAudioListTileTextWidgetFinder =
@@ -4398,6 +4462,12 @@ void main() {
       // of playlists which may hide the audio title we want to
       // tap on
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
       await tester.pumpAndSettle();
 
       // First, get the ListTile Text widget finder of the audio
@@ -4472,6 +4542,12 @@ void main() {
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
+      await tester.pumpAndSettle();
+
       // First, get the ListTile Text widget finder of the audio
       // to be selected and tap on it
       final Finder toSelectAudioListTileTextWidgetFinder =
@@ -4544,6 +4620,12 @@ void main() {
       // of playlists which may hide the audio title we want to
       // tap on
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Find the audio list widget using its key
+      final Finder listFinder = find.byKey(const Key('audio_list'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 600));
       await tester.pumpAndSettle();
 
       // First, get the ListTile Text widget finder of the audio
@@ -9424,6 +9506,10 @@ void main() {
         selectedPlaylistTitle: youtubePlaylistTitle,
       );
 
+      // Tap the 'Toggle List' button to hide the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
       // Then, get the ListTile Text widget finder of the already commented
       // audio and tap on it to open the AudioPlayerView
       final Finder alreadyCommentedAudioFinder =
@@ -9787,6 +9873,10 @@ void main() {
         selectedPlaylistTitle: youtubePlaylistTitle,
       );
 
+      // Tap the 'Toggle List' button to hide the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
       // Then, get the ListTile Text widget finder of the already commented
       // audio and tap on it to open the AudioPlayerView
       final Finder alreadyCommentedAudioFinder =
@@ -9918,6 +10008,10 @@ void main() {
         savedTestDataDirName: 'audio_comment_short_test',
         selectedPlaylistTitle: youtubePlaylistTitle,
       );
+
+      // Tap the 'Toggle List' button to hide the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
 
       // Then, get the ListTile Text widget finder of the already commented
       // audio and tap on it to open the AudioPlayerView

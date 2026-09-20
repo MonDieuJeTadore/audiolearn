@@ -1,19 +1,28 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:audiolearn/models/audio.dart';
+import 'package:audiolearn/models/picture.dart';
 import 'package:audiolearn/viewmodels/comment_vm.dart';
 import 'package:audiolearn/viewmodels/date_format_vm.dart';
 import 'package:audiolearn/viewmodels/picture_vm.dart';
+import 'package:audiolearn/views/widgets/audio_extractor_screen.dart';
+import 'package:audiolearn/views/widgets/audio_sort_filter_dialog.dart';
 import 'package:audiolearn/views/widgets/confirm_action_dialog.dart';
 import 'package:audiolearn/views/widgets/audio_modification_dialog.dart';
 import 'package:audiolearn/views/widgets/comment_add_edit_dialog.dart';
 import 'package:audiolearn/views/widgets/comment_list_add_dialog.dart';
 import 'package:audiolearn/views/widgets/playlist_comment_list_dialog.dart';
+import 'package:audiolearn/views/widgets/set_value_to_target_dialog.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
+import 'package:archive/archive.dart';
 
 import 'package:audiolearn/viewmodels/audio_player_vm.dart';
 import 'package:audiolearn/constants.dart';
@@ -25,9 +34,12 @@ import 'package:audiolearn/viewmodels/warning_message_vm.dart';
 import 'package:audiolearn/services/settings_data_service.dart';
 import 'package:audiolearn/utils/dir_util.dart';
 import 'package:audiolearn/main.dart' as app;
+import 'package:audiolearn/views/widgets/add_segment_dialog.dart';
+import 'package:audiolearn/views/widgets/playlist_rename_dialog.dart';
 
 import '../test/viewmodels/custom_mock_youtube_explode.dart';
 import 'integration_test_util.dart';
+import 'mock_file_picker.dart';
 import 'sort_filter_integration_test.dart';
 
 void main() {
@@ -13496,6 +13508,17978 @@ void main() {
       );
     });
   });
+  group('Rewind playlist sort/filtered audio to start position test', () {
+    testWidgets(
+        '''Set to the selected playlist a sort/filter parameter. Then type on the
+        'Filtered Audios Actions ...' playlist menu and then on the 'Rewind filtered Audios to Start'
+        sub-menu. Then check the confirm warning as well as the filtered audios titles.''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'extract_comments_to_mp3_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String playlistToRewindTitle = 'Les prières de cette playlist';
+
+      // Now select the 'Les prières de cette playlist' playlist
+      await IntegrationTestUtil.selectPlaylist(
+        tester: tester,
+        playlistToSelectTitle: playlistToRewindTitle,
+      );
+
+      // Tap the 'Toggle List' button to close the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Verify the play/pause icon button format and color of
+      // all audios of the selected playlist
+
+      List<String> audioTitles = [
+        "Gloire au Père, au Fils,et au Saint Esprit",
+        "Prière pour Dieu",
+        "Père céleste, merci pour cette nouvelle journée que Tu me donnes",
+        "Seigneur, je T'en prie, mets moi dans le feu de Ton Amour",
+      ];
+
+      for (String audioTitle in audioTitles) {
+        IntegrationTestUtil.validateInkWellButton(
+          tester: tester,
+          audioTitle: audioTitle,
+          expectedIcon: Icons.play_arrow,
+          expectedIconColor: kScreenButtonColor, // not played icon color
+          expectedIconBackgroundColor: Colors.black,
+        );
+      }
+
+      String sortFilterParmName = 'Dur < 0:00:29';
+
+      // Now tap on the current dropdown button item to open the dropdown
+      // button items list
+
+      Finder dropDownButtonFinder =
+          find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+      Finder dropDownButtonTextFinder = find.descendant(
+        of: dropDownButtonFinder,
+        matching: find.byType(Text),
+      );
+
+      await tester.tap(dropDownButtonTextFinder);
+      await tester.pumpAndSettle();
+
+      // Find and tap on the 'Dur < 0:00:29' sort/filter item
+      Finder sortFilterParmNameDropDownTextFinder =
+          find.text(sortFilterParmName).last;
+      await tester.tap(sortFilterParmNameDropDownTextFinder);
+      await tester.pumpAndSettle();
+
+      // Verify the audioTitles selected by applying the 'Dur < 0:00:29'
+      // sort/filter parms
+      List<String> audioTitlesToRewindToStartLst = [
+        "Père céleste, merci pour cette nouvelle journée que Tu me donnes",
+        "Seigneur, je T'en prie, mets moi dans le feu de Ton Amour",
+      ];
+
+      // Verify the displayed audio list after selecting the 'Dur < 0:00:29'
+      // Sort/Filter parms.
+      IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+        tester: tester,
+        audioOrPlaylistTitlesOrderedLst: audioTitlesToRewindToStartLst,
+      );
+
+      // Tap the 'Toggle List' button to display the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Verify that the applyed Sort/Filter parms name is displayed
+      // after the selected playlist title
+
+      Text selectedSortFilterParmsName = tester
+          .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+      expect(
+        selectedSortFilterParmsName.data,
+        sortFilterParmName,
+      );
+
+      // Verify the play/pause icon button format and color of
+      // all audios of the selected playlist after applying the
+      // 'Dur < 0:00:29' Sort/Filter parms.
+      for (String audioTitle in audioTitlesToRewindToStartLst) {
+        IntegrationTestUtil.validateInkWellButton(
+          tester: tester,
+          audioTitle: audioTitle,
+          expectedIcon: Icons.play_arrow,
+          expectedIconColor: kScreenButtonColor, // not played icon color
+          expectedIconBackgroundColor: Colors.black,
+        );
+      }
+
+      // Now test rewinding to start the filtered audio
+
+      // Clicking first on the 'Filtered Audio Actions ...' playlist
+      // menu item and then on the 'Rewind filtered Audios to Start'
+      // sub-menu item
+      await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+        tester: tester,
+        playlistTitle: playlistToRewindTitle,
+        playlistSubMenuKeyStr: 'popup_menu_rewind_filtered_audio_to_start',
+      );
+
+      // Verifying and closing the confirm dialog
+
+      // Now verifying the confirming warning dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "2 playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: 0:57.",
+        isWarningConfirming: true,
+      );
+
+      // Setting to this variables the currently selected audio title/subTitle
+      // of the 'Les prières de cette playlist' playlist
+      String currentAudioTitle =
+          "Seigneur, je T'en prie, mets moi dans le feu de Ton Amour";
+      String currentAudioSubTitle =
+          "0:00:28.6 463.4 KB at 193.5 KB/sec on 04/09/2025 at 08:48";
+
+      // Verify that the current audio is displayed with the correct
+      // title and subtitle color
+      await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+        tester: tester,
+        currentAudioTitle: currentAudioTitle,
+        currentAudioSubTitle: currentAudioSubTitle,
+      );
+
+      // Verify the play/pause icon button format and color of
+      // the selected playlist filtered audios after rewinding
+      // them to start.
+      for (String audioTitle in audioTitlesToRewindToStartLst) {
+        IntegrationTestUtil.validateInkWellButton(
+          tester: tester,
+          audioTitle: audioTitle,
+          expectedIcon: Icons.play_arrow,
+          expectedIconColor:
+              kDarkAndLightEnabledIconColor, // not played icon color
+          expectedIconBackgroundColor: Colors.black,
+        );
+      }
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group('Change application date format using the date format selection dialog',
+      () {
+    testWidgets(
+        '''Check application date format set to the 3 available date formats
+        and verify the effect everywhere in the application where the date format
+        is applied. Then, the application will be restarted ...''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'date_format_dialog_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String youtubePlaylistTitle = 'S8 audio';
+
+      List<String> audioSubTitles = [
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
+      ];
+
+      List<String> audioSubTitlesWithAudioDownloadDuration = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 audio downl duration 0:00:01",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+      ];
+
+      List<String> audioSubTitlesWithAudioRemainingDuration = [
+        "0:00:37.5 remaining 00:00:00 listened on 17/07/2026 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 07/09/2025 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 19/08/2024 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 07/09/2025 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 16/03/2024 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
+      ];
+
+      List<String> audioSubTitlesLastListenedDateTimeDescending = [
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17 listened on 17/07/2026 at 16:20 playable every day",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55 listened on 07/09/2025 at 17:22 playable every day",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52 listened on 07/09/2025 at 17:21 playable every day",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 listened on 19/08/2024 at 14:46 playable every day",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 listened on 16/03/2024 at 17:09 playable every day",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 not listened playable every day",
+      ];
+
+      List<String> audioSubTitlesTitleAsc = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+      ];
+
+      List<String> audioSubTitlesVideoUploadDate = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 video upload date 23/09/2023",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 video upload date 10/09/2023",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 video upload date 12/06/2022",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17 no related video",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55 no related video",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52 no related video",
+      ];
+
+      List<String> audioSubTitlesWithAudioDownloadSpeed = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+      ];
+
+      DateTime now = DateTime.now();
+
+      // Verifying initial dd/MM/yyyy date format application
+      await _verifyDateFormatApplication(
+        tester: tester,
+        audioSubTitles: audioSubTitles,
+        audioSubTitlesWithAudioDownloadDuration:
+            audioSubTitlesWithAudioDownloadDuration,
+        audioSubTitlesWithAudioRemainingDuration:
+            audioSubTitlesWithAudioRemainingDuration,
+        audioSubTitlesLastListenedDateTimeDescending:
+            audioSubTitlesLastListenedDateTimeDescending,
+        audioSubTitlesTitleAsc: audioSubTitlesTitleAsc,
+        audioSubTitlesVideoUploadDate: audioSubTitlesVideoUploadDate,
+        audioSubTitlesWithAudioDownloadSpeed:
+            audioSubTitlesWithAudioDownloadSpeed,
+        playlistTitle: youtubePlaylistTitle,
+        videoUploadDate: "12/06/2022",
+        audioDownloadDateTime: "08/01/2024 16:35",
+        audioPausedDateTime: "19/08/2024 14:46", // last listened date
+        importedAudioDateTime: "07/09/2025 16:52",
+        importedAudioPausedDateTime: "07/09/2025 17:21", // last listened date
+        convertedAudioDateTime: "07/09/2025 16:55",
+        convertedAudioPausedDateTime: "07/09/2025 17:22", // last listened date
+        extractedAudioDateTime: "17/07/2026 16:17",
+        extractedAudioPausedDateTime: "17/07/2026 16:20",
+        extractedAudioPausedDate: "17/07/2026",
+        playlistLastDownloadDateTime: "17/07/2026 16:17",
+        commentCreationDate: '12/10/24',
+        commentUpdateDate: '01/11/24',
+        datePickerDateStr: DateFormat('dd/MM/yyyy').format(now),
+        savePlaylistsAudioMp3DateFormat: "dd/MM/yyyy",
+        savePlaylistsAudioMp3OldestDate: "26/12/2023",
+        latestAudioDownloadDate: "01/01/2000 00:00",
+      );
+
+      await _selectDateFormat(
+        tester: tester,
+        dateFormatToSelect: "MM/dd/yyyy",
+        previouslySelectedDateFormat: "dd/MM/yyyy",
+      );
+
+      audioSubTitles = [
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45",
+      ];
+
+      audioSubTitlesWithAudioDownloadDuration = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35 audio downl duration 0:00:01",
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52",
+      ];
+
+      audioSubTitlesWithAudioRemainingDuration = [
+        "0:00:37.5 remaining 00:00:00 listened on 07/17/2026 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 09/07/2025 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 08/19/2024 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 09/07/2025 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 03/16/2024 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
+      ];
+
+      audioSubTitlesLastListenedDateTimeDescending = [
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17 listened on 07/17/2026 at 16:20 playable every day",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55 listened on 09/07/2025 at 17:22 playable every day",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52 listened on 09/07/2025 at 17:21 playable every day",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16 listened on 08/19/2024 at 14:46 playable every day",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45 listened on 03/16/2024 at 17:09 playable every day",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35 not listened playable every day",
+      ];
+
+      audioSubTitlesTitleAsc = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35",
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52",
+      ];
+
+      audioSubTitlesVideoUploadDate = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45 video upload date 09/23/2023",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16 video upload date 09/10/2023",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35 video upload date 06/12/2022",
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17 no related video",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55 no related video",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52 no related video",
+      ];
+
+      audioSubTitlesWithAudioDownloadSpeed = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52",
+      ];
+
+      // Verifying initial MM/dd/yyyy date format application
+      await _verifyDateFormatApplication(
+        tester: tester,
+        audioSubTitles: audioSubTitles,
+        audioSubTitlesWithAudioDownloadDuration:
+            audioSubTitlesWithAudioDownloadDuration,
+        audioSubTitlesWithAudioRemainingDuration:
+            audioSubTitlesWithAudioRemainingDuration,
+        audioSubTitlesLastListenedDateTimeDescending:
+            audioSubTitlesLastListenedDateTimeDescending,
+        audioSubTitlesTitleAsc: audioSubTitlesTitleAsc,
+        audioSubTitlesVideoUploadDate: audioSubTitlesVideoUploadDate,
+        audioSubTitlesWithAudioDownloadSpeed:
+            audioSubTitlesWithAudioDownloadSpeed,
+        playlistTitle: youtubePlaylistTitle,
+        videoUploadDate: "06/12/2022",
+        audioDownloadDateTime: "01/08/2024 16:35",
+        audioPausedDateTime: "08/19/2024 14:46",
+        importedAudioDateTime: "09/07/2025 16:52",
+        importedAudioPausedDateTime: "09/07/2025 17:21", // last listened date
+        convertedAudioDateTime: "09/07/2025 16:55",
+        convertedAudioPausedDateTime: "09/07/2025 17:22", // last listened date
+        extractedAudioDateTime: "07/17/2026 16:17",
+        extractedAudioPausedDateTime: "07/17/2026 16:20",
+        extractedAudioPausedDate: "07/17/2026",
+        playlistLastDownloadDateTime: "07/17/2026 16:17",
+        commentCreationDate: '10/12/24',
+        commentUpdateDate: '11/01/24',
+        datePickerDateStr: DateFormat('MM/dd/yyyy').format(now),
+        savePlaylistsAudioMp3DateFormat: "MM/dd/yyyy",
+        savePlaylistsAudioMp3OldestDate: "12/26/2023",
+        latestAudioDownloadDate: "01/01/2000 00:00",
+      );
+
+      await _selectDateFormat(
+        tester: tester,
+        dateFormatToSelect: "yyyy/MM/dd",
+        previouslySelectedDateFormat: "MM/dd/yyyy",
+      );
+
+      audioSubTitles = [
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45",
+      ];
+
+      audioSubTitlesWithAudioDownloadDuration = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35 audio downl duration 0:00:01",
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52",
+      ];
+
+      audioSubTitlesWithAudioRemainingDuration = [
+        "0:00:37.5 remaining 00:00:00 listened on 2026/07/17 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 2025/09/07 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 2024/08/19 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 2025/09/07 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 2024/03/16 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
+      ];
+
+      audioSubTitlesLastListenedDateTimeDescending = [
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17 listened on 2026/07/17 at 16:20 playable every day",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55 listened on 2025/09/07 at 17:22 playable every day",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52 listened on 2025/09/07 at 17:21 playable every day",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16 listened on 2024/08/19 at 14:46 playable every day",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45 listened on 2024/03/16 at 17:09 playable every day",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35 not listened playable every day",
+      ];
+
+      audioSubTitlesTitleAsc = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35",
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52",
+      ];
+
+      audioSubTitlesVideoUploadDate = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45 video upload date 2023/09/23",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16 video upload date 2023/09/10",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35 video upload date 2022/06/12",
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17 no related video",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55 no related video",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52 no related video",
+      ];
+
+      audioSubTitlesWithAudioDownloadSpeed = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52",
+      ];
+
+      // Verifying initial yyyy/MM/dd date format application
+      await _verifyDateFormatApplication(
+        tester: tester,
+        audioSubTitles: audioSubTitles,
+        audioSubTitlesWithAudioDownloadDuration:
+            audioSubTitlesWithAudioDownloadDuration,
+        audioSubTitlesWithAudioRemainingDuration:
+            audioSubTitlesWithAudioRemainingDuration,
+        audioSubTitlesLastListenedDateTimeDescending:
+            audioSubTitlesLastListenedDateTimeDescending,
+        audioSubTitlesTitleAsc: audioSubTitlesTitleAsc,
+        audioSubTitlesVideoUploadDate: audioSubTitlesVideoUploadDate,
+        audioSubTitlesWithAudioDownloadSpeed:
+            audioSubTitlesWithAudioDownloadSpeed,
+        playlistTitle: youtubePlaylistTitle,
+        videoUploadDate: "2022/06/12",
+        audioDownloadDateTime: "2024/01/08 16:35",
+        audioPausedDateTime: "2024/08/19 14:46",
+        importedAudioDateTime: "2025/09/07 16:52",
+        importedAudioPausedDateTime: "2025/09/07 17:21", // last listened date
+        convertedAudioDateTime: "2025/09/07 16:55",
+        convertedAudioPausedDateTime: "2025/09/07 17:22", // last listened date
+        extractedAudioDateTime: "2026/07/17 16:17",
+        extractedAudioPausedDateTime: "2026/07/17 16:20",
+        extractedAudioPausedDate: "2026/07/17",
+        playlistLastDownloadDateTime: "2026/07/17 16:17",
+        commentCreationDate: '24/10/12',
+        commentUpdateDate: '24/11/01',
+        datePickerDateStr: DateFormat('yyyy/MM/dd').format(now),
+        savePlaylistsAudioMp3DateFormat: "yyyy/MM/dd",
+        savePlaylistsAudioMp3OldestDate: "2023/12/26",
+        latestAudioDownloadDate: "2000/01/01 00:00",
+      );
+
+      await _selectDateFormat(
+        tester: tester,
+        dateFormatToSelect: "dd/MM/yyyy",
+        previouslySelectedDateFormat: "yyyy/MM/dd",
+      );
+
+      audioSubTitles = [
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
+      ];
+
+      audioSubTitlesWithAudioDownloadDuration = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 audio downl duration 0:00:01",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+      ];
+
+      audioSubTitlesWithAudioRemainingDuration = [
+        "0:00:37.5 remaining 00:00:00 listened on 17/07/2026 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 07/09/2025 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 19/08/2024 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 07/09/2025 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 16/03/2024 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
+      ];
+
+      audioSubTitlesLastListenedDateTimeDescending = [
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17 listened on 17/07/2026 at 16:20 playable every day",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55 listened on 07/09/2025 at 17:22 playable every day",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52 listened on 07/09/2025 at 17:21 playable every day",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 listened on 19/08/2024 at 14:46 playable every day",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 listened on 16/03/2024 at 17:09 playable every day",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 not listened playable every day",
+      ];
+
+      audioSubTitlesTitleAsc = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+      ];
+
+      audioSubTitlesVideoUploadDate = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 video upload date 23/09/2023",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 video upload date 10/09/2023",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 video upload date 12/06/2022",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17 no related video",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55 no related video",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52 no related video",
+      ];
+
+      audioSubTitlesWithAudioDownloadSpeed = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+      ];
+
+      // Verifying initial dd/MM/yyyy date format application
+      await _verifyDateFormatApplication(
+        tester: tester,
+        audioSubTitles: audioSubTitles,
+        audioSubTitlesWithAudioDownloadDuration:
+            audioSubTitlesWithAudioDownloadDuration,
+        audioSubTitlesWithAudioRemainingDuration:
+            audioSubTitlesWithAudioRemainingDuration,
+        audioSubTitlesLastListenedDateTimeDescending:
+            audioSubTitlesLastListenedDateTimeDescending,
+        audioSubTitlesTitleAsc: audioSubTitlesTitleAsc,
+        audioSubTitlesVideoUploadDate: audioSubTitlesVideoUploadDate,
+        audioSubTitlesWithAudioDownloadSpeed:
+            audioSubTitlesWithAudioDownloadSpeed,
+        playlistTitle: youtubePlaylistTitle,
+        videoUploadDate: "12/06/2022",
+        audioDownloadDateTime: "08/01/2024 16:35",
+        audioPausedDateTime: "19/08/2024 14:46",
+        importedAudioDateTime: "07/09/2025 16:52",
+        importedAudioPausedDateTime: "07/09/2025 17:21", // last listened date
+        convertedAudioDateTime: "07/09/2025 16:55",
+        convertedAudioPausedDateTime: "07/09/2025 17:22", // last listened date
+        extractedAudioDateTime: "17/07/2026 16:17",
+        extractedAudioPausedDateTime: "17/07/2026 16:20",
+        extractedAudioPausedDate: "17/07/2026",
+        playlistLastDownloadDateTime: "17/07/2026 16:17",
+        commentCreationDate: '12/10/24',
+        commentUpdateDate: '01/11/24',
+        datePickerDateStr: DateFormat('dd/MM/yyyy').format(now),
+        savePlaylistsAudioMp3DateFormat: "dd/MM/yyyy",
+        savePlaylistsAudioMp3OldestDate: "26/12/2023",
+        latestAudioDownloadDate: "01/01/2000 00:00",
+      );
+
+      // Setting date format to MM/dd/yyyy before restarting the
+      // application
+      await _selectDateFormat(
+        tester: tester,
+        dateFormatToSelect: "MM/dd/yyyy",
+        previouslySelectedDateFormat: "dd/MM/yyyy",
+      );
+    });
+    testWidgets(
+        '''After restarting the application, verify the application date format
+        set in previous testWidgets() function to the 'MM/dd/yyyy' and verify the
+        effect everywhere in the application where the date format is applied. Then,
+        set date format to 'yyyy/MM/dd' and restart the application ...''',
+        (WidgetTester tester) async {
+      final SettingsDataService settingsDataService = SettingsDataService(
+        isTest: true,
+      );
+
+      // Load the settings from the json file. This is necessary
+      // otherwise the ordered playlist titles will remain empty
+      // and the playlist list will not be filled with the
+      // playlists available in the app test dir
+      await settingsDataService.loadSettingsFromFile(
+          settingsJsonPathFileName:
+              "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+      // Restarting the app
+      await app.main();
+      await tester.pumpAndSettle();
+
+      DateTime now = DateTime.now();
+
+      // The app was restarted after that 'MM/dd/yyyy' date format was set
+
+      const String youtubePlaylistTitle = 'S8 audio';
+
+      List<String> audioSubTitles = [
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45",
+      ];
+
+      List<String> audioSubTitlesWithAudioDownloadDuration = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35 audio downl duration 0:00:01",
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52",
+      ];
+
+      List<String> audioSubTitlesWithAudioRemainingDuration = [
+        "0:00:37.5 remaining 00:00:00 listened on 07/17/2026 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 09/07/2025 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 08/19/2024 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 09/07/2025 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 03/16/2024 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
+      ];
+
+      List<String> audioSubTitlesLastListenedDateTimeDescending = [
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17 listened on 07/17/2026 at 16:20 playable every day",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55 listened on 09/07/2025 at 17:22 playable every day",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52 listened on 09/07/2025 at 17:21 playable every day",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16 listened on 08/19/2024 at 14:46 playable every day",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45 listened on 03/16/2024 at 17:09 playable every day",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35 not listened playable every day",
+      ];
+
+      List<String> audioSubTitlesTitleAsc = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35",
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52",
+      ];
+
+      List<String> audioSubTitlesVideoUploadDate = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45 video upload date 09/23/2023",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16 video upload date 09/10/2023",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35 video upload date 06/12/2022",
+        "0:00:37.5 300.6 KB extracted on 07/17/2026 at 16:17 no related video",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55 no related video",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52 no related video",
+      ];
+
+      List<String> audioSubTitlesWithAudioDownloadSpeed = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 01/07/2024 at 08:16",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 01/08/2024 at 16:35",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 12/26/2023 at 09:45",
+        "0:00:07.0 55.9 KB converted on 09/07/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 09/07/2025 at 16:52",
+      ];
+
+      // Verifying initial MM/dd/yyyy date format application
+      await _verifyDateFormatApplication(
+        tester: tester,
+        audioSubTitles: audioSubTitles,
+        audioSubTitlesWithAudioDownloadDuration:
+            audioSubTitlesWithAudioDownloadDuration,
+        audioSubTitlesWithAudioRemainingDuration:
+            audioSubTitlesWithAudioRemainingDuration,
+        audioSubTitlesLastListenedDateTimeDescending:
+            audioSubTitlesLastListenedDateTimeDescending,
+        audioSubTitlesTitleAsc: audioSubTitlesTitleAsc,
+        audioSubTitlesVideoUploadDate: audioSubTitlesVideoUploadDate,
+        audioSubTitlesWithAudioDownloadSpeed:
+            audioSubTitlesWithAudioDownloadSpeed,
+        playlistTitle: youtubePlaylistTitle,
+        videoUploadDate: "06/12/2022",
+        audioDownloadDateTime: "01/08/2024 16:35",
+        audioPausedDateTime: "08/19/2024 14:46",
+        importedAudioDateTime: "09/07/2025 16:52",
+        importedAudioPausedDateTime: "09/07/2025 17:21", // last listened date
+        convertedAudioDateTime: "09/07/2025 16:55",
+        convertedAudioPausedDateTime: "09/07/2025 17:22", // last listened date
+        extractedAudioDateTime: "07/17/2026 16:17",
+        extractedAudioPausedDateTime: "07/17/2026 16:20",
+        extractedAudioPausedDate: "07/17/2026",
+        playlistLastDownloadDateTime: "07/17/2026 16:17",
+        commentCreationDate: '10/12/24',
+        commentUpdateDate: '11/01/24',
+        datePickerDateStr: DateFormat('MM/dd/yyyy').format(now),
+        savePlaylistsAudioMp3DateFormat: "MM/dd/yyyy",
+        savePlaylistsAudioMp3OldestDate: "12/26/2023",
+        latestAudioDownloadDate: "01/01/2000 00:00",
+      );
+
+      await _selectDateFormat(
+        tester: tester,
+        dateFormatToSelect: "yyyy/MM/dd",
+        previouslySelectedDateFormat: "MM/dd/yyyy",
+      );
+    });
+    testWidgets(
+        '''After restarting the application, verify the application date format
+        set in previous testWidgets() function to the ''yyyy/MM/dd'' and verify the
+        effect everywhere in the application where the date format is applied.''',
+        (WidgetTester tester) async {
+      final SettingsDataService settingsDataService = SettingsDataService(
+        isTest: true,
+      );
+
+      // Load the settings from the json file. This is necessary
+      // otherwise the ordered playlist titles will remain empty
+      // and the playlist list will not be filled with the
+      // playlists available in the app test dir
+      await settingsDataService.loadSettingsFromFile(
+          settingsJsonPathFileName:
+              "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+      // Restarting the app
+      await app.main();
+      await tester.pumpAndSettle();
+
+      DateTime now = DateTime.now();
+
+      // The app was restarted after that 'yyyy/MM/dd' date format was set
+
+      const String youtubePlaylistTitle = 'S8 audio';
+
+      List<String> audioSubTitles = [
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45",
+      ];
+
+      List<String> audioSubTitlesWithAudioDownloadDuration = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35 audio downl duration 0:00:01",
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52",
+      ];
+
+      List<String> audioSubTitlesWithAudioRemainingDuration = [
+        "0:00:37.5 remaining 00:00:00 listened on 2026/07/17 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 2025/09/07 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 2024/08/19 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 2025/09/07 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 2024/03/16 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
+      ];
+
+      List<String> audioSubTitlesLastListenedDateTimeDescending = [
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17 listened on 2026/07/17 at 16:20 playable every day",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55 listened on 2025/09/07 at 17:22 playable every day",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52 listened on 2025/09/07 at 17:21 playable every day",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16 listened on 2024/08/19 at 14:46 playable every day",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45 listened on 2024/03/16 at 17:09 playable every day",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35 not listened playable every day",
+      ];
+
+      List<String> audioSubTitlesTitleAsc = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35",
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52",
+      ];
+
+      List<String> audioSubTitlesVideoUploadDate = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45 video upload date 2023/09/23",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16 video upload date 2023/09/10",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35 video upload date 2022/06/12",
+        "0:00:37.5 300.6 KB extracted on 2026/07/17 at 16:17 no related video",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55 no related video",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52 no related video",
+      ];
+
+      List<String> audioSubTitlesWithAudioDownloadSpeed = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 2024/01/07 at 08:16",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 2024/01/08 at 16:35",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 2023/12/26 at 09:45",
+        "0:00:07.0 55.9 KB converted on 2025/09/07 at 16:55",
+        "0:00:39.0 311.6 KB imported on 2025/09/07 at 16:52",
+      ];
+
+      // Verifying initial yyyy/MM/dd date format application
+      await _verifyDateFormatApplication(
+        tester: tester,
+        audioSubTitles: audioSubTitles,
+        audioSubTitlesWithAudioDownloadDuration:
+            audioSubTitlesWithAudioDownloadDuration,
+        audioSubTitlesWithAudioRemainingDuration:
+            audioSubTitlesWithAudioRemainingDuration,
+        audioSubTitlesLastListenedDateTimeDescending:
+            audioSubTitlesLastListenedDateTimeDescending,
+        audioSubTitlesTitleAsc: audioSubTitlesTitleAsc,
+        audioSubTitlesVideoUploadDate: audioSubTitlesVideoUploadDate,
+        audioSubTitlesWithAudioDownloadSpeed:
+            audioSubTitlesWithAudioDownloadSpeed,
+        playlistTitle: youtubePlaylistTitle,
+        videoUploadDate: "2022/06/12",
+        audioDownloadDateTime: "2024/01/08 16:35",
+        audioPausedDateTime: "2024/08/19 14:46",
+        importedAudioDateTime: "2025/09/07 16:52",
+        importedAudioPausedDateTime: "2025/09/07 17:21", // last listened date
+        convertedAudioDateTime: "2025/09/07 16:55",
+        convertedAudioPausedDateTime: "2025/09/07 17:22", // last listened date
+        extractedAudioDateTime: "2026/07/17 16:17",
+        extractedAudioPausedDateTime: "2026/07/17 16:20",
+        extractedAudioPausedDate: "2026/07/17",
+        playlistLastDownloadDateTime: "2026/07/17 16:17",
+        commentCreationDate: '24/10/12',
+        commentUpdateDate: '24/11/01',
+        datePickerDateStr: DateFormat('yyyy/MM/dd').format(now),
+        savePlaylistsAudioMp3DateFormat: "yyyy/MM/dd",
+        savePlaylistsAudioMp3OldestDate: "2023/12/26",
+        latestAudioDownloadDate: "2000/01/01 00:00",
+      );
+
+      await _selectDateFormat(
+        tester: tester,
+        dateFormatToSelect: "dd/MM/yyyy",
+        previouslySelectedDateFormat: "yyyy/MM/dd",
+      );
+    });
+    testWidgets(
+        '''After restarting the application, verify the application date format
+        set in previous testWidgets() function to the 'dd/MM/yyyy' and verify the
+        effect everywhere in the application where the date format is applied.''',
+        (WidgetTester tester) async {
+      final SettingsDataService settingsDataService = SettingsDataService(
+        isTest: true,
+      );
+
+      // Load the settings from the json file. This is necessary
+      // otherwise the ordered playlist titles will remain empty
+      // and the playlist list will not be filled with the
+      // playlists available in the app test dir
+      await settingsDataService.loadSettingsFromFile(
+          settingsJsonPathFileName:
+              "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+      // Restarting the app
+      await app.main();
+      await tester.pumpAndSettle();
+
+      // The app was restarted after that 'dd/MM/yyyy' date format was set
+
+      const String youtubePlaylistTitle = 'S8 audio';
+
+      List<String> audioSubTitles = [
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
+      ];
+
+      List<String> audioSubTitlesWithAudioDownloadDuration = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 audio downl duration 0:00:01",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 audio downl duration 0:00:01",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+      ];
+
+      List<String> audioSubTitlesWithAudioRemainingDuration = [
+        "0:00:37.5 remaining 00:00:00 listened on 17/07/2026 at 16:20",
+        "0:00:07.0 remaining 00:00:03 listened on 07/09/2025 at 17:22",
+        "0:10:55.2 remaining 00:00:04 listened on 19/08/2024 at 14:46",
+        "0:00:39.0 remaining 00:00:34 listened on 07/09/2025 at 17:21",
+        "0:05:11.2 remaining 00:00:38 listened on 16/03/2024 at 17:09",
+        "0:05:11.2 remaining 00:06:29 not listened",
+      ];
+
+      List<String> audioSubTitlesLastListenedDateTimeDescending = [
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17 listened on 17/07/2026 at 16:20 playable every day",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55 listened on 07/09/2025 at 17:22 playable every day",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52 listened on 07/09/2025 at 17:21 playable every day",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 listened on 19/08/2024 at 14:46 playable every day",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 listened on 16/03/2024 at 17:09 playable every day",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 not listened playable every day",
+      ];
+
+      List<String> audioSubTitlesTitleAsc = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+      ];
+
+      List<String> audioSubTitlesVideoUploadDate = [
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45 video upload date 23/09/2023",
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16 video upload date 10/09/2023",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35 video upload date 12/06/2022",
+        "0:00:37.5 300.6 KB extracted on 17/07/2026 at 16:17 no related video",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55 no related video",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52 no related video",
+      ];
+
+      List<String> audioSubTitlesWithAudioDownloadSpeed = [
+        "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16",
+        "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35",
+        "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
+        "0:00:07.0 55.9 KB converted on 07/09/2025 at 16:55",
+        "0:00:39.0 311.6 KB imported on 07/09/2025 at 16:52",
+      ];
+
+      DateTime now = DateTime.now();
+
+      // Verifying initial dd/MM/yyyy date format application
+      await _verifyDateFormatApplication(
+        tester: tester,
+        audioSubTitles: audioSubTitles,
+        audioSubTitlesWithAudioDownloadDuration:
+            audioSubTitlesWithAudioDownloadDuration,
+        audioSubTitlesWithAudioRemainingDuration:
+            audioSubTitlesWithAudioRemainingDuration,
+        audioSubTitlesLastListenedDateTimeDescending:
+            audioSubTitlesLastListenedDateTimeDescending,
+        audioSubTitlesTitleAsc: audioSubTitlesTitleAsc,
+        audioSubTitlesVideoUploadDate: audioSubTitlesVideoUploadDate,
+        audioSubTitlesWithAudioDownloadSpeed:
+            audioSubTitlesWithAudioDownloadSpeed,
+        playlistTitle: youtubePlaylistTitle,
+        videoUploadDate: "12/06/2022",
+        audioDownloadDateTime: "08/01/2024 16:35",
+        audioPausedDateTime: "19/08/2024 14:46",
+        importedAudioDateTime: "07/09/2025 16:52",
+        importedAudioPausedDateTime: "07/09/2025 17:21", // last listened date
+        convertedAudioDateTime: "07/09/2025 16:55",
+        convertedAudioPausedDateTime: "07/09/2025 17:22", // last listened date
+        extractedAudioDateTime: "17/07/2026 16:17",
+        extractedAudioPausedDateTime: "17/07/2026 16:20",
+        extractedAudioPausedDate: "17/07/2026",
+        playlistLastDownloadDateTime: "17/07/2026 16:17",
+        commentCreationDate: '12/10/24',
+        commentUpdateDate: '01/11/24',
+        datePickerDateStr: DateFormat('dd/MM/yyyy').format(now),
+        savePlaylistsAudioMp3DateFormat: "dd/MM/yyyy",
+        savePlaylistsAudioMp3OldestDate: "26/12/2023",
+        latestAudioDownloadDate: "01/01/2000 00:00",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group('Copy filtered audio from playlist test', () {
+    group('Copy filtered uncommented audio from playlist test', () {
+      testWidgets('''Apply the 'listenedNoCom' SF parms. Then, click
+          on the 'Copy Filtered Audio' playlist menu and verify the audio copied
+          as well as the audio selection.''', (WidgetTester tester) async {
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'delete_filtered_audio_test',
+          tapOnPlaylistToggleButton: true,
+        );
+
+        const String sourcePlaylistTitle = 'S8 audio';
+        const String targetPlaylistTitle = 'temp';
+
+        List<String> audioTitleBeforeCopyingLst = [
+          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+          "La surpopulation mondiale par Jancovici et Barrau",
+          "La résilience insulaire par Fiona Roche",
+          "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
+          "Les besoins artificiels par R.Keucheyan",
+          "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
+          "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
+        ];
+
+        // Verify the displayed audio list before selecting the 'listenedNoCom'
+        // Sort/Filter parm.
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleBeforeCopyingLst,
+        );
+
+        String sortFilterParmName = 'listenedNoCom';
+
+        // Now tap on the current dropdown button item to open the dropdown
+        // button items list
+
+        Finder dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        Finder dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Find and tap on the 'listenedNoCom' sort/filter item
+        Finder titleAscDropDownTextFinder = find.text(sortFilterParmName).last;
+        await tester.tap(titleAscDropDownTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles selected by applying the 'listenedNoCom'
+        // sort/filter parms
+        List<String> audioTitleToCopyLst = [
+          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+          "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
+        ];
+
+        // Verify the displayed audio list after selecting the 'listenedNoCom'
+        // Sort/Filter parms.
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleToCopyLst,
+        );
+
+        // Setting to this variables the currently selected audio title/subTitle
+        // of the 'S8 audio' playlist
+        String currentAudioTitle =
+            "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik";
+        String currentAudioSubTitle =
+            "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16";
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: currentAudioTitle,
+          currentAudioSubTitle: currentAudioSubTitle,
+        );
+
+        // Verify the presence of the audio files which will be later copied
+
+        List<String> audioFileNameToCopyLst = [
+          "240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
+          "240107-094528-Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik 23-09-10.mp3",
+        ];
+
+        List<String> listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameToCopy in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameToCopy),
+            true,
+          );
+        }
+
+        // Tap the 'Toggle List' button to show the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Verify that the applyed Sort/Filter parms name is displayed
+        // after the selected playlist title
+
+        Text selectedSortFilterParmsName = tester
+            .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+        expect(
+          selectedSortFilterParmsName.data,
+          sortFilterParmName,
+        );
+
+        // Now test copying the filtered audio
+
+        // Open the copy filtered audio dialog by clicking first on
+        // the 'Filtered Audio Actions ...' playlist menu item and then
+        // on the 'Copy Filtered Audio to Playlist ...' sub-menu item
+        await _testMovingOrCopyingFilteredAudio(
+          tester: tester,
+          sourcePlaylistTitle: sourcePlaylistTitle,
+          targetPlaylistTitle: targetPlaylistTitle,
+          sortFilterParmName: sortFilterParmName,
+          isMove: false,
+          movedOrCopiedAudioNumber: 2,
+          commentedAudioNumber: 0,
+          unmovedOrUncopiedAudioNumber: 0,
+        );
+
+        // Verify in source playlist directory that the audio files
+        // are present after they have been copied
+
+        listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameToCopy in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameToCopy),
+            true,
+          );
+        }
+
+        // Verify the source 'S8 audio' playlist json file
+
+        Playlist loadedPlaylist = loadPlaylist(sourcePlaylistTitle);
+
+        expect(loadedPlaylist.downloadedAudioLst.length, 18);
+
+        List<String> downloadedAudioLst = loadedPlaylist.downloadedAudioLst
+            .map((Audio audio) => audio.validVideoTitle)
+            .toList();
+
+        for (String audioTitleToCopy in audioTitleBeforeCopyingLst) {
+          expect(
+            downloadedAudioLst.contains(audioTitleToCopy),
+            true,
+          );
+        }
+
+        expect(loadedPlaylist.playableAudioLst.length, 7);
+
+        List<String> playableAudioLst = loadedPlaylist.playableAudioLst
+            .map((Audio audio) => audio.validVideoTitle)
+            .toList();
+
+        for (String audioTitleAfterCopying in audioTitleBeforeCopyingLst) {
+          expect(
+            playableAudioLst.contains(audioTitleAfterCopying),
+            true,
+          );
+        }
+
+        // Verify the target playlist directory in which the audio files
+        // were copied
+
+        listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$targetPlaylistTitle",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameCopied in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameCopied),
+            true,
+          );
+        }
+
+        // Verify in target playlist directory in which no audio
+        // comment files were copied
+
+        List<String> listCommentJsonFileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$targetPlaylistTitle${path.separator}$kCommentDirName",
+          fileExtension: 'json',
+        );
+
+        expect(listCommentJsonFileNames.isEmpty, true);
+
+        // Verify the target 'temp' playlist json file
+
+        loadedPlaylist = loadPlaylist(targetPlaylistTitle);
+
+        expect(loadedPlaylist.downloadedAudioLst.length, 3);
+
+        downloadedAudioLst = loadedPlaylist.downloadedAudioLst
+            .map((Audio audio) => audio.validVideoTitle)
+            .toList();
+
+        for (String audioTitleToCopy in audioTitleToCopyLst) {
+          expect(
+            downloadedAudioLst.contains(audioTitleToCopy),
+            true,
+          );
+        }
+
+        expect(loadedPlaylist.playableAudioLst.length, 3);
+
+        playableAudioLst = loadedPlaylist.playableAudioLst
+            .map((Audio audio) => audio.validVideoTitle)
+            .toList();
+
+        for (String audioTitleToCopy in audioTitleToCopyLst) {
+          expect(
+            playableAudioLst.contains(audioTitleToCopy),
+            true,
+          );
+        }
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        // The source playlist is selected.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles content by applying the 'listenedNoCom'
+        // sort/filter parms. Since they have been copied, the list was
+        // not changed.
+
+        // Verify the filtered audio list before selecting the 'default'
+        // Sort/Filter parms.
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleToCopyLst,
+        );
+
+        // Now tap on the current dropdown button item to open the dropdown
+        // button items list
+
+        dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Find and tap on the 'default' sort/filter item
+        titleAscDropDownTextFinder = find.text('default').last;
+        await tester.tap(titleAscDropDownTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles selected by applying the 'default'
+        // sort/filter parms after having copied the filtered audio
+
+        // Verify the displayed audio list after selecting the 'default'.
+        // Sort/Filter parms.
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleBeforeCopyingLst,
+        );
+
+        // Setting to this variables the currently selected audio
+        // title/subTitle of the 'S8 audio' playlist
+        currentAudioTitle =
+            "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik";
+        currentAudioSubTitle =
+            "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16";
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: currentAudioTitle,
+          currentAudioSubTitle: currentAudioSubTitle,
+        );
+
+        // Verifying the 'temp' target playlist
+
+        // Tap the 'Toggle List' button to show the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Select the 'temp' playlist
+
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: targetPlaylistTitle,
+        );
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Verify the moved audioTitles displayed by applying the
+        // 'default' SF parms
+
+        audioTitleToCopyLst.insert(0, "morning _ cinematic video");
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleToCopyLst,
+        );
+
+        // Setting to this variables the currently selected audio
+        // title/subTitle of the 'S8 audio' playlist
+        currentAudioTitle = "morning _ cinematic video";
+        currentAudioSubTitle =
+            "0:00:47.2 360.8 KB at 283.1 KB/sec on 10/01/2024 at 18:18";
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: currentAudioTitle,
+          currentAudioSubTitle: currentAudioSubTitle,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Using very long playlist list. This test only verifies that the unique
+             playlist selection dialog can display a very long playlist list.''',
+          (WidgetTester tester) async {
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'playlist_selectable_dialog_test',
+          tapOnPlaylistToggleButton: true,
+        );
+
+        const String sourcePlaylistTitle = 'S8 audio';
+
+        // Setting to this variables the currently selected audio title/subTitle
+        // of the 'S8 audio' playlist
+        String currentAudioTitle =
+            "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau";
+
+        // Now we want to tap the popup menu of the Audio ListTile
+        // "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau"
+
+        // First, find the Audio sublist ListTile Text widget
+        Finder sourceAudioListTileTextWidgetFinder =
+            find.text(currentAudioTitle);
+
+        // Then obtain the Audio ListTile widget enclosing the Text widget by
+        // finding its ancestor
+        Finder sourceAudioListTileWidgetFinder = find.ancestor(
+          of: sourceAudioListTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now find the leading menu icon button of the Audio ListTile
+        // and tap on it
+        Finder sourceAudioListTileLeadingMenuIconButton = find.descendant(
+          of: sourceAudioListTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(sourceAudioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the copy audio popup menu item and tap on it
+        Finder popupCopyMenuItem =
+            find.byKey(const Key("popup_menu_copy_audio_to_playlist"));
+
+        await tester.tap(popupCopyMenuItem);
+        await tester.pumpAndSettle();
+
+        // Check the value of the select one playlist AlertDialog
+        // dialog title
+        Text alertDialogTitle = tester.widget(
+            find.byKey(const Key('playlistOneSelectableDialogTitleKey')));
+        expect(alertDialogTitle.data, 'Select a Playlist');
+
+        // Find the RadioListTile target playlist to which the audio
+        // will be copied
+
+        String longPlaylistTitle =
+            "Add padding or margins To prevent the content from touching the edges of the dialog";
+        String lastPlaylistTitle = "lo20";
+
+        Finder targetPlaylistRadioListTile = find
+            .ancestor(
+              of: find.text(longPlaylistTitle),
+              matching: find.byType(ListTile),
+            )
+            .last;
+
+        expect(targetPlaylistRadioListTile, findsOneWidget);
+
+        // Dropdown the list of playlists in the select one playlist
+        // dialog
+
+        // Find the playlist list widget using its key
+        final listFinder = find.byKey(const Key('selectable_playlist_list'));
+        // Perform the scroll action
+        await tester.drag(listFinder, const Offset(0, -1000));
+        await tester.pumpAndSettle();
+
+        targetPlaylistRadioListTile = find
+            .ancestor(
+              of: find.text(lastPlaylistTitle),
+              matching: find.byType(ListTile),
+            )
+            .last;
+
+        expect(targetPlaylistRadioListTile, findsOneWidget);
+
+        // Tap the target playlist RadioListTile to select it
+        await tester.tap(targetPlaylistRadioListTile);
+        await tester.pumpAndSettle();
+
+        // Now find the confirm button and tap on it
+        await tester.tap(find.byKey(const Key('confirmButton')));
+        await tester.pumpAndSettle();
+
+        // Now verifying the confirm dialog message
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              'Audio "$currentAudioTitle" copied from Youtube playlist "$sourcePlaylistTitle" to local playlist "$lastPlaylistTitle".',
+          isWarningConfirming: true,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets('''Select a fully listened commented audio located
+           in default SF parms lower than the filtered SF audio which will be copied
+           (was downloaded before them). Then select 'listenedNoCom' SF parms and
+           apply it. Then, click on the 'Copy Filtered Audio' playlist menu and
+           verify the audio copy as well as the audio selection.''',
+          (WidgetTester tester) async {
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'delete_filtered_audio_test',
+          tapOnPlaylistToggleButton: true,
+        );
+
+        const String sourcePlaylistTitle = 'S8 audio';
+        const String targetPlaylistTitle = 'temp';
+
+        // First, select a fully listened audio downloaded before the
+        // audio which will be copied
+        //
+        // Get the ListTile Text widget finder and tap on it to go
+        // to audio player view
+        final Finder lastDownloadedAudioListTileTextWidgetFinder = find.text(
+            "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)");
+
+        await tester.tap(lastDownloadedAudioListTileTextWidgetFinder);
+        await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+          tester: tester,
+        );
+
+        // Go back to playlist download view
+        final Finder audioPlayerNavButtonFinder =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(audioPlayerNavButtonFinder);
+        await tester.pumpAndSettle();
+
+        String sortFilterParmName = 'listenedNoCom';
+
+        // Now tap on the current dropdown button item to open the dropdown
+        // button items list
+
+        Finder dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        Finder dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Find and tap on the 'listenedNoCom' sort/filter item
+        Finder titleAscDropDownTextFinder = find.text(sortFilterParmName).last;
+        await tester.tap(titleAscDropDownTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles selected by applying the 'listenedNoCom'
+        // sort/filter parms
+        List<String> audioTitleToCopyLst = [
+          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+          "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
+        ];
+
+        // Verify the displayed audio list after selecting the 'listenedNoCom'
+        // Sort/Filter parms.
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleToCopyLst,
+        );
+
+        // Verify the presence of the audio files which will be later copied
+
+        List<String> audioFileNameToCopyLst = [
+          "240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
+          "240107-094528-Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik 23-09-10.mp3",
+        ];
+
+        List<String> listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameToCopy in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameToCopy),
+            true,
+          );
+        }
+
+        // Tap the 'Toggle List' button to show the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Verify that the applyed Sort/Filter parms name is displayed
+        // after the selected playlist title
+
+        Text selectedSortFilterParmsName = tester
+            .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+        expect(
+          selectedSortFilterParmsName.data,
+          sortFilterParmName,
+        );
+
+        // Now test copying the filtered audio
+
+        // Open the copy filtered audio dialog by clicking first on
+        // the 'Filtered Audio Actions ...' playlist menu item and then
+        // on the 'Copy Filtered Audio to Playlist ...' sub-menu item
+        await _testMovingOrCopyingFilteredAudio(
+          tester: tester,
+          sourcePlaylistTitle: sourcePlaylistTitle,
+          targetPlaylistTitle: targetPlaylistTitle,
+          sortFilterParmName: sortFilterParmName,
+          isMove: false, // Copy
+          movedOrCopiedAudioNumber: 2,
+          commentedAudioNumber: 0,
+          unmovedOrUncopiedAudioNumber: 0,
+        );
+
+        // Verify in source playlist directory that the audio files were
+        // not deleted since they were copied
+
+        listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameToCopy in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameToCopy),
+            true,
+          );
+        }
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Now tap on the current dropdown button item to open the dropdown
+        // button items list
+
+        dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Find and tap on the 'default' sort/filter item
+        titleAscDropDownTextFinder = find.text('default').last;
+        await tester.tap(titleAscDropDownTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles selected by applying the 'default'
+        // sort/filter parms after having copied the filtered audio
+
+        // Setting to this variables the currently selected audio title/subTitle
+        // of the 'S8 audio' playlist
+        String currentAudioTitle =
+            "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)";
+        String currentAudioSubTitle =
+            "0:16:25.6 7.51 MB at 2.44 MB/sec on 26/12/2023 at 09:45";
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: currentAudioTitle,
+          currentAudioSubTitle: currentAudioSubTitle,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets('''Select a partially listened not commented audio located
+           in default SF parms lower than the filtered SF audio which will be copied
+           (was downloaded before them). Then select 'listenedNoCom' SF parms and
+           apply it. Then, click on the 'Copy Filtered Audio' playlist menu and
+           verify the audio copy as well as the audio selection.''',
+          (WidgetTester tester) async {
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'delete_filtered_audio_test',
+          tapOnPlaylistToggleButton: true,
+        );
+
+        const String sourcePlaylistTitle = 'S8 audio';
+        const String targetPlaylistTitle = 'temp';
+
+        // First, select a partially listened audio downloaded before the
+        // audio which will be copied
+        //
+        // Get the ListTile Text widget finder and tap on it to go
+        // to audio player view
+        final Finder lastDownloadedAudioListTileTextWidgetFinder = find.text(
+          "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
+        );
+
+        await tester.tap(lastDownloadedAudioListTileTextWidgetFinder);
+        await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+          tester: tester,
+        );
+
+        // Tap on the comment icon button to open the comment add list
+        // dialog
+        final Finder commentInkWellButtonFinder = find.byKey(
+          const Key('commentsInkWellButton'),
+        );
+
+        await tester.tap(commentInkWellButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Now tap on the delete comment icon button to delete the comment
+        await tester.tap(find.byKey(const Key('deleteCommentIconButton')));
+        await tester.pumpAndSettle();
+
+        // Confirm the deletion of the comment
+        await tester.tap(find.byKey(const Key('confirmButton')));
+        await tester.pumpAndSettle();
+
+        // Now close the comment list dialog
+        await tester.tap(find.byKey(const Key('closeDialogTextButton')));
+        await tester.pumpAndSettle();
+
+        // Go back to playlist download view
+        final Finder audioPlayerNavButtonFinder =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(audioPlayerNavButtonFinder);
+        await tester.pumpAndSettle();
+
+        String sortFilterParmName = 'listenedNoCom';
+
+        // Now tap on the current dropdown button item to open the dropdown
+        // button items list
+
+        Finder dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        Finder dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Find and tap on the 'listenedNoCom' sort/filter item
+        Finder titleAscDropDownTextFinder = find.text(sortFilterParmName).last;
+        await tester.tap(titleAscDropDownTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles selected by applying the 'listenedNoCom'
+        // sort/filter parms
+        List<String> audioTitleToCopyLst = [
+          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+          "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
+        ];
+
+        // Verify the displayed audio list after selecting the 'listenedNoCom'
+        // Sort/Filter parms.
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleToCopyLst,
+        );
+
+        // Verify the presence of the audio files which will be later copied
+
+        List<String> audioFileNameToCopyLst = [
+          "240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
+          "240107-094528-Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik 23-09-10.mp3",
+        ];
+
+        List<String> listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameToCopy in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameToCopy),
+            true,
+          );
+        }
+
+        // Tap the 'Toggle List' button to show the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Verify that the applyed Sort/Filter parms name is displayed
+        // after the selected playlist title
+
+        Text selectedSortFilterParmsName = tester
+            .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+        expect(
+          selectedSortFilterParmsName.data,
+          sortFilterParmName,
+        );
+
+        // Now test moving the filtered audio
+
+        // Open the copy filtered audio dialog by clicking first on
+        // the 'Filtered Audio Actions ...' playlist menu item and then
+        // on the 'Copy Filtered Audio to Playlist ...' sub-menu item
+        await _testMovingOrCopyingFilteredAudio(
+          tester: tester,
+          sourcePlaylistTitle: sourcePlaylistTitle,
+          targetPlaylistTitle: targetPlaylistTitle,
+          sortFilterParmName: sortFilterParmName,
+          isMove: false, // Copy
+          movedOrCopiedAudioNumber: 2,
+          commentedAudioNumber: 0,
+          unmovedOrUncopiedAudioNumber: 0,
+        );
+
+        // Verify in source playlist directory that the audio files were
+        // not moved
+
+        listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameToMove in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameToMove),
+            true,
+          );
+        }
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Now tap on the current dropdown button item to open the dropdown
+        // button items list
+
+        dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Find and tap on the 'default' sort/filter item
+        titleAscDropDownTextFinder = find.text('default').last;
+        await tester.tap(titleAscDropDownTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles selected by applying the 'default'
+        // sort/filter parms after having copied the filtered audio
+
+        // Setting to this variables the currently selected audio title/subTitle
+        // of the 'S8 audio' playlist
+        String currentAudioTitle =
+            "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau";
+        String currentAudioSubTitle =
+            "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45";
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: currentAudioTitle,
+          currentAudioSubTitle: currentAudioSubTitle,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets('''After copy, select a partially listened not commented audio
+           located in default SF parms higher than the filtered SF audio which will
+           be copied (was downloaded after them). Then copy a fully listened not
+           commented audio to the target playlist. Then select 'listenedNoCom' SF
+           parms and apply it. Then, click on the 'Copy Filtered Audio' playlist
+           menu and verify the audio copy as well as the audio selection.''',
+          (WidgetTester tester) async {
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'delete_filtered_audio_test',
+          tapOnPlaylistToggleButton: true,
+        );
+
+        const String sourcePlaylistTitle = 'S8 audio';
+        const String targetPlaylistTitle = 'temp';
+
+        // First, select a fully listened and commented audio downloaded
+        // before the audio which will be copied and delete its comment in
+        // order for it to be able to be copied. Then copy it to the target
+        // playlist so that it won't be copied when executing the filtered
+        // audio copy operation.
+        //
+        // Get the ListTile Text widget finder and tap on it to go to audio
+        // player view
+        final Finder firstDownloadedAudioListTileTextWidgetFinder = find.text(
+          "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
+        );
+
+        await tester.tap(firstDownloadedAudioListTileTextWidgetFinder);
+        await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+          tester: tester,
+        );
+
+        // Tap on the comment icon button to open the comment add list
+        // dialog
+        final Finder commentInkWellButtonFinder = find.byKey(
+          const Key('commentsInkWellButton'),
+        );
+
+        await tester.tap(commentInkWellButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Now tap on the delete comment icon button to delete the comment
+        await tester.tap(find.byKey(const Key('deleteCommentIconButton')));
+        await tester.pumpAndSettle();
+
+        // Confirm the deletion of the comment
+        await tester.tap(find.byKey(const Key('confirmButton')));
+        await tester.pumpAndSettle();
+
+        // Now close the comment list dialog
+        await tester.tap(find.byKey(const Key('closeDialogTextButton')));
+        await tester.pumpAndSettle();
+
+        // Go back to playlist download view
+        Finder audioPlayerNavButtonFinder =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(audioPlayerNavButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Now, copy this audio to the target playlist so that when
+        // copying the uncommented and fully listened audio, this audio
+        // won't be copied.
+
+        // Now we want to tap the popup menu of the Audio ListTile
+        // "3 fois où un économiste m'a ouvert les yeux (Giraud,
+        // Lefournier, Porcher)"
+
+        // Then obtain the Audio ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        Finder sourceAudioListTileWidgetFinder = find.ancestor(
+          of: firstDownloadedAudioListTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now find the leading menu icon button of the Audio ListTile
+        // and tap on it
+        Finder sourceAudioListTileLeadingMenuIconButton = find.descendant(
+          of: sourceAudioListTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(sourceAudioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the copy audio popup menu item and tap on it
+        final Finder popupCopyMenuItem =
+            find.byKey(const Key("popup_menu_copy_audio_to_playlist"));
+
+        await tester.tap(popupCopyMenuItem);
+        await tester.pumpAndSettle();
+
+        // Find the RadioListTile target playlist to which the audio
+        // will be copied
+
+        Finder targetPlaylistRadioListTile = find
+            .ancestor(
+              of: find.text(targetPlaylistTitle),
+              matching: find.byType(ListTile),
+            )
+            .last;
+
+        // Tap the target playlist RadioListTile to select it
+        await tester.tap(targetPlaylistRadioListTile);
+        await tester.pumpAndSettle();
+
+        // Now find the confirm button and tap on it
+        await tester.tap(find.byKey(const Key('confirmButton')));
+        await tester.pumpAndSettle();
+
+        // Now find the ok button of the confirm dialog and tap on it
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
+
+        // Scrolling up the audios list in order to display the last
+        // downloaded audio title
+
+        // Find the audio list widget using its key
+        final Finder listFinder = find.byKey(const Key('audio_list'));
+
+        // Perform the scroll action
+        await tester.drag(listFinder, const Offset(0, 400));
+        await tester.pumpAndSettle();
+
+        // Now, select a fully listened audio downloaded after the
+        // audio which will be copied and transform it to partially
+        // played audio
+        //
+        // Get the ListTile Text widget finder and tap on it to go
+        // to audio player view
+        final Finder lastDownloadedAudioListTileTextWidgetFinder = find.text(
+          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+        );
+
+        await tester.tap(lastDownloadedAudioListTileTextWidgetFinder);
+        await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+          tester: tester,
+        );
+
+        // Tap on back 1 minute button to set it partially played
+        await tester
+            .tap(find.byKey(const Key('audioPlayerViewRewind1mButton')));
+        await tester.pumpAndSettle();
+
+        // Go back to playlist download view
+        audioPlayerNavButtonFinder =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(audioPlayerNavButtonFinder);
+        await tester.pumpAndSettle();
+
+        String sortFilterParmName = 'listenedNoCom';
+
+        // Now tap on the current dropdown button item to open the dropdown
+        // button items list
+
+        Finder dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        Finder dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Find and tap on the 'listenedNoCom' sort/filter item
+        Finder dropDownTextFinder = find.text(sortFilterParmName).last;
+        await tester.tap(dropDownTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles selected by applying the 'listenedNoCom'
+        // sort/filter parms
+        List<String> filteredAudioTitleToCopyLst = [
+          "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
+          "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
+        ];
+
+        // Verify the displayed audio list after selecting the 'listenedNoCom'
+        // Sort/Filter parms.
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: filteredAudioTitleToCopyLst,
+        );
+
+        // Verify the presence of the audio files which will be later
+        // tried to be copied
+
+        List<String> audioFileNameToCopyLst = [
+          "240107-094528-Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik 23-09-10.mp3",
+          "231226-094534-3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher) 23-12-01.mp3",
+        ];
+
+        List<String> listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameToCopy in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameToCopy),
+            true,
+          );
+        }
+
+        // Tap the 'Toggle List' button to show the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Now test copying the filtered audio
+
+        // Open the copy filtered audio dialog by clicking first on
+        // the 'Filtered Audio Actions ...' playlist menu item and then
+        // on the 'Copy Filtered Audio to Playlist ...' sub-menu item
+        await _testMovingOrCopyingFilteredAudio(
+          tester: tester,
+          sourcePlaylistTitle: sourcePlaylistTitle,
+          targetPlaylistTitle: targetPlaylistTitle,
+          sortFilterParmName: sortFilterParmName,
+          isMove: false, // Copy
+          movedOrCopiedAudioNumber: 1,
+          commentedAudioNumber: 0,
+          unmovedOrUncopiedAudioNumber: 1,
+        );
+
+        // Verify in source playlist directory that the copied audio file
+        // are still present.
+
+        listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameCopied in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameCopied),
+            true,
+          );
+        }
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Now tap on the current dropdown button item to open the dropdown
+        // button items list
+
+        dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Find and tap on the 'default' sort/filter item
+        dropDownTextFinder = find.text('default').last;
+        await tester.tap(dropDownTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles selected by applying the 'default'
+        // sort/filter parms after having copied the filtered audio
+
+        // Setting to this variables the currently selected audio title/
+        // subTitle of the 'S8 audio' playlist
+        String currentAudioTitle =
+            "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique";
+        String currentAudioSubTitle =
+            "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35";
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: currentAudioTitle,
+          currentAudioSubTitle: currentAudioSubTitle,
+        );
+
+        // Verifying the 'temp' target playlist
+
+        // Tap the 'Toggle List' button to show the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Select the 'temp' playlist
+
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: targetPlaylistTitle,
+        );
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Verify the copied audioTitles displayed by applying the
+        // 'default' SF parms
+
+        filteredAudioTitleToCopyLst.insert(0, "morning _ cinematic video");
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: filteredAudioTitleToCopyLst,
+        );
+
+        // Setting to this variables the currently selected audio title/subTitle
+        // of the 'S8 audio' playlist
+        currentAudioTitle = "morning _ cinematic video";
+        currentAudioSubTitle =
+            "0:00:47.2 360.8 KB at 283.1 KB/sec on 10/01/2024 at 18:18";
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: currentAudioTitle,
+          currentAudioSubTitle: currentAudioSubTitle,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+    group('Copy filtered commented audio from playlist test', () {
+      testWidgets('''Select the 'toMoveOrCopy' SF parms and apply it. Then,
+           click on the 'copy Filtered Audio' playlist menu and verify the displayed
+           warning as well as the copy of all playlist fully listened audio as well
+           as their comments and their picture. Verification done on source as well
+           as target playlists.''', (WidgetTester tester) async {
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'delete_filtered_audio_test',
+          tapOnPlaylistToggleButton: true,
+        );
+
+        final String applicationPictureDir =
+            "$kApplicationPathWindowsTest${path.separator}$kPictureDirName";
+        const String sourcePlaylistTitle = 'S8 audio';
+        const String targetPlaylistTitle = 'temp';
+
+        List<String> audioTitleBeforeCopyingLst = [
+          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+          "La surpopulation mondiale par Jancovici et Barrau",
+          "La résilience insulaire par Fiona Roche",
+          "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
+          "Les besoins artificiels par R.Keucheyan",
+          "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
+          "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
+        ];
+
+        // Verify the displayed audio list before selecting the 'toMoveOrCopy'
+        // Sort/Filter parm.
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleBeforeCopyingLst,
+        );
+
+        String sortFilterParmName = 'toMoveOrCopy';
+
+        // Now tap on the current dropdown button item to open the dropdown
+        // button items list
+
+        Finder dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        Finder dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Find and tap on the 'toMoveOrCopy' sort/filter item
+        Finder titleAscDropDownTextFinder = find.text(sortFilterParmName).last;
+        await tester.tap(titleAscDropDownTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles selected by applying the 'toMoveOrCopy'
+        // sort/filter parms
+        const String audioTitleOne =
+            "La surpopulation mondiale par Jancovici et Barrau";
+        const String audioTitleTwo =
+            "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik";
+        const String audioTitleThree =
+            "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)";
+
+        List<String> audioTitleToCopyLst = [
+          audioTitleOne,
+          audioTitleTwo,
+          audioTitleThree,
+        ];
+
+        // Verify the displayed audio list after selecting the 'toMoveOrCopy'
+        // Sort/Filter parms.
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleToCopyLst,
+        );
+
+        // Setting to this variables the currently selected audio title/subTitle
+        // of the 'S8 audio' playlist
+        String currentAudioTitle =
+            "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik";
+        String currentAudioSubTitle =
+            "0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16";
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: currentAudioTitle,
+          currentAudioSubTitle: currentAudioSubTitle,
+        );
+
+        // Verify the presence of the audio files which will be later copied
+
+        List<String> audioFileNameToCopyLst = [
+          "240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3",
+          "240107-094528-Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik 23-09-10.mp3",
+          "231226-094534-3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher) 23-12-01.mp3",
+        ];
+
+        List<String> listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameToMove in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameToMove),
+            true,
+          );
+        }
+
+        // Verify the presence of the audio comment files which will be later
+        // copied or not
+
+        List<String> availableAudioCommentFileNameLst = [
+          "231226-094526-Ce qui va vraiment sauver notre espèce par Jancovici et Barrau 23-09-23.json",
+          "231226-094534-3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher) 23-12-01.json",
+          "240107-094520-Les besoins artificiels par R.Keucheyan 24-01-05.json",
+        ];
+
+        List<String> listCommentJsonFileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio${path.separator}$kCommentDirName",
+          fileExtension: 'json',
+        );
+
+        expect(
+          listCommentJsonFileNames,
+          availableAudioCommentFileNameLst,
+        );
+
+        // Verify the presence of the audio picture files which will be later
+        // copied or not
+        List<String> availableAudioPictureFileNameLst = [
+          "Barrau.jpg",
+          "Jancovici.jpg",
+          "Prière.jpg",
+        ];
+
+        List<String> listPictureJpgFileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kPictureDirName",
+          fileExtension: 'jpg',
+        );
+
+        expect(
+          listPictureJpgFileNames,
+          availableAudioPictureFileNameLst,
+        );
+
+        // Tap the 'Toggle List' button to show the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Verify that the applyed Sort/Filter parms name is displayed
+        // after the selected playlist title
+
+        Text selectedSortFilterParmsName = tester
+            .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+        expect(
+          selectedSortFilterParmsName.data,
+          sortFilterParmName,
+        );
+
+        // Now test copying the filtered audio
+
+        // Open the copy filtered audio dialog by clicking first on
+        // the 'Filtered Audio Actions ...' playlist menu item and then
+        // on the 'Copy Filtered Audio to Playlist ...' sub-menu item
+        await _testMovingOrCopyingFilteredAudio(
+          tester: tester,
+          sourcePlaylistTitle: sourcePlaylistTitle,
+          targetPlaylistTitle: targetPlaylistTitle,
+          sortFilterParmName: sortFilterParmName,
+          isMove: false, // Copy
+          movedOrCopiedAudioNumber: 3,
+          commentedAudioNumber: 1,
+          unmovedOrUncopiedAudioNumber: 0,
+        );
+
+        // Verify in source playlist directory that the copied audio
+        // files are still present
+
+        listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameToCopy in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameToCopy),
+            true,
+          );
+        }
+
+        // Verify in source playlist directory that the copied audio
+        // comment files are still present
+
+        List<String> audioCommentFileNameToCopyLst = [
+          "231226-094534-3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher) 23-12-01.json",
+        ];
+
+        listCommentJsonFileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio${path.separator}$kCommentDirName",
+          fileExtension: 'json',
+        );
+
+        for (String audioCommentFileNameToCopy
+            in audioCommentFileNameToCopyLst) {
+          expect(
+            listCommentJsonFileNames.contains(audioCommentFileNameToCopy),
+            true,
+          );
+        }
+
+        // Verify in source playlist directory that the copied audio
+        // picture files are still present
+
+        List<String> audioPictureFileNameToCopyLst = [
+          "240107-094528-Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik 23-09-10.json",
+          "240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.json",
+        ];
+
+        listCommentJsonFileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}S8 audio${path.separator}$kPictureDirName",
+          fileExtension: 'json',
+        );
+
+        for (String audioPictureFileNameToCopy
+            in audioPictureFileNameToCopyLst) {
+          expect(
+            listCommentJsonFileNames.contains(audioPictureFileNameToCopy),
+            true,
+          );
+        }
+
+        // Verify the source 'S8 audio' playlist json file
+
+        Playlist loadedPlaylist = loadPlaylist(sourcePlaylistTitle);
+
+        expect(loadedPlaylist.downloadedAudioLst.length, 18);
+
+        List<String> downloadedAudioLst = loadedPlaylist.downloadedAudioLst
+            .map((Audio audio) => audio.validVideoTitle)
+            .toList();
+
+        for (String audioTitleToMove in audioTitleBeforeCopyingLst) {
+          expect(
+            downloadedAudioLst.contains(audioTitleToMove),
+            true,
+          );
+        }
+
+        expect(loadedPlaylist.playableAudioLst.length, 7);
+
+        List<String> playableAudioLst = loadedPlaylist.playableAudioLst
+            .map((Audio audio) => audio.validVideoTitle)
+            .toList();
+
+        for (String audioTitleAfterMoving in audioTitleBeforeCopyingLst) {
+          expect(
+            playableAudioLst.contains(audioTitleAfterMoving),
+            true,
+          );
+        }
+
+        // Verify the target playlist directory in which the audio files
+        // were copied
+
+        listMp3FileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$targetPlaylistTitle",
+          fileExtension: 'mp3',
+        );
+
+        for (String audioFileNameCopied in audioFileNameToCopyLst) {
+          expect(
+            listMp3FileNames.contains(audioFileNameCopied),
+            true,
+          );
+        }
+
+        // Verify the target playlist directory in which the audio comment
+        // files were copied
+
+        listCommentJsonFileNames = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$targetPlaylistTitle${path.separator}$kCommentDirName",
+          fileExtension: 'json',
+        );
+
+        for (String audioCommentFileNameCopied
+            in audioCommentFileNameToCopyLst) {
+          expect(
+            listCommentJsonFileNames.contains(audioCommentFileNameCopied),
+            true,
+          );
+        }
+
+        // Verify the target playlist directory in which the audio picture
+        // files were copied
+
+        final String tempPlaylistPictureDir =
+            "$kApplicationPathWindowsTest${path.separator}$targetPlaylistTitle${path.separator}$kPictureDirName";
+
+        listPictureJpgFileNames = DirUtil.listFileNamesInDir(
+          directoryPath: tempPlaylistPictureDir,
+          fileExtension: 'json',
+        );
+
+        for (String audioPictureFileNameCopied
+            in audioPictureFileNameToCopyLst) {
+          expect(
+            listPictureJpgFileNames.contains(audioPictureFileNameCopied),
+            true,
+          );
+        }
+
+        // Verify the target 'temp' playlist json file
+
+        loadedPlaylist = loadPlaylist(targetPlaylistTitle);
+
+        expect(loadedPlaylist.downloadedAudioLst.length, 4);
+
+        downloadedAudioLst = loadedPlaylist.downloadedAudioLst
+            .map((Audio audio) => audio.validVideoTitle)
+            .toList();
+
+        for (String audioTitleCopied in audioTitleToCopyLst) {
+          expect(
+            downloadedAudioLst.contains(audioTitleCopied),
+            true,
+          );
+        }
+
+        expect(loadedPlaylist.playableAudioLst.length, 4);
+
+        playableAudioLst = loadedPlaylist.playableAudioLst
+            .map((Audio audio) => audio.validVideoTitle)
+            .toList();
+
+        for (String audioTitleCopied in audioTitleToCopyLst) {
+          expect(
+            playableAudioLst.contains(audioTitleCopied),
+            true,
+          );
+        }
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles content by applying the 'toMoveOrCopy'
+        // sort/filter parms. Since they have been copied, the list is
+        // not empty.
+
+        // Verify the displayed audio list before selecting the 'default'
+        // Sort/Filter parms.
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleToCopyLst,
+        );
+
+        // Now tap on the current dropdown button item to open the dropdown
+        // button items list
+
+        dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Find and tap on the 'default' sort/filter item
+        titleAscDropDownTextFinder = find.text('default').last;
+        await tester.tap(titleAscDropDownTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audioTitles selected by applying the 'default'
+        // sort/filter parms after having moved the filtered audio
+
+        // Verify the displayed audio list after selecting the 'default'.
+        // Sort/Filter parms.
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleBeforeCopyingLst,
+        );
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: currentAudioTitle,
+          currentAudioSubTitle: currentAudioSubTitle,
+        );
+
+        // Verifying the 'temp' target playlist
+
+        // Tap the 'Toggle List' button to show the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Select the 'temp' playlist
+
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: targetPlaylistTitle,
+        );
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Verify the copied audioTitles displayed by applying the
+        // 'default' SF parms
+
+        audioTitleToCopyLst.insert(0, "morning _ cinematic video");
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitleToCopyLst,
+        );
+
+        // Setting to this variables the currently selected audio title/subTitle
+        // of the 'S8 audio' playlist
+        currentAudioTitle = "morning _ cinematic video";
+        currentAudioSubTitle =
+            "0:00:47.2 360.8 KB at 283.1 KB/sec on 10/01/2024 at 18:18";
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: currentAudioTitle,
+          currentAudioSubTitle: currentAudioSubTitle,
+        );
+
+        // Verifying the copied audios to which a picture is associated
+
+        const String pictureFileNameOne =
+            "240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.json";
+        const String pictureFileNameTwo =
+            "240107-094528-Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik 23-09-10.json";
+
+        final String pictureFilePathNameOne =
+            "$tempPlaylistPictureDir${path.separator}$pictureFileNameOne";
+        final String pictureFilePathNameTwo =
+            "$tempPlaylistPictureDir${path.separator}$pictureFileNameTwo";
+        const String audioTitleOneDurationStr = '6:06';
+        const String audioTitleTwoDurationStr = '10:55';
+
+        List<String> copiedAudioPictureFileNameLst = [
+          pictureFileNameTwo,
+          pictureFileNameOne,
+        ];
+
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: applicationPictureDir,
+          playlistPictureJsonFilesDir: tempPlaylistPictureDir,
+          pictureFileNameOne: pictureFilePathNameOne,
+          audioForPictureTitle: audioTitleOne, // La surpopulation mondiale ...
+          audioForPictureTitleDurationStr: audioTitleOneDurationStr,
+          playlistAudioPictureJsonFileNameLst: copiedAudioPictureFileNameLst,
+          mustPlayableAudioListBeUsed: false,
+        );
+
+        // Now, go back to the playlist download view
+        final Finder appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: applicationPictureDir,
+          playlistPictureJsonFilesDir: tempPlaylistPictureDir,
+          pictureFileNameOne: pictureFilePathNameTwo,
+          audioForPictureTitle:
+              audioTitleTwo, // Le Secret de la RÉSILIENCE  ...
+          audioForPictureTitleDurationStr: audioTitleTwoDurationStr,
+          playlistAudioPictureJsonFileNameLst: copiedAudioPictureFileNameLst,
+          mustPlayableAudioListBeUsed: false,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      group('''Copy 'default' filtered commented audio from playlist test''',
+          () {
+        testWidgets(
+            '''SF parms 'default'. Copy Youtube->local. Then, click on the 'Copy Filtered
+           Audio' playlist menu and verify the displayed warning indicating
+           that the copy operation can not be done when 'default' is applyed.''',
+            (WidgetTester tester) async {
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'delete_filtered_audio_test',
+            tapOnPlaylistToggleButton: false,
+          );
+
+          const String sourcePlaylistTitle = 'S8 audio';
+          const String targetPlaylistTitle = 'temp';
+
+          // Verify that the applyed Sort/Filter parms name is displayed
+          // after the selected playlist title
+
+          Text selectedSortFilterParmsName = tester
+              .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+          expect(
+            selectedSortFilterParmsName.data,
+            'default',
+          );
+
+          // Now test copying the filtered audio
+
+          // Open the copy filtered audio dialog by clicking first on
+          // the 'Filtered Audio Actions ...' playlist menu item and then
+          // on the 'Copy Filtered Audio to Playlist ...' sub-menu item
+          await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+            tester: tester,
+            playlistTitle: sourcePlaylistTitle,
+            playlistSubMenuKeyStr: 'popup_menu_copy_filtered_audio',
+          );
+
+          // Select the target 'temp' playlist
+
+          // Check the value of the select one playlist AlertDialog
+          // dialog title
+          Text alertDialogTitle = tester.widget(
+              find.byKey(const Key('playlistOneSelectableDialogTitleKey')));
+          expect(alertDialogTitle.data, 'Select a Playlist');
+
+          // Find the RadioListTile target playlist to which the audio
+          // will be copied
+
+          Finder radioListTile = find
+              .ancestor(
+                of: find.text(targetPlaylistTitle),
+                matching: find.byType(ListTile),
+              )
+              .last;
+
+          // Tap the target playlist RadioListTile to select it
+          await tester.tap(radioListTile);
+          await tester.pumpAndSettle();
+
+          // Now find the confirm button and tap on it
+          await tester.tap(find.byKey(const Key('confirmButton')));
+          await tester.pumpAndSettle();
+
+          // Now verifying the warning dialog
+          await IntegrationTestUtil.verifyAndCloseWarningDialog(
+            tester: tester,
+            warningDialogMessage:
+                'Since "default" Sort/Filter parms is selected, no audio can be copied from Youtube playlist "$sourcePlaylistTitle" to local playlist "$targetPlaylistTitle". SOLUTION: define a Sort/Filter parms and apply it before executing this operation ...',
+            isWarningConfirming: false,
+          );
+
+          // Verifying the 'temp' target playlist
+
+          // Select the 'temp' playlist
+
+          await IntegrationTestUtil.selectPlaylist(
+            tester: tester,
+            playlistToSelectTitle: targetPlaylistTitle,
+          );
+
+          // Tap the 'Toggle List' button to hide the list of playlist's.
+          await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+          await tester.pumpAndSettle();
+
+          // Verify the audioTitles with no movcopieded audio displayed by applying
+          // the 'default' SF parms
+
+          IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+            tester: tester,
+            audioOrPlaylistTitlesOrderedLst: ["morning _ cinematic video"],
+          );
+
+          // Setting to this variables the currently selected audio title/subTitle
+          // of the 'S8 audio' playlist
+          String currentAudioTitle = "morning _ cinematic video";
+          String currentAudioSubTitle =
+              "0:00:47.2 360.8 KB at 283.1 KB/sec on 10/01/2024 at 18:18";
+
+          // Verify that the current audio is displayed with the correct
+          // title and subtitle color
+          await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+            tester: tester,
+            currentAudioTitle: currentAudioTitle,
+            currentAudioSubTitle: currentAudioSubTitle,
+          );
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
+            '''SF parms 'default'. Copy Youtube->Youtube. Then, click on the 'Copy Filtered
+           Audio' playlist menu and verify the displayed warning indicating
+           that the copy operation can not be done when 'default' is applyed.''',
+            (WidgetTester tester) async {
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'delete_filtered_audio_test',
+            tapOnPlaylistToggleButton: false,
+          );
+
+          const String sourcePlaylistTitle = 'S8 audio';
+          const String targetPlaylistTitle = 'Maria Valtorta';
+
+          // Verify that the applyed Sort/Filter parms name is displayed
+          // after the selected playlist title
+
+          Text selectedSortFilterParmsName = tester
+              .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+          expect(
+            selectedSortFilterParmsName.data,
+            'default',
+          );
+
+          // Now test copying the filtered audio
+
+          // Open the copy filtered audio dialog by clicking first on
+          // the 'Filtered Audio Actions ...' playlist menu item and then
+          // on the 'Copy Filtered Audio to Playlist ...' sub-menu item
+          await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+            tester: tester,
+            playlistTitle: sourcePlaylistTitle,
+            playlistSubMenuKeyStr: 'popup_menu_copy_filtered_audio',
+          );
+
+          // Select the target 'Maria Valtorta' playlist
+
+          // Check the value of the select one playlist AlertDialog
+          // dialog title
+          Text alertDialogTitle = tester.widget(
+              find.byKey(const Key('playlistOneSelectableDialogTitleKey')));
+          expect(alertDialogTitle.data, 'Select a Playlist');
+
+          // Find the RadioListTile target playlist to which the audio
+          // will be copied
+
+          Finder radioListTile = find
+              .ancestor(
+                of: find.text(targetPlaylistTitle),
+                matching: find.byType(ListTile),
+              )
+              .last;
+
+          // Tap the target playlist RadioListTile to select it
+          await tester.tap(radioListTile);
+          await tester.pumpAndSettle();
+
+          // Now find the confirm button and tap on it
+          await tester.tap(find.byKey(const Key('confirmButton')));
+          await tester.pumpAndSettle();
+
+          // Now verifying the warning dialog
+          await IntegrationTestUtil.verifyAndCloseWarningDialog(
+            tester: tester,
+            warningDialogMessage:
+                'Since "default" Sort/Filter parms is selected, no audio can be copied from Youtube playlist "$sourcePlaylistTitle" to Youtube playlist "$targetPlaylistTitle". SOLUTION: define a Sort/Filter parms and apply it before executing this operation ...',
+            isWarningConfirming: false,
+          );
+
+          // Verifying the 'Maria Valtorta' target playlist
+
+          // Select the 'Maria Valtorta' playlist
+
+          await IntegrationTestUtil.selectPlaylist(
+            tester: tester,
+            playlistToSelectTitle: targetPlaylistTitle,
+          );
+
+          // Tap the 'Toggle List' button to hide the list of playlist's.
+          await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+          await tester.pumpAndSettle();
+
+          // Verify the audioTitles with no movcopieded audio displayed by applying
+          // the 'default' SF parms
+
+          IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+            tester: tester,
+            audioOrPlaylistTitlesOrderedLst: [
+              "What place Maria Valtorta takes in your spiritual journey"
+            ],
+          );
+
+          // Setting to this variables the currently selected audio title/subTitle
+          // of the 'Maria Valtorta' playlist
+          String currentAudioTitle =
+              "What place Maria Valtorta takes in your spiritual journey";
+          String currentAudioSubTitle =
+              "0:04:49.1 2.20 MB at 595.4 KB/sec on 03/06/2025 at 16:48";
+
+          // Verify that the current audio is displayed with the correct
+          // title and subtitle color
+          await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+            tester: tester,
+            currentAudioTitle: currentAudioTitle,
+            currentAudioSubTitle: currentAudioSubTitle,
+          );
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
+            '''SF parms 'default'. Copy local->Youtube. Then, click on the 'Copy Filtered
+           Audio' playlist menu and verify the displayed warning indicating
+           that the copy operation can not be done when 'default' is applyed.''',
+            (WidgetTester tester) async {
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'delete_filtered_audio_test',
+            tapOnPlaylistToggleButton: false,
+          );
+
+          const String sourcePlaylistTitle = 'temp';
+          const String targetPlaylistTitle = 'S8 audio';
+
+          // Verify that the applyed Sort/Filter parms name is displayed
+          // after the selected playlist title
+
+          Text selectedSortFilterParmsName = tester
+              .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+          expect(
+            selectedSortFilterParmsName.data,
+            'default',
+          );
+
+          // Now test copying the filtered audio
+
+          // Open the copy filtered audio dialog by clicking first on
+          // the 'Filtered Audio Actions ...' playlist menu item and then
+          // on the 'Copy Filtered Audio to Playlist ...' sub-menu item
+          await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+            tester: tester,
+            playlistTitle: sourcePlaylistTitle,
+            playlistSubMenuKeyStr: 'popup_menu_copy_filtered_audio',
+          );
+
+          // Select the target 'Youtube' playlist
+
+          // Check the value of the select one playlist AlertDialog
+          // dialog title
+          Text alertDialogTitle = tester.widget(
+              find.byKey(const Key('playlistOneSelectableDialogTitleKey')));
+          expect(alertDialogTitle.data, 'Select a Playlist');
+
+          // Find the RadioListTile target playlist to which the audio
+          // will be copied
+
+          Finder radioListTile = find
+              .ancestor(
+                of: find.text(targetPlaylistTitle),
+                matching: find.byType(ListTile),
+              )
+              .last;
+
+          // Tap the target playlist RadioListTile to select it
+          await tester.tap(radioListTile);
+          await tester.pumpAndSettle();
+
+          // Now find the confirm button and tap on it
+          await tester.tap(find.byKey(const Key('confirmButton')));
+          await tester.pumpAndSettle();
+
+          // Now verifying the warning dialog
+          await IntegrationTestUtil.verifyAndCloseWarningDialog(
+            tester: tester,
+            warningDialogMessage:
+                'Since "default" Sort/Filter parms is selected, no audio can be copied from local playlist "$sourcePlaylistTitle" to Youtube playlist "$targetPlaylistTitle". SOLUTION: define a Sort/Filter parms and apply it before executing this operation ...',
+            isWarningConfirming: false,
+          );
+
+          // Verifying the 'S8 audio' target playlist
+
+          // Select the 'S8 audio' playlist
+
+          // Tap the 'Toggle List' button to hide the list of playlist's.
+          await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+          await tester.pumpAndSettle();
+
+          // Verify the audioTitles with no movcopieded audio displayed by applying
+          // the 'default' SF parms
+
+          IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+            tester: tester,
+            audioOrPlaylistTitlesOrderedLst: [
+              "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
+            ],
+            firstAudioListTileIndex: 3,
+          );
+
+          // Setting to this variables the currently selected audio title/subTitle
+          // of the 'S8 audio' playlist
+          String currentAudioTitle =
+              'Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik';
+          String currentAudioSubTitle =
+              '0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16';
+
+          // Verify that the current audio is displayed with the correct
+          // title and subtitle color
+          await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+            tester: tester,
+            currentAudioTitle: currentAudioTitle,
+            currentAudioSubTitle: currentAudioSubTitle,
+          );
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
+            '''SF parms 'default'. Copy local->local. Then, click on the 'Copy Filtered
+           Audio' playlist menu and verify the displayed warning indicating
+           that the copy operation can not be done when 'default' is applyed.''',
+            (WidgetTester tester) async {
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'delete_filtered_audio_test',
+            tapOnPlaylistToggleButton: false,
+          );
+
+          const String sourcePlaylistTitle = 'temp';
+          const String targetPlaylistTitle = 'local';
+
+          // Verify that the applyed Sort/Filter parms name is displayed
+          // after the selected playlist title
+
+          Text selectedSortFilterParmsName = tester
+              .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+          expect(
+            selectedSortFilterParmsName.data,
+            'default',
+          );
+
+          // Now test copying the filtered audio
+
+          // Open the copy filtered audio dialog by clicking first on
+          // the 'Filtered Audio Actions ...' playlist menu item and then
+          // on the 'Copy Filtered Audio to Playlist ...' sub-menu item
+          await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+            tester: tester,
+            playlistTitle: sourcePlaylistTitle,
+            playlistSubMenuKeyStr: 'popup_menu_copy_filtered_audio',
+          );
+
+          // Select the target 'local' playlist
+
+          // Check the value of the select one playlist AlertDialog
+          // dialog title
+          Text alertDialogTitle = tester.widget(
+              find.byKey(const Key('playlistOneSelectableDialogTitleKey')));
+          expect(alertDialogTitle.data, 'Select a Playlist');
+
+          // Find the RadioListTile target playlist to which the audio
+          // will be copied
+
+          Finder radioListTile = find
+              .ancestor(
+                of: find.text(targetPlaylistTitle),
+                matching: find.byType(ListTile),
+              )
+              .last;
+
+          // Tap the target playlist RadioListTile to select it
+          await tester.tap(radioListTile);
+          await tester.pumpAndSettle();
+
+          // Now find the confirm button and tap on it
+          await tester.tap(find.byKey(const Key('confirmButton')));
+          await tester.pumpAndSettle();
+
+          // Now verifying the warning dialog
+          await IntegrationTestUtil.verifyAndCloseWarningDialog(
+            tester: tester,
+            warningDialogMessage:
+                'Since "default" Sort/Filter parms is selected, no audio can be copied from local playlist "$sourcePlaylistTitle" to local playlist "$targetPlaylistTitle". SOLUTION: define a Sort/Filter parms and apply it before executing this operation ...',
+            isWarningConfirming: false,
+          );
+
+          // Verifying the 'local' target playlist
+
+          // Select the 'local' playlist
+
+          await IntegrationTestUtil.selectPlaylist(
+            tester: tester,
+            playlistToSelectTitle: targetPlaylistTitle,
+          );
+
+          // Tap the 'Toggle List' button to hide the list of playlist's.
+          await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+          await tester.pumpAndSettle();
+
+          // Verify the audioTitles with no movcopieded audio displayed by applying
+          // the 'default' SF parms
+
+          IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+            tester: tester,
+            audioOrPlaylistTitlesOrderedLst: ["morning _ cinematic video"],
+          );
+
+          // Setting to this variables the currently selected audio title/subTitle
+          // of the 'local' playlist
+          String currentAudioTitle =
+              "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique";
+          String currentAudioSubTitle =
+              "0:05:11.2 2.37 MB at 1.69 MB/sec on 08/01/2024 at 16:35";
+
+          // Verify that the current audio is displayed with the correct
+          // title and subtitle color
+          await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+            tester: tester,
+            currentAudioTitle: currentAudioTitle,
+            currentAudioSubTitle: currentAudioSubTitle,
+          );
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+      });
+    });
+  });
+  group('Change application language', () {
+    testWidgets(
+        '''In playlist download view, change to french and verify translated texts,
+        in DatePicker dialog used in audio sort filter dialog as well. Then, switch
+        to audio player view verify translated texts. Then, change to english, verify
+        translation and go back to playlist download view and verify translation.''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'sort_and_filter_audio_dialog_widget_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      // First, set the application language to french
+      await IntegrationTestUtil.setApplicationLanguage(
+        tester: tester,
+        language: Language.french,
+      );
+
+      // Verify the translated texts in the application
+
+      _verifyFrenchInPlaylistDownloadView();
+
+      // Verifying translated texts in DatePicker dialog
+      await _verifyDatePickerTitleTranslation(
+        tester: tester,
+        datePickerCancelButtonTranslatedStr: 'Annuler',
+      );
+
+      // Click on playlist toggle button to display the playlist list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Verify the default Sort/Filter parms name value after the
+      // selected playlist title
+
+      Text selectedSortFilterParmsName = tester
+          .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+      expect(
+        selectedSortFilterParmsName.data,
+        'défaut',
+      );
+
+      // Go to audio player view
+
+      Finder appScreenNavigationButton =
+          find.byKey(const ValueKey('audioPlayerViewIconButton'));
+      await tester.tap(appScreenNavigationButton);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Lire Audio'), findsOneWidget);
+
+      // Now, set the application language to english
+      await IntegrationTestUtil.setApplicationLanguage(
+        tester: tester,
+        language: Language.english,
+      );
+
+      expect(find.text('Play Audio'), findsOneWidget);
+
+      // Return to playlist download view
+      appScreenNavigationButton =
+          find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+      await tester.tap(appScreenNavigationButton);
+      await tester.pumpAndSettle();
+
+      // Verify the translated texts in the application
+
+      _verifyEnglishInPlaylistDownloadView();
+
+      // Verify the translated texts in the DatePicker dialog
+      await _verifyDatePickerTitleTranslation(
+        tester: tester,
+        datePickerCancelButtonTranslatedStr: 'Cancel',
+      );
+
+      // Verify the default Sort/Filter parms name value after the
+      // selected playlist title
+
+      selectedSortFilterParmsName = tester
+          .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+      expect(
+        selectedSortFilterParmsName.data,
+        'default',
+      );
+
+      // Click on playlist toggle button to hide the playlist list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('default'), findsOneWidget);
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''Go to audio player view, change to french and verify translated
+        texts. Then, switch to playlist download view and verify translated texts.
+        Then, change to english, verify translation and go back to audio player view
+        and verify translation.''', (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'sort_and_filter_audio_dialog_widget_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      // First, go to audio player view
+
+      Finder appScreenNavigationButton =
+          find.byKey(const ValueKey('audioPlayerViewIconButton'));
+      await tester.tap(appScreenNavigationButton);
+      await tester.pumpAndSettle();
+
+      // Set the application language to french
+      await IntegrationTestUtil.setApplicationLanguage(
+        tester: tester,
+        language: Language.french,
+      );
+
+      expect(find.text('Lire Audio'), findsOneWidget);
+
+      // Return to playlist download view
+      appScreenNavigationButton =
+          find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+      await tester.tap(appScreenNavigationButton);
+      await tester.pumpAndSettle();
+
+      // Verify the translated texts in the application
+
+      _verifyFrenchInPlaylistDownloadView();
+
+      // Verify the translated texts in the DatePicker dialog
+      await _verifyDatePickerTitleTranslation(
+        tester: tester,
+        datePickerCancelButtonTranslatedStr: 'Annuler',
+      );
+
+      // Click on playlist toggle button to display the playlist list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Verify the default Sort/Filter parms name value after the
+      // selected playlist title
+
+      Text selectedSortFilterParmsName = tester
+          .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+      expect(
+        selectedSortFilterParmsName.data,
+        'défaut',
+      );
+
+      // Now, set the application language to english
+      await IntegrationTestUtil.setApplicationLanguage(
+        tester: tester,
+        language: Language.english,
+      );
+
+      // Verify the default Sort/Filter parms name value after the
+      // selected playlist title
+
+      selectedSortFilterParmsName = tester
+          .widget(find.byKey(const Key('selectedPlaylistSFparmNameText')));
+
+      expect(
+        selectedSortFilterParmsName.data,
+        'default',
+      );
+
+      // Click on playlist toggle button to hide the playlist list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Verify the translated texts in the application
+
+      _verifyEnglishInPlaylistDownloadView();
+
+      // Verify the translated texts in the DatePicker dialog
+      await _verifyDatePickerTitleTranslation(
+        tester: tester,
+        datePickerCancelButtonTranslatedStr: 'Cancel',
+      );
+
+      // Click on playlist toggle button to display the playlist list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('default'), findsOneWidget);
+
+      // Finally, return to audio player view
+
+      appScreenNavigationButton =
+          find.byKey(const ValueKey('audioPlayerViewIconButton'));
+      await tester.tap(appScreenNavigationButton);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Play Audio'), findsOneWidget);
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group('App settings dialog test', () {
+    testWidgets(
+        'Bug fix: open app settings dialog and save it without modification.',
+        (WidgetTester tester) async {
+      // Purge the test playlist directory if it exists so that the
+      // playlist list is empty
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+
+      // Copy the test initial audio data to the app dir
+      DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+        sourceRootPath:
+            "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+        destinationRootPath: kApplicationPathWindowsTest,
+      );
+
+      final Map initialSettingsMap = _loadSettingsMap();
+
+      final SettingsDataService settingsDataService = SettingsDataService(
+        isTest: true,
+      );
+
+      // Load the settings from the json file. This is necessary
+      // otherwise the ordered playlist titles will remain empty
+      // and the playlist list will not be filled with the
+      // playlists available in the app test dir
+      await settingsDataService.loadSettingsFromFile(
+          settingsJsonPathFileName:
+              "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+      await app.main();
+      await tester.pumpAndSettle();
+
+      // Now tap the appbar leading popup menu button Then, the app settings
+      // dialog is opened.
+      await IntegrationTestUtil.typeOnAppbarMenuItem(
+        tester: tester,
+        appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+      );
+
+      // And tap on save button
+      await tester.tap(find.byKey(const Key('saveButton')));
+      await tester.pumpAndSettle();
+
+      // Ensure settings json file has not been modified
+      expect(
+        _loadSettingsMap(),
+        initialSettingsMap,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    group('App playlist root path test', () {
+      testWidgets(
+          '''Modify playlist root path and then reset it to the initial value. Verify
+           that the playlist sort order was reset to the initial sort order since the
+           user accepted the previously saved sort order. Then, remodify the path to the
+           previously modified value and verify that the playlist sort order was reset
+           to the new order since the user accepted the previously saved sort order.
+           
+           This test also verifies that after changing the playlist root path, the comment
+           of the selected playlist unique audio in different than the comment of the selected
+           playlist unique audio in the initial playlist root path which was verified before
+           the playlist root path change.
+           
+           Then, do the same verification after resetting the playlist root path to the initial
+           value. This test part ensure that the bug correction related to the fact that after
+           changing the playlist root path and accepting to restore the previous playlist titles
+           order, the comment of the selected playlist unique audio was not updated to be the comment
+           of the selected playlist unique audio in the restored playlist root path, is fixed and that
+           this bug fix is not broken after resetting the playlist root path to the initial value.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}modify_playlist_root_path",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Verify the initial playlist titles order
+
+        List<String> initialPlaylistTitlesOrder = [
+          "local_empty_download_single_video",
+          "local_not_empty_download_single_video",
+          "audio_learn_test_download_2_small_videos",
+        ];
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: initialPlaylistTitlesOrder,
+        );
+
+        // Verify playlist selection
+        const String initialSelectedPlaylistTitle =
+            'local_not_empty_download_single_video';
+        expect(
+          await IntegrationTestUtil.isPlaylistSelected(
+            tester: tester,
+            playlistToCheckTitle: initialSelectedPlaylistTitle,
+          ),
+          true,
+        );
+
+        // Tap on the selected playlist unique audio title to open the
+        // audio player view in order to verify the selected playlist
+        // unique audio unique comment title
+        await verifyCommentAndReturnToPlaylistDownloadView(
+          tester: tester,
+          expectedCommentTitle: 'comment audio directory',
+        );
+
+        // Now, set the playlist root path to the modified value
+
+        List<String> modifiedDirPlaylistTitlesOrder = [
+          "local_empty_download_single_video",
+          "local_not_empty_download_single_video",
+          "audio_learn_test_download_2_small_videos",
+        ];
+        final String modifiedPlaylistRootPath =
+            '$kApplicationPathWindowsTest${path.separator}newDirectory${path.separator}playlists';
+        String newDirectoryPlaylistsExpectedSettingsContent =
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+        const String modifiedDirSelectedPlaylistTitle =
+            "local_not_empty_download_single_video";
+
+        // With clicking on 'Confirm' button to accept restoring
+        // the previous playlist titles order
+        await _changePlaylistRootPathAndSaveAppSettings(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pathToSelectStr: modifiedPlaylistRootPath,
+          playlistTitlesOrderInModifiedDir: modifiedDirPlaylistTitlesOrder,
+          expectedSettingsContent: newDirectoryPlaylistsExpectedSettingsContent,
+          selectedPlaylistTitle: modifiedDirSelectedPlaylistTitle,
+          confirmDialogTitleOne: "Playlist Titles Order Restoration",
+          confirmDialogMessage:
+              "A previous playlist titles order file is available in the selected playlist root path. Do you want to restore this saved order or keep the current playlist titles order? Click on \"Confirm\" to restore the saved order or on \"Cancel\" to keep the current order.",
+          confirmOrCancelAction: true, // Confirm button is tapped
+        );
+
+        // Tap on the selected playlist unique audio title to open the
+        // audio player view in order to verify the selected playlist
+        // unique audio unique comment title
+        await verifyCommentAndReturnToPlaylistDownloadView(
+          tester: tester,
+          expectedCommentTitle: 'comment new directory',
+        );
+
+        // Now, reset the playlist root path to the initial value
+
+        String audioPlaylistsExpectedSettingsContent =
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+
+        // With clicking on 'Confirm' button to accept restoring
+        // the previous playlist titles order
+        await _changePlaylistRootPathAndSaveAppSettings(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pathToSelectStr: kPlaylistDownloadRootPathWindowsTest,
+          playlistTitlesOrderInModifiedDir: initialPlaylistTitlesOrder,
+          expectedSettingsContent: audioPlaylistsExpectedSettingsContent,
+          selectedPlaylistTitle: initialSelectedPlaylistTitle,
+          confirmDialogTitleOne: "Playlist Titles Order Restoration",
+          confirmDialogMessage:
+              "A previous playlist titles order file is available in the selected playlist root path. Do you want to restore this saved order or keep the current playlist titles order? Click on \"Confirm\" to restore the saved order or on \"Cancel\" to keep the current order.",
+          confirmOrCancelAction: true, // Confirm button is tapped
+        );
+
+        // Tap on the selected playlist unique audio title to open the
+        // audio player view in order to verify the selected playlist
+        // unique audio unique comment title
+        await verifyCommentAndReturnToPlaylistDownloadView(
+          tester: tester,
+          expectedCommentTitle: 'comment audio directory',
+        );
+
+        // The playlist titles order is the initial one since 'Cancel'
+        // will be clicked
+        newDirectoryPlaylistsExpectedSettingsContent =
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+
+        // With clicking on 'Cancel' button to refuse restoring
+        // the previous playlist titles order
+        await _changePlaylistRootPathAndSaveAppSettings(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pathToSelectStr: modifiedPlaylistRootPath,
+          playlistTitlesOrderInModifiedDir: initialPlaylistTitlesOrder,
+          expectedSettingsContent: newDirectoryPlaylistsExpectedSettingsContent,
+          selectedPlaylistTitle: modifiedDirSelectedPlaylistTitle,
+          confirmDialogTitleOne: "Playlist Titles Order Restoration",
+          confirmDialogMessage:
+              "A previous playlist titles order file is available in the selected playlist root path. Do you want to restore this saved order or keep the current playlist titles order? Click on \"Confirm\" to restore the saved order or on \"Cancel\" to keep the current order.",
+          confirmOrCancelAction: false, // Confirm button is tapped
+        );
+
+        // Move up twice the selected "audio_learn_test_download_2_small_videos"
+        // playlist to position it at top of playlists list
+
+        await tester.tap(find.byKey(const Key('move_up_playlist_button')));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byKey(const Key('move_up_playlist_button')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              'The playlist "$modifiedDirSelectedPlaylistTitle" was moved from position 1 to position 3.',
+          isWarningConfirming: true,
+          warningTitle: 'CONFIRMATION',
+        );
+
+        // Move up once the 'local_not_empty_download_single_video'
+        // playlist
+
+        await tester.tap(find.byKey(const Key('move_up_playlist_button')));
+        await tester.pumpAndSettle();
+
+        // Re-select the 'audio_learn_test_download_2_small_videos'
+        // playlist
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: modifiedDirSelectedPlaylistTitle,
+        );
+
+        initialPlaylistTitlesOrder = [
+          'local_empty_download_single_video',
+          'local_not_empty_download_single_video',
+          'audio_learn_test_download_2_small_videos',
+        ];
+
+        audioPlaylistsExpectedSettingsContent =
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+
+        // Now reset the playlist root path to the initial value
+        // with clicking on 'Cancel' button to refuse restoring
+        // the previous playlist titles order
+        await _changePlaylistRootPathAndSaveAppSettings(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pathToSelectStr: kPlaylistDownloadRootPathWindowsTest,
+          playlistTitlesOrderInModifiedDir: initialPlaylistTitlesOrder,
+          expectedSettingsContent: audioPlaylistsExpectedSettingsContent,
+          selectedPlaylistTitle: initialSelectedPlaylistTitle,
+          confirmDialogTitleOne: "Playlist Titles Order Restoration",
+          confirmDialogMessage:
+              "A previous playlist titles order file is available in the selected playlist root path. Do you want to restore this saved order or keep the current playlist titles order? Click on \"Confirm\" to restore the saved order or on \"Cancel\" to keep the current order.",
+          confirmOrCancelAction: false, // Cancel button is tapped
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Modify playlist root path and then reset it to the initial value. Verify
+           that the playlist sort order was not reset to the initial sort order since the
+           user rejected the previously saved sort order. Then, remodify the path to the
+           previously modified value and verify that the playlist sort order was not reset
+           to the new order since the user rejected the previously saved sort order.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}audio_learn_download_test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Create a new directory containing playlists to which the playlist
+        // root path will be modified
+
+        String newDirectoryPlaylistRootPath =
+            '$kApplicationPathWindowsTest${path.separator}newDirectory${path.separator}playlists';
+
+        DirUtil.createDirIfNotExistSync(
+          pathStr: newDirectoryPlaylistRootPath,
+        );
+
+        // Fill the new directory with playlists
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}2_youtube_2_local_playlists_delete_integr_test_data",
+          destinationRootPath: newDirectoryPlaylistRootPath,
+        );
+
+        // Delete the settings.json file from the copied data
+        DirUtil.deleteFileIfExist(
+          pathFileName:
+              "$newDirectoryPlaylistRootPath${path.separator}$kSettingsFileName",
+        );
+
+        // Verify the initial playlist titles
+
+        List<String> initialPlaylistTitles = [
+          "local_empty_download_single_video",
+          "local_not_empty_download_single_video",
+          "audio_learn_test_download_2_small_videos",
+        ];
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: initialPlaylistTitles,
+        );
+
+        // Verify playlist selection
+        const String initialSelectedPlaylistTitle =
+            'local_not_empty_download_single_video';
+        expect(
+          await IntegrationTestUtil.isPlaylistSelected(
+            tester: tester,
+            playlistToCheckTitle: initialSelectedPlaylistTitle,
+          ),
+          true,
+        );
+
+        // Now, set the playlist root path to the modified value
+
+        List<String> newDirectoryPlaylistTitles = [
+          "audio_learn_test_download_2_small_videos",
+          "audio_player_view_2_shorts_test",
+          "local_3",
+          "local_audio_playlist_2",
+        ];
+
+        String newDirectoryPlaylistsExpectedSettingsContent =
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, audio_player_view_2_shorts_test, local_3, local_audio_playlist_2]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+
+        await _changePlaylistRootPathAndSaveAppSettings(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pathToSelectStr: newDirectoryPlaylistRootPath,
+          playlistTitlesOrderInModifiedDir: newDirectoryPlaylistTitles,
+          expectedSettingsContent: newDirectoryPlaylistsExpectedSettingsContent,
+          selectedPlaylistTitle: 'local_3',
+        );
+
+        // Move up twice the selected "local_3" playlist to position
+        // it at top of playlists list
+
+        await tester.tap(find.byKey(const Key('move_up_playlist_button')));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byKey(const Key('move_up_playlist_button')));
+        await tester.pumpAndSettle();
+
+        newDirectoryPlaylistTitles = [
+          'audio_learn_test_download_2_small_videos',
+          'local_empty_download_single_video',
+          'local_not_empty_download_single_video',
+        ];
+
+        // Select another playlist
+        String newDirectoryPlaylistSelectedTitle =
+            "audio_learn_test_download_2_small_videos";
+
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: newDirectoryPlaylistSelectedTitle,
+        );
+
+        // Now reset the playlist root path to the initial value
+        // with clicking on 'Cancel' button to refuse restoring
+        // the previous playlist titles order
+
+        String audioPlaylistsExpectedSettingsContent =
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, local_empty_download_single_video, local_not_empty_download_single_video]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+
+        await _changePlaylistRootPathAndSaveAppSettings(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pathToSelectStr: kPlaylistDownloadRootPathWindowsTest,
+          playlistTitlesOrderInModifiedDir: newDirectoryPlaylistTitles,
+          expectedSettingsContent: audioPlaylistsExpectedSettingsContent,
+          selectedPlaylistTitle: 'local_not_empty_download_single_video',
+          confirmDialogTitleOne: "Playlist Titles Order Restoration",
+          confirmDialogMessage:
+              "A previous playlist titles order file is available in the selected playlist root path. Do you want to restore this saved order or keep the current playlist titles order? Click on \"Confirm\" to restore the saved order or on \"Cancel\" to keep the current order.",
+          confirmOrCancelAction: false, // Cancel button is tapped
+        );
+
+        // And finally, set again the playlist root path to the modified
+        // value with clicking on 'Cancel' button to refuse restoring
+        // the previous playlist titles order
+
+        newDirectoryPlaylistTitles = [
+          "audio_learn_test_download_2_small_videos",
+          "audio_player_view_2_shorts_test",
+          "local_3",
+          "local_audio_playlist_2",
+        ];
+
+        newDirectoryPlaylistsExpectedSettingsContent =
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[audio_learn_test_download_2_small_videos, audio_player_view_2_shorts_test, local_3, local_audio_playlist_2]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\newDirectory\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+
+        await _changePlaylistRootPathAndSaveAppSettings(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pathToSelectStr: newDirectoryPlaylistRootPath,
+          playlistTitlesOrderInModifiedDir: newDirectoryPlaylistTitles,
+          expectedSettingsContent: newDirectoryPlaylistsExpectedSettingsContent,
+          selectedPlaylistTitle: newDirectoryPlaylistSelectedTitle,
+          confirmDialogTitleOne: "Playlist Titles Order Restoration",
+          confirmDialogMessage:
+              "A previous playlist titles order file is available in the selected playlist root path. Do you want to restore this saved order or keep the current playlist titles order? Click on \"Confirm\" to restore the saved order or on \"Cancel\" to keep the current order.",
+          confirmOrCancelAction: false, // Confirm button is tapped
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Modify playlist root path to an invalid root path not ending by 'playlists'.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}audio_learn_download_test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Create a playlist root invalid directory not containing playlists
+        // to which the playlist root path will be modified
+
+        String modifiedInvalidPlaylistRootPath =
+            '$kApplicationPathWindowsTest${path.separator}newDirectory';
+
+        DirUtil.createDirIfNotExistSync(
+          pathStr: modifiedInvalidPlaylistRootPath,
+        );
+
+        // Fill the new directory with playlists
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}2_youtube_2_local_playlists_delete_integr_test_data",
+          destinationRootPath: modifiedInvalidPlaylistRootPath,
+        );
+
+        // Delete the settings.json file from the copied data
+        DirUtil.deleteFileIfExist(
+          pathFileName:
+              "$modifiedInvalidPlaylistRootPath${path.separator}$kSettingsFileName",
+        );
+
+        // Set the playlist root path to the modified value
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // Select the modified dir path. Tapping on the select directory
+        // icon button does not open the directory picker dialog. Instead,
+        // the FilePicker mock is used to simulate the selection of the
+        // directory.
+
+        // Setting the path value returned by the FilePicker mock.
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: modifiedInvalidPlaylistRootPath,
+        );
+
+        await tester.tap(find.byKey(const Key('openDirectoryIconButton')));
+        await tester.pumpAndSettle();
+
+        // Find the Text using the Key
+        final Finder textFinder =
+            find.byKey(const Key('playlistsRootPathText'));
+
+        // Retrieve the Text widget
+        String text = tester.widget<Text>(textFinder).data ?? '';
+
+        // Verify the selected directory path
+        expect(
+          text,
+          modifiedInvalidPlaylistRootPath,
+        );
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Now verifying the warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              'The defined path "$modifiedInvalidPlaylistRootPath" is invalid since the playlists final dir name \'newDirectory\' is not equal to \'playlists\'. Please define a valid playlist directory and retry changing the playlists root path.',
+          isWarningConfirming: false,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Select current playlist root path. This does not change anything since
+                     the selected path is the current one.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}modify_playlist_root_path",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Verify the initial playlist titles order
+
+        List<String> initialPlaylistTitlesOrder = [
+          "local_empty_download_single_video",
+          "local_not_empty_download_single_video",
+          "audio_learn_test_download_2_small_videos",
+        ];
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: initialPlaylistTitlesOrder,
+        );
+
+        // Verify playlist selection
+        const String initialSelectedPlaylistTitle =
+            'local_not_empty_download_single_video';
+        expect(
+          await IntegrationTestUtil.isPlaylistSelected(
+            tester: tester,
+            playlistToCheckTitle: initialSelectedPlaylistTitle,
+          ),
+          true,
+        );
+
+        // Now, set the playlist root path to the initial value.
+        // Nothing should change.
+
+        String audioPlaylistsExpectedSettingsContent =
+            "{\"SettingType.appTheme\":{\"SettingType.appTheme\":\"AppTheme.dark\"},\"SettingType.appPosition\":{\"AppPosition.topX\":\"996.0\",\"AppPosition.topY\":\"25.0\",\"AppPosition.width\":\"450.0\",\"AppPosition.height\":\"850.0\"},\"SettingType.language\":{\"SettingType.language\":\"Language.english\"},\"SettingType.playlists\":{\"Playlists.orderedTitleLst\":\"[local_empty_download_single_video, local_not_empty_download_single_video, audio_learn_test_download_2_small_videos]\",\"Playlists.isMusicQualityByDefault\":\"false\",\"Playlists.playSpeed\":\"1.0\",\"Playlists.arePlaylistsDisplayedInPlaylistDownloadView\":\"true\",\"Playlists.maxSavableAudioMp3FileSizeInMb\":\"525.0\",\"Playlists.onWindowsPlayVolumeInPercentage\":\"2\",\"Playlists.latestGlobalRestoredAudioDate\":\"2000-01-01T00:00:00.000\"},\"SettingType.dataLocation\":{\"DataLocation.appSettingsPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\",\"DataLocation.playlistRootPath\":\"C:\\\\development\\\\flutter\\\\audiolearn\\\\test\\\\data\\\\audio\\\\playlists\"},\"SettingType.formatOfDate\":{\"FormatOfDate.formatOfDate\":\"dd/MM/yyyy\"},\"namedAudioSortFilterSettings\":{\"default\":{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}},\"searchHistoryOfAudioSortFilterSettings\":\"[]\"}";
+
+        await _changePlaylistRootPathAndSaveAppSettings(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pathToSelectStr: kPlaylistDownloadRootPathWindowsTest,
+          playlistTitlesOrderInModifiedDir: initialPlaylistTitlesOrder,
+          expectedSettingsContent: audioPlaylistsExpectedSettingsContent,
+          selectedPlaylistTitle: initialSelectedPlaylistTitle,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Click on dialog back button after changing playlist root path. Verify the displayed warning.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}modify_playlist_root_path",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Now, set the playlist root path to the a new value.
+
+        final String modifiedPlaylistRootPath =
+            '$kApplicationPathWindowsTest${path.separator}newDirectory${path.separator}playlists';
+
+        // Tap the appbar leading popup menu button Then, the
+        // app settings dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // Setting the path value.
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: modifiedPlaylistRootPath,
+        );
+
+        await tester.tap(find.byKey(const Key('openDirectoryIconButton')));
+        await tester.pumpAndSettle();
+
+        // After having modified the playlist root path, tap on the dialog back button
+        // without saving the changes. This should will open a warning dialog since the
+        // changes are not saved.
+        await tester.tap(find.byKey(const Key('appSettingsBackButton')));
+        await tester.pumpAndSettle();
+
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Since the playlist root path was changed to \"$modifiedPlaylistRootPath\" you must click on the \"Save\" or the \"Cancel\" button to close the \"Application Settings\" dialog.",
+        );
+
+        // And now, click on cancel button to close the app settings dialog without saving the changes
+        await tester.tap(find.byKey(const Key('cancelButton')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Do not change playlist root path and click on dialog back button.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}modify_playlist_root_path",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Tap the appbar leading popup menu button Then, the
+        // app settings dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // Tap on the dialog back button without having modified anything
+        await tester.tap(find.byKey(const Key('appSettingsBackButton')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+
+    group('App settings set speed test', () {
+      testWidgets(
+          '''Modify playback speed without selecting existing playlists or already downloaded or imported
+            audios. Finally, create a new playlist and verify that its audio play speed is equal to the
+            modified playback speed.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Set the app settings playlist audio play speed to 0.7
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // Tap on the playback speed text button
+
+        await tester.tap(find.byKey(const Key('setAudioSpeedTextButton')));
+        await tester.pumpAndSettle();
+
+        // Now select the 0.7x play speed
+        await tester.tap(find.text('0.7x'));
+        await tester.pumpAndSettle();
+
+        // And click on the Ok button
+        await tester.tap(find.text('Ok'));
+        await tester.pumpAndSettle();
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.70x'), findsOneWidget);
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Verify that the app settings playlist audio play speed is now 0.7
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is re-opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.70x'), findsOneWidget);
+
+        // Tap on cancel button
+        await tester.tap(find.byKey(const Key('cancelButton')));
+        await tester.pumpAndSettle();
+
+        // Now create a new local playlist
+        const String newLocalPlaylistTitle = 'new_local';
+
+        await _createNewLocalPlaylist(
+          tester: tester,
+          newPlaylistTitle: newLocalPlaylistTitle,
+        );
+
+        List<String> oldPlaylistTitles = [
+          "local",
+          "S8 audio",
+        ];
+
+        // Verify that the play speed was not applied to the existing playlists
+
+        for (String playlistTitle in oldPlaylistTitles) {
+          await IntegrationTestUtil.typeOnPlaylistMenuItem(
+            tester: tester,
+            playlistTitle: playlistTitle,
+            playlistMenuKeyStr: 'popup_menu_set_audio_play_speed',
+          );
+
+          // Verify if the play speed is 1.0x
+          expect(find.text('1.0x'), findsOneWidget);
+
+          // Tap on cancel button
+          await tester.tap(find.byKey(const Key('cancelButtonKey')));
+          await tester.pumpAndSettle();
+        }
+
+        // Verify that the play speed was applied to the new created
+        // playlist
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: newLocalPlaylistTitle,
+          playlistMenuKeyStr: 'popup_menu_set_audio_play_speed',
+        );
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.7x'), findsOneWidget);
+
+        // Tap on cancel button
+        await tester.tap(find.byKey(const Key('cancelButtonKey')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Modify playback speed with selecting existing playlists and without selecting already
+            downloaded or imported audios. Finally, create a new playlist and verify that its audio
+            play speed is equal to the modified playback speed.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Set the app settings playlist audio play speed to 0.7
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // Tap on the playback speed text button
+
+        await tester.tap(find.byKey(const Key('setAudioSpeedTextButton')));
+        await tester.pumpAndSettle();
+
+        // Now select the 0.7x play speed
+        await tester.tap(find.text('0.7x'));
+        await tester.pumpAndSettle();
+
+        // Select the 'Apply to existing playlists' checkbox
+        await tester.tap(find.byKey(const Key('applyToExistingPlaylistsKey')));
+        await tester.pumpAndSettle();
+
+        // And click on the Ok button
+        await tester.tap(find.text('Ok'));
+        await tester.pumpAndSettle();
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.70x'), findsOneWidget);
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Verify that the app settings playlist audio play speed is now 0.7
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is re-opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.70x'), findsOneWidget);
+
+        // Tap on cancel button
+        await tester.tap(find.byKey(const Key('cancelButton')));
+        await tester.pumpAndSettle();
+
+        // Now create a new local playlist
+        const String newLocalPlaylistTitle = 'new_local';
+
+        await _createNewLocalPlaylist(
+          tester: tester,
+          newPlaylistTitle: newLocalPlaylistTitle,
+        );
+
+        List<String> playlistTitles = [
+          "local",
+          "S8 audio",
+        ];
+
+        // Verify that the play speed was applied to the existing playlists
+
+        for (String playlistTitle in playlistTitles) {
+          await IntegrationTestUtil.typeOnPlaylistMenuItem(
+            tester: tester,
+            playlistTitle: playlistTitle,
+            playlistMenuKeyStr: 'popup_menu_set_audio_play_speed',
+          );
+
+          // Verify if the play speed is 0.70x
+          expect(find.text('0.70x'), findsOneWidget);
+
+          // Tap on cancel button
+          await tester.tap(find.byKey(const Key('cancelButtonKey')));
+          await tester.pumpAndSettle();
+        }
+
+        // Verify that the play speed was applied to the new created
+        // playlist
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: newLocalPlaylistTitle,
+          playlistMenuKeyStr: 'popup_menu_set_audio_play_speed',
+        );
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.7x'), findsOneWidget);
+
+        // Tap on cancel button
+        await tester.tap(find.byKey(const Key('cancelButtonKey')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Modify playback speed without selecting existing playlists and with selecting already
+            downloaded or imported audios. Finally, create a new playlist and verify that its audio
+            play speed is equal to the modified playback speed.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Set the app settings playlist audio play speed to 0.7
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // Tap on the playback speed text button
+
+        await tester.tap(find.byKey(const Key('setAudioSpeedTextButton')));
+        await tester.pumpAndSettle();
+
+        // Now select the 0.7x play speed
+        await tester.tap(find.text('0.7x'));
+        await tester.pumpAndSettle();
+
+        // Select the 'Apply to already downloaded or imported audio' checkbox
+        await tester
+            .tap(find.byKey(const Key('applyToAlreadyDownloadedAudioKey')));
+        await tester.pumpAndSettle();
+
+        // And click on the Ok button
+        await tester.tap(find.text('Ok'));
+        await tester.pumpAndSettle();
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.70x'), findsOneWidget);
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Verify that the app settings playlist audio play speed is now 0.7
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.70x'), findsOneWidget);
+
+        // Tap on cancel button
+        await tester.tap(find.byKey(const Key('cancelButton')));
+        await tester.pumpAndSettle();
+
+        // Now create a new local playlist
+        const String newLocalPlaylistTitle = 'new_local';
+
+        await _createNewLocalPlaylist(
+          tester: tester,
+          newPlaylistTitle: newLocalPlaylistTitle,
+        );
+
+        List<String> playlistTitles = [
+          "local",
+          "S8 audio",
+        ];
+
+        // Verify that the play speed was not applied to the existing playlists
+
+        for (String playlistTitle in playlistTitles) {
+          await IntegrationTestUtil.typeOnPlaylistMenuItem(
+            tester: tester,
+            playlistTitle: playlistTitle,
+            playlistMenuKeyStr: 'popup_menu_set_audio_play_speed',
+          );
+
+          // Verify if the play speed is 1.0x
+          expect(find.text('1.0x'), findsOneWidget);
+
+          // Tap on cancel button
+          await tester.tap(find.byKey(const Key('cancelButtonKey')));
+          await tester.pumpAndSettle();
+        }
+
+        // Verify that the play speed was applied to the new created
+        // playlist
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: newLocalPlaylistTitle,
+          playlistMenuKeyStr: 'popup_menu_set_audio_play_speed',
+        );
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.7x'), findsOneWidget);
+
+        // Tap on cancel button
+        await tester.tap(find.byKey(const Key('cancelButtonKey')));
+        await tester.pumpAndSettle();
+
+        // Verify that the play speed was applied to the already downloaded
+        // audio of the 'local' playlist which is selected
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle:
+                "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+            youtubeChannel: "",
+            copiedFromPlaylistTitle: "S8 audio",
+            audioPlaySpeed: "0.7");
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle: "Really short video",
+            youtubeChannel: "",
+            copiedFromPlaylistTitle: 'audio_player_view_2_shorts_test',
+            audioPlaySpeed: "0.7");
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle: "morning _ cinematic video",
+            youtubeChannel: "",
+            copiedFromPlaylistTitle: 'audio_player_view_2_shorts_test',
+            copiedToPlaylistTitle: 'S8 audio',
+            audioPlaySpeed: "0.7");
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle:
+                "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+            youtubeChannel: "",
+            copiedFromPlaylistTitle: "S8 audio",
+            audioPlaySpeed: "0.7");
+
+        // Verify that the play speed was applied to the already downloaded
+        // audio of the 'S8 audio' playlist which must be selected
+
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: "S8 audio",
+        );
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle:
+                "La surpopulation mondiale par Jancovici et Barrau",
+            youtubeChannel: "",
+            audioPlaySpeed: "0.7");
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle:
+                "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+            youtubeChannel: "",
+            copiedToPlaylistTitle: "local",
+            audioPlaySpeed: "0.7");
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle: "morning _ cinematic video",
+            youtubeChannel: "",
+            copiedFromPlaylistTitle: 'local',
+            audioPlaySpeed: "0.7");
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Modify playback speed with selecting existing playlists and with selecting already
+            downloaded or imported audios. Finally, create a new playlist and verify that its audio
+            play speed is equal to the modified playback speed.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Set the app settings playlist audio play speed to 0.7
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // Tap on the playback speed text button
+
+        await tester.tap(find.byKey(const Key('setAudioSpeedTextButton')));
+        await tester.pumpAndSettle();
+
+        // Now select the 0.7x play speed
+        await tester.tap(find.text('0.7x'));
+        await tester.pumpAndSettle();
+
+        // Select the 'Apply to existing playlists' checkbox
+        await tester.tap(find.byKey(const Key('applyToExistingPlaylistsKey')));
+        await tester.pumpAndSettle();
+
+        // Select the 'Apply to already downloaded or imported audio' checkbox
+        await tester
+            .tap(find.byKey(const Key('applyToAlreadyDownloadedAudioKey')));
+        await tester.pumpAndSettle();
+
+        // And click on the Ok button
+        await tester.tap(find.text('Ok'));
+        await tester.pumpAndSettle();
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.70x'), findsOneWidget);
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Verify that the app settings playlist audio play speed is now 0.7
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.70x'), findsOneWidget);
+
+        // Tap on cancel button
+        await tester.tap(find.byKey(const Key('cancelButton')));
+        await tester.pumpAndSettle();
+
+        // Now create a new local playlist
+        const String newLocalPlaylistTitle = 'new_local';
+
+        await _createNewLocalPlaylist(
+          tester: tester,
+          newPlaylistTitle: newLocalPlaylistTitle,
+        );
+
+        List<String> playlistTitles = [
+          "local",
+          "S8 audio",
+        ];
+
+        // Verify that the play speed was applied to the existing playlists
+
+        for (String playlistTitle in playlistTitles) {
+          await IntegrationTestUtil.typeOnPlaylistMenuItem(
+            tester: tester,
+            playlistTitle: playlistTitle,
+            playlistMenuKeyStr: 'popup_menu_set_audio_play_speed',
+          );
+
+          // Verify if the play speed is 0.70x
+          expect(find.text('0.70x'), findsOneWidget);
+
+          // Tap on cancel button
+          await tester.tap(find.byKey(const Key('cancelButtonKey')));
+          await tester.pumpAndSettle();
+        }
+
+        // Verify that the play speed was applied to the new created
+        // playlist
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: newLocalPlaylistTitle,
+          playlistMenuKeyStr: 'popup_menu_set_audio_play_speed',
+        );
+
+        // Verify if the play speed is 0.70x
+        expect(find.text('0.7x'), findsOneWidget);
+
+        // Tap on cancel button
+        await tester.tap(find.byKey(const Key('cancelButtonKey')));
+        await tester.pumpAndSettle();
+
+        // Verify that the play speed was applied to the already downloaded
+        // audio of the 'local' playlist which is selected
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle:
+                "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+            youtubeChannel: "",
+            copiedFromPlaylistTitle: "S8 audio",
+            audioPlaySpeed: "0.7");
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle: "Really short video",
+            youtubeChannel: "",
+            copiedFromPlaylistTitle: 'audio_player_view_2_shorts_test',
+            audioPlaySpeed: "0.7");
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle: "morning _ cinematic video",
+            youtubeChannel: "",
+            copiedFromPlaylistTitle: 'audio_player_view_2_shorts_test',
+            copiedToPlaylistTitle: 'S8 audio',
+            audioPlaySpeed: "0.7");
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle:
+                "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+            youtubeChannel: "",
+            copiedFromPlaylistTitle: "S8 audio",
+            audioPlaySpeed: "0.7");
+
+        // Verify that the play speed was applied to the already downloaded
+        // audio of the 'S8 audio' playlist which must be selected
+
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: "S8 audio",
+        );
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle:
+                "La surpopulation mondiale par Jancovici et Barrau",
+            youtubeChannel: "",
+            audioPlaySpeed: "0.7");
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle:
+                "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+            youtubeChannel: "",
+            copiedToPlaylistTitle: "local",
+            audioPlaySpeed: "0.7");
+
+        await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            validVideoTitleOrAudioTitle: "morning _ cinematic video",
+            youtubeChannel: "",
+            copiedFromPlaylistTitle: 'local',
+            audioPlaySpeed: "0.7");
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+    group('App playlist ZIP file size limit test', () {
+      testWidgets(
+          '''Reduce ZIP file size limit to 1 MB and then execute the appBar menu 'Save Playlists
+            Audio's MP3 to ZIP file(s). Then, verify the confirmation dialog data which displays
+            a small number of saved ZIP files since the majority of audio files were not added
+            to the created ZIP file.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // And reduce the ZIP file size limit to 1 MB
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('mp3ZipFileSizeLimitInMb'));
+
+        await tester.enterText(
+          textFieldFinder,
+          '1',
+        );
+
+        await tester.pumpAndSettle();
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Now execute the appBar menu 'Save Playlists Audio's MP3 to
+        // ZIP file(s)
+
+        // Setting the path value returned by the FilePicker mock.
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: kApplicationPathWindowsTest,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists Audio's MP3 to ZIP File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+        );
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Confirm the saving of the audio mp3 files and close the
+        // confirm dialog by tapping on the Confirm button.
+        await tester.tap(find.byKey(const Key('confirmButton')));
+        await tester.pump(); // Process the tap immediately
+
+        // Only works if tester.pump() is used instead of
+        // tester.pumpAndSettle()
+        expect(
+          find.text("Saving multiple playlists audio files to ZIP ..."),
+          findsOneWidget,
+        );
+        expect(
+          tester
+              .widget<Text>(find.byKey(const Key('saving_please_wait')).last)
+              .data!,
+          contains(
+            "Should approxim. take ",
+          ),
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        String oldestAudioDownloadDateTime = "07/01/2024 16:36";
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP all playlists audio MP3 files downloaded from $oldestAudioDownloadDateTime."));
+        expect(
+            actualMessage,
+            contains(
+                "Total saved audio number: 3, total size: 783.1 KB and total duration: 0:01:42.4."));
+        expect(actualMessage, contains("Save operation real duration: "));
+        expect(actualMessage, contains("number of bytes saved per second: "));
+        expect(actualMessage, contains("number of created ZIP file(s): 1."));
+        expect(
+            actualMessage,
+            contains(
+                "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}audioLearn_mp3_from_2024-01-07_16_36_07_on_"));
+        expect(
+            actualMessage,
+            contains(
+                "Those files are too large to be included in the MP3 saved ZIP file and so were not saved:\nlocal\\240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3, 2.37 MB;\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB;\nS8 audio\\240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3, 2.37 MB."));
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        List<String> expectedZipContentLst = [
+          'playlists/local/240110-181805-Really short video 23-07-01.mp3',
+          'playlists/local/240110-181810-morning _ cinematic video 23-07-01.mp3',
+          'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3'
+        ];
+
+        List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+          zipFilePathName:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${zipLst[0]}",
+        );
+
+        expect(
+          zipContentLst,
+          expectedZipContentLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Reduce ZIP file size limit to 1 MB and delete '240701-163521-Jancovici m'explique
+            l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3' from
+            the 'local' and the 'S8 audio' playlists. Then execute the appBar menu 'Save Playlists
+            Audio's MP3 to ZIP file(s) and verify the confirmation dialog data which displays
+            a greater number of saved ZIP files since only one audio file was not added
+            to the created ZIP file.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        DirUtil.deleteFileIfExist(
+          pathFileName:
+              "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}local${path.separator}240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
+        );
+
+        DirUtil.deleteFileIfExist(
+          pathFileName:
+              "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}S8 audio${path.separator}240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Tap the appbar leading popup menu button Then, the
+        // app settings dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // And reduce the ZIP file size limit to 2.6 MB
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('mp3ZipFileSizeLimitInMb'));
+
+        await tester.enterText(
+          textFieldFinder,
+          '1',
+        );
+
+        await tester.pumpAndSettle();
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Now execute the appBar menu 'Save Playlists Audio's MP3 to
+        // ZIP file(s)
+
+        // Setting the path value returned by the FilePicker mock.
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: kApplicationPathWindowsTest,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists Audio's MP3 to ZIP File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+        );
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Confirm the saving of the audio mp3 files and close the
+        // confirm dialog by tapping on the Confirm button.
+        await tester.tap(find.byKey(const Key('confirmButton')));
+        await tester.pump(); // Process the tap immediately
+
+        // Only works if tester.pump() is used instead of
+        // tester.pumpAndSettle()
+        expect(
+          find.text("Saving multiple playlists audio files to ZIP ..."),
+          findsOneWidget,
+        );
+        expect(
+          tester
+              .widget<Text>(find.byKey(const Key('saving_please_wait')).last)
+              .data!,
+          contains(
+            "Should approxim. take ",
+          ),
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        String oldestAudioDownloadDateTime = "07/01/2024 16:36";
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP all playlists audio MP3 files downloaded from $oldestAudioDownloadDateTime."));
+        expect(
+            actualMessage,
+            contains(
+                "Total saved audio number: 3, total size: 783.1 KB and total duration: 0:01:42.4."));
+        expect(actualMessage, contains("Save operation real duration: "));
+        expect(actualMessage, contains("number of bytes saved per second: "));
+        expect(actualMessage, contains("number of created ZIP file(s): 1."));
+        expect(
+            actualMessage,
+            contains(
+                "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}audioLearn_mp3_from_2024-01-07_16_36_07_on_"));
+        expect(
+            actualMessage,
+            contains(
+                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        List<String> expectedZipContentLst = [
+          'playlists/local/240110-181805-Really short video 23-07-01.mp3',
+          'playlists/local/240110-181810-morning _ cinematic video 23-07-01.mp3',
+          'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3'
+        ];
+
+        List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+          zipFilePathName:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${zipLst[0]}",
+        );
+
+        expect(
+          zipContentLst,
+          expectedZipContentLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Reduce ZIP file size limit to 2.6 MB. Then execute the appBar menu 'Save Playlists
+            Audio's MP3 to ZIP file(s) and verify the confirmation dialog data which displays
+            a greater number of saved ZIP files since only one audio file was not added
+            to the created ZIP file.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Tap the appbar leading popup menu button Then, the
+        // app settings dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // And reduce the ZIP file size limit to 2.6 MB
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('mp3ZipFileSizeLimitInMb'));
+
+        await tester.enterText(
+          textFieldFinder,
+          '2.6',
+        );
+
+        await tester.pumpAndSettle();
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Now execute the appBar menu 'Save Playlists Audio's MP3 to
+        // ZIP file(s)
+
+        // Setting the path value returned by the FilePicker mock.
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: kApplicationPathWindowsTest,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists Audio's MP3 to ZIP File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+        );
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Confirm the saving of the audio mp3 files and close the
+        // confirm dialog by tapping on the Confirm button.
+        await tester.tap(find.byKey(const Key('confirmButton')));
+        await tester.pump(); // Process the tap immediately
+
+        // Only works if tester.pump() is used instead of
+        // tester.pumpAndSettle()
+        expect(
+          find.text("Saving multiple playlists audio files to ZIP ..."),
+          findsOneWidget,
+        );
+        expect(
+          tester
+              .widget<Text>(find.byKey(const Key('saving_please_wait')).last)
+              .data!,
+          contains(
+            "Should approxim. take ",
+          ),
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        String oldestAudioDownloadDateTime = "07/01/2024 16:36";
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP all playlists audio MP3 files downloaded from $oldestAudioDownloadDateTime."));
+        expect(
+            actualMessage,
+            contains(
+                "Total saved audio number: 5, total size: 5.53 MB and total duration: 0:12:04.8."));
+        expect(actualMessage, contains("Save operation real duration: "));
+        expect(actualMessage, contains("number of bytes saved per second: "));
+        expect(actualMessage, contains("number of created ZIP file(s): 3."));
+        expect(
+            actualMessage,
+            contains(
+                "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}audioLearn_mp3_from_2024-01-07_16_36_07_on_"));
+        expect(
+            actualMessage,
+            contains(
+                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        List<List<String>> expectedZipContentLst = [
+          [
+            'playlists/local/240701-163521-Jancovici m\'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3',
+            'playlists/local/240110-181805-Really short video 23-07-01.mp3',
+          ],
+          [
+            'playlists/local/240110-181810-morning _ cinematic video 23-07-01.mp3',
+            'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3',
+          ],
+          [
+            'playlists/S8 audio/240701-163521-Jancovici m\'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3',
+          ],
+        ];
+
+        await _verifyCreatedZipFilesContent(
+          zipLst: zipLst,
+          expectedZipContentLst: expectedZipContentLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+
+      testWidgets(
+          '''Reduce ZIP file size limit to 1 MB and then execute the playlist menu 'Save the Playlist
+            Audio's MP3 to ZIP file(s) on the 'S8 audio' playlist. Then, verify the confirmation dialog
+            data which displays a small number of saved ZIP files since the majority of audio files were
+            not added to the created ZIP file.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Tap the appbar leading popup menu button Then, the
+        // app settings dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // And reduce the ZIP file size limit to 1 MB
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('mp3ZipFileSizeLimitInMb'));
+
+        await tester.enterText(
+          textFieldFinder,
+          '1',
+        );
+
+        await tester.pumpAndSettle();
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Now execute the playlist menu 'Save the Playlist Audio's MP3 to
+        // ZIP file(s) ...' on the 'S8 audio' playlist
+
+        // Setting the path value returned by the FilePicker mock.
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: kApplicationPathWindowsTest,
+        );
+
+        const String playlistTitle = 'S8 audio';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistTitle,
+          playlistMenuKeyStr: 'popup_menu_save_playlist_audio_mp3_files_to_zip',
+          dragToBottom: true,
+        );
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Confirm the saving of the audio mp3 files and close the
+        // confirm dialog by tapping on the Confirm button.
+        await tester.tap(find.byKey(const Key('confirmButton')));
+        await tester.pump(); // Process the tap immediately
+
+        // Only works if tester.pump() is used instead of
+        // tester.pumpAndSettle()
+        expect(
+          find.text("Saving $playlistTitle audio files to ZIP ..."),
+          findsOneWidget,
+        );
+        expect(
+          tester
+              .widget<Text>(find.byKey(const Key('saving_please_wait')).last)
+              .data!,
+          contains(
+            "Should approxim. take ",
+          ),
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        String oldestAudioDownloadDateTime = "07/01/2024 16:36";
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $oldestAudioDownloadDateTime."));
+        expect(
+            actualMessage,
+            contains(
+                "Total saved audio number: 1, total size: 360.8 KB and total duration: 0:00:47.2."));
+        expect(actualMessage, contains("Save operation real duration: "));
+        expect(actualMessage, contains("number of bytes saved per second: "));
+        expect(actualMessage, contains("number of created ZIP file(s): 1."));
+        expect(
+            actualMessage,
+            contains(
+                "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${playlistTitle}_mp3_from_2024-01-07_16_36_07_on_"));
+        expect(
+            actualMessage,
+            contains(
+                "Those files are too large to be included in the MP3 saved ZIP file and so were not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB;\nS8 audio\\240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3, 2.37 MB."));
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        List<String> expectedZipContentLst = [
+          'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3'
+        ];
+
+        List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+          zipFilePathName:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${zipLst[0]}",
+        );
+
+        expect(
+          zipContentLst,
+          expectedZipContentLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Reduce ZIP file size limit to 1 MB and delete '240701-163521-Jancovici m'explique
+            l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3' the
+            'S8 audio' playlist. Then execute the playlist menu 'Save the Playlist Audio's MP3
+            to ZIP file(s) on the 'S8 audio' playlist and verify the confirmation dialog data
+            which displays a greater number of saved ZIP files since only one audio file was not
+            added to the created ZIP file.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        DirUtil.deleteFileIfExist(
+          pathFileName:
+              "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}local${path.separator}240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
+        );
+
+        DirUtil.deleteFileIfExist(
+          pathFileName:
+              "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}S8 audio${path.separator}240701-163521-Jancovici m'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3",
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Tap the appbar leading popup menu button Then, the
+        // app settings dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // And reduce the ZIP file size limit to 1 MB
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('mp3ZipFileSizeLimitInMb'));
+
+        await tester.enterText(
+          textFieldFinder,
+          '1',
+        );
+
+        await tester.pumpAndSettle();
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Now execute the playlist menu 'Save the Playlist Audio's MP3 to
+        // ZIP file(s) ...' on the 'S8 audio' playlist
+
+        // Setting the path value returned by the FilePicker mock.
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: kApplicationPathWindowsTest,
+        );
+
+        const String playlistTitle = 'S8 audio';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+            tester: tester,
+            playlistTitle: playlistTitle,
+            playlistMenuKeyStr:
+                'popup_menu_save_playlist_audio_mp3_files_to_zip',
+            dragToBottom: true);
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Confirm the saving of the audio mp3 files and close the
+        // confirm dialog by tapping on the Confirm button.
+        await tester.tap(find.byKey(const Key('confirmButton')));
+        await tester.pump(); // Process the tap immediately
+
+        // Only works if tester.pump() is used instead of
+        // tester.pumpAndSettle()
+        expect(
+          find.text("Saving $playlistTitle audio files to ZIP ..."),
+          findsOneWidget,
+        );
+        expect(
+          tester
+              .widget<Text>(find.byKey(const Key('saving_please_wait')).last)
+              .data!,
+          contains(
+            "Should approxim. take ",
+          ),
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        String oldestAudioDownloadDateTime = "07/01/2024 16:36";
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $oldestAudioDownloadDateTime."));
+        expect(
+            actualMessage,
+            contains(
+                "Total saved audio number: 1, total size: 360.8 KB and total duration: 0:00:47.2."));
+        expect(actualMessage, contains("Save operation real duration: "));
+        expect(actualMessage, contains("number of bytes saved per second: "));
+        expect(actualMessage, contains("number of created ZIP file(s): 1."));
+        expect(
+            actualMessage,
+            contains(
+                "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${playlistTitle}_mp3_from_2024-01-07_16_36_07_on_"));
+        expect(
+            actualMessage,
+            contains(
+                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        List<String> expectedZipContentLst = [
+          'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3'
+        ];
+
+        List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+          zipFilePathName:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${zipLst[0]}",
+        );
+
+        expect(
+          zipContentLst,
+          expectedZipContentLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Reduce ZIP file size limit to 2.6 MB Then execute the playlist menu 'Save the Playlist
+            Audio's MP3 to ZIP file(s) on the 'S8 audio' playlist and verify the confirmation dialog
+            data which displays a greater number of saved ZIP files since only one audio file was
+            not added to the created ZIP file.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Tap the appbar leading popup menu button Then, the
+        // app settings dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // And reduce the ZIP file size limit to 2.6 MB
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('mp3ZipFileSizeLimitInMb'));
+
+        await tester.enterText(
+          textFieldFinder,
+          '2.6',
+        );
+
+        await tester.pumpAndSettle();
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Now execute the playlist menu 'Save the Playlist Audio's MP3 to
+        // ZIP file(s) ...' on the 'S8 audio' playlist
+
+        // Setting the path value returned by the FilePicker mock.
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: kApplicationPathWindowsTest,
+        );
+
+        const String playlistTitle = 'S8 audio';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+            tester: tester,
+            playlistTitle: playlistTitle,
+            playlistMenuKeyStr:
+                'popup_menu_save_playlist_audio_mp3_files_to_zip',
+            dragToBottom: true);
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Confirm the saving of the audio mp3 files and close the
+        // confirm dialog by tapping on the Confirm button.
+        await tester.tap(find.byKey(const Key('confirmButton')));
+        await tester.pump(); // Process the tap immediately
+
+        // Only works if tester.pump() is used instead of
+        // tester.pumpAndSettle()
+        expect(
+          find.text("Saving $playlistTitle audio files to ZIP ..."),
+          findsOneWidget,
+        );
+        expect(
+          tester
+              .widget<Text>(find.byKey(const Key('saving_please_wait')).last)
+              .data!,
+          contains(
+            "Should approxim. take ",
+          ),
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        String oldestAudioDownloadDateTime = "07/01/2024 16:36";
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $oldestAudioDownloadDateTime."));
+        expect(
+            actualMessage,
+            contains(
+                "Total saved audio number: 2, total size: 2.73 MB and total duration: 0:05:58.4."));
+        expect(actualMessage, contains("Save operation real duration: "));
+        expect(actualMessage, contains("number of bytes saved per second: "));
+        expect(actualMessage, contains("number of created ZIP file(s): 2."));
+        expect(
+            actualMessage,
+            contains(
+                "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${playlistTitle}_mp3_from_2024-01-07_16_36_07_on_"));
+        expect(
+            actualMessage,
+            contains(
+                "This file is too large to be included in the MP3 saved ZIP file and so was not saved:\nS8 audio\\240701-163607-La surpopulation mondiale par Jancovici et Barrau 23-12-03.mp3, 2.79 MB."));
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        List<List<String>> expectedZipContentLst = [
+          [
+            'playlists/S8 audio/240110-181810-morning _ cinematic video 23-07-01.mp3',
+          ],
+          [
+            'playlists/S8 audio/240701-163521-Jancovici m\'explique l’importance des ordres de grandeur face au changement climatique 22-06-12.mp3',
+          ],
+        ];
+
+        await _verifyCreatedZipFilesContent(
+          zipLst: zipLst,
+          expectedZipContentLst: expectedZipContentLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+  });
+  group('Save playlist, comments, pictures and settings to zip file menu test',
+      () {
+    group('''Without checking the "Add all JPG pictures to ZIP" checkbox''',
+        () {
+      testWidgets(
+          '''Successful save without checking the "Add all JPG pictures to ZIP" checkbox. The
+           integration test verifies the confirmation displayed warning''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}2_youtube_2_local_playlists_delete_playlists_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        // New directory to which the zip file will be saved
+        String saveZipFilePath =
+            '$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName';
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists and Comments to zip File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAndCommentsToZip',
+        );
+
+        // Does not check the "Add all JPG pictures to ZIP" checkbox
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Playlists Backup to ZIP',
+          dialogMessage:
+              "Checking the \"Add all JPG pictures to ZIP\" checkbox will add all the application audio pictures to the created ZIP. This is only useful if the ZIP file will be used to restore another application.",
+          checkboxLabel: "Add all JPG pictures to ZIP",
+          closeDialog: true,
+        );
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        expect(
+          actualMessage,
+          contains(
+            "Saved playlist, comment and picture JSON files as well as application settings to \"$saveZipFilePath${path.separator}audioLearn_",
+          ),
+        );
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath: saveZipFilePath,
+          fileExtension: 'zip',
+        );
+
+        List<String> expectedZipContentLst = [
+          "playlists/audio_learn_test_download_2_small_videos/audio_learn_test_download_2_small_videos.json",
+          "playlists/audio_learn_test_download_2_small_videos/comments/230628-033811-audio learn test short video one 23-06-10.json",
+          "playlists/audio_learn_test_download_2_small_videos/comments/230628-033813-audio learn test short video two 23-06-10.json",
+          "playlists/audio_player_view_2_shorts_test/audio_player_view_2_shorts_test.json",
+          "playlists/local_3/local_3.json",
+          "playlists/local_audio_playlist_2/local_audio_playlist_2.json",
+          "settings.json",
+          'pictures/pictureAudioMap.json',
+        ];
+
+        List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+          zipFilePathName: "$saveZipFilePath${path.separator}${zipLst[0]}",
+        );
+
+        expect(
+          zipContentLst,
+          expectedZipContentLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Unsuccessful save which happens on the S8 Galaxy smartphone. In the save to ZIP dialog,
+           the "Add all JPG pictures to ZIP" checkbox is not checked. The integration test verifies
+           the displayed warning. Problem was solved.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}2_youtube_2_local_playlists_integr_test_data",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Create a new directory to which the zip file will be saved
+
+        String saveZipFilePath =
+            '$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName';
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists and Comments to zip File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAndCommentsToZip',
+        );
+
+        // Does not check the "Add all JPG pictures to ZIP" checkbox
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Playlists Backup to ZIP',
+          dialogMessage:
+              "Checking the \"Add all JPG pictures to ZIP\" checkbox will add all the application audio pictures to the created ZIP. This is only useful if the ZIP file will be used to restore another application.",
+          checkboxLabel: "Add all JPG pictures to ZIP",
+          closeDialog: true,
+        );
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        expect(
+          actualMessage,
+          contains(
+            "Saved playlist, comment and picture JSON files as well as application settings to \"$saveZipFilePath${path.separator}audioLearn_",
+          ),
+        );
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath: saveZipFilePath,
+          fileExtension: 'zip',
+        );
+
+        expect(zipLst.isEmpty, false);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''After picture and comment addition, save to zip file without checking the "Add all
+             JPG pictures to ZIP" checkbox.''', (WidgetTester tester) async {
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'audio_player_zip_comment_picture_test',
+          tapOnPlaylistToggleButton: false,
+        );
+
+        final String availablePicturesDir =
+            "$kApplicationPathWindowsTest${path.separator}availablePictures";
+
+        final String appPictureAudioMapDir =
+            "$kApplicationPathWindowsTest${path.separator}$kPictureDirName";
+
+        const String localPlaylistTitle = 'local';
+        final String localPlaylistPictureDir =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kPictureDirName";
+        final String localPlaylistPictureJsonFilesDir =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kPictureDirName";
+
+        const String localAudioOneTitle =
+            'CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien';
+        const String localAudioOneDurationStr = '40:53';
+
+        const String jesusChristPlaylistTitle = 'Jésus-Christ';
+        final String jesusChristPlaylistPictureJsonFilesDir =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$jesusChristPlaylistTitle${path.separator}$kPictureDirName";
+
+        const String jesusChristAudioOneTitle =
+            'NE VOUS METTEZ PLUS JAMAIS EN COLÈRE _ SAGESSE CHRÉTIENNE';
+        const String jesusChristAudioOneDurationStr = '24:07';
+
+        const String pictureOneFileName = "Jésus, mon amour.jpg";
+        const int pictureOneFileSize = 94507;
+        const String pictureTwoFileName = "Jésus je T'adore.jpg";
+        const int pictureTwoFileSize = 154529;
+        const String pictureThreeFileName = "Jésus je T'aime.jpg";
+        const int pictureThreeFileSize = 125867;
+        const String pictureFourFileName = "Jésus l'Amour de ma vie.jpg";
+        const int pictureFourFileSize = 187362;
+
+        // Select the local playlist containing the audio to which we
+        // will add a first picture
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: localPlaylistTitle,
+        );
+
+        // Verify that the appPictureAudioMap dir is  present
+        Directory appPictureAudioMapDirectory =
+            Directory(appPictureAudioMapDir);
+        expect(appPictureAudioMapDirectory.existsSync(), true);
+
+        // Verify that the local playlist picture dir is not present
+        Directory localPlaylistPictureDirDirectory =
+            Directory(localPlaylistPictureDir);
+        expect(localPlaylistPictureDirDirectory.existsSync(), false);
+
+        // First picture addition (to a local playlist audio)
+        await _addPictureToAudioExecutingAudioListItemMenu(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pictureFileName: pictureOneFileName, // "Jésus, mon amour.jpg"
+          pictureSourcePath: availablePicturesDir,
+          pictureFileSize: pictureOneFileSize,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+        );
+
+        List<String> audioForPictureTitleLstJesusJeTaime = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01"
+        ];
+
+        List<String> playlistJesusChristAudioOnePictureLstJsonFileName = [
+          "241210-073532-NE VOUS METTEZ PLUS JAMAIS EN COLÈRE _ SAGESSE CHRÉTIENNE 24-11-12.json",
+        ];
+
+        // Now verifying the audio picture first addition result
+
+        List<String> playlistLocalAudioOnePictureLstJsonFileName = [
+          "250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01.json",
+        ];
+
+        List<String> audioForPictureTitleLstJesusMonAmour = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+        ];
+
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureJsonFilesDir: localPlaylistPictureJsonFilesDir,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+          audioForPictureTitleDurationStr: localAudioOneDurationStr,
+          playlistAudioPictureJsonFileNameLst:
+              playlistLocalAudioOnePictureLstJsonFileName,
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          mustPlayableAudioListBeUsed: false,
+        );
+
+        // Now go back to the playlist download view, select another playlist
+        // and add another picture to a new audio.
+
+        Finder appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Select the Jésus-Christ playlist containing the audio to which we
+        // will add a first picture
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: jesusChristPlaylistTitle,
+        );
+
+        // Second picture addition (to a jésus-christ playlist audio)
+        await _addPictureToAudioExecutingAudioListItemMenu(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pictureFileName: pictureOneFileName, // "Jésus, mon amour.jpg"
+          pictureSourcePath: availablePicturesDir,
+          pictureFileSize: pictureOneFileSize,
+          audioForPictureTitle:
+              jesusChristAudioOneTitle, // NE VOUS METTEZ PLUS JAMAIS EN COLÈRE ...
+        );
+
+        audioForPictureTitleLstJesusMonAmour = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+          "Jésus-Christ|241210-073532-NE VOUS METTEZ PLUS JAMAIS EN COLÈRE _ SAGESSE CHRÉTIENNE 24-11-12",
+        ];
+
+        // Now verifying the second audio picture addition result
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureJsonFilesDir: jesusChristPlaylistPictureJsonFilesDir,
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitle:
+              jesusChristAudioOneTitle, // NE VOUS METTEZ PLUS JAMAIS EN COLÈRE ...
+          audioForPictureTitleDurationStr: jesusChristAudioOneDurationStr,
+          playlistAudioPictureJsonFileNameLst:
+              playlistJesusChristAudioOnePictureLstJsonFileName,
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          mustPlayableAudioListBeUsed: false,
+        );
+
+        // Go back to the playlist download view, re-select the local playlist
+        // and add another picture to a the audio which already has a picture.
+
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Select the local playlist containing the audio to which we
+        // will add a new picture
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: localPlaylistTitle,
+        );
+
+        // Third picture addition, to the local playlist audio which
+        // already has a picture
+        await _addPictureToAudioExecutingAudioListItemMenu(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pictureFileName: pictureTwoFileName, // "Jésus je T'adore.jpg"
+          pictureSourcePath: availablePicturesDir,
+          pictureFileSize: pictureTwoFileSize,
+          audioForPictureTitle:
+              localAudioOneTitle, // NE VOUS METTEZ PLUS JAMAIS EN COLÈRE ...
+        );
+
+        audioForPictureTitleLstJesusMonAmour = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+          "Jésus-Christ|241210-073532-NE VOUS METTEZ PLUS JAMAIS EN COLÈRE _ SAGESSE CHRÉTIENNE 24-11-12",
+        ];
+
+        List<String> audioForPictureTitleLstJesusJeTadore = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+        ];
+
+        List<List<Picture>> expectedPlaylistAudioPictureLst = [
+          [
+            Picture(
+              fileName: pictureOneFileName, // "Jésus mon amour.jpg"
+            ),
+            Picture(
+              fileName: pictureTwoFileName, // "Jésus je T'adore.jpg"
+            ),
+          ],
+        ];
+
+        // Now verifying the second audio picture addition result
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureJsonFilesDir: localPlaylistPictureJsonFilesDir,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+          audioForPictureTitleDurationStr: localAudioOneDurationStr,
+          playlistAudioPictureJsonFileNameLst:
+              playlistLocalAudioOnePictureLstJsonFileName,
+          audioPictureJsonFileContentLst: expectedPlaylistAudioPictureLst,
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          pictureFileNameTwo: pictureTwoFileName, // "Jésus je T'adore.jpg"
+          audioForPictureTitleTwoLst: audioForPictureTitleLstJesusJeTadore,
+          mustPlayableAudioListBeUsed: false,
+        );
+
+        // Return to the playlist download view and add another picture
+        // to a the audio which already has two pictures.
+
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Fourth picture addition, to the local playlist audio which
+        // already has two pictures
+        await _addPictureToAudioExecutingAudioListItemMenu(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pictureFileName: pictureThreeFileName, // "Jésus je T'aime.jpg"
+          pictureSourcePath: availablePicturesDir,
+          pictureFileSize: pictureThreeFileSize,
+          audioForPictureTitle:
+              localAudioOneTitle, // NE VOUS METTEZ PLUS JAMAIS EN COLÈRE ...
+        );
+
+        audioForPictureTitleLstJesusMonAmour = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+          "Jésus-Christ|241210-073532-NE VOUS METTEZ PLUS JAMAIS EN COLÈRE _ SAGESSE CHRÉTIENNE 24-11-12",
+        ];
+
+        audioForPictureTitleLstJesusJeTadore = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+        ];
+
+        audioForPictureTitleLstJesusJeTaime = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+        ];
+
+        expectedPlaylistAudioPictureLst = [
+          [
+            Picture(
+              fileName: pictureOneFileName, // "Jésus mon amour.jpg"
+            ),
+            Picture(
+              fileName: pictureTwoFileName, // "Jésus je T'adore.jpg"
+            ),
+            Picture(
+              fileName: pictureThreeFileName, // "Jésus je T'aime.jpg"
+            ),
+          ],
+        ];
+
+        // Now verifying the third audio picture addition result
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureJsonFilesDir: localPlaylistPictureJsonFilesDir,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+          audioForPictureTitleDurationStr: localAudioOneDurationStr,
+          playlistAudioPictureJsonFileNameLst:
+              playlistLocalAudioOnePictureLstJsonFileName,
+          audioPictureJsonFileContentLst: expectedPlaylistAudioPictureLst,
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          pictureFileNameTwo: pictureTwoFileName, // "Jésus je T'adore.jpg"
+          audioForPictureTitleTwoLst: audioForPictureTitleLstJesusJeTadore,
+          pictureFileNameThree: pictureThreeFileName, // "Jésus je T'aime.jpg"
+          audioForPictureTitleThreeLst: audioForPictureTitleLstJesusJeTaime,
+          mustPlayableAudioListBeUsed: false,
+        );
+
+        // Now go back to the playlist download view and remove the
+        // last added audio picture
+
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Deleting the last added audio picture
+        await _removeAudioPictureExecutingAudioListItemMenu(
+          tester: tester,
+          picturedAudioTitle: localAudioOneTitle,
+        );
+
+        await IntegrationTestUtil.verifyPictureSuppression(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureDir: localPlaylistPictureDir,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+          audioPictureJsonFileName:
+              playlistLocalAudioOnePictureLstJsonFileName[0],
+          deletedPictureFileName:
+              pictureThreeFileName, // "Jésus je T'adore.jpg"
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          pictureFileNameTwo: pictureTwoFileName, // "Jésus je T'adore.jpg"
+          audioForPictureTitleTwoLst: audioForPictureTitleLstJesusJeTadore,
+        );
+
+        // Now go back to the playlist download view and add again a
+        // picture to the same audio whose picture was removed
+
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Third picture addition
+        await _addPictureToAudioExecutingAudioListItemMenu(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pictureFileName: pictureFourFileName, // "Jésus l'Amour de ma vie.jpg"
+          pictureSourcePath: availablePicturesDir,
+          pictureFileSize: pictureFourFileSize,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+        );
+
+        List<String> audioForPictureTitleLstJesusLamourDeMaVie = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+        ];
+
+        expectedPlaylistAudioPictureLst = [
+          [
+            Picture(
+              fileName: pictureOneFileName, // "Jésus mon amour.jpg"
+            ),
+            Picture(
+              fileName: pictureTwoFileName, // "Jésus je T'adore.jpg"
+            ),
+            Picture(
+              fileName: pictureFourFileName, // "Jésus l'Amour de ma vie.jpg"
+            ),
+          ],
+        ];
+
+        // Now verifying the third audio picture addition result
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureJsonFilesDir: localPlaylistPictureJsonFilesDir,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+          audioForPictureTitleDurationStr: localAudioOneDurationStr,
+          playlistAudioPictureJsonFileNameLst:
+              playlistLocalAudioOnePictureLstJsonFileName,
+          audioPictureJsonFileContentLst: expectedPlaylistAudioPictureLst,
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          pictureFileNameTwo: pictureTwoFileName, // "Jésus je T'adore.jpg"
+          audioForPictureTitleTwoLst: audioForPictureTitleLstJesusJeTadore,
+          pictureFileNameThree:
+              pictureFourFileName, // "Jésus l'Amour de ma vie.jpg"
+          audioForPictureTitleThreeLst:
+              audioForPictureTitleLstJesusLamourDeMaVie,
+          mustPlayableAudioListBeUsed: true,
+        );
+
+        // Finally, go back to the playlist download view and save
+        // the playlists, comments, pictures and settings to a zip file
+
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        String saveZipFilePath =
+            '$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName';
+
+        // Setting the path value returned by the FilePicker mock.
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: saveZipFilePath,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists and Comments to zip File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAndCommentsToZip',
+        );
+
+        // Does not check the "Add all JPG pictures to ZIP" checkbox
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Playlists Backup to ZIP',
+          dialogMessage:
+              "Checking the \"Add all JPG pictures to ZIP\" checkbox will add all the application audio pictures to the created ZIP. This is only useful if the ZIP file will be used to restore another application.",
+          checkboxLabel: "Add all JPG pictures to ZIP",
+          closeDialog: true,
+        );
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        expect(
+          actualMessage,
+          contains(
+            "Saved also 4 picture JPG file(s) in same directory / pictures.",
+          ),
+        );
+
+        // Verify the displayed warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Saved playlist, comment and picture JSON files as well as application settings to \"$saveZipFilePath${path.separator}audioLearn_${yearMonthDayDateTimeFormatForFileName.format(DateTime.now().subtract(Duration(seconds: 1)))}.zip\".\n\nSaved also 4 picture JPG file(s) in same directory / pictures.",
+          warningDialogMessageAlternative:
+              "Saved playlist, comment and picture JSON files as well as application settings to \"$saveZipFilePath${path.separator}audioLearn_${yearMonthDayDateTimeFormatForFileName.format(DateTime.now())}.zip\".\n\nSaved also 4 picture JPG file(s) in same directory / pictures.",
+          isWarningConfirming: true,
+        );
+
+        List<String> pictureNamesLst = DirUtil.listFileNamesInDir(
+          directoryPath: "$saveZipFilePath${path.separator}$kPictureDirName",
+          fileExtension: 'jpg',
+        );
+
+        List<String> expectedPictureNamesLst = [
+          "Jésus je T'adore.jpg",
+          "Jésus je T'aime.jpg",
+          "Jésus l'Amour de ma vie.jpg",
+          "Jésus, mon amour.jpg",
+        ];
+        expect(
+          pictureNamesLst,
+          expectedPictureNamesLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+
+    group('''With checking the "Add all JPG pictures to ZIP" checkbox''', () {
+      testWidgets(
+          '''Successful save with checking the "Add all JPG pictures to ZIP" checkbox. The
+           integration test verifies the confirmation displayed warning''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}2_youtube_2_local_playlists_delete_playlists_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        // Create a new directory to which the zip file will be saved
+
+        String saveZipFilePath =
+            '$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName';
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists and Comments to zip File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAndCommentsToZip',
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Playlists Backup to ZIP',
+          dialogMessage:
+              "Checking the \"Add all JPG pictures to ZIP\" checkbox will add all the application audio pictures to the created ZIP. This is only useful if the ZIP file will be used to restore another application.",
+          checkboxLabel: "Add all JPG pictures to ZIP",
+        );
+
+        // Check the "Add all JPG pictures to ZIP" checkbox
+        await tester.tap(find.byKey(const Key('checkbox_0_key')));
+        await tester.pumpAndSettle();
+
+        // Close the dialog with the OK button
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        expect(
+          actualMessage,
+          contains(
+            "Saved playlist, comment and picture JSON files as well as application settings to \"$saveZipFilePath${path.separator}audioLearn_",
+          ),
+        );
+
+        expect(
+          actualMessage,
+          contains(
+            "\n\nSaved also 1 picture JPG file(s) in the ZIP file.",
+          ),
+        );
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath: saveZipFilePath,
+          fileExtension: 'zip',
+        );
+
+        List<String> expectedZipContentLst = [
+          "playlists/audio_learn_test_download_2_small_videos/audio_learn_test_download_2_small_videos.json",
+          "playlists/audio_learn_test_download_2_small_videos/comments/230628-033811-audio learn test short video one 23-06-10.json",
+          "playlists/audio_learn_test_download_2_small_videos/comments/230628-033813-audio learn test short video two 23-06-10.json",
+          "playlists/audio_player_view_2_shorts_test/audio_player_view_2_shorts_test.json",
+          "playlists/local_3/local_3.json",
+          "playlists/local_audio_playlist_2/local_audio_playlist_2.json",
+          "settings.json",
+          "pictures/pictureAudioMap.json",
+          "pictures/230628-033811-audio learn test short video one 23-06-10.jpg"
+        ];
+
+        List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+          zipFilePathName: "$saveZipFilePath${path.separator}${zipLst[0]}",
+        );
+
+        expect(
+          zipContentLst,
+          expectedZipContentLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Unsuccessful save which happens on the S8 Galaxy smartphone. In the save to ZIP dialod,
+           the "Add all JPG pictures to ZIP" checkbox is checked. The integration test verifies the
+           displayed warning. Problem was solved.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}2_youtube_2_local_playlists_integr_test_data",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Create a new directory to which the zip file will be saved
+
+        String saveZipFilePath =
+            '$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName';
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists and Comments to zip File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAndCommentsToZip',
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Playlists Backup to ZIP',
+          dialogMessage:
+              "Checking the \"Add all JPG pictures to ZIP\" checkbox will add all the application audio pictures to the created ZIP. This is only useful if the ZIP file will be used to restore another application.",
+          checkboxLabel: "Add all JPG pictures to ZIP",
+        );
+
+        // Check the "Add all JPG pictures to ZIP" checkbox
+        await tester.tap(find.byKey(const Key('checkbox_0_key')));
+        await tester.pumpAndSettle();
+
+        // Close the dialog with the OK button
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        expect(
+          actualMessage,
+          contains(
+            "Saved playlist, comment and picture JSON files as well as application settings to \"$saveZipFilePath${path.separator}audioLearn_",
+          ),
+        );
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath: saveZipFilePath,
+          fileExtension: 'zip',
+        );
+
+        expect(zipLst.isEmpty, false);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''After picture and comment addition, save to zip file with checking the
+             "Add all JPG pictures to ZIP" checkbox.''',
+          (WidgetTester tester) async {
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'audio_player_zip_comment_picture_test',
+          tapOnPlaylistToggleButton: false,
+        );
+
+        final String availablePicturesDir =
+            "$kApplicationPathWindowsTest${path.separator}availablePictures";
+
+        final String appPictureAudioMapDir =
+            "$kApplicationPathWindowsTest${path.separator}$kPictureDirName";
+
+        const String localPlaylistTitle = 'local';
+        final String localPlaylistPictureDir =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kPictureDirName";
+        final String localPlaylistPictureJsonFilesDir =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kPictureDirName";
+
+        const String localAudioOneTitle =
+            'CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien';
+        const String localAudioOneDurationStr = '40:53';
+
+        const String jesusChristPlaylistTitle = 'Jésus-Christ';
+        final String jesusChristPlaylistPictureJsonFilesDir =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$jesusChristPlaylistTitle${path.separator}$kPictureDirName";
+
+        const String jesusChristAudioOneTitle =
+            'NE VOUS METTEZ PLUS JAMAIS EN COLÈRE _ SAGESSE CHRÉTIENNE';
+        const String jesusChristAudioOneDurationStr = '24:07';
+
+        const String pictureOneFileName = "Jésus, mon amour.jpg";
+        const int pictureOneFileSize = 94507;
+        const String pictureTwoFileName = "Jésus je T'adore.jpg";
+        const int pictureTwoFileSize = 154529;
+        const String pictureThreeFileName = "Jésus je T'aime.jpg";
+        const int pictureThreeFileSize = 125867;
+        const String pictureFourFileName = "Jésus l'Amour de ma vie.jpg";
+        const int pictureFourFileSize = 187362;
+
+        // Select the local playlist containing the audio to which we
+        // will add a first picture
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: localPlaylistTitle,
+        );
+
+        // Verify that the appPictureAudioMap dir is  present
+        Directory appPictureAudioMapDirectory =
+            Directory(appPictureAudioMapDir);
+        expect(appPictureAudioMapDirectory.existsSync(), true);
+
+        // Verify that the local playlist picture dir is not present
+        Directory localPlaylistPictureDirDirectory =
+            Directory(localPlaylistPictureDir);
+        expect(localPlaylistPictureDirDirectory.existsSync(), false);
+
+        // First picture addition (to a local playlist audio)
+        await _addPictureToAudioExecutingAudioListItemMenu(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pictureFileName: pictureOneFileName, // "Jésus, mon amour.jpg"
+          pictureSourcePath: availablePicturesDir,
+          pictureFileSize: pictureOneFileSize,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+        );
+
+        List<String> audioForPictureTitleLstJesusJeTaime = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01"
+        ];
+
+        List<String> playlistJesusChristAudioOnePictureLstJsonFileName = [
+          "241210-073532-NE VOUS METTEZ PLUS JAMAIS EN COLÈRE _ SAGESSE CHRÉTIENNE 24-11-12.json",
+        ];
+
+        // Now verifying the audio picture first addition result
+
+        List<String> playlistLocalAudioOnePictureLstJsonFileName = [
+          "250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01.json",
+        ];
+
+        List<String> audioForPictureTitleLstJesusMonAmour = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+        ];
+
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureJsonFilesDir: localPlaylistPictureJsonFilesDir,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+          audioForPictureTitleDurationStr: localAudioOneDurationStr,
+          playlistAudioPictureJsonFileNameLst:
+              playlistLocalAudioOnePictureLstJsonFileName,
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          mustPlayableAudioListBeUsed: false,
+        );
+
+        // Now go back to the playlist download view, select another playlist
+        // and add another picture to a new audio.
+
+        Finder appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Select the Jésus-Christ playlist containing the audio to which we
+        // will add a first picture
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: jesusChristPlaylistTitle,
+        );
+
+        // Second picture addition (to a jésus-christ playlist audio)
+        await _addPictureToAudioExecutingAudioListItemMenu(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pictureFileName: pictureOneFileName, // "Jésus, mon amour.jpg"
+          pictureSourcePath: availablePicturesDir,
+          pictureFileSize: pictureOneFileSize,
+          audioForPictureTitle:
+              jesusChristAudioOneTitle, // NE VOUS METTEZ PLUS JAMAIS EN COLÈRE ...
+        );
+
+        audioForPictureTitleLstJesusMonAmour = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+          "Jésus-Christ|241210-073532-NE VOUS METTEZ PLUS JAMAIS EN COLÈRE _ SAGESSE CHRÉTIENNE 24-11-12",
+        ];
+
+        // Now verifying the second audio picture addition result
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureJsonFilesDir: jesusChristPlaylistPictureJsonFilesDir,
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitle:
+              jesusChristAudioOneTitle, // NE VOUS METTEZ PLUS JAMAIS EN COLÈRE ...
+          audioForPictureTitleDurationStr: jesusChristAudioOneDurationStr,
+          playlistAudioPictureJsonFileNameLst:
+              playlistJesusChristAudioOnePictureLstJsonFileName,
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          mustPlayableAudioListBeUsed: false,
+        );
+
+        // Go back to the playlist download view, re-select the local playlist
+        // and add another picture to a the audio which already has a picture.
+
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Select the local playlist containing the audio to which we
+        // will add a new picture
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: localPlaylistTitle,
+        );
+
+        // Third picture addition, to the local playlist audio which
+        // already has a picture
+        await _addPictureToAudioExecutingAudioListItemMenu(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pictureFileName: pictureTwoFileName, // "Jésus je T'adore.jpg"
+          pictureSourcePath: availablePicturesDir,
+          pictureFileSize: pictureTwoFileSize,
+          audioForPictureTitle:
+              localAudioOneTitle, // NE VOUS METTEZ PLUS JAMAIS EN COLÈRE ...
+        );
+
+        audioForPictureTitleLstJesusMonAmour = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+          "Jésus-Christ|241210-073532-NE VOUS METTEZ PLUS JAMAIS EN COLÈRE _ SAGESSE CHRÉTIENNE 24-11-12",
+        ];
+
+        List<String> audioForPictureTitleLstJesusJeTadore = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+        ];
+
+        List<List<Picture>> expectedPlaylistAudioPictureLst = [
+          [
+            Picture(
+              fileName: pictureOneFileName, // "Jésus mon amour.jpg"
+            ),
+            Picture(
+              fileName: pictureTwoFileName, // "Jésus je T'adore.jpg"
+            ),
+          ],
+        ];
+
+        // Now verifying the second audio picture addition result
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureJsonFilesDir: localPlaylistPictureJsonFilesDir,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+          audioForPictureTitleDurationStr: localAudioOneDurationStr,
+          playlistAudioPictureJsonFileNameLst:
+              playlistLocalAudioOnePictureLstJsonFileName,
+          audioPictureJsonFileContentLst: expectedPlaylistAudioPictureLst,
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          pictureFileNameTwo: pictureTwoFileName, // "Jésus je T'adore.jpg"
+          audioForPictureTitleTwoLst: audioForPictureTitleLstJesusJeTadore,
+          mustPlayableAudioListBeUsed: false,
+        );
+
+        // Return to the playlist download view and add another picture
+        // to a the audio which already has two pictures.
+
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Fourth picture addition, to the local playlist audio which
+        // already has two pictures
+        await _addPictureToAudioExecutingAudioListItemMenu(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pictureFileName: pictureThreeFileName, // "Jésus je T'aime.jpg"
+          pictureSourcePath: availablePicturesDir,
+          pictureFileSize: pictureThreeFileSize,
+          audioForPictureTitle:
+              localAudioOneTitle, // NE VOUS METTEZ PLUS JAMAIS EN COLÈRE ...
+        );
+
+        audioForPictureTitleLstJesusMonAmour = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+          "Jésus-Christ|241210-073532-NE VOUS METTEZ PLUS JAMAIS EN COLÈRE _ SAGESSE CHRÉTIENNE 24-11-12",
+        ];
+
+        audioForPictureTitleLstJesusJeTadore = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+        ];
+
+        audioForPictureTitleLstJesusJeTaime = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+        ];
+
+        expectedPlaylistAudioPictureLst = [
+          [
+            Picture(
+              fileName: pictureOneFileName, // "Jésus mon amour.jpg"
+            ),
+            Picture(
+              fileName: pictureTwoFileName, // "Jésus je T'adore.jpg"
+            ),
+            Picture(
+              fileName: pictureThreeFileName, // "Jésus je T'aime.jpg"
+            ),
+          ],
+        ];
+
+        // Now verifying the third audio picture addition result
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureJsonFilesDir: localPlaylistPictureJsonFilesDir,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+          audioForPictureTitleDurationStr: localAudioOneDurationStr,
+          playlistAudioPictureJsonFileNameLst:
+              playlistLocalAudioOnePictureLstJsonFileName,
+          audioPictureJsonFileContentLst: expectedPlaylistAudioPictureLst,
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          pictureFileNameTwo: pictureTwoFileName, // "Jésus je T'adore.jpg"
+          audioForPictureTitleTwoLst: audioForPictureTitleLstJesusJeTadore,
+          pictureFileNameThree: pictureThreeFileName, // "Jésus je T'aime.jpg"
+          audioForPictureTitleThreeLst: audioForPictureTitleLstJesusJeTaime,
+          mustPlayableAudioListBeUsed: false,
+        );
+
+        // Now go back to the playlist download view and remove the
+        // last added audio picture
+
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Deleting the last added audio picture
+        await _removeAudioPictureExecutingAudioListItemMenu(
+          tester: tester,
+          picturedAudioTitle: localAudioOneTitle,
+        );
+
+        await IntegrationTestUtil.verifyPictureSuppression(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureDir: localPlaylistPictureDir,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+          audioPictureJsonFileName:
+              playlistLocalAudioOnePictureLstJsonFileName[0],
+          deletedPictureFileName:
+              pictureThreeFileName, // "Jésus je T'adore.jpg"
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          pictureFileNameTwo: pictureTwoFileName, // "Jésus je T'adore.jpg"
+          audioForPictureTitleTwoLst: audioForPictureTitleLstJesusJeTadore,
+        );
+
+        // Now go back to the playlist download view and add again a
+        // picture to the same audio whose picture was removed
+
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Third picture addition
+        await _addPictureToAudioExecutingAudioListItemMenu(
+          tester: tester,
+          mockFilePicker: mockFilePicker,
+          pictureFileName: pictureFourFileName, // "Jésus l'Amour de ma vie.jpg"
+          pictureSourcePath: availablePicturesDir,
+          pictureFileSize: pictureFourFileSize,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+        );
+
+        List<String> audioForPictureTitleLstJesusLamourDeMaVie = [
+          "local|250103-125311-CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS !  Émission Carrément Bien 24-07-01",
+        ];
+
+        expectedPlaylistAudioPictureLst = [
+          [
+            Picture(
+              fileName: pictureOneFileName, // "Jésus mon amour.jpg"
+            ),
+            Picture(
+              fileName: pictureTwoFileName, // "Jésus je T'adore.jpg"
+            ),
+            Picture(
+              fileName: pictureFourFileName, // "Jésus l'Amour de ma vie.jpg"
+            ),
+          ],
+        ];
+
+        // Now verifying the third audio picture addition result
+        await IntegrationTestUtil.verifyPictureAddition(
+          tester: tester,
+          applicationPictureDir: appPictureAudioMapDir,
+          playlistPictureJsonFilesDir: localPlaylistPictureJsonFilesDir,
+          audioForPictureTitle: localAudioOneTitle, // CETTE SOEUR GUÉRIT ...
+          audioForPictureTitleDurationStr: localAudioOneDurationStr,
+          playlistAudioPictureJsonFileNameLst:
+              playlistLocalAudioOnePictureLstJsonFileName,
+          audioPictureJsonFileContentLst: expectedPlaylistAudioPictureLst,
+          pictureFileNameOne: pictureOneFileName, // "Jésus mon amour.jpg"
+          audioForPictureTitleOneLst: audioForPictureTitleLstJesusMonAmour,
+          pictureFileNameTwo: pictureTwoFileName, // "Jésus je T'adore.jpg"
+          audioForPictureTitleTwoLst: audioForPictureTitleLstJesusJeTadore,
+          pictureFileNameThree:
+              pictureFourFileName, // "Jésus l'Amour de ma vie.jpg"
+          audioForPictureTitleThreeLst:
+              audioForPictureTitleLstJesusLamourDeMaVie,
+          mustPlayableAudioListBeUsed: true,
+        );
+
+        // Finally, go back to the playlist download view and save
+        // the playlists, comments, pictures and settings to a zip file
+
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        String saveZipFilePath =
+            '$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName';
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists and Comments to zip File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAndCommentsToZip',
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Playlists Backup to ZIP',
+          dialogMessage:
+              "Checking the \"Add all JPG pictures to ZIP\" checkbox will add all the application audio pictures to the created ZIP. This is only useful if the ZIP file will be used to restore another application.",
+          checkboxLabel: "Add all JPG pictures to ZIP",
+        );
+
+        // Check the "Add all JPG pictures to ZIP" checkbox
+        await tester.tap(find.byKey(const Key('checkbox_0_key')));
+        await tester.pumpAndSettle();
+
+        // Close the dialog with the OK button
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Saved playlist, comment and picture JSON files as well as application settings to \"$saveZipFilePath${path.separator}audioLearn_${yearMonthDayDateTimeFormatForFileName.format(DateTime.now().subtract(Duration(seconds: 1)))}.zip\".\n\nSaved also 4 picture JPG file(s) in the ZIP file.",
+          warningDialogMessageAlternative:
+              "Saved playlist, comment and picture JSON files as well as application settings to \"$saveZipFilePath${path.separator}audioLearn_${yearMonthDayDateTimeFormatForFileName.format(DateTime.now())}.zip\".\n\nSaved also 4 picture JPG file(s) in the ZIP file.",
+          isWarningConfirming: true,
+        );
+
+        List<String> pictureNamesLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}$kPictureDirName",
+          fileExtension: 'jpg',
+        );
+
+        // Since the picture files were added to the creted save ZIP file,
+        // the picture dir in the saved should be empty
+        List<String> expectedPictureNamesLst = [];
+        expect(
+          pictureNamesLst,
+          expectedPictureNamesLst,
+        );
+
+        // Now re-tap the appbar leading popup menu button Then, the 'Save
+        // Playlists and Comments to zip File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAndCommentsToZip',
+        );
+
+        // This time, do not check the "Add all JPG pictures to ZIP" checkbox
+        // and close the dialog with the OK button
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Playlists Backup to ZIP',
+          dialogMessage:
+              "Checking the \"Add all JPG pictures to ZIP\" checkbox will add all the application audio pictures to the created ZIP. This is only useful if the ZIP file will be used to restore another application.",
+          checkboxLabel: "Add all JPG pictures to ZIP",
+          closeDialog: true,
+        );
+
+        // Verify that the picture files were now saved to the pictures
+        // dir in the saved
+
+        pictureNamesLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}$kPictureDirName",
+          fileExtension: 'jpg',
+        );
+
+        // Since the picture files were added to the creted save ZIP file,
+        // the picture dir in the saved should be empty
+        expectedPictureNamesLst = [
+          "Jésus je T'adore.jpg",
+          "Jésus je T'aime.jpg",
+          "Jésus l'Amour de ma vie.jpg",
+          "Jésus, mon amour.jpg",
+        ];
+        expect(
+          pictureNamesLst,
+          expectedPictureNamesLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+    testWidgets(
+        '''Save unique Youtube playlist containing pictures to zip file.''',
+        (WidgetTester tester) async {
+      // Replace the platform instance with your mock
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'save_or_delete_playlist_with_pictures',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String playlistToSaveTitle = 'Restore- short - test - playlist';
+
+      // Verify the zip files before saving the playlist.
+      // Those zip files were copied from the integration test
+      // data directory to the app test directory.
+
+      List<String> zipLst = DirUtil.listFileNamesInDir(
+        directoryPath: kApplicationPathWindowsTest,
+        fileExtension: 'zip',
+      );
+
+      expect(
+        zipLst,
+        [
+          'Windows audioLearn_2025-05-11_13_16.zip',
+          'Windows Local restore- short - test - playlist.zip',
+          'Windows Restore- short - test - playlist.zip'
+        ],
+      );
+
+      // Save the playlist and its comments and pictures to a zip file
+
+      await IntegrationTestUtil.typeOnPlaylistMenuItem(
+        tester: tester,
+        playlistTitle: playlistToSaveTitle,
+        playlistMenuKeyStr: 'popup_menu_save_playlist_comments_pictures_to_zip',
+      );
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "Saved playlist, comment and picture JSON files to \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}$playlistToSaveTitle.zip\".\n\nSaved also 3 picture JPG file(s) in the ZIP file.",
+        isWarningConfirming: true,
+      );
+
+      // Verify that the zip file has been created
+
+      zipLst = DirUtil.listFileNamesInDir(
+        directoryPath:
+            "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName",
+        fileExtension: 'zip',
+      );
+
+      expect(
+        zipLst,
+        [
+          '$playlistToSaveTitle.zip',
+        ],
+      );
+
+      // Verify the content of the created ZIP file
+
+      final zipFilePath = path.join(
+          "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName",
+          '$playlistToSaveTitle.zip');
+      final zipFile = File(zipFilePath);
+
+      // Read the ZIP file as bytes
+      final List<int> bytes = await zipFile.readAsBytes();
+
+      // Decode the ZIP
+      final archive = ZipDecoder().decodeBytes(bytes);
+
+      // Extract content types (Json and JPG files)
+      final List<String> jsonFileNames = archive.files
+          .where((file) => file.isFile && file.name.endsWith('.json'))
+          .map((file) => file.name)
+          .toList();
+
+      final List<String> jpgFiles = archive.files
+          .where((file) => file.isFile && file.name.endsWith('.jpg'))
+          .map((file) => file.name)
+          .toList();
+
+      // Verify ZIP content
+      final List<String> expectedJsonFileNames = [
+        'playlists/Restore- short - test - playlist/comments/250518-164039-morning _ cinematic video 23-07-01.json',
+        'playlists/Restore- short - test - playlist/comments/250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
+        'playlists/Restore- short - test - playlist/pictures/250518-164035-Really short video 23-07-01.json',
+        'playlists/Restore- short - test - playlist/pictures/250518-164039-morning _ cinematic video 23-07-01.json',
+        'playlists/Restore- short - test - playlist/pictures/250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
+        'playlists/Restore- short - test - playlist/Restore- short - test - playlist.json',
+        'pictures/pictureAudioMap.json',
+      ];
+
+      int i = 0;
+      for (String jsonFileName in jsonFileNames) {
+        expect(jsonFileName, expectedJsonFileNames[i++]);
+      }
+
+      // Verify picture files are included
+      expect(jpgFiles.length, 3); // Should have 3 JPG files
+
+      // Check for specific expected pictures if you know their names
+      expect(
+        jpgFiles,
+        contains('pictures/Jean-Pierre.jpg'),
+      );
+      expect(
+        jpgFiles,
+        contains(
+            'pictures/Bora_Bora_2560_1440_Youtube_2 - Voyage vers l\'Inde intérieure.jpg'),
+      );
+      expect(
+        jpgFiles,
+        contains('pictures/Jésus le Dieu vivant.jpg'),
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''Save unique local playlist containing pictures to zip file.''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'save_or_delete_local_playlist_with_pictures',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String playlistToSaveTitle =
+          'Local restore- short - test - playlist';
+
+      // Verify the zip files before saving the playlist.
+      // Those zip files were copied from the integration test
+      // data directory to the app test directory.
+
+      List<String> zipLst = DirUtil.listFileNamesInDir(
+        directoryPath: kApplicationPathWindowsTest,
+        fileExtension: 'zip',
+      );
+
+      expect(
+        zipLst,
+        [
+          'Windows audioLearn_2025-05-11_13_16.zip',
+          'Windows Local restore- short - test - playlist.zip',
+          'Windows Restore- short - test - playlist.zip'
+        ],
+      );
+
+      // Save the playlist and its comments and pictures to a zip file
+
+      await IntegrationTestUtil.typeOnPlaylistMenuItem(
+        tester: tester,
+        playlistTitle: playlistToSaveTitle,
+        playlistMenuKeyStr: 'popup_menu_save_playlist_comments_pictures_to_zip',
+      );
+
+      // Verify the displayed warning dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "Saved playlist, comment and picture JSON files to \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}$playlistToSaveTitle.zip\".\n\nSaved also 3 picture JPG file(s) in the ZIP file.",
+        isWarningConfirming: true,
+      );
+
+      // Verify that the zip file has been created
+
+      zipLst = DirUtil.listFileNamesInDir(
+        directoryPath:
+            "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName",
+        fileExtension: 'zip',
+      );
+
+      expect(
+        zipLst,
+        [
+          '$playlistToSaveTitle.zip',
+        ],
+      );
+
+      // Verify the content of the created ZIP file
+
+      final zipFilePath = path.join(
+          "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName",
+          '$playlistToSaveTitle.zip');
+      final zipFile = File(zipFilePath);
+
+      // Read the ZIP file as bytes
+      final List<int> bytes = await zipFile.readAsBytes();
+
+      // Decode the ZIP
+      final archive = ZipDecoder().decodeBytes(bytes);
+
+      // Extract content types (Json and JPG files)
+      final List<String> jsonFileNames = archive.files
+          .where((file) => file.isFile && file.name.endsWith('.json'))
+          .map((file) => file.name)
+          .toList();
+
+      final List<String> jpgFiles = archive.files
+          .where((file) => file.isFile && file.name.endsWith('.jpg'))
+          .map((file) => file.name)
+          .toList();
+
+      // Verify ZIP content
+      final List<String> expectedJsonFileNames = [
+        'playlists/Local restore- short - test - playlist/comments/250518-164039-morning _ cinematic video 23-07-01.json',
+        'playlists/Local restore- short - test - playlist/comments/250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
+        'playlists/Local restore- short - test - playlist/Local restore- short - test - playlist.json',
+        'playlists/Local restore- short - test - playlist/pictures/250518-164035-Really short video 23-07-01.json',
+        'playlists/Local restore- short - test - playlist/pictures/250518-164039-morning _ cinematic video 23-07-01.json',
+        'playlists/Local restore- short - test - playlist/pictures/250518-164043-People Talking at The Table _ Free Video Loop 19-09-28.json',
+        'pictures/pictureAudioMap.json',
+      ];
+
+      int i = 0;
+      for (String jsonFileName in jsonFileNames) {
+        expect(jsonFileName, expectedJsonFileNames[i++]);
+      }
+
+      // Verify picture files are included
+      expect(jpgFiles.length, 3); // Should have 3 JPG files
+
+      // Check for specific expected pictures if you know their names
+      expect(
+        jpgFiles,
+        contains('pictures/Jean-Pierre.jpg'),
+      );
+      expect(
+        jpgFiles,
+        contains(
+            'pictures/Bora_Bora_2560_1440_Youtube_2 - Voyage vers l\'Inde intérieure.jpg'),
+      );
+      expect(
+        jpgFiles,
+        contains('pictures/Jésus le Dieu vivant.jpg'),
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group(
+      'Save audio mp3 files to zip files for all playlists or unique playlist test',
+      () {
+    group('Save playlists audio mp3 files to zip file menu test', () {
+      testWidgets(
+          '''Keep download date to the oldest one. The oldest value is 13/07/2025 14:31. The integration
+          test verifies the confirmation displayed warning.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Get the latest
+        // download Date of the multiple Playlists restored Audios ...' menu
+        // is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+        );
+
+        expect(
+            find.text(
+                'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+            findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists Audio's MP3 to ZIP File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
+
+        const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
+
+        expect(find.text(oldestAudioDownloadDateTime), findsOneWidget);
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:",
+          ],
+          useContains: true,
+          closeDialogWithConfirmButton: true,
+        );
+
+        // Only works if tester.pump() is used instead of
+        // tester.pumpAndSettle()
+        expect(
+          find.text("Saving multiple playlists audio files to ZIP ..."),
+          findsOneWidget,
+        );
+        expect(
+          tester
+              .widget<Text>(find.byKey(const Key('saving_please_wait')).last)
+              .data!,
+          contains(
+            "Should approxim. take ",
+          ),
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        Text warningDialogTitle =
+            tester.widget(find.byKey(const Key('warningDialogTitle')).last);
+
+        expect(warningDialogTitle.data, 'CONFIRMATION');
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP all playlists audio MP3 files downloaded from $oldestAudioDownloadDateTime.\n\nTotal saved audio number: 5, total size: 64.47 MB and total duration: 2:10:37.5."));
+        expect(
+            actualMessage,
+            contains(
+                "Total saved audio number: 5, total size: 64.47 MB and total duration: 2:10:37.5."));
+        expect(actualMessage, contains("Save operation real duration: "));
+        expect(actualMessage, contains("number of bytes saved per second: "));
+        expect(actualMessage, contains("number of created ZIP file(s): 1."));
+        expect(
+            actualMessage,
+            contains(
+                "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}audioLearn_mp3_from_2025-07-13_14_31_25_on_"));
+
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        List<String> expectedZipContentLst = [
+          "playlists/Saint François d'Assise/250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
+          "playlists/Saint François d'Assise/250713-143130-Saint François d'Assise, le jongleur de Dieu 20-10-03.mp3",
+          "playlists/Saint François d'Assise/250713-143125-4 octobre  - Saint François, le Saint qui a Transformé l'Église et le Monde 24-10-03.mp3",
+          "playlists/Exo chants chrétiens/250713-144410-EXO - Ta bienveillance [avec paroles] 13-01-29.mp3",
+          "playlists/Exo chants chrétiens/250713-144321-SI TU VEUX LE LOUER - EXO 17-05-31.mp3",
+        ];
+
+        List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+          zipFilePathName:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${zipLst[0]}",
+        );
+
+        expect(
+          zipContentLst,
+          expectedZipContentLst,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Get the latest
+        // download Date of the multiple Playlists restored Audios ...' menu
+        // is selected. Sincee the audios mp3 files were saved to a zip file,
+        // the latest download date was not changed.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+        );
+
+        expect(
+            find.text(
+                'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+            findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Set download date to more recent one. The less old value is 13/07/2025 14:41. The integration
+          test verifies the confirmation displayed warning.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists Audio's MP3 to ZIP File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
+
+        const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
+
+        expect(find.text(oldestAudioDownloadDateTime), findsOneWidget);
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        // Verify that the TextField is focused using its focus node
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+        expect(textField.focusNode?.hasFocus, isTrue,
+            reason: 'TextField should be focused when dialog opens');
+
+        // Now change the download date in the dialog
+        String audioOldestDownloadDateTime = '13/07/2025 14:41';
+        textField.controller!.text = audioOldestDownloadDateTime;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Before the operation that creates the ZIP
+        DateTime beforeOperation = DateTime.now();
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:00.",
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:01."
+          ],
+          closeDialogWithConfirmButton: true,
+        );
+
+        // After getting the result
+        DateTime afterOperation = DateTime.now();
+
+        // Only works if tester.pump() is used instead of
+        // tester.pumpAndSettle()
+        expect(
+          find.text("Saving multiple playlists audio files to ZIP ..."),
+          findsOneWidget,
+        );
+        expect(
+          tester
+              .widget<Text>(find.byKey(const Key('saving_please_wait')).last)
+              .data!,
+          contains(
+            "Should approxim. take ",
+          ),
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        Text warningDialogTitle =
+            tester.widget(find.byKey(const Key('warningDialogTitle')).last);
+
+        expect(warningDialogTitle.data, 'CONFIRMATION');
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP all playlists audio MP3 files downloaded from $audioOldestDownloadDateTime.\n\nTotal saved audio number: 3, total size: 15.49 MB and total duration: 0:20:22.2."));
+        // expect(
+        //     actualMessage,
+        //     contains(
+        //         "Total saved audio number: 3, total size: 15.49 MB and total duration: 0:22:38.0."));
+        expect(actualMessage, contains("Save operation real duration: 0:00:"));
+        expect(actualMessage, contains("number of bytes saved per second: "));
+        expect(actualMessage, contains(", number of created ZIP file(s): 1."));
+
+        // expect(
+        //     actualMessage,
+        //     contains(
+        //       anyOf([
+        //         "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}audioLearn_mp3_from_2025-07-13_14_43_21_on_${yearMonthDayDateTimeFormatForFileName.format(DateTime.now())}.zip\".",
+        //         "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}audioLearn_mp3_from_2025-07-13_14_43_21_on_${yearMonthDayDateTimeFormatForFileName.format(DateTime.now().subtract(Duration(seconds: 1)))}.zip\".",
+        //         "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}audioLearn_mp3_from_2025-07-13_14_43_21_on_${yearMonthDayDateTimeFormatForFileName.format(DateTime.now().subtract(Duration(seconds: 2)))}.zip\".",
+        //       ]),
+        //     ));
+
+        // Extract the timestamp from the actual message
+        RegExp zipPathRegex = RegExp(
+            r'ZIP file path name: ".*audioLearn_mp3_from_2025-07-13_14_43_21_on_(\d{4}-\d{2}-\d{2}_\d{2}_\d{2}_\d{2})\.zip"\.');
+        Match? match = zipPathRegex.firstMatch(actualMessage);
+
+        expect(match, isNotNull, reason: 'ZIP path not found in message');
+
+        String timestampStr = match!.group(1)!; // e.g., "2025-10-22_08_10_05"
+        DateTime actualTimestamp =
+            DateFormat('yyyy-MM-dd_HH_mm_ss').parse(timestampStr);
+
+        // Verify the timestamp is within the expected range
+        expect(
+            actualTimestamp
+                .isAfter(beforeOperation.subtract(Duration(seconds: 1))),
+            isTrue);
+        expect(
+            actualTimestamp.isBefore(afterOperation.add(Duration(seconds: 1))),
+            isTrue);
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        List<String> expectedZipContentLst = [
+          "playlists/Saint François d'Assise/250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
+          "playlists/Exo chants chrétiens/250713-144410-EXO - Ta bienveillance [avec paroles] 13-01-29.mp3",
+          "playlists/Exo chants chrétiens/250713-144321-SI TU VEUX LE LOUER - EXO 17-05-31.mp3",
+        ];
+
+        List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+          zipFilePathName:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${zipLst[0]}",
+        );
+
+        expect(
+          zipContentLst,
+          expectedZipContentLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Set download date after the last download date. The set value is 14/07/2025 18:31. The integration
+          test verifies the displayed warning indicating that no audio mp3 was saved to ZIP.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists Audio's MP3 to ZIP File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
+
+        const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
+
+        expect(find.text(oldestAudioDownloadDateTime), findsOneWidget);
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        // Verify that the TextField is focused using its focus node
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+        expect(textField.focusNode?.hasFocus, isTrue,
+            reason: 'TextField should be focused when dialog opens');
+
+        // Now change the download date in the dialog
+        const String tooRecentAudioDownloadDateTime = '15/07/2025 14:31';
+        String audioOldestDownloadDateTime = tooRecentAudioDownloadDateTime;
+        textField.controller!.text = audioOldestDownloadDateTime;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:00.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
+
+        // Verify the displayed warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $tooRecentAudioDownloadDateTime.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after 15/07/2025 14:31.",
+        );
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        expect(
+          zipLst.length,
+          0,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Set download date/time with incorret download time format after the last download date. The set
+             value is 14/07/2025 1831. The integration test verifies the displayed warning indicating that
+             no audio mp3 was saved to ZIP.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists Audio's MP3 to ZIP File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
+
+        const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
+
+        expect(find.text(oldestAudioDownloadDateTime), findsOneWidget);
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        // Verify that the TextField is focused using its focus node
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+        expect(textField.focusNode?.hasFocus, isTrue,
+            reason: 'TextField should be focused when dialog opens');
+
+        // Now change the download date in the dialog
+        const String validDateFormat = '15/07/2025';
+        const String invalidTimeFormat = '1431';
+        final String invalidTooRecentAudioDownloadDateTime = '$validDateFormat $invalidTimeFormat';
+        textField.controller!.text = invalidTooRecentAudioDownloadDateTime;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed error warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Since the time format in $invalidTooRecentAudioDownloadDateTime is invalid, only the date with 00:00 time is used.",
+        );
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:00.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
+
+        // Verify the displayed warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $validDateFormat 00:00.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after $validDateFormat 00:00.",
+        );
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        expect(
+          zipLst.length,
+          0,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Empty the download date. The integration test verifies the displayed error warning indicating
+            that an empty download date is not possible.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists Audio's MP3 to ZIP File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+        // Now empty the download date in the dialog
+        textField.controller!.text = '';
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed error warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Defining an empty date is not possible.");
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        // Tap on the cancel button of the set value to target dialog
+        await tester.tap(find.byKey(const Key('setValueToTargetCancelButton')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Set incorrect download date format. The integration test verifies the displayed error warning indicating
+            that an unacceptable download date/time format is not possible.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists Audio's MP3 to ZIP File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+        // Now enter an invalid download date in the dialog
+        const String invalidDateFormat = '2909/2025';
+        textField.controller!.text = invalidDateFormat;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed error warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "$invalidDateFormat does not respect the date or date/time format.",
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        // Tap on the cancel button of the set value to target dialog
+        await tester.tap(find.byKey(const Key('setValueToTargetCancelButton')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Set incorrect download time format. The integration test verifies the displayed error warning indicating
+            that the unacceptable download time format is replacd by 00:00.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Save
+        // Playlists Audio's MP3 to ZIP File' menu is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from all playlists. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+        // Now enter an invalid download date/time in the dialog
+        const String validDateFormat = '13/07/2025';
+        const String invalidTimeFormat = '1508';
+        final String invalidDateTimeFormat = '$validDateFormat $invalidTimeFormat';
+        textField.controller!.text = invalidDateTimeFormat;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed error warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Since the time format in $invalidDateTimeFormat is invalid, only the date with 00:00 time is used.",
+        );
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:",
+          ],
+          useContains: true,
+          closeDialogWithConfirmButton: true,
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP all playlists audio MP3 files downloaded from $validDateFormat 00:00.\n\nTotal saved audio number: 5, total size: 64.47 MB and total duration: 2:10:37.5."));
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+    group('Save unique playlist audio mp3 files to zip file menu test', () {
+      testWidgets(
+          '''Keep download date to the oldest one. The oldest value in the 'Saint François d'Assise'
+          playlist is 13/07/2025 14:31. The integration test verifies the confirmation displayed
+          warning.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        const String playlistToSaveTitle = "Saint François d'Assise";
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToSaveTitle,
+          playlistMenuKeyStr: 'popup_menu_save_playlist_audio_mp3_files_to_zip',
+          dragToBottom: true,
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
+
+        const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
+
+        expect(find.text(oldestAudioDownloadDateTime), findsOneWidget);
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:",
+          ],
+          useContains: true,
+          closeDialogWithConfirmButton: true,
+        );
+
+        // Only works if tester.pump() is used instead of
+        // tester.pumpAndSettle()
+        expect(
+          find.text("Saving $playlistToSaveTitle audio files to ZIP ..."),
+          findsOneWidget,
+        );
+        expect(
+          tester
+              .widget<Text>(find.byKey(const Key('saving_please_wait')).last)
+              .data!,
+          contains(
+            "Should approxim. take ",
+          ),
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        Text warningDialogTitle =
+            tester.widget(find.byKey(const Key('warningDialogTitle')).last);
+
+        expect(warningDialogTitle.data, 'CONFIRMATION');
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $oldestAudioDownloadDateTime.\n\nTotal saved audio number: 3, total size: 53.12 MB and total duration: 1:59:18.8."));
+        expect(
+            actualMessage,
+            contains(
+                "Total saved audio number: 3, total size: 53.12 MB and total duration: 1:59:18.8."));
+        expect(actualMessage, contains("Save operation real duration: 0:00:"));
+        expect(actualMessage, contains("number of bytes saved per second: "));
+        expect(actualMessage, contains("number of created ZIP file(s): 1."));
+        expect(
+            actualMessage,
+            contains(
+                "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}Saint François d'Assise_mp3_from_2025-07-13_14_31_25_on_"));
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        List<String> expectedZipContentLst = [
+          "playlists/Saint François d'Assise/250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
+          "playlists/Saint François d'Assise/250713-143130-Saint François d'Assise, le jongleur de Dieu 20-10-03.mp3",
+          "playlists/Saint François d'Assise/250713-143125-4 octobre  - Saint François, le Saint qui a Transformé l'Église et le Monde 24-10-03.mp3",
+        ];
+
+        List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+          zipFilePathName:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${zipLst[0]}",
+        );
+
+        expect(
+          zipContentLst,
+          expectedZipContentLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Set download date to more recent one. A less old value will be 14/07/2025 14:31. The integration
+          test verifies the confirmation displayed warning.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        const String playlistToSaveTitle = "Saint François d'Assise";
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToSaveTitle,
+          playlistMenuKeyStr: 'popup_menu_save_playlist_audio_mp3_files_to_zip',
+          dragToBottom: true,
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
+
+        const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
+
+        expect(find.text(oldestAudioDownloadDateTime), findsOneWidget);
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        // Verify that the TextField is focused using its focus node
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+        expect(textField.focusNode?.hasFocus, isTrue,
+            reason: 'TextField should be focused when dialog opens');
+
+        // Now change the download date in the dialog. This date is
+        // before the last download date of the playlist
+        String audioOldestDownloadDateTime = '14/07/2025 14:31';
+        textField.controller!.text = audioOldestDownloadDateTime;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:00.",
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:01.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
+
+        Text warningDialogTitle =
+            tester.widget(find.byKey(const Key('warningDialogTitle')).last);
+
+        expect(warningDialogTitle.data, 'CONFIRMATION');
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $audioOldestDownloadDateTime.\n\nTotal saved audio number: 1, total size: 4.14 MB and total duration: 0:09:03.5."));
+        expect(
+            actualMessage,
+            contains(
+                "Total saved audio number: 1, total size: 4.14 MB and total duration: 0:09:03.5."));
+        expect(
+            actualMessage, contains("Save operation real duration: 0:00:00"));
+        expect(actualMessage, contains("number of bytes saved per second: "));
+        expect(actualMessage, contains("number of created ZIP file(s): 1."));
+        expect(
+            actualMessage,
+            contains(
+                "ZIP file path name: \"$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}Saint François d'Assise_mp3_from_2025-07-14_17_18_54_on_"));
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        List<String> expectedZipContentLst = [
+          "playlists/Saint François d'Assise/250714-171854-How to talk to animals The teaching of Saint Francis of Assisi 22-05-28.mp3",
+        ];
+
+        List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+          zipFilePathName:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${zipLst[0]}",
+        );
+
+        expect(
+          zipContentLst,
+          expectedZipContentLst,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Set download date after the last download date. The set value is 14/07/2025 18:31. The integration
+          test verifies the displayed warning indicating that no audio mp3 was saved to ZIP.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        const String playlistToSaveTitle = "Saint François d'Assise";
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToSaveTitle,
+          playlistMenuKeyStr: 'popup_menu_save_playlist_audio_mp3_files_to_zip',
+          dragToBottom: true,
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        expect(find.text('Date/time (dd/MM/yyyy hh:mm)'), findsOneWidget);
+
+        const String oldestAudioDownloadDateTime = '13/07/2025 14:31';
+
+        expect(find.text(oldestAudioDownloadDateTime), findsOneWidget);
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        // Verify that the TextField is focused using its focus node
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+        expect(textField.focusNode?.hasFocus, isTrue,
+            reason: 'TextField should be focused when dialog opens');
+
+        // Now change the download date in the dialog
+        const String tooRecentAudioDownloadDateTime = '15/07/2025 14:31';
+        String audioOldestDownloadDateTime = tooRecentAudioDownloadDateTime;
+        textField.controller!.text = audioOldestDownloadDateTime;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:00.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
+
+        // Verify the displayed warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $tooRecentAudioDownloadDateTime.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after $tooRecentAudioDownloadDateTime.",
+        );
+
+        List<String> zipLst = DirUtil.listFileNamesInDir(
+          directoryPath:
+              "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3",
+          fileExtension: 'zip',
+        );
+
+        expect(
+          zipLst.length,
+          0,
+        );
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Set download date/time with incorret download time format after the last download date. The set
+             value is 29/09/2025 1831. The integration test verifies the displayed warning indicating that
+             no audio mp3 was saved to ZIP.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        const String playlistToSaveTitle = "Saint François d'Assise";
+
+        // Type on the playlist popup menu item to save its audio
+        // mp3 files to zip
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToSaveTitle,
+          playlistMenuKeyStr: 'popup_menu_save_playlist_audio_mp3_files_to_zip',
+          dragToBottom: true,
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+        // Now enter an invalid download date/time in the dialog
+        const String validDateFormat = '29/09/2025';
+        const String invalidTimeFormat = '1508';
+        final String invalidDateTimeFormat = '$validDateFormat $invalidTimeFormat';
+        textField.controller!.text = invalidDateTimeFormat;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed error warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Since the time format in $invalidDateTimeFormat is invalid, only the date with 00:00 time is used.",
+        );
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:",
+          ],
+          useContains: true,
+          closeDialogWithConfirmButton: true,
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        // Verify the displayed warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "No audio MP3 file was saved to ZIP since no audio was downloaded, imported or extracted on or after $validDateFormat 00:00.\n\nConcerning converted (text to speech) audios, no audio MP3 file was saved to ZIP since no converted audio comment was created or modified on or after $validDateFormat 00:00.",
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Empty the download date. The integration test verifies the displayed error warning indicating
+            that an empty download date is not possible.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        const String playlistToSaveTitle = "Saint François d'Assise";
+
+        // Type on the playlist popup menu item to save its audio
+        // mp3 files to zip
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToSaveTitle,
+          playlistMenuKeyStr: 'popup_menu_save_playlist_audio_mp3_files_to_zip',
+          dragToBottom: true,
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+        // Now empty the download date in the dialog
+        textField.controller!.text = '';
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed error warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Defining an empty date is not possible.",
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        // Tap on the cancel button of the set value to target dialog
+        await tester.tap(find.byKey(const Key('setValueToTargetCancelButton')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Set incorrect download date format. The integration test verifies the displayed error warning indicating
+            that an unacceptable download date/time format is not possible.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        const String playlistToSaveTitle = "Saint François d'Assise";
+
+        // Type on the playlist popup menu item to save its audio
+        // mp3 files to zip
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToSaveTitle,
+          playlistMenuKeyStr: 'popup_menu_save_playlist_audio_mp3_files_to_zip',
+          dragToBottom: true,
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+        // Now enter an invalid download date in the dialog
+        const String invalidDateFormat = '2909/2025';
+        textField.controller!.text = invalidDateFormat;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed error warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "$invalidDateFormat does not respect the date or date/time format.",
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        // Tap on the cancel button of the set value to target dialog
+        await tester.tap(find.byKey(const Key('setValueToTargetCancelButton')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Set incorrect download time format. The integration test verifies the displayed error warning indicating
+            that the unacceptable download time format is replacd by 00:00.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}save_audio_mp3_to_zip",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to english
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.english,
+        );
+
+        const String playlistToSaveTitle = "Saint François d'Assise";
+
+        // Type on the playlist popup menu item to save its audio
+        // mp3 files to zip
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToSaveTitle,
+          playlistMenuKeyStr: 'popup_menu_save_playlist_audio_mp3_files_to_zip',
+          dragToBottom: true,
+        );
+
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'Set the download Date',
+          dialogMessage:
+              'The default specified download date corresponds to the oldest audio download date from the playlist. Modify this value by specifying the download date from which the audio MP3 files will be included in the ZIP.',
+        );
+
+        Finder setValueToTargetDialogFinder =
+            find.byType(SetValueToTargetDialog);
+
+        // This finder obtained as descendant of its enclosing dialog does
+        // enable to change the value of the TextField
+        Finder setValueToTargetDialogEditTextFinder = find.descendant(
+          of: setValueToTargetDialogFinder,
+          matching: find.byType(TextField),
+        );
+
+        TextField textField =
+            tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+        // Now enter an invalid download date/time in the dialog
+        const String validDateFormat = '13/07/2025';
+        const String invalidTimeFormat = '1508';
+        final String invalidDateTimeFormat = '$validDateFormat $invalidTimeFormat';
+        textField.controller!.text = invalidDateTimeFormat;
+        await tester.pumpAndSettle();
+
+        // Tap on the Ok button to set download date time.
+        await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed error warning dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Since the time format in $invalidDateTimeFormat is invalid, only the date with 00:00 time is used.",
+        );
+
+        // Now check the confirm dialog which indicates the estimated
+        // save audio mp3 to zip duration and accept save execution.
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle: "Prevision of the Save Duration",
+          confirmActionDialogMessagePossibleLst: [
+            "Saving the audio MP3 in one or several ZIP file(s) will take this estimated duration (hh:mm:ss): 0:00:",
+          ],
+          useContains: true,
+          closeDialogWithConfirmButton: true,
+        );
+
+        // Wait for completion
+        await tester.pumpAndSettle();
+
+        String actualMessage = tester
+            .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+            .data!;
+
+        expect(
+            actualMessage,
+            contains(
+                "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $validDateFormat 00:00.\n\nTotal saved audio number: 3, total size: 53.12 MB and total duration: 1:59:18.8."));
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+  });
+
+  group('Restore audio MP3 files from MP3 zip file', () {
+    testWidgets(
+        '''Restore Playlist Audio's MP3 from Zip File ... playlist item menu selecting a unique playlist
+           MP3 zip file. First, on empty app dir, restore unique playlist Windows zip containing 
+           urgent_actus_17-12-2023 playlist and then restore unique playlist MP3 zip file containing the
+           audios of this playlist. The restored audios are playable.''',
+        (WidgetTester tester) async {
+      // Purge the test playlist directory if it exists so that the
+      // playlist list is empty
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+
+      // Copy the integration test data to the app dir
+      DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+        sourceRootPath:
+            "$kDownloadAppTestSavedDataDir${path.separator}restore_existing_playlists_with_new_audios_android_emulator",
+        destinationRootPath: kApplicationPathWindowsTest,
+      );
+
+      const String playlistTitle = 'urgent_actus_17-12-2023';
+
+      String restorableZipFilePathName =
+          '$kApplicationPathWindowsTest${path.separator}$playlistTitle.zip';
+
+      await app.main();
+      await tester.pumpAndSettle();
+
+      // Replace the platform instance with your mock
+      MockFilePicker mockFilePicker = MockFilePicker();
+      FilePicker.platform = mockFilePicker;
+
+      mockFilePicker.setSelectedFiles([
+        PlatformFile(
+            name: restorableZipFilePathName,
+            path: restorableZipFilePathName,
+            size: 2632),
+      ]);
+
+      // Execute the 'Restore Playlists, Comments and Settings from Zip
+      // File ...' menu
+      await IntegrationTestUtil.executeRestorePlaylists(
+        tester: tester,
+        doReplaceExistingPlaylists: true,
+        doDeleteExistingPlaylistsNotContainedInZip: false,
+        closeRestoreConfirmDialog: false,
+      );
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\urgent_actus_17-12-2023.zip".',
+        isWarningConfirming: true,
+        warningTitle: 'CONFIRMATION',
+      );
+
+      // Now creating a 'Playable' sort filter parmeter
+      // in order to hide the not playable audios. After
+      // restoring the MP3 files, all audios of the playlist
+      // will be playable and so will be displayed.
+
+      const String saveAsTitle = 'Playable';
+
+      // Creating the 'Playable' sort filter parameters which
+      // will be applied and used after restoring the MP3 files
+      // of the playlist
+      await _createAndSavePlayableSortFilterParms(
+        tester: tester,
+        saveAsTitle: saveAsTitle,
+      );
+
+      // Verifying the playable audios number before restoring
+      // the MP3 files of the playlist
+
+      // Find the audio list widget using its key
+      Finder listFinder = find.byKey(const Key('audio_list'));
+
+      expect(
+        tester
+            .widgetList(find.descendant(
+              of: listFinder,
+              matching: find.byType(ListTile),
+            ))
+            .length,
+        0,
+      );
+
+      String mp3RestorableZipFilePathName =
+          '$kApplicationPathWindowsTest${path.separator}urgent_actus_17-12-2023_mp3_from_2025-08-12_16_29_25_on_2025-08-15_11_23_41.zip';
+
+      mockFilePicker.setSelectedFiles([
+        PlatformFile(
+            name: mp3RestorableZipFilePathName,
+            path: mp3RestorableZipFilePathName,
+            size: 15368672),
+      ]);
+
+      await IntegrationTestUtil.typeOnPlaylistMenuItem(
+        tester: tester,
+        playlistTitle: playlistTitle,
+        playlistMenuKeyStr:
+            'popup_menu_restore_playlist_audio_mp3_files_from_zip',
+        dragToBottom: true,
+      );
+
+      // Verify the displayed confirmation dialog
+      await IntegrationTestUtil.verifySetValueToTargetDialog(
+        tester: tester,
+        dialogTitle: 'MP3 Restoration',
+        dialogMessage:
+            "Only the MP3 relative to the audios listed in the playlist which are not already present in the playlist are restorable.",
+        closeDialog: true,
+      );
+
+      // Verify the select ZIP or dir dialog title
+      Text dialogTitle = tester
+          .widget(find.byKey(const Key('selectFileOrDirDialogTitle')).last);
+
+      expect(dialogTitle.data, 'Restore MP3 Files');
+
+      // Verify the select ZIP or dir dialog content
+      Text dialogContent = tester
+          .widget(find.byKey(const Key('selectFileOrDirDialogContent')).last);
+
+      expect(dialogContent.data, 'What would you like to select ?');
+
+      // Now tap on the 'A single ZIP File' button
+      await tester.tap(find.byKey(const Key('selectFileButton')));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "Restored 3 audio(s) MP3 in 1 playlist(s) from the MP3 zip file \"$mp3RestorableZipFilePathName\".",
+        isWarningConfirming: true,
+      );
+
+      // Verifying the playable audios number after restoring
+      // the MP3 files of the playlist
+
+      // Find the audio list widget using its key
+      listFinder = find.byKey(const Key('audio_list'));
+
+      expect(
+        tester
+            .widgetList(find.descendant(
+              of: listFinder,
+              matching: find.byType(ListTile),
+            ))
+            .length,
+        3,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''Restore Playlist Audio's MP3 from Zip File ... playlist item menu selecting a multiple
+           playlists MP3 zip file. First, on empty app dir, restore unique playlist Windows zip
+           containing urgent_actus_17-12-2023 playlist and then restore multiple playlist MP3 zip
+           file containing the audios of this playlist and of another playlist. The restored audios
+           are playable.''', (WidgetTester tester) async {
+      // Purge the test playlist directory if it exists so that the
+      // playlist list is empty
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+
+      // Copy the integration test data to the app dir
+      DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+        sourceRootPath:
+            "$kDownloadAppTestSavedDataDir${path.separator}restore_existing_playlists_with_new_audios_android_emulator",
+        destinationRootPath: kApplicationPathWindowsTest,
+      );
+
+      const String playlistTitle = 'urgent_actus_17-12-2023';
+
+      String restorableZipFilePathName =
+          '$kApplicationPathWindowsTest${path.separator}$playlistTitle.zip';
+
+      await app.main();
+      await tester.pumpAndSettle();
+
+      // Tap the appbar leading popup menu button Then, the 'Get the latest
+      // download Date of the multiple Playlists restored Audios ...' menu
+      // is selected.
+      await IntegrationTestUtil.typeOnAppbarMenuItem(
+        tester: tester,
+        appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+      );
+
+      expect(
+          find.text(
+              'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+          findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+      await tester.pumpAndSettle();
+
+      // Replace the platform instance with your mock
+      MockFilePicker mockFilePicker = MockFilePicker();
+      FilePicker.platform = mockFilePicker;
+
+      mockFilePicker.setSelectedFiles([
+        PlatformFile(
+            name: restorableZipFilePathName,
+            path: restorableZipFilePathName,
+            size: 2632),
+      ]);
+
+      // Execute the 'Restore Playlists, Comments and Settings from Zip
+      // File ...' menu
+      await IntegrationTestUtil.executeRestorePlaylists(
+        tester: tester,
+        doReplaceExistingPlaylists: true,
+        doDeleteExistingPlaylistsNotContainedInZip: false,
+        closeRestoreConfirmDialog: false,
+      );
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\urgent_actus_17-12-2023.zip".',
+        isWarningConfirming: true,
+        warningTitle: 'CONFIRMATION',
+      );
+
+      // Tap the appbar leading popup menu button Then, the 'Get the latest
+      // download Date of the multiple Playlists restored Audios ...' menu
+      // is selected.
+      await IntegrationTestUtil.typeOnAppbarMenuItem(
+        tester: tester,
+        appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+      );
+
+      expect(
+          find.text(
+              'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+          findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+      await tester.pumpAndSettle();
+
+      // Now creating a 'Playable' sort filter parmeter
+      // in order to hide the not playable audios. After
+      // restoring the MP3 files, all audios of the playlist
+      // will be playable and so will be displayed.
+
+      const String saveAsTitle = 'Playable';
+
+      // Creating the 'Playable' sort filter parameters which
+      // will be applied and used after restoring the MP3 files
+      // of the playlist
+      await _createAndSavePlayableSortFilterParms(
+        tester: tester,
+        saveAsTitle: saveAsTitle,
+      );
+
+      // Verifying the playable audios number before restoring
+      // the MP3 files of the playlist
+
+      // Find the audio list widget using its key
+      Finder listFinder = find.byKey(const Key('audio_list'));
+
+      expect(
+        tester
+            .widgetList(find.descendant(
+              of: listFinder,
+              matching: find.byType(ListTile),
+            ))
+            .length,
+        0,
+      );
+
+      String mp3RestorableZipFilePathName =
+          '$kApplicationPathWindowsTest${path.separator}audioLearn_mp3_from_2025-08-12_16_29_25_on_2025-09-07_07_46_29.zip';
+
+      mockFilePicker.setSelectedFiles([
+        PlatformFile(
+            name: mp3RestorableZipFilePathName,
+            path: mp3RestorableZipFilePathName,
+            size: 19331059),
+      ]);
+
+      await IntegrationTestUtil.typeOnPlaylistMenuItem(
+        tester: tester,
+        playlistTitle: playlistTitle,
+        playlistMenuKeyStr:
+            'popup_menu_restore_playlist_audio_mp3_files_from_zip',
+        dragToBottom: true,
+      );
+
+      // Verify the displayed confirmation dialog
+      await IntegrationTestUtil.verifySetValueToTargetDialog(
+        tester: tester,
+        dialogTitle: 'MP3 Restoration',
+        dialogMessage:
+            "Only the MP3 relative to the audios listed in the playlist which are not already present in the playlist are restorable.",
+        closeDialog: true,
+      );
+
+      // Now tap on the 'A single ZIP File' button
+      await tester.tap(find.byKey(const Key('selectFileButton')));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "Restored 4 audio(s) MP3 in 1 playlist(s) from the MP3 zip file \"$mp3RestorableZipFilePathName\".",
+        isWarningConfirming: true,
+      );
+
+      // Verifying the playable audios number after restoring
+      // the MP3 files of the playlist
+
+      // Find the audio list widget using its key
+      listFinder = find.byKey(const Key('audio_list'));
+
+      expect(
+        tester
+            .widgetList(find.descendant(
+              of: listFinder,
+              matching: find.byType(ListTile),
+            ))
+            .length,
+        4,
+      );
+
+      // Tap the appbar leading popup menu button Then, the 'Get the latest
+      // download Date of the multiple Playlists restored Audios ...' menu
+      // is selected.
+      await IntegrationTestUtil.typeOnAppbarMenuItem(
+        tester: tester,
+        appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+      );
+
+      expect(
+          find.text(
+              'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+          findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+      await tester.pumpAndSettle();
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''Restore Playlists Audio's MP3 from Zip File ... appbar item menu selecting a directory
+           containing multiple MP3 zip files. First, on empty app dir, restore unique playlist
+           Windows zip containing urgent_actus_17-12-2023 playlist and then restore MP3 zip files
+           containing the audios of this playlist and of other playlists. The restored audios are
+           playable.''', (WidgetTester tester) async {
+      // Purge the test playlist directory if it exists so that the
+      // playlist list is empty
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+
+      // Copy the integration test data to the app dir
+      DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+        sourceRootPath:
+            "$kDownloadAppTestSavedDataDir${path.separator}restore_existing_playlists_with_new_audios_android_emulator",
+        destinationRootPath: kApplicationPathWindowsTest,
+      );
+
+      const String playlistTitle = 'urgent_actus_17-12-2023';
+
+      String restorableZipFilePathName =
+          '$kApplicationPathWindowsTest${path.separator}$playlistTitle.zip';
+
+      await app.main();
+      await tester.pumpAndSettle();
+
+      // Replace the platform instance with your mock
+      MockFilePicker mockFilePicker = MockFilePicker();
+      FilePicker.platform = mockFilePicker;
+
+      mockFilePicker.setSelectedFiles([
+        PlatformFile(
+            name: restorableZipFilePathName,
+            path: restorableZipFilePathName,
+            size: 2632),
+      ]);
+
+      // Execute the 'Restore Playlists, Comments and Settings from Zip
+      // File ...' menu
+      await IntegrationTestUtil.executeRestorePlaylists(
+        tester: tester,
+        doReplaceExistingPlaylists: true,
+        doDeleteExistingPlaylistsNotContainedInZip: false,
+        closeRestoreConfirmDialog: false,
+      );
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\urgent_actus_17-12-2023.zip".',
+        isWarningConfirming: true,
+        warningTitle: 'CONFIRMATION',
+      );
+
+      // Now creating a 'Playable' sort filter parmeter
+      // in order to hide the not playable audios. After
+      // restoring the MP3 files, all audios of the playlist
+      // will be playable and so will be displayed.
+
+      const String saveAsTitle = 'Playable';
+
+      // Creating the 'Playable' sort filter parameters which
+      // will be applied and used after restoring the MP3 files
+      // of the playlist
+      await _createAndSavePlayableSortFilterParms(
+        tester: tester,
+        saveAsTitle: saveAsTitle,
+      );
+
+      // Verifying the playable audios number before restoring
+      // the MP3 files of the playlist
+
+      // Find the audio list widget using its key
+      Finder listFinder = find.byKey(const Key('audio_list'));
+
+      expect(
+        tester
+            .widgetList(find.descendant(
+              of: listFinder,
+              matching: find.byType(ListTile),
+            ))
+            .length,
+        0,
+      );
+
+      String mp3RestorableZipDirectory = kApplicationPathWindowsTest;
+
+      // Setting the directory to select in the mock file
+      // picker. This directory contains multiple playlists
+      // MP3 zip files
+      mockFilePicker.setPathToSelect(
+        pathToSelectStr: mp3RestorableZipDirectory,
+      );
+
+      await IntegrationTestUtil.typeOnAppbarMenuItem(
+        tester: tester,
+        appbarMenuKeyStr: 'appBarMenuRestorePlaylistsAudioMp3FilesFromZip',
+      );
+
+      // Verify the displayed confirmation dialog
+      await IntegrationTestUtil.verifySetValueToTargetDialog(
+        tester: tester,
+        dialogTitle: 'MP3 Restoration',
+        dialogMessage:
+            "Only the MP3 relative to the audios listed in the playlists which are not already present in the playlists are restorable.",
+        closeDialog: true,
+      );
+
+      // Now tap on the 'A Directory with ZIPs' button
+      await tester.tap(find.byKey(const Key('selectDirectoryButton')));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed problem confirmation dialog and
+      // close it
+      await IntegrationTestUtil.verifyConfirmActionDialog(
+        tester: tester,
+        confirmActionDialogTitle:
+            "Problem if selecting a directory on a smartphone:",
+        confirmActionDialogMessagePossibleLst: [
+          "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+        ],
+        closeDialogWithConfirmButton: true,
+        usePumpAndSettle: true,
+      );
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "Restored 4 audio(s) MP3 in 1 playlist(s) from the multiple MP3 zip files contained in dir \"$mp3RestorableZipDirectory\".",
+        isWarningConfirming: true,
+      );
+
+      // Verifying the playable audios number after restoring
+      // the MP3 files of the playlist
+
+      // Find the audio list widget using its key
+      listFinder = find.byKey(const Key('audio_list'));
+
+      expect(
+        tester
+            .widgetList(find.descendant(
+              of: listFinder,
+              matching: find.byType(ListTile),
+            ))
+            .length,
+        4,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''Restore Playlists Audio's MP3 from Zip File ... appbar item menu selecting a directory containing
+           multiple MP3 zip files. First, on empty app dir, restore unique playlist Windows zip ontaining
+           urgent_actus_17-12-2023 playlist and then restore multiple playlists MP3 zip files containing the
+           audios of this playlist as well as other playlists. The restored audios are playable.''',
+        (WidgetTester tester) async {
+      // Purge the test playlist directory if it exists so that the
+      // playlist list is empty
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+
+      // Copy the integration test data to the app dir
+      DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+        sourceRootPath:
+            "$kDownloadAppTestSavedDataDir${path.separator}restore_existing_playlists_with_new_audios_android_emulator",
+        destinationRootPath: kApplicationPathWindowsTest,
+      );
+
+      const String playlistTitle = 'urgent_actus_17-12-2023';
+
+      String restorableZipFilePathName =
+          '$kApplicationPathWindowsTest${path.separator}$playlistTitle.zip';
+
+      await app.main();
+      await tester.pumpAndSettle();
+
+      // Replace the platform instance with your mock
+      MockFilePicker mockFilePicker = MockFilePicker();
+      FilePicker.platform = mockFilePicker;
+
+      mockFilePicker.setSelectedFiles([
+        PlatformFile(
+            name: restorableZipFilePathName,
+            path: restorableZipFilePathName,
+            size: 2632),
+      ]);
+
+      // Execute the 'Restore Playlists, Comments and Settings from Zip
+      // File ...' menu
+      await IntegrationTestUtil.executeRestorePlaylists(
+        tester: tester,
+        doReplaceExistingPlaylists: true,
+        doDeleteExistingPlaylistsNotContainedInZip: false,
+        closeRestoreConfirmDialog: false,
+      );
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\urgent_actus_17-12-2023.zip".',
+        isWarningConfirming: true,
+        warningTitle: 'CONFIRMATION',
+      );
+
+      // Now creating a 'Playable' sort filter parmeter
+      // in order to hide the not playable audios. After
+      // restoring the MP3 files, all audios of the playlist
+      // will be playable and so will be displayed.
+
+      const String saveAsTitle = 'Playable';
+
+      // Creating the 'Playable' sort filter parameters which
+      // will be applied and used after restoring the MP3 files
+      // of the playlist
+      await _createAndSavePlayableSortFilterParms(
+        tester: tester,
+        saveAsTitle: saveAsTitle,
+      );
+
+      // Verifying the playable audios number before restoring
+      // the MP3 files of the playlist
+
+      // Find the audio list widget using its key
+      Finder listFinder = find.byKey(const Key('audio_list'));
+
+      expect(
+        tester
+            .widgetList(find.descendant(
+              of: listFinder,
+              matching: find.byType(ListTile),
+            ))
+            .length,
+        0,
+      );
+
+      String mp3RestorableZipDirectory = kApplicationPathWindowsTest;
+
+      // Setting the directory to select in the mock file
+      // picker. This directory contains multiple playlists
+      // MP3 zip files
+      mockFilePicker.setPathToSelect(
+        pathToSelectStr: mp3RestorableZipDirectory,
+      );
+
+      await IntegrationTestUtil.typeOnAppbarMenuItem(
+        tester: tester,
+        appbarMenuKeyStr: 'appBarMenuRestorePlaylistsAudioMp3FilesFromZip',
+      );
+
+      // Verify the displayed confirmation dialog
+      await IntegrationTestUtil.verifySetValueToTargetDialog(
+        tester: tester,
+        dialogTitle: 'MP3 Restoration',
+        dialogMessage:
+            "Only the MP3 relative to the audios listed in the playlists which are not already present in the playlists are restorable.",
+        closeDialog: true,
+      );
+
+      // Now tap on the 'A Directory with ZIPs' button
+      await tester.tap(find.byKey(const Key('selectDirectoryButton')));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed problem confirmation dialog and
+      // close it
+      await IntegrationTestUtil.verifyConfirmActionDialog(
+        tester: tester,
+        confirmActionDialogTitle:
+            "Problem if selecting a directory on a smartphone:",
+        confirmActionDialogMessagePossibleLst: [
+          "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+        ],
+        closeDialogWithConfirmButton: true,
+        usePumpAndSettle: true,
+      );
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "Restored 4 audio(s) MP3 in 1 playlist(s) from the multiple MP3 zip files contained in dir \"$mp3RestorableZipDirectory\".",
+        isWarningConfirming: true,
+      );
+
+      // Verifying the playable audios number after restoring
+      // the MP3 files of the playlist
+
+      // Find the audio list widget using its key
+      listFinder = find.byKey(const Key('audio_list'));
+
+      expect(
+        tester
+            .widgetList(find.descendant(
+              of: listFinder,
+              matching: find.byType(ListTile),
+            ))
+            .length,
+        4,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''Restore Playlists Audio's MP3 from Zip File ... appbar item menu selecting a selecting a
+           directory containing multiple MP3 zip files. First, on empty app dir, restore 2 playlists
+           Windows zip containing urgent_actus_17-12-2023 and local playlist and then restore multiple
+           playlists MP3 zip files containing the audios of this playlist. The restored audios are
+           playable.''', (WidgetTester tester) async {
+      // Purge the test playlist directory if it exists so that the
+      // playlist list is empty
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+
+      // Copy the integration test data to the app dir
+      DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+        sourceRootPath:
+            "$kDownloadAppTestSavedDataDir${path.separator}restore_existing_playlists_with_new_audios_android_emulator",
+        destinationRootPath: kApplicationPathWindowsTest,
+      );
+
+      String restorableZipFilePathName =
+          '$kApplicationPathWindowsTest${path.separator}audioLearn_2025-09-07_07_45_02.zip';
+
+      await app.main();
+      await tester.pumpAndSettle();
+
+      // Replace the platform instance with your mock
+      MockFilePicker mockFilePicker = MockFilePicker();
+      FilePicker.platform = mockFilePicker;
+
+      mockFilePicker.setSelectedFiles([
+        PlatformFile(
+            name: restorableZipFilePathName,
+            path: restorableZipFilePathName,
+            size: 2632),
+      ]);
+
+      // Execute the 'Restore Playlists, Comments and Settings from Zip
+      // File ...' menu
+      await IntegrationTestUtil.executeRestorePlaylists(
+        tester: tester,
+        doReplaceExistingPlaylists: true,
+        doDeleteExistingPlaylistsNotContainedInZip: false,
+        closeRestoreConfirmDialog: false,
+      );
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            'Restored 2 playlist, 4 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 10 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\audioLearn_2025-09-07_07_45_02.zip".',
+        isWarningConfirming: true,
+        warningTitle: 'CONFIRMATION',
+      );
+
+      // Now creating a 'Playable' sort filter parmeter
+      // in order to hide the not playable audios. After
+      // restoring the MP3 files, all audios of the playlist
+      // will be playable and so will be displayed.
+
+      const String saveAsTitle = 'Playable';
+
+      // Creating the 'Playable' sort filter parameters which
+      // will be applied and used after restoring the MP3 files
+      // of the playlist
+      await _createAndSavePlayableSortFilterParms(
+        tester: tester,
+        saveAsTitle: saveAsTitle,
+      );
+
+      // Verifying the playable audios number before restoring
+      // the MP3 files of the playlist
+
+      // Find the audio list widget using its key
+      Finder listFinder = find.byKey(const Key('audio_list'));
+
+      expect(
+        tester
+            .widgetList(find.descendant(
+              of: listFinder,
+              matching: find.byType(ListTile),
+            ))
+            .length,
+        0,
+      );
+
+      String mp3RestorableZipDirectory = kApplicationPathWindowsTest;
+
+      // Setting the directory to select in the mock file
+      // picker. This directory contains multiple playlists
+      // MP3 zip files
+      mockFilePicker.setPathToSelect(
+        pathToSelectStr: kApplicationPathWindowsTest,
+      );
+
+      await IntegrationTestUtil.typeOnAppbarMenuItem(
+        tester: tester,
+        appbarMenuKeyStr: 'appBarMenuRestorePlaylistsAudioMp3FilesFromZip',
+      );
+
+      // Verify the displayed confirmation dialog
+      await IntegrationTestUtil.verifySetValueToTargetDialog(
+        tester: tester,
+        dialogTitle: 'MP3 Restoration',
+        dialogMessage:
+            "Only the MP3 relative to the audios listed in the playlists which are not already present in the playlists are restorable.",
+        closeDialog: true,
+      );
+
+      // Now tap on the 'A Directory with ZIPs' button
+      await tester.tap(find.byKey(const Key('selectDirectoryButton')));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed problem confirmation dialog and
+      // close it
+      await IntegrationTestUtil.verifyConfirmActionDialog(
+        tester: tester,
+        confirmActionDialogTitle:
+            "Problem if selecting a directory on a smartphone:",
+        confirmActionDialogMessagePossibleLst: [
+          "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+        ],
+        closeDialogWithConfirmButton: true,
+        usePumpAndSettle: true,
+      );
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "Restored 6 audio(s) MP3 in 2 playlist(s) from the multiple MP3 zip files contained in dir \"$mp3RestorableZipDirectory\".",
+        isWarningConfirming: true,
+      );
+
+      // Verifying the playable audios number after restoring
+      // the MP3 files of the playlist
+
+      // Find the audio list widget using its key
+      listFinder = find.byKey(const Key('audio_list'));
+
+      expect(
+        tester
+            .widgetList(find.descendant(
+              of: listFinder,
+              matching: find.byType(ListTile),
+            ))
+            .length,
+        1,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group(
+      '''Restore audio MP3 files from directory with zip or single zip file's''',
+      () {
+    group('''From directory with zip''', () {
+      testWidgets(
+          '''Left appbar menu, directory with zip's, 1 playlist audio MP3 files restoration.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the integration test data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}restoring_audio_mp3_selecting_zip_or_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Delete the 'Prières du Maître' playlist MP3 files to be able
+        // to restore them
+        DirUtil.deleteMp3FilesInDir(
+          filePath:
+              '$kPlaylistDownloadRootPathWindowsTest${path.separator}Prières du Maître',
+        );
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String mp3RestorableZipDirectory =
+            '$kApplicationPathWindowsTest${path.separator}Mp3ZipFiles';
+
+        // Setting the directory to select in the mock file
+        // picker. This directory contains multiple playlists
+        // MP3 zip files
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: mp3RestorableZipDirectory,
+        );
+
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuRestorePlaylistsAudioMp3FilesFromZip',
+        );
+
+        // Verify the displayed confirmation dialog
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'MP3 Restoration',
+          dialogMessage:
+              "Only the MP3 relative to the audios listed in the playlists which are not already present in the playlists are restorable.",
+          closeDialog: true,
+        );
+
+        // Now tap on the 'A Directory with ZIPs' button
+        await tester.tap(find.byKey(const Key('selectDirectoryButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed problem confirmation dialog and
+        // close it
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle:
+              "Problem if selecting a directory on a smartphone:",
+          confirmActionDialogMessagePossibleLst: [
+            "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 22 audio(s) MP3 in 1 playlist(s) from the multiple MP3 zip files contained in dir \"$mp3RestorableZipDirectory\".",
+          isWarningConfirming: true,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Playlist item menu, directory with zip's, 1 playlist audio MP3 files restoration.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the integration test data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}restoring_audio_mp3_selecting_zip_or_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Delete the 'Prières du Maître' playlist MP3 files to be able
+        // to restore them
+        DirUtil.deleteMp3FilesInDir(
+          filePath:
+              '$kPlaylistDownloadRootPathWindowsTest${path.separator}Prières du Maître',
+        );
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String mp3RestorableZipDirectory =
+            '$kApplicationPathWindowsTest${path.separator}Mp3ZipFiles';
+
+        // Setting the directory to select in the mock file
+        // picker. This directory contains multiple playlists
+        // MP3 zip files
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: mp3RestorableZipDirectory,
+        );
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: 'Prières du Maître',
+          playlistMenuKeyStr:
+              'popup_menu_restore_playlist_audio_mp3_files_from_zip',
+        );
+
+        // Verify the displayed confirmation dialog
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'MP3 Restoration',
+          dialogMessage:
+              "Only the MP3 relative to the audios listed in the playlist which are not already present in the playlist are restorable.",
+          closeDialog: true,
+        );
+
+        // Now tap on the 'A Directory with ZIPs' button
+        await tester.tap(find.byKey(const Key('selectDirectoryButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed problem confirmation dialog and
+        // close it
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle:
+              "Problem if selecting a directory on a smartphone:",
+          confirmActionDialogMessagePossibleLst: [
+            "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 22 audio(s) MP3 in 1 playlist(s) from the multiple MP3 zip files contained in dir \"$mp3RestorableZipDirectory\".",
+          isWarningConfirming: true,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Left appbar menu, directory with zip's, 2 playlists audio MP3 files restoration.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the integration test data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}restoring_audio_mp3_selecting_zip_or_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Delete the 'Prières du Maître' and 'IA' playlist MP3 files to be
+        // able to restore them
+
+        DirUtil.deleteMp3FilesInDir(
+          filePath:
+              '$kPlaylistDownloadRootPathWindowsTest${path.separator}Prières du Maître',
+        );
+
+        DirUtil.deleteMp3FilesInDir(
+          filePath: '$kPlaylistDownloadRootPathWindowsTest${path.separator}IA',
+        );
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Tap the appbar leading popup menu button Then, the 'Get the latest
+        // download Date of the multiple Playlists restored Audios ...' menu
+        // is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+        );
+
+        expect(
+            find.text(
+                'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
+            findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String mp3RestorableZipDirectory =
+            '$kApplicationPathWindowsTest${path.separator}Mp3ZipFiles';
+
+        // Setting the directory to select in the mock file
+        // picker. This directory contains multiple playlists
+        // MP3 zip files
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: mp3RestorableZipDirectory,
+        );
+
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuRestorePlaylistsAudioMp3FilesFromZip',
+        );
+
+        // Verify the displayed confirmation dialog
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'MP3 Restoration',
+          dialogMessage:
+              "Only the MP3 relative to the audios listed in the playlists which are not already present in the playlists are restorable.",
+          closeDialog: true,
+        );
+
+        // Now tap on the 'A Directory with ZIPs' button
+        await tester.tap(find.byKey(const Key('selectDirectoryButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed problem confirmation dialog and
+        // close it
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle:
+              "Problem if selecting a directory on a smartphone:",
+          confirmActionDialogMessagePossibleLst: [
+            "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 24 audio(s) MP3 in 2 playlist(s) from the multiple MP3 zip files contained in dir \"$mp3RestorableZipDirectory\".",
+          isWarningConfirming: true,
+        );
+
+        // Tap the appbar leading popup menu button Then, the 'Get the latest
+        // download Date of the multiple Playlists restored Audios ...' menu
+        // is selected.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+        );
+
+        expect(
+            find.text(
+                'This is the latest download date/time of the multiple playlists restored audios: 20/10/2025 07:47.'),
+            findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Playlist item menu, directory with zip's, 1 playlist audio MP3 files restoration after deleting 2
+           playlists mp3 files.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the integration test data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}restoring_audio_mp3_selecting_zip_or_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Delete the 'Prières du Maître' and 'IA' playlist MP3 files to be
+        // able to restore them
+
+        DirUtil.deleteMp3FilesInDir(
+          filePath:
+              '$kPlaylistDownloadRootPathWindowsTest${path.separator}Prières du Maître',
+        );
+
+        DirUtil.deleteMp3FilesInDir(
+          filePath: '$kPlaylistDownloadRootPathWindowsTest${path.separator}IA',
+        );
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String mp3RestorableZipDirectory =
+            '$kApplicationPathWindowsTest${path.separator}Mp3ZipFiles';
+
+        // Setting the directory to select in the mock file
+        // picker. This directory contains multiple playlists
+        // MP3 zip files
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: mp3RestorableZipDirectory,
+        );
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: 'Prières du Maître',
+          playlistMenuKeyStr:
+              'popup_menu_restore_playlist_audio_mp3_files_from_zip',
+        );
+
+        // Verify the displayed confirmation dialog
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'MP3 Restoration',
+          dialogMessage:
+              "Only the MP3 relative to the audios listed in the playlist which are not already present in the playlist are restorable.",
+          closeDialog: true,
+        );
+
+        // Now tap on the 'A Directory with ZIPs' button
+        await tester.tap(find.byKey(const Key('selectDirectoryButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed problem confirmation dialog and
+        // close it
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle:
+              "Problem if selecting a directory on a smartphone:",
+          confirmActionDialogMessagePossibleLst: [
+            "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 22 audio(s) MP3 in 1 playlist(s) from the multiple MP3 zip files contained in dir \"$mp3RestorableZipDirectory\".",
+          isWarningConfirming: true,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+    group('''From single zip file's''', () {
+      testWidgets(
+          '''Left appbar menu, a single zip file, 1 playlist audio MP3 files restoration.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the integration test data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}restoring_audio_mp3_selecting_zip_or_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Delete the 'Prières du Maître' playlist MP3 files to be able
+        // to restore them
+        DirUtil.deleteMp3FilesInDir(
+          filePath:
+              '$kPlaylistDownloadRootPathWindowsTest${path.separator}Prières du Maître',
+        );
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String mp3RestorableZipFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}Prières du Maître_mp3_from_2025-02-11_09_00_11_on_2025-10-24_14_20_20.zip';
+
+        // Setting the directory to select in the mock file
+        // picker. This directory contains multiple playlists
+        // MP3 zip files
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: mp3RestorableZipFilePathName,
+              path: mp3RestorableZipFilePathName,
+              size: 15365504),
+        ]);
+
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuRestorePlaylistsAudioMp3FilesFromZip',
+        );
+
+        // Verify the displayed confirmation dialog
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'MP3 Restoration',
+          dialogMessage:
+              "Only the MP3 relative to the audios listed in the playlists which are not already present in the playlists are restorable.",
+          closeDialog: true,
+        );
+
+        // Now tap on the 'A single ZIP File' button
+        await tester.tap(find.byKey(const Key('selectFileButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 22 audio(s) MP3 in 1 playlist(s) from the MP3 zip file \"$mp3RestorableZipFilePathName\".",
+          isWarningConfirming: true,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Left appbar menu, a single zip file, 1 playlist audio MP3 files restoration after deleting 2
+           playlists mp3 files.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the integration test data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}restoring_audio_mp3_selecting_zip_or_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Delete the 'Prières du Maître' and 'IA' playlist MP3 files to be
+        // able to restore them
+
+        DirUtil.deleteMp3FilesInDir(
+          filePath:
+              '$kPlaylistDownloadRootPathWindowsTest${path.separator}Prières du Maître',
+        );
+
+        DirUtil.deleteMp3FilesInDir(
+          filePath: '$kPlaylistDownloadRootPathWindowsTest${path.separator}IA',
+        );
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String mp3RestorableZipFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}Prières du Maître_mp3_from_2025-02-11_09_00_11_on_2025-10-24_14_20_20.zip';
+
+        // Setting the directory to select in the mock file
+        // picker. This directory contains multiple playlists
+        // MP3 zip files
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: mp3RestorableZipFilePathName,
+              path: mp3RestorableZipFilePathName,
+              size: 15365504),
+        ]);
+
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuRestorePlaylistsAudioMp3FilesFromZip',
+        );
+
+        // Verify the displayed confirmation dialog
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'MP3 Restoration',
+          dialogMessage:
+              "Only the MP3 relative to the audios listed in the playlists which are not already present in the playlists are restorable.",
+          closeDialog: true,
+        );
+
+        // Now tap on the 'A single ZIP File' button
+        await tester.tap(find.byKey(const Key('selectFileButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 22 audio(s) MP3 in 1 playlist(s) from the MP3 zip file \"$mp3RestorableZipFilePathName\".",
+          isWarningConfirming: true,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Playlist item menu, a single zip file, 1 playlist audio MP3 files restoration.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the integration test data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}restoring_audio_mp3_selecting_zip_or_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Delete the 'Prières du Maître' playlist MP3 files to be able
+        // to restore them
+        DirUtil.deleteMp3FilesInDir(
+          filePath:
+              '$kPlaylistDownloadRootPathWindowsTest${path.separator}Prières du Maître',
+        );
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String mp3RestorableZipFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}Prières du Maître_mp3_from_2025-02-11_09_00_11_on_2025-10-24_14_20_20.zip';
+
+        // Setting the directory to select in the mock file
+        // picker. This directory contains multiple playlists
+        // MP3 zip files
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: mp3RestorableZipFilePathName,
+              path: mp3RestorableZipFilePathName,
+              size: 15365504),
+        ]);
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: 'Prières du Maître',
+          playlistMenuKeyStr:
+              'popup_menu_restore_playlist_audio_mp3_files_from_zip',
+        );
+
+        // Verify the displayed confirmation dialog
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'MP3 Restoration',
+          dialogMessage:
+              "Only the MP3 relative to the audios listed in the playlist which are not already present in the playlist are restorable.",
+          closeDialog: true,
+        );
+
+        // Now tap on the 'A single ZIP File' button
+        await tester.tap(find.byKey(const Key('selectFileButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 22 audio(s) MP3 in 1 playlist(s) from the MP3 zip file \"$mp3RestorableZipFilePathName\".",
+          isWarningConfirming: true,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Playlist item menu, a single zip file, 1 playlist audio MP3 files restoration after deleting 2
+           playlists mp3 files.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the integration test data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}restoring_audio_mp3_selecting_zip_or_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Delete the 'Prières du Maître' and 'IA' playlist MP3 files to be
+        // able to restore them
+
+        DirUtil.deleteMp3FilesInDir(
+          filePath:
+              '$kPlaylistDownloadRootPathWindowsTest${path.separator}Prières du Maître',
+        );
+
+        DirUtil.deleteMp3FilesInDir(
+          filePath: '$kPlaylistDownloadRootPathWindowsTest${path.separator}IA',
+        );
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String mp3RestorableZipFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}Prières du Maître_mp3_from_2025-02-11_09_00_11_on_2025-10-24_14_20_20.zip';
+
+        // Setting the directory to select in the mock file
+        // picker. This directory contains multiple playlists
+        // MP3 zip files
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: mp3RestorableZipFilePathName,
+              path: mp3RestorableZipFilePathName,
+              size: 15365504),
+        ]);
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: 'Prières du Maître',
+          playlistMenuKeyStr:
+              'popup_menu_restore_playlist_audio_mp3_files_from_zip',
+        );
+
+        // Verify the displayed confirmation dialog
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'MP3 Restoration',
+          dialogMessage:
+              "Only the MP3 relative to the audios listed in the playlist which are not already present in the playlist are restorable.",
+          closeDialog: true,
+        );
+
+        // Now tap on the 'A single ZIP File' button
+        await tester.tap(find.byKey(const Key('selectFileButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 22 audio(s) MP3 in 1 playlist(s) from the MP3 zip file \"$mp3RestorableZipFilePathName\".",
+          isWarningConfirming: true,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+  });
+
+  group(
+      'Save and restore playlist and mp3 to and from different playlists root path',
+      () {
+    testWidgets(
+        '''From audio/playlists, saving multiple playlists and their mp3 as well as saving
+           a unique playlist and its mp3. Then, restoring the previously saved zip's to
+           audio/parent_1/parent_1_1/playlists. Then, in audio/parent_1/
+           parent_1_1/playlists, add a picture to one audio and verify where the jpg file was
+           stored. Then, do multiple and unique playlist and mp3 saving and restore the
+           saved zip's to audio/playlists. This will verify that the playlist and mp3 saving and
+           restoring works correctly when the playlists root path is changed.
+           
+           The saved mp3 are not all played at the same speed. This verifies that the saved
+           displayed duration is correct.''', (WidgetTester tester) async {
+      // Purge the test playlist directory if it exists so that the
+      // playlist list is empty
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+
+      // Copy the test initial audio data to the app dir
+      DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+        sourceRootPath:
+            "$kDownloadAppTestSavedDataDir${path.separator}multi_playlist_root_dirs",
+        destinationRootPath: kApplicationPathWindowsTest,
+      );
+
+      final SettingsDataService settingsDataService = SettingsDataService(
+        isTest: true,
+      );
+
+      // Load the settings from the json file. This is necessary
+      // otherwise the ordered playlist titles will remain empty
+      // and the playlist list will not be filled with the
+      // playlists available in the app test dir
+      await settingsDataService.loadSettingsFromFile(
+          settingsJsonPathFileName:
+              "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+      await app.main();
+      await tester.pumpAndSettle();
+
+      // Save the playlists contained in the app test dir with their comments and
+      // pictures to a zip file
+
+      String saveZipFilePath =
+          '$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName';
+
+      List<String> savedZipNameLst = await _saveAllPlaylistsAndTheirMp3(
+        tester: tester,
+        saveZipFilePath: saveZipFilePath,
+        savedPicturesMessage:
+            "\n\nSaved also 4 picture JPG file(s) in the ZIP file.",
+        expectedPlaylistsZipContentLst: [
+          "playlists/EMI/EMI.json",
+          "playlists/Local/comments/Jésus je T'aime énormément.json",
+          "playlists/Local/Local.json",
+          "settings.json",
+          "pictures/pictureAudioMap.json",
+          "pictures/Dieu je T'adore.jpg",
+          "pictures/Jésus je T'adore.jpg",
+          "pictures/Jésus je T'aime.jpg",
+          "pictures/SkyCross.jpg",
+        ],
+        oldestAudioDownloadDateTimeStr: "02/03/2026 20:20",
+        totalSavedMessage:
+            "Total saved audio number: 2, total size: 861.2 KB and total duration: 0:01:26.4.",
+        savedMp3DirectoryPath: "$saveZipFilePath${path.separator}MP3",
+        mp3ZipNameFirstPart: 'audioLearn_mp3_from_2026-03-02_20_20_15_on_',
+        expectedMp3ZipContentLst: [
+          "playlists/EMI/260302-202015-Aram Khachaturian - Andantino (live) 17-02-02.mp3",
+          "playlists/Local/Jésus je T'aime énormément.mp3",
+        ],
+      );
+
+      // Save a unique playlist contained in the app test dir with its comments and
+      // pictures to a zip file
+
+      String playlistToSaveTitle = 'Local';
+
+      String singlePlaylistSavedMp3ZipName = await _saveUniquePlaylistAndItsMp3(
+        tester: tester,
+        playlistToSaveTitle: playlistToSaveTitle,
+        saveZipFilePath: saveZipFilePath,
+        savedPicturesMessage: '',
+        expectedPlaylistZipContentLst: [
+          "playlists/Local/comments/Jésus je T'aime énormément.json",
+          "playlists/Local/Local.json",
+          "pictures/pictureAudioMap.json",
+        ],
+        oldestAudioDownloadDateTimeStr: "02/03/2026 20:29",
+        savedAudioMessage:
+            "Total saved audio number: 1, total size: 10.6 KB and total duration: 0:00:01.3",
+        savedMp3DirectoryPath: "$saveZipFilePath${path.separator}MP3",
+        mp3ZipNameFirstPart: 'Local_mp3_from_2026-03-02_20_29_26_on_',
+      );
+
+      // Replace the platform instance with your mock
+      MockFilePicker mockFilePicker = MockFilePicker();
+      FilePicker.platform = mockFilePicker;
+
+      // Change the playlist root path to the 'parent_1/parent_1_1/playlists'
+      // directory in order to restore the previously saved zip file there.
+      // This will verify that the playlist and mp3 restoration works correctly
+      // when the playlist root path is changed
+      String modifiedPlaylistRootPath =
+          '$kApplicationPathWindowsTest${path.separator}parent_1${path.separator}parent_1_1${path.separator}playlists';
+
+      await _changeAndSavePlaylistRootPath(
+        tester: tester,
+        mockFilePicker: mockFilePicker,
+        pathToSelectStr: modifiedPlaylistRootPath,
+      );
+
+      // Now restore in 'parent_1/parent_1_1/playlists' the multiple playlists
+      // previously saved in 'audio/saved' dir.
+
+      List<String> playlistTitles = [
+        "Dieu je T'adore",
+        "local 3",
+        "EMI",
+        "Local",
+      ];
+
+      String savedZipFilePath =
+          '$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName';
+
+      await _restoreMultipleOrIndividualPlaylist(
+        tester: tester,
+        mockFilePicker: mockFilePicker,
+        savedMultipleOrUniquePlaylistZipName: savedZipNameLst[0],
+        savedZipFilePath: savedZipFilePath,
+        savedZipSize: 1232878,
+        saveFromPartMessage:
+            'Restored 2 playlist, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 2 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from',
+        saveSincePartMessage:
+            '\n\nSince the playlists\n  "EMI",\n  "Local"\nwere created, they are positioned at the end of the playlist list starting at position 3.',
+        playlistTitlesOrderedLst: playlistTitles,
+        audioTitlesOrderedLst: ['Seigneur'],
+      );
+
+      // Now restore in 'parent_1/parent_1_1/playlists' the mp3 of multiple
+      // playlists previously saved in 'audio/saved/MP3' dir.
+
+      String mp3RestorableZipDirectory =
+          '$savedZipFilePath${path.separator}MP3';
+      String multiplePlaylistsSavedMp3ZipName = savedZipNameLst[1];
+
+      await _restoreMultipleOrSinglePlaylistMp3(
+        tester: tester,
+        mockFilePicker: mockFilePicker,
+        restorableMp3ZipName: multiplePlaylistsSavedMp3ZipName,
+        restorableMp3ZipDirectory: mp3RestorableZipDirectory,
+        restorableMp3ZipSize: 826744,
+        restoredFromPartMessage:
+            'Restored 2 audio(s) MP3 in 2 playlist(s) from',
+      );
+
+      // Now delete the 'Local' playlist (its mp3 files
+      // are also deleted)
+
+      await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: 'Local',
+          playlistMenuKeyStr: 'popup_menu_delete_playlist',
+          dragToBottom: true);
+
+      // Now find the confirm button of the delete playlist confirm
+      // dialog and tap on it
+      await tester.tap(find.byKey(const Key('confirmButton')));
+      await tester.pumpAndSettle();
+
+      // Now restore the previously deleted 'Local' playlist.
+      await _restoreMultipleOrIndividualPlaylist(
+        tester: tester,
+        mockFilePicker: mockFilePicker,
+        savedMultipleOrUniquePlaylistZipName: 'Local.zip',
+        savedZipFilePath: savedZipFilePath,
+        savedZipSize: 1375,
+        saveFromPartMessage:
+            'Restored 1 playlist saved individually, 1 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from',
+        saveSincePartMessage:
+            '\n\nSince the playlist\n  "Local"\nwas created, it is positioned at the end of the playlist list at position 4.',
+        playlistTitlesOrderedLst: playlistTitles,
+        audioTitlesOrderedLst: ['Seigneur'],
+      );
+
+      // And restore mp3 of the previously deleted 'Local' playlist.
+
+      await _restoreMultipleOrSinglePlaylistMp3(
+        tester: tester,
+        mockFilePicker: mockFilePicker,
+        restorableMp3ZipName: singlePlaylistSavedMp3ZipName,
+        restorableMp3ZipDirectory: mp3RestorableZipDirectory,
+        restorableMp3ZipSize: 826744,
+        restoredFromPartMessage:
+            'Restored 1 audio(s) MP3 in 1 playlist(s) from',
+        restoreUniquePlaylistTitle: 'Local',
+      );
+
+      // Save the playlists contained in 'parent_1/parent_1_1/playlists'
+      // with their comments and pictures to a zip file
+
+      saveZipFilePath =
+          '$kApplicationPathWindowsTest${path.separator}parent_1${path.separator}parent_1_1${path.separator}$kSavedPlaylistsDirName';
+      savedZipNameLst = await _saveAllPlaylistsAndTheirMp3(
+        tester: tester,
+        saveZipFilePath: saveZipFilePath,
+        savedPicturesMessage:
+            "\n\nSaved also 4 picture JPG file(s) in the ZIP file.",
+        expectedPlaylistsZipContentLst: [
+          "playlists/Dieu je T'adore/comments/Jésus je T'aime.json",
+          "playlists/Dieu je T'adore/Dieu je T'adore.json",
+          "playlists/Dieu je T'adore/pictures/Jésus je T'aime.json",
+          "playlists/EMI/EMI.json",
+          "playlists/Local/comments/Jésus je T'aime énormément.json",
+          "playlists/Local/Local.json",
+          "playlists/local 3/comments/Seigneur.json",
+          "playlists/local 3/local 3.json",
+          "playlists/local 3/pictures/Seigneur.json",
+          "settings.json",
+          "pictures/pictureAudioMap.json",
+          "pictures/Dieu je T'adore.jpg",
+          "pictures/Jésus je T'adore.jpg",
+          "pictures/Jésus je T'aime.jpg",
+          "pictures/SkyCross.jpg",
+        ],
+        oldestAudioDownloadDateTimeStr: "02/03/2026 20:20",
+        totalSavedMessage:
+            "Total saved audio number: 4, total size: 899.8 KB and total duration: 0:01:31.8.",
+        savedMp3DirectoryPath: "$saveZipFilePath${path.separator}MP3",
+        mp3ZipNameFirstPart: 'audioLearn_mp3_from_2026-03-02_20_20_15_on_',
+        expectedMp3ZipContentLst: [
+          "playlists/Dieu je T'adore/Jésus je T'aime.mp3",
+          "playlists/local 3/Seigneur.mp3",
+          "playlists/EMI/260302-202015-Aram Khachaturian - Andantino (live) 17-02-02.mp3",
+          "playlists/Local/Jésus je T'aime énormément.mp3",
+        ],
+      );
+
+      // Save a unique playlist contained in 'parent_1/parent_1_1/playlists'
+      // with its comments and pictures to a zip file
+
+      playlistToSaveTitle = "Dieu je T'adore";
+
+      singlePlaylistSavedMp3ZipName = await _saveUniquePlaylistAndItsMp3(
+        tester: tester,
+        playlistToSaveTitle: playlistToSaveTitle,
+        saveZipFilePath: saveZipFilePath,
+        savedPicturesMessage:
+            "Saved also 1 picture JPG file(s) in the ZIP file.",
+        expectedPlaylistZipContentLst: [
+          "playlists/Dieu je T'adore/comments/Jésus je T'aime.json",
+          "playlists/Dieu je T'adore/Dieu je T'adore.json",
+          "playlists/Dieu je T'adore/pictures/Jésus je T'aime.json",
+          "pictures/pictureAudioMap.json",
+          "pictures/Jésus je T'aime.jpg",
+        ],
+        oldestAudioDownloadDateTimeStr: "02/03/2026 20:49",
+        savedAudioMessage:
+            "Total saved audio number: 1, total size: 10.6 KB and total duration: 0:00:01.9",
+        savedMp3DirectoryPath: "$saveZipFilePath${path.separator}MP3",
+        mp3ZipNameFirstPart: "Dieu je T'adore_mp3_from_2026-03-02_20_49_53_on_",
+        dragToBottom: true,
+      );
+
+      // Change the playlist root path to the 'newDir/playlists' directory in order
+      // to restore the zip files previously saved in 'parent_1/parent_1_1/saved'.
+      // This will verify that the playlist and mp3 restoration works correctly when
+      // the playlist root path was changed
+      modifiedPlaylistRootPath =
+          '$kApplicationPathWindowsTest${path.separator}newDir${path.separator}playlists';
+
+      await _changeAndSavePlaylistRootPath(
+        tester: tester,
+        mockFilePicker: mockFilePicker,
+        pathToSelectStr: modifiedPlaylistRootPath,
+      );
+
+      // Now restore in 'parent_1/parent_1_1/playlists' the multiple playlists
+      // previously saved in 'audio/saved' dir.
+
+      playlistTitles = [
+        "Local 2",
+        "Dieu je T'adore",
+        "local 3",
+        "EMI",
+        "Local",
+      ];
+
+      savedZipFilePath =
+          '$kApplicationPathWindowsTest${path.separator}parent_1${path.separator}parent_1_1${path.separator}$kSavedPlaylistsDirName';
+
+      await _restoreMultipleOrIndividualPlaylist(
+        tester: tester,
+        mockFilePicker: mockFilePicker,
+        savedMultipleOrUniquePlaylistZipName: savedZipNameLst[0],
+        savedZipFilePath: savedZipFilePath,
+        savedZipSize: 1236315,
+        saveFromPartMessage:
+            'Restored 4 playlist, 3 comment and 2 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from',
+        saveSincePartMessage:
+            "\n\nSince the playlists\n  \"Dieu je T'adore\",\n  \"EMI\",\n  \"Local\",\n  \"local 3\"\nwere created, they are positioned at the end of the playlist list starting at position 2.",
+        playlistTitlesOrderedLst: playlistTitles,
+        audioTitlesOrderedLst: ["Dieu, je T'adore"],
+      );
+
+      // Now restore in 'parent_1/parent_1_1/playlists' the mp3 of multiple
+      // playlists previously saved in 'audio/saved/MP3' dir.
+
+      mp3RestorableZipDirectory = '$savedZipFilePath${path.separator}MP3';
+      multiplePlaylistsSavedMp3ZipName = savedZipNameLst[1];
+
+      await _restoreMultipleOrSinglePlaylistMp3(
+        tester: tester,
+        mockFilePicker: mockFilePicker,
+        restorableMp3ZipName: multiplePlaylistsSavedMp3ZipName,
+        restorableMp3ZipDirectory: mp3RestorableZipDirectory,
+        restorableMp3ZipSize: 826744,
+        restoredFromPartMessage:
+            'Restored 4 audio(s) MP3 in 4 playlist(s) from',
+      );
+
+      // Now delete the 'Dieu je T'adore' playlist (its mp3 files
+      // are also deleted)
+
+      await IntegrationTestUtil.typeOnPlaylistMenuItem(
+        tester: tester,
+        playlistTitle: "Dieu je T'adore",
+        playlistMenuKeyStr: 'popup_menu_delete_playlist',
+        dragToBottom: true,
+      );
+
+      // Now find the confirm button of the delete playlist confirm
+      // dialog and tap on it
+      await tester.tap(find.byKey(const Key('confirmButton')));
+      await tester.pumpAndSettle();
+
+      playlistTitles = [
+        "Local 2",
+        "local 3",
+        "EMI",
+        "Local",
+        "Dieu je T'adore",
+      ];
+
+      // Now restore the previously deleted 'Dieu je T'adore' playlist.
+      await _restoreMultipleOrIndividualPlaylist(
+        tester: tester,
+        mockFilePicker: mockFilePicker,
+        savedMultipleOrUniquePlaylistZipName: "Dieu je T'adore.zip",
+        savedZipFilePath: savedZipFilePath,
+        savedZipSize: 127512,
+        saveFromPartMessage:
+            'Restored 1 playlist saved individually, 1 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 1 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from',
+        saveSincePartMessage:
+            "\n\nSince the playlist\n  \"Dieu je T'adore\"\nwas created, it is positioned at the end of the playlist list at position 5.",
+        playlistTitlesOrderedLst: playlistTitles,
+        audioTitlesOrderedLst: ["Dieu, je T'adore"],
+      );
+
+      // And restore mp3 of the previously deleted 'Dieu je T'adore' playlist.
+
+      await _restoreMultipleOrSinglePlaylistMp3(
+        tester: tester,
+        mockFilePicker: mockFilePicker,
+        restorableMp3ZipName: singlePlaylistSavedMp3ZipName,
+        restorableMp3ZipDirectory: mp3RestorableZipDirectory,
+        restorableMp3ZipSize: 10254,
+        restoredFromPartMessage:
+            'Restored 1 audio(s) MP3 in 1 playlist(s) from',
+        restoreUniquePlaylistTitle: "Dieu je T'adore",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group('(download). Change playlist audio quality tests', () {
+    testWidgets(
+        '''Spoken changed to musical quality. Then, restart the application to verify
+           that the audio quality checkbox state was preserved.''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName:
+            'sort_and_filter_audio_dialog_widget_newly_downloaded_playlist_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String youtubePlaylistToModifyTitle = 'MaValTest';
+
+      await _verifyPlaylistAudioQuality(
+        tester: tester,
+        playlistTitle: youtubePlaylistToModifyTitle,
+        isPlaylistLocal: false,
+        playlistQuality: PlaylistQuality.voice,
+      );
+
+      // Set playlist audio quality to musical. Then, the application is
+      // restarted ...
+      await _tapOnSetAudioQualityMenu(
+        tester: tester,
+        playlistToModifyTitle: youtubePlaylistToModifyTitle,
+        setMusicQuality: true,
+      );
+
+      await _verifyPlaylistAudioQuality(
+        tester: tester,
+        playlistTitle: youtubePlaylistToModifyTitle,
+        isPlaylistLocal: false,
+        playlistQuality: PlaylistQuality.music,
+      );
+    });
+    testWidgets(
+        '''Restart the application to verify that the audio quality checkbox state was preserved.
+           Then download one audio in the playlist and verify its audio musical quality. Then
+           select the local playlist and restart the application.''',
+        (WidgetTester tester) async {
+      const String youtubePlaylistToModifyTitle = 'MaValTest';
+
+      await IntegrationTestUtil.launchIntegrTestAppEnablingInternetAccess(
+        tester: tester,
+        forcedLocale: const Locale('en'),
+      );
+
+      await _verifyPlaylistAudioQuality(
+        tester: tester,
+        playlistTitle: youtubePlaylistToModifyTitle,
+        isPlaylistLocal: false,
+        playlistQuality: PlaylistQuality.music,
+      );
+
+      // Now typing on the download playlist button to download the
+      // an audio.
+      await tester.tap(find.byKey(const Key('download_sel_playlist_button')));
+      await tester.pumpAndSettle();
+
+      await Future.delayed(const Duration(milliseconds: 1000));
+
+      // Add a delay to allow the download to finish.
+      for (int i = 0; i < 7; i++) {
+        await Future.delayed(const Duration(seconds: 1));
+        await tester.pumpAndSettle();
+        // Now tap on Stop button to stop the download
+        await tester.tap(find.byKey(const Key('stopDownloadingButton')));
+        await tester.pumpAndSettle();
+      }
+
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioEnclosingPlaylistTitle: youtubePlaylistToModifyTitle,
+        validVideoTitleOrAudioTitle: 'Really short video',
+        movedFromPlaylistTitle: '',
+        movedToPlaylistTitle: '',
+        copiedFromPlaylistTitle: '',
+        copiedToPlaylistTitle: '',
+        audioDuration: '0:00:09.8',
+        isMusicQuality: true, // Is musical quality
+      );
+
+      const String localPlaylistTitle = 'local_audio';
+
+      // Now selecting the local playlist by tapping on the
+      // playlist checkbox and restart the application.
+      await IntegrationTestUtil.selectPlaylist(
+        tester: tester,
+        playlistToSelectTitle: localPlaylistTitle,
+      );
+
+      await _verifyPlaylistAudioQuality(
+        tester: tester,
+        playlistTitle: localPlaylistTitle,
+        isPlaylistLocal: true,
+        playlistQuality: PlaylistQuality.voice,
+      );
+    });
+    testWidgets(
+        '''Restart the app. The local playlist is selected and its quality will be set to
+           musical. verify that the audio quality checkbox state was preserved.
+           Then download one audio in the playlist and verify its audio musical quality. Then
+           select the local playlist and restart the application.''',
+        (WidgetTester tester) async {
+      const String youtubePlaylistToModifyTitle = 'MaValTest';
+      const String localSpokenPlaylistTitle = 'local_audio';
+
+      await IntegrationTestUtil.launchIntegrTestAppEnablingInternetAccess(
+        tester: tester,
+        forcedLocale: const Locale('en'),
+      );
+
+      await _verifyPlaylistAudioQuality(
+        tester: tester,
+        playlistTitle: localSpokenPlaylistTitle,
+        isPlaylistLocal: true,
+        playlistQuality: PlaylistQuality.voice,
+      );
+
+      // Set playlist audio quality to musical.
+      await _tapOnSetAudioQualityMenu(
+        tester: tester,
+        playlistToModifyTitle: localSpokenPlaylistTitle,
+        setMusicQuality: true,
+      );
+
+      await _verifyPlaylistAudioQuality(
+        tester: tester,
+        playlistTitle: localSpokenPlaylistTitle,
+        isPlaylistLocal: true,
+        playlistQuality: PlaylistQuality.music,
+      );
+
+      const String singleVideoUrl = 'https://youtu.be/uv3VQoWSjBE';
+
+      // Entering the single video URL in the Youtube URL or search text field
+      // of the app
+      await tester.enterText(
+        find.byKey(
+          const Key('youtubeUrlOrSearchTextField'),
+        ),
+        singleVideoUrl,
+      );
+      await tester.pumpAndSettle();
+
+      // Open the target playlist selection dialog by tapping the
+      // download single video button
+      await tester.tap(find.byKey(const Key('downloadSingleVideoButton')));
+      await tester.pumpAndSettle();
+
+      // Find the RadioListTile target playlist to which the audio
+      // will be downloaded
+
+      Finder radioListTile = find
+          .ancestor(
+            of: find.text(localSpokenPlaylistTitle),
+            matching: find.byType(ListTile),
+          )
+          .last;
+
+      // Tap the target playlist RadioListTile to select it
+      await tester.tap(radioListTile);
+      await tester.pumpAndSettle();
+
+      // Now find the confirm button and tap on it
+      await tester.tap(find.byKey(const Key('confirmButton')));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed alert dialog
+      await IntegrationTestUtil.verifyAlertDisplayAndCloseIt(
+        tester: tester,
+        alertDialogMessage:
+            "Confirm target playlist \"$localSpokenPlaylistTitle\" for downloading single video audio in high-quality music format.",
+      );
+
+      // Add a delay to allow the download to finish.
+      await Future.delayed(const Duration(seconds: 7));
+      await tester.pumpAndSettle();
+
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioEnclosingPlaylistTitle: localSpokenPlaylistTitle,
+        validVideoTitleOrAudioTitle: 'audio learn test short video two',
+        movedFromPlaylistTitle: '',
+        movedToPlaylistTitle: '',
+        copiedFromPlaylistTitle: '',
+        copiedToPlaylistTitle: '',
+        audioDuration: '0:00:09.8',
+        isMusicQuality: true, // Is musical quality
+      );
+
+      // Re-set the unselected MyValTest playlist audio quality
+      // to spoken and then select it to verify the state of the
+      // audio quality checkbox.
+      await _resetUnselectedPlaylistAudioQualityAndThenSelectPlaylist(
+        tester: tester,
+        playlistTitle: youtubePlaylistToModifyTitle,
+        isPlaylistLocal: false,
+        playlistQuality: PlaylistQuality.voice,
+      );
+
+      // Re-set the unselected 'local_audio' playlist audio quality
+      // to spoken and then select it to verify the state of the
+      // audio quality checkbox.
+      await _resetUnselectedPlaylistAudioQualityAndThenSelectPlaylist(
+        tester: tester,
+        playlistTitle: localSpokenPlaylistTitle,
+        isPlaylistLocal: true,
+        playlistQuality: PlaylistQuality.voice,
+      );
+
+      // Now, re-select the 'MyValTest' playlist by tapping on the
+      // playlist checkbox.
+      await IntegrationTestUtil.selectPlaylist(
+        tester: tester,
+        playlistToSelectTitle: youtubePlaylistToModifyTitle,
+      );
+
+      // Now typing on the download playlist button to download the
+      // an audio.
+      await tester.tap(find.byKey(const Key('download_sel_playlist_button')));
+      await tester.pumpAndSettle();
+
+      await Future.delayed(const Duration(milliseconds: 1000));
+
+      // Add a delay to allow the download to finish.
+      for (int i = 0; i < 7; i++) {
+        await Future.delayed(const Duration(seconds: 1));
+        await tester.pumpAndSettle();
+      }
+
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioEnclosingPlaylistTitle: youtubePlaylistToModifyTitle,
+        validVideoTitleOrAudioTitle: 'morning _ cinematic video',
+        movedFromPlaylistTitle: '',
+        movedToPlaylistTitle: '',
+        copiedFromPlaylistTitle: '',
+        copiedToPlaylistTitle: '',
+        audioDuration: '0:00:58.9', // was 0:00:58.5 before fix
+        isMusicQuality: false, // Is musical quality
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group('Test playlist info modification', () {
+    testWidgets(
+        '''Verify playlist info. Then delete an audio and verify that the playlist info
+           is updated accordingly.''', (WidgetTester tester) async {
+      const String selectedPlaylistTitle = 'audio_player_view_2_shorts_test';
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: '2_youtube_2_local_playlists_integr_test_data',
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        tapOnPlaylistToggleButton: true,
+      );
+
+      // Verify the playlist info dialog content
+      await IntegrationTestUtil.verifyPlaylistInfoDialogContent(
+        tester: tester,
+        playlistTitle: selectedPlaylistTitle,
+        playlistDownloadAudioSortFilterParmsName: 'default',
+        playlistPlayAudioSortFilterParmsName: 'default',
+        isPaylistSelected: true,
+        playlistInfoTotalAudioNumber: '2',
+        playlistInfoPlayableAudioNumber: '2',
+        playlistInfoAudioCommentNumber: '3',
+        playlistInfoPlayableAudioTotalDuration: '0:00:55.2',
+        playlistInfoPlayableAudioTotalRemainingDuration: '0:00:43.2',
+        playlistInfoPlayableAudioTotalFileSize: '422.3 KB',
+      );
+
+      // Now we delete the 'Really short video' audio from the
+      // 'audio_player_view_2_shorts_test' playlist.
+
+      const String audioToDeleteTitle = 'Really short video';
+
+      // First, find the Audio sublist ListTile Text widget
+      final Finder uniqueAudioListTileTextWidgetFinder =
+          find.text(audioToDeleteTitle);
+
+      // Then obtain the Audio ListTile widget enclosing the Text widget by
+      // finding its ancestor
+      final Finder uniqueAudioListTileWidgetFinder = find.ancestor(
+        of: uniqueAudioListTileTextWidgetFinder,
+        matching: find.byType(ListTile),
+      );
+
+      // Now find the leading menu icon button of the Audio ListTile
+      // and tap on it
+      final Finder uniqueAudioListTileLeadingMenuIconButton = find.descendant(
+        of: uniqueAudioListTileWidgetFinder,
+        matching: find.byIcon(Icons.menu),
+      );
+
+      // Tap the leading menu icon button to open the popup menu
+      await tester.tap(uniqueAudioListTileLeadingMenuIconButton);
+      await tester.pumpAndSettle();
+
+      // Now find the delete audio popup menu item and tap on it
+      final Finder popupDeleteAudioMenuItem =
+          find.byKey(const Key("popup_menu_delete_audio"));
+
+      await tester.tap(popupDeleteAudioMenuItem);
+      await tester.pumpAndSettle();
+
+      // Tap on the confirm button to delete the audio
+      await tester.tap(find.byKey(const Key('confirmButton')));
+      await tester.pumpAndSettle();
+
+      // After audio deletion, verify the playlist info dialog content
+      await IntegrationTestUtil.verifyPlaylistInfoDialogContent(
+        tester: tester,
+        playlistTitle: selectedPlaylistTitle,
+        playlistDownloadAudioSortFilterParmsName: 'default',
+        playlistPlayAudioSortFilterParmsName: 'default',
+        isPaylistSelected: true,
+        playlistInfoTotalAudioNumber: '2',
+        playlistInfoPlayableAudioNumber: '1',
+        playlistInfoAudioCommentNumber: '2',
+        playlistInfoPlayableAudioTotalDuration: '0:00:47.2',
+        playlistInfoPlayableAudioTotalRemainingDuration: '0:00:43.2',
+        playlistInfoPlayableAudioTotalFileSize: '360.8 KB',
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets('''With 3 audio, verify playlist info.''',
+        (WidgetTester tester) async {
+      const String selectedPlaylistTitle = 'local';
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'playlist_info_test',
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        tapOnPlaylistToggleButton: false,
+      );
+
+      // Verify the playlist info dialog content
+      await IntegrationTestUtil.verifyPlaylistInfoDialogContent(
+        tester: tester,
+        playlistTitle: selectedPlaylistTitle,
+        playlistDownloadAudioSortFilterParmsName: 'default',
+        playlistPlayAudioSortFilterParmsName: 'default',
+        isPaylistSelected: true,
+        playlistInfoTotalAudioNumber: '3',
+        playlistInfoPlayableAudioNumber: '3',
+        playlistInfoAudioCommentNumber: '4',
+        playlistInfoPlayableAudioTotalDuration: '0:03:55.6',
+        playlistInfoPlayableAudioTotalRemainingDuration: '0:03:55.6',
+        playlistInfoPlayableAudioTotalFileSize: '5.64 MB',
+      );
+    });
+    testWidgets(
+        '''With 41 audio, verify playlist info. Verifying bug when tenth of seconds are set
+           to 10 correction.''', (WidgetTester tester) async {
+      const String selectedPlaylistTitle = 'Prières 4';
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'playlist_info_test',
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        tapOnPlaylistToggleButton: false,
+      );
+
+      // Verify the playlist info dialog content
+      await IntegrationTestUtil.verifyPlaylistInfoDialogContent(
+        tester: tester,
+        playlistTitle: selectedPlaylistTitle,
+        playlistDownloadAudioSortFilterParmsName: 'Chap desc',
+        playlistPlayAudioSortFilterParmsName: 'Chap desc',
+        isPaylistSelected: true,
+        playlistInfoTotalAudioNumber: '54',
+        playlistInfoPlayableAudioNumber: '41',
+        playlistInfoAudioCommentNumber: '46',
+        playlistInfoPlayableAudioTotalDuration: '0:56:32.0',
+        playlistInfoPlayableAudioTotalRemainingDuration: '0:02:54.2',
+        playlistInfoPlayableAudioTotalFileSize: '33.50 MB',
+      );
+
+      // Now rewind all audio to start position and verify that the
+      // playlist info is updated accordingly
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
+        tester: tester,
+        playlistToRewindTitle: selectedPlaylistTitle,
+        numberOfRewindedAudio: 40,
+        expectedTotalPlayableDuration: "56:32",
+      );
+
+      // Verify the playlist info dialog content
+      await IntegrationTestUtil.verifyPlaylistInfoDialogContent(
+        tester: tester,
+        playlistTitle: selectedPlaylistTitle,
+        playlistDownloadAudioSortFilterParmsName: 'Chap desc',
+        playlistPlayAudioSortFilterParmsName: 'Chap desc',
+        isPaylistSelected: true,
+        playlistInfoTotalAudioNumber: '54',
+        playlistInfoPlayableAudioNumber: '41',
+        playlistInfoAudioCommentNumber: '46',
+        playlistInfoPlayableAudioTotalDuration: '0:56:32.0',
+        playlistInfoPlayableAudioTotalRemainingDuration: '0:56:32.0',
+        playlistInfoPlayableAudioTotalFileSize: '33.50 MB',
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''With 41 audio after play speed modification in one audio, verify the modified playlist
+           info.''', (WidgetTester tester) async {
+      const String selectedPlaylistTitle = 'Prières 4';
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'playlist_info_test',
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        tapOnPlaylistToggleButton: false,
+      );
+
+      // Now rewind all audio to start position and verify that the
+      // playlist info is updated accordingly
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
+        tester: tester,
+        playlistToRewindTitle: selectedPlaylistTitle,
+        numberOfRewindedAudio: 40,
+        expectedTotalPlayableDuration: "56:32",
+      );
+
+      // Verify the playlist info dialog content
+      await IntegrationTestUtil.verifyPlaylistInfoDialogContent(
+        tester: tester,
+        playlistTitle: selectedPlaylistTitle,
+        playlistDownloadAudioSortFilterParmsName: 'Chap desc',
+        playlistPlayAudioSortFilterParmsName: 'Chap desc',
+        isPaylistSelected: true,
+        playlistInfoTotalAudioNumber: '54',
+        playlistInfoPlayableAudioNumber: '41',
+        playlistInfoAudioCommentNumber: '46',
+        playlistInfoPlayableAudioTotalDuration: '0:56:32.0',
+        playlistInfoPlayableAudioTotalRemainingDuration: '0:56:32.0',
+        playlistInfoPlayableAudioTotalFileSize: '33.50 MB',
+      );
+
+      // Now change the play speed of the "Omraam Mikhaël Aïvanhov  'Je
+      // vivrai d’après l'amour!'" audio
+
+      // Find the audio list widget using its key
+      Finder listFinder = find.byKey(const Key('audio_list'));
+
+      // Perform the scroll down action
+      await tester.drag(listFinder, const Offset(0, -500));
+      await tester.pumpAndSettle();
+
+      // First, get the first downloaded Audio ListTile Text
+      // widget finder and tap on it to open the audio player
+      // view
+      final Finder firstDownloadedAudioListTileTextWidgetFinder =
+          find.text("1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'");
+
+      await tester.tap(firstDownloadedAudioListTileTextWidgetFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Now open the audio play speed dialog
+      await tester.tap(find.byKey(const Key('setAudioSpeedTextButton')));
+      await tester.pumpAndSettle();
+
+      // Now select the 0.7x play speed
+      await tester.tap(find.text('0.7x'));
+      await tester.pumpAndSettle();
+
+      // And click on the Ok button
+      await tester.tap(find.text('Ok'));
+      await tester.pumpAndSettle();
+
+      // Go back to the playlist download view
+      await tester.tap(find.byKey(const Key('playlistDownloadViewIconButton')));
+      await tester.pumpAndSettle();
+
+      // Verify the playlist info dialog content
+      await IntegrationTestUtil.verifyPlaylistInfoDialogContent(
+        tester: tester,
+        playlistTitle: selectedPlaylistTitle,
+        playlistDownloadAudioSortFilterParmsName: 'Chap desc',
+        playlistPlayAudioSortFilterParmsName: 'Chap desc',
+        isPaylistSelected: true,
+        playlistInfoTotalAudioNumber: '54',
+        playlistInfoPlayableAudioNumber: '41',
+        playlistInfoAudioCommentNumber: '46',
+        playlistInfoPlayableAudioTotalDuration: '0:57:40.4',
+        playlistInfoPlayableAudioTotalRemainingDuration: '0:57:40.4',
+        playlistInfoPlayableAudioTotalFileSize: '33.50 MB',
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group('Download URLs from Text File tests', () {
+    testWidgets(
+        '''Download URLs in music quality playlist in spoken quality.''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'download_urls_from_text_field_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String localPlaylistTitleInWhichToDownloadURLs =
+          'Chants Bible en ligne music';
+
+      await _verifyPlaylistAudioQuality(
+        tester: tester,
+        playlistTitle: localPlaylistTitleInWhichToDownloadURLs,
+        isPlaylistLocal: true,
+        playlistQuality: PlaylistQuality.music,
+      );
+
+      String urlsTextFileName = 'youtube_bibleenlignefr_urls.txt';
+
+      // Replace the platform instance with your mock
+      MockFilePicker mockFilePicker = MockFilePicker();
+      FilePicker.platform = mockFilePicker;
+
+      mockFilePicker.setSelectedFiles([
+        PlatformFile(
+            name: urlsTextFileName,
+            path:
+                '$kApplicationPathWindowsTest${path.separator}$urlsTextFileName',
+            size: 131),
+      ]);
+
+      // Set playlist audio quality to musical. Then, the application is
+      // restarted ...
+      await _tapOnDownloadURLsFromTextFileMenu(
+        tester: tester,
+        playlistToDownloadInTitle: localPlaylistTitleInWhichToDownloadURLs,
+        initialSpokenCheckboxState: false,
+        initialMusicCheckboxState: true,
+        setMusicQuality: false,
+      );
+
+      // Add a delay to allow the download to finish.
+      for (int i = 0; i < 9; i++) {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        await tester.pumpAndSettle();
+      }
+
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioEnclosingPlaylistTitle: localPlaylistTitleInWhichToDownloadURLs,
+        youtubeChannel: "Jean-Pierre Schnyder",
+        validVideoTitleOrAudioTitle: "audio learn test short video one",
+        isMusicQuality: false, // Is spoken quality
+      );
+
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioEnclosingPlaylistTitle: localPlaylistTitleInWhichToDownloadURLs,
+        youtubeChannel: "Jean-Pierre Schnyder",
+        validVideoTitleOrAudioTitle: "audio learn test short video two",
+        isMusicQuality: false, // Is spoken quality
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets('''Download URLs in spoken quality playlist.''',
+        (WidgetTester tester) async {
+      const String localPlaylistTitleInWhichToDownloadURLs =
+          'Chants Bible en ligne spoken';
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'download_urls_from_text_field_test',
+        selectedPlaylistTitle: localPlaylistTitleInWhichToDownloadURLs,
+        tapOnPlaylistToggleButton: false,
+      );
+
+      await _verifyPlaylistAudioQuality(
+        tester: tester,
+        playlistTitle: localPlaylistTitleInWhichToDownloadURLs,
+        isPlaylistLocal: true,
+        playlistQuality: PlaylistQuality.voice,
+      );
+
+      String urlsTextFileName = 'youtube_bibleenlignefr_urls.txt';
+
+      // Replace the platform instance with your mock
+      MockFilePicker mockFilePicker = MockFilePicker();
+      FilePicker.platform = mockFilePicker;
+
+      mockFilePicker.setSelectedFiles([
+        PlatformFile(
+            name: urlsTextFileName,
+            path:
+                '$kApplicationPathWindowsTest${path.separator}$urlsTextFileName',
+            size: 131),
+      ]);
+
+      // Set playlist audio quality to musical. Then, the application is
+      // restarted ...
+      await _tapOnDownloadURLsFromTextFileMenu(
+        tester: tester,
+        playlistToDownloadInTitle: localPlaylistTitleInWhichToDownloadURLs,
+        initialSpokenCheckboxState: true,
+        initialMusicCheckboxState: false,
+        setMusicQuality: true,
+      );
+
+      // Add a delay to allow the download to finish.
+      for (int i = 0; i < 7; i++) {
+        await Future.delayed(const Duration(milliseconds: 1500));
+        await tester.pumpAndSettle();
+      }
+
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioEnclosingPlaylistTitle: localPlaylistTitleInWhichToDownloadURLs,
+        youtubeChannel: "Jean-Pierre Schnyder",
+        validVideoTitleOrAudioTitle: "audio learn test short video one",
+        isMusicQuality: true, // Is music quality
+      );
+
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioEnclosingPlaylistTitle: localPlaylistTitleInWhichToDownloadURLs,
+        youtubeChannel: "Jean-Pierre Schnyder",
+        validVideoTitleOrAudioTitle: "audio learn test short video two",
+        isMusicQuality: true, // Is music quality
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets('''Uncheck all checkbox of download audio quality.''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'download_urls_from_text_field_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String localPlaylistTitleInWhichToDownloadURLs =
+          'Chants Bible en ligne music';
+
+      await _verifyPlaylistAudioQuality(
+        tester: tester,
+        playlistTitle: localPlaylistTitleInWhichToDownloadURLs,
+        isPlaylistLocal: true,
+        playlistQuality: PlaylistQuality.music,
+      );
+
+      String urlsTextFileName = 'youtube_bibleenlignefr_urls.txt';
+
+      // Replace the platform instance with your mock
+      MockFilePicker mockFilePicker = MockFilePicker();
+      FilePicker.platform = mockFilePicker;
+
+      mockFilePicker.setSelectedFiles([
+        PlatformFile(
+            name: urlsTextFileName,
+            path:
+                '$kApplicationPathWindowsTest${path.separator}$urlsTextFileName',
+            size: 131),
+      ]);
+
+      // Set playlist audio quality to musical. Then, the application is
+      // restarted ...
+      await _tapOnDownloadURLsFromTextFileMenu(
+          tester: tester,
+          playlistToDownloadInTitle: localPlaylistTitleInWhichToDownloadURLs,
+          initialSpokenCheckboxState: false,
+          initialMusicCheckboxState: true,
+          setMusicQuality: false,
+          uncheckAllCheckboxes: true);
+
+      // Since no checkbox was checked, a warning is displayed ...
+
+      // Verify the displayed warning dialog and close it
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "No checkbox selected. Please select one checkbox before clicking 'Ok', or click 'Cancel' to exit.",
+        isWarningConfirming: false,
+      );
+
+      // And click on the Cancel button of the download URLs from text
+      // file dialog
+      await tester.tap(find.byKey(const Key('setValueToTargetCancelButton')));
+      await tester.pumpAndSettle();
+
+      expect(find.text("audio learn test short video one"), findsNothing);
+
+      expect(find.text("audio learn test short video two"), findsNothing);
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group('Rename playlist tests', () {
+    group('Rename local playlist tests', () {
+      testWidgets('Rename playlist without changing its name.',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}rename playlist test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        const String playlistToRenametitle = 'local';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToRenametitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Verify that the rename playlist dialog is displayed
+        expect(find.byType(PlaylistRenameDialog), findsOneWidget);
+
+        // Verify the button text
+        final Finder audioModificationButtonFinder =
+            find.byKey(const Key('playlistRenameButton'));
+        TextButton audioModificationTextButton =
+            tester.widget<TextButton>(audioModificationButtonFinder);
+        expect((audioModificationTextButton.child! as Text).data, 'Rename');
+
+        // Verify the dialog title
+        expect(find.text('Rename Playlist'), findsOneWidget);
+
+        // Do not modify the playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, playlistToRenametitle);
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Verify that the rename playlist dialog remains displayed
+        expect(find.byType(PlaylistRenameDialog), findsOneWidget);
+
+        // Verify that the TextField continue displaying the initial
+        // playlist title since the new title is the same as the initial one
+
+        expect(textField.controller!.text, playlistToRenametitle);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Rename playlist with changing its name to an other existing playlist name. This will display
+           a warning and will not rename the playlist.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}rename playlist test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        const String playlistToRenametitle = 'local';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToRenametitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Enter the new playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, playlistToRenametitle);
+
+        // Enter the new playlist title
+
+        const String modifiedPlaylistTitle = 'local two';
+
+        await tester.enterText(
+          textFieldFinder,
+          modifiedPlaylistTitle,
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is displayed
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "A playlist with the title \"$modifiedPlaylistTitle\" already exists in the playlists list and so the playlist can't be renamed to this title.",
+          isWarningConfirming: false,
+        );
+
+        // Verify that the rename playlist dialog remains displayed
+        expect(find.byType(PlaylistRenameDialog), findsOneWidget);
+
+        // Verify that the TextField displays the invalid playlist
+        // title since the new title was not accepted
+        expect(textField.controller!.text, modifiedPlaylistTitle);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Rename playlist with changing its name to an invalid playlist name containing comma.
+           This will display a warning and will not rename the playlist.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}rename playlist test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        const String playlistToRenametitle = 'local';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToRenametitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Enter the new playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, playlistToRenametitle);
+
+        // Enter the new playlist title
+
+        const String modifiedPlaylistTitle = 'local , new';
+
+        await tester.enterText(
+          textFieldFinder,
+          modifiedPlaylistTitle,
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is displayed
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "The modified playlist title \"$modifiedPlaylistTitle\" can not contain any comma. Please correct the title and retry ...",
+          isWarningConfirming: false,
+        );
+
+        // Verify that the rename playlist dialog remains displayed
+        expect(find.byType(PlaylistRenameDialog), findsOneWidget);
+
+        // Verify that the TextField displays the invalid playlist
+        // title since the new title was not accepted
+
+        expect(textField.controller!.text, modifiedPlaylistTitle);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Rename playlist with acceptable new name. Verify the results of the rename operation.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}rename playlist test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Load the application picture audio map from the
+        // application picture audio map json file and
+        // verify its content.
+
+        PictureVM pictureVM = PictureVM(
+          settingsDataService: settingsDataService,
+        );
+
+        const String playlistToRenametitle = 'local';
+
+        Map<String, List<String>> applicationPictureAudioMap =
+            pictureVM.readAppPictureAudioMap();
+
+        _verifyAppPictureAudioMapContent(
+          applicationPictureAudioMap: applicationPictureAudioMap,
+          wallpaperPlaylistTitle: playlistToRenametitle,
+          liguriaPlaylistTitle: 'temp',
+        );
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToRenametitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Enter the new playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, playlistToRenametitle);
+
+        // Enter the new playlist title
+
+        const String modifiedPlaylistTitle = 'local renamed';
+
+        await tester.enterText(
+          textFieldFinder,
+          modifiedPlaylistTitle,
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the presence of the renamed playlist in the playlist list
+
+        final List<String> playlistsTitles = [
+          "local renamed",
+          "temp",
+          "local two",
+        ];
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: playlistsTitles,
+        );
+
+        // Verify the id and title in the renamed playlist info
+
+        // First, find the Playlist ListTile Text widget of 'local renamed'
+        final Finder playlistToExamineInfoTextWidgetFinder =
+            find.text(modifiedPlaylistTitle);
+
+        // Then obtain the Playlist ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        final Finder playlistWithCommentedAudioListTileWidgetFinder =
+            find.ancestor(
+          of: playlistToExamineInfoTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now find the leading menu icon button of the playlist and tap on it
+        final Finder playlistListTileLeadingMenuIconButton = find.descendant(
+          of: playlistWithCommentedAudioListTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(playlistListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle(); // Wait for popup menu to appear
+
+        // Now find the playlist info popup menu item and tap on it
+        // to open the PlaylistInfoDialog
+        final Finder popupPlaylistInfoMenuItem =
+            find.byKey(const Key("popup_menu_display_playlist_info"));
+
+        await tester.tap(popupPlaylistInfoMenuItem);
+        await tester.pumpAndSettle();
+
+        // Verify the playlist id
+
+        final Text playlistIdTextWidget =
+            tester.widget<Text>(find.byKey(const Key('playlist_id_key')));
+
+        expect(
+          playlistIdTextWidget.data,
+          modifiedPlaylistTitle,
+        );
+
+        // Verify the playlist title
+
+        final Text playlistTitleTextWidget =
+            tester.widget<Text>(find.byKey(const Key('playlist_title_key')));
+
+        expect(
+          playlistTitleTextWidget.data,
+          modifiedPlaylistTitle,
+        );
+
+        // Verify the playlist download directory
+
+        final String modifiedPlaylistDirPath =
+            '$kPlaylistDownloadRootPathWindowsTest${path.separator}$modifiedPlaylistTitle';
+        final Text playlistDownloadDirectoryTextWidget = tester
+            .widget<Text>(find.byKey(const Key('playlist_download_path_key')));
+
+        expect(
+          playlistDownloadDirectoryTextWidget.data,
+          modifiedPlaylistDirPath,
+        );
+
+        // Verify the playlist url
+
+        final String modifiedPlaylistUrl = '';
+        final Text playlistUrlTextWidget =
+            tester.widget<Text>(find.byKey(const Key('playlist_url_key')));
+
+        expect(
+          playlistUrlTextWidget.data,
+          modifiedPlaylistUrl,
+        );
+
+        // Now find the ok button of the playlist info dialog
+        // and tap on it
+        await tester.tap(find.byKey(const Key('playlist_info_ok_button_key')));
+        await tester.pumpAndSettle();
+
+        // Verify that the modified playlist download directory exists
+        expect(Directory(modifiedPlaylistDirPath).existsSync(), isTrue);
+
+        // Verify that the modified playlist json file exists
+        final String modifiedPlaylistJsonFilePath =
+            '$modifiedPlaylistDirPath${path.separator}$modifiedPlaylistTitle.json';
+        expect(File(modifiedPlaylistJsonFilePath).existsSync(), isTrue);
+
+        // Load the modified playlist from the json file
+        // and verify its modified properties
+
+        Playlist loadedPlaylist = JsonDataService.loadFromFile(
+          jsonPathFileName: modifiedPlaylistJsonFilePath,
+          type: Playlist,
+        );
+
+        // Verify the loaded playlist title
+        expect(loadedPlaylist.title, modifiedPlaylistTitle);
+
+        // Verify the loaded playlist id
+        expect(loadedPlaylist.id, modifiedPlaylistTitle);
+
+        // Verify the loaded playlist download directory
+        expect(loadedPlaylist.downloadPath, modifiedPlaylistDirPath);
+
+        // Verify the loaded playlist url
+        expect(loadedPlaylist.url, "");
+
+        // Load the application picture audio map from the
+        // application picture audio map json file and
+        // verify its content.
+
+        applicationPictureAudioMap = pictureVM.readAppPictureAudioMap();
+
+        _verifyAppPictureAudioMapContent(
+          applicationPictureAudioMap: applicationPictureAudioMap,
+          wallpaperPlaylistTitle: modifiedPlaylistTitle,
+          liguriaPlaylistTitle: 'temp',
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+    group('Rename Youtube playlist tests', () {
+      testWidgets('Rename playlist without changing its name.',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}rename playlist test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        const String playlistToRenametitle = 'temp';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToRenametitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Verify that the rename playlist dialog is displayed
+        expect(find.byType(PlaylistRenameDialog), findsOneWidget);
+
+        // Verify the button text
+        final Finder audioModificationButtonFinder =
+            find.byKey(const Key('playlistRenameButton'));
+        TextButton audioModificationTextButton =
+            tester.widget<TextButton>(audioModificationButtonFinder);
+        expect((audioModificationTextButton.child! as Text).data, 'Rename');
+
+        // Verify the dialog title
+        expect(find.text('Rename Playlist'), findsOneWidget);
+
+        // Do not modify the playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, playlistToRenametitle);
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Verify that the rename playlist dialog remains displayed
+        expect(find.byType(PlaylistRenameDialog), findsOneWidget);
+
+        // Verify that the TextField continue displaying the initial
+        // playlist title since the new title is the same as the initial one
+
+        expect(textField.controller!.text, playlistToRenametitle);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Rename playlist with changing its name to an other existing playlist name. This will display
+           a warning and will not rename the playlist.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}rename playlist test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        const String playlistToRenametitle = 'temp';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToRenametitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Enter the new playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, playlistToRenametitle);
+
+        // Enter the new playlist title
+
+        const String modifiedPlaylistTitle = 'local two';
+
+        await tester.enterText(
+          textFieldFinder,
+          modifiedPlaylistTitle,
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is displayed
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "A playlist with the title \"$modifiedPlaylistTitle\" already exists in the playlists list and so the playlist can't be renamed to this title.",
+          isWarningConfirming: false,
+        );
+
+        // Verify that the rename playlist dialog remains displayed
+        expect(find.byType(PlaylistRenameDialog), findsOneWidget);
+
+        // Verify that the TextField displays the invalid playlist
+        // title since the new title was not accepted
+        expect(textField.controller!.text, modifiedPlaylistTitle);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Rename playlist with changing its name to an invalid playlist name containing comma.
+           This will display a warning and will not rename the playlist.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}rename playlist test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        const String playlistToRenametitle = 'temp';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToRenametitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Enter the new playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, playlistToRenametitle);
+
+        // Enter the new playlist title
+
+        const String modifiedPlaylistTitle = 'temp , new';
+
+        await tester.enterText(
+          textFieldFinder,
+          modifiedPlaylistTitle,
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is displayed
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "The modified playlist title \"$modifiedPlaylistTitle\" can not contain any comma. Please correct the title and retry ...",
+          isWarningConfirming: false,
+        );
+
+        // Verify that the rename playlist dialog remains displayed
+        expect(find.byType(PlaylistRenameDialog), findsOneWidget);
+
+        // Verify that the TextField displays the invalid playlist
+        // title since the new title was not accepted
+
+        expect(textField.controller!.text, modifiedPlaylistTitle);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Rename playlist with acceptable new name. Verify the results of the rename operation.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}rename playlist test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Load the application picture audio map from the
+        // application picture audio map json file and
+        // verify its content.
+
+        PictureVM pictureVM = PictureVM(
+          settingsDataService: settingsDataService,
+        );
+
+        const String playlistToRenametitle = 'temp';
+
+        Map<String, List<String>> applicationPictureAudioMap =
+            pictureVM.readAppPictureAudioMap();
+
+        _verifyAppPictureAudioMapContent(
+          applicationPictureAudioMap: applicationPictureAudioMap,
+          wallpaperPlaylistTitle: 'local',
+          liguriaPlaylistTitle: playlistToRenametitle,
+        );
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToRenametitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Enter the new playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, playlistToRenametitle);
+
+        // Enter the new playlist title
+
+        const String modifiedPlaylistTitle = 'temp renamed';
+
+        await tester.enterText(
+          textFieldFinder,
+          modifiedPlaylistTitle,
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the presence of the renamed playlist in the playlist list
+
+        final List<String> playlistsTitles = [
+          "local",
+          "temp renamed",
+          "local two",
+        ];
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: playlistsTitles,
+        );
+
+        // Verify the id and title in the renamed playlist info
+
+        // First, find the Playlist ListTile Text widget of 'temp renamed'
+        final Finder playlistToExamineInfoTextWidgetFinder =
+            find.text(modifiedPlaylistTitle);
+
+        // Then obtain the Playlist ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        final Finder playlistWithCommentedAudioListTileWidgetFinder =
+            find.ancestor(
+          of: playlistToExamineInfoTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now find the leading menu icon button of the playlist and tap on it
+        final Finder playlistListTileLeadingMenuIconButton = find.descendant(
+          of: playlistWithCommentedAudioListTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(playlistListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle(); // Wait for popup menu to appear
+
+        // Now find the playlist info popup menu item and tap on it
+        // to open the PlaylistInfoDialog
+        final Finder popupPlaylistInfoMenuItem =
+            find.byKey(const Key("popup_menu_display_playlist_info"));
+
+        await tester.tap(popupPlaylistInfoMenuItem);
+        await tester.pumpAndSettle();
+
+        // Verify the playlist id
+
+        final Text playlistIdTextWidget =
+            tester.widget<Text>(find.byKey(const Key('playlist_id_key')));
+
+        expect(
+          playlistIdTextWidget.data,
+          "PLzwWSJNcZTMQUe-Uppm39nTPbHbgnMaOq",
+        );
+
+        // Verify the playlist title
+
+        final Text playlistTitleTextWidget =
+            tester.widget<Text>(find.byKey(const Key('playlist_title_key')));
+
+        expect(
+          playlistTitleTextWidget.data,
+          modifiedPlaylistTitle,
+        );
+
+        // Verify the playlist download directory
+
+        final String modifiedPlaylistDirPath =
+            '$kPlaylistDownloadRootPathWindowsTest${path.separator}$modifiedPlaylistTitle';
+        final Text playlistDownloadDirectoryTextWidget = tester
+            .widget<Text>(find.byKey(const Key('playlist_download_path_key')));
+
+        expect(
+          playlistDownloadDirectoryTextWidget.data,
+          modifiedPlaylistDirPath,
+        );
+
+        // Verify the playlist url
+
+        final String modifiedPlaylistUrl =
+            "https://youtube.com/playlist?list=PLzwWSJNcZTMQUe-Uppm39nTPbHbgnMaOq&si=Z7qORaBB-HxAayXH";
+        final Text playlistUrlTextWidget =
+            tester.widget<Text>(find.byKey(const Key('playlist_url_key')));
+
+        expect(
+          playlistUrlTextWidget.data,
+          modifiedPlaylistUrl,
+        );
+
+        // Now find the ok button of the playlist info dialog
+        // and tap on it
+        await tester.tap(find.byKey(const Key('playlist_info_ok_button_key')));
+        await tester.pumpAndSettle();
+
+        // Verify that the modified playlist download directory exists
+        expect(Directory(modifiedPlaylistDirPath).existsSync(), isTrue);
+
+        // Verify that the modified playlist json file exists
+        final String modifiedPlaylistJsonFilePath =
+            '$modifiedPlaylistDirPath${path.separator}$modifiedPlaylistTitle.json';
+        expect(File(modifiedPlaylistJsonFilePath).existsSync(), isTrue);
+
+        // Load the modified playlist from the json file
+        // and verify its modified properties
+
+        Playlist loadedPlaylist = JsonDataService.loadFromFile(
+          jsonPathFileName: modifiedPlaylistJsonFilePath,
+          type: Playlist,
+        );
+
+        // Verify the loaded playlist title
+        expect(loadedPlaylist.title, modifiedPlaylistTitle);
+
+        // Verify the loaded playlist id
+        expect(loadedPlaylist.id, "PLzwWSJNcZTMQUe-Uppm39nTPbHbgnMaOq");
+
+        // Verify the loaded playlist download directory
+        expect(loadedPlaylist.downloadPath, modifiedPlaylistDirPath);
+
+        // Verify the loaded playlist url
+        expect(loadedPlaylist.url,
+            "https://youtube.com/playlist?list=PLzwWSJNcZTMQUe-Uppm39nTPbHbgnMaOq&si=Z7qORaBB-HxAayXH");
+
+        // Load the application picture audio map from the
+        // application picture audio map json file and
+        // verify its content.
+
+        applicationPictureAudioMap = pictureVM.readAppPictureAudioMap();
+
+        _verifyAppPictureAudioMapContent(
+          applicationPictureAudioMap: applicationPictureAudioMap,
+          wallpaperPlaylistTitle: 'local',
+          liguriaPlaylistTitle: 'temp renamed',
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+  });
+  group('Extract audio comments to MP3 tests', () {
+    group('Extract unique audio comments', () {
+      group('Extract several comments', () {
+        testWidgets(
+            '''Extract to dir in music quality an audio with 3 comments. 1 comment is
+           removed before the extraction. Verify that tapping on a directory/playlist
+           checkbox to unselect it selects the other checkbox.''',
+            (WidgetTester tester) async {
+          const String audioTitle =
+              "Glorious - Laisse-moi te parler de Jésus #louange";
+
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'extract_comments_to_mp3_test',
+          );
+
+          // First, find the '1 long music' playlist audio ListTile Text widget
+          final Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+          // Then obtain the audio ListTile widget enclosing the Text widget
+          // by finding its ancestor
+          final Finder audioTitleTileWidgetFinder = find.ancestor(
+            of: audioTitleTileTextWidgetFinder,
+            matching: find.byType(ListTile),
+          );
+
+          // Now we want to tap the popup menu of the audioTitle ListTile
+
+          // Find the leading menu icon button of the audioTitle ListTile
+          // and tap on it
+          final Finder audioTitleTileLeadingMenuIconButton = find.descendant(
+            of: audioTitleTileWidgetFinder,
+            matching: find.byIcon(Icons.menu),
+          );
+
+          // Tap the leading menu icon button to open the popup menu
+          await tester.tap(audioTitleTileLeadingMenuIconButton);
+          await tester.pumpAndSettle();
+
+          // Now find the 'Audio Comments ...' popup menu item and
+          // tap on it
+          final Finder audioCommentsPopupMenuItem =
+              find.byKey(const Key("popup_menu_audio_comment"));
+
+          await tester.tap(audioCommentsPopupMenuItem);
+          await tester.pumpAndSettle();
+
+          final Finder audioCommentsLstFinder = find.byKey(const Key(
+            'audioCommentsListKey',
+          ));
+
+          // Ensure the list has 3 child widgets
+          expect(
+            tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+            3,
+          );
+
+          // Now open the extract comments to MP3 dialog
+
+          // Find the extract comments to MP3 text button of the comment
+          // add dialog and tap on it
+          final Finder extractCommentsToMp3ButtonFinder =
+              find.byKey(const Key('extractCommentsToMp3TextButton'));
+          await tester.tap(extractCommentsToMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the extract comments to MP3 dialog commentTitle
+          expect(find.text('Comments to MP3'), findsOneWidget);
+
+          // Verify the presence of the help icon button
+          expect(find.byIcon(Icons.help_outline), findsOneWidget);
+
+          // Verify the Comments number commentTitle
+          expect(find.text('Comments (3)'), findsOneWidget);
+
+          // Now, delete the second comment
+
+          // This opens the delete comment confirmation dialog
+          final Finder deleteCommentIconButtonFinder =
+              find.byKey(const Key('deleteSegmentButtonKey_2'));
+          await tester.tap(deleteCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the delete comment confirmation dialog commentTitle
+          expect(find.text('Remove Comment'), findsOneWidget);
+
+          // Verify the delete comment confirmation dialog content
+          expect(
+              find.text(
+                  'Are you sure you want to remove this comment from the comment extraction to MP3 functionality ?'),
+              findsOneWidget);
+
+          // Confirm the deletion by tapping the delete button
+          final Finder deleteCommentButtonFinder =
+              find.byKey(const Key('confirmDeleteSegmentButton'));
+          await tester.tap(deleteCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the Comments number commentTitle
+          expect(find.text('Comments (2)'), findsOneWidget);
+
+          await IntegrationTestUtil.checkExtractionCommentDetails(
+            tester: tester,
+            segmentDetailsList: [
+              {
+                'number': 1,
+                'commentTitle': "First part",
+                'startPosition': '0:00.0',
+                'endPosition': '3:01.0',
+                'playSpeed': 'Play speed: 1.0',
+                'increaseDuration': 'Increase duration: 0:00.0',
+                'reductionPosition': 'Reduction position: 2:50.0',
+                'reductionDuration': 'Reduction duration: 0:11.0',
+                'duration': 'Duration: 3:01.0 + silence 0:01.0',
+              },
+              {
+                'number': 2,
+                'commentTitle':
+                    "2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+                'startPosition': '3:56.1',
+                'endPosition': '5:20.8',
+                'playSpeed': 'Play speed: 1.0',
+                'increaseDuration': 'Increase duration: 0:09.0',
+                'reductionPosition': 'Reduction position: 5:11.0',
+                'reductionDuration': 'Reduction duration: 0:09.8',
+                'duration': 'Duration: 1:24.7',
+              },
+            ],
+          );
+
+          // Type on 'In directory' checkbox to set the 'In playlist'
+          // checkbox to true and verify that
+          Finder onDirectoryCheckBoxFinder =
+              find.byKey(const Key('onDirectoryCheckBox'));
+          await tester.tap(onDirectoryCheckBoxFinder);
+          await tester.pumpAndSettle();
+
+          // Get the 'In directory' Checkbox widget's value
+          Checkbox checkboxWidget =
+              tester.widget<Checkbox>(onDirectoryCheckBoxFinder);
+          expect(checkboxWidget.value, isFalse,
+              reason: 'A directiry checkbox is unselected.');
+
+          // Get the 'In playlist' Checkbox finder
+          Finder inPlaylistCheckBoxFinder =
+              find.byKey(const Key('inPlaylistCheckBox'));
+
+          // Get the 'In playlist' Checkbox widget's value
+          checkboxWidget = tester.widget<Checkbox>(inPlaylistCheckBoxFinder);
+          expect(checkboxWidget.value, isTrue,
+              reason: 'A playlist checkbox is selected.');
+
+          // Then type on 'In playlist' checkbox to set the 'In directory'
+          // checkbox to true and verify that
+          await tester.tap(inPlaylistCheckBoxFinder);
+          await tester.pumpAndSettle();
+
+          // Get the 'In directory' Checkbox widget's value
+          checkboxWidget = tester.widget<Checkbox>(onDirectoryCheckBoxFinder);
+          expect(checkboxWidget.value, isTrue,
+              reason: 'A directiry checkbox is unselected.');
+
+          // Get the 'In playlist' Checkbox widget's value
+          checkboxWidget = tester.widget<Checkbox>(inPlaylistCheckBoxFinder);
+          expect(checkboxWidget.value, isFalse,
+              reason: 'A playlist checkbox is selected.');
+
+          // Now edit the 'First part' comment to modify its start and end positions,
+          // its increase duration and reduction position and duration
+
+          // Necessary to drag up vertically to make visible the edit
+          // icon button of the 1st comment
+          await tester.drag(
+            find.byType(AudioExtractorScreen),
+            const Offset(
+                0, 300), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // This opens the edit comment dialog
+          Finder editCommentIconButtonFinder =
+              find.byKey(const Key('editSegmentButtonKey_1'));
+          await tester.tap(editCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now, modify the start position to 0:10.0
+          Finder commentStartPositionTextFieldFinder =
+              find.byKey(const Key('startPositionTextField'));
+          await tester.tap(commentStartPositionTextFieldFinder);
+          await tester.enterText(commentStartPositionTextFieldFinder, '0:10.0');
+          await tester.pumpAndSettle();
+
+          // Modify the end position to 0:30.0
+          Finder commentEndPositionTextFieldFinder =
+              find.byKey(const Key('endPositionTextField'));
+          await tester.tap(commentEndPositionTextFieldFinder);
+          await tester.enterText(commentEndPositionTextFieldFinder, '0:30.0');
+          await tester.pumpAndSettle();
+
+          // Modify the silence duration to 0:01.0
+          Finder commentSilenceDurationTextFieldFinder =
+              find.byKey(const Key('silenceDurationTextField'));
+          await tester.tap(commentSilenceDurationTextFieldFinder);
+          await tester.enterText(
+              commentSilenceDurationTextFieldFinder, '0:01.0');
+          await tester.pumpAndSettle();
+
+          // Modify the fade-in duration to 0:08.0
+          Finder commentFadeInDurationTextFieldFinder =
+              find.byKey(const Key('fadeInDurationTextField'));
+          await tester.tap(commentFadeInDurationTextFieldFinder);
+          await tester.enterText(
+              commentFadeInDurationTextFieldFinder, '0:08.0');
+          await tester.pumpAndSettle();
+
+          // Modify the reduction position to 0:25.0
+          Finder commentReductionPositionTextFieldFinder =
+              find.byKey(const Key('soundReductionPositionTextField'));
+          await tester.tap(commentReductionPositionTextFieldFinder);
+          await tester.enterText(
+              commentReductionPositionTextFieldFinder, '0:25.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Modify the reduction duration to 0:05.0
+          Finder commentReductionDurationTextFieldFinder =
+              find.byKey(const Key('soundReductionDurationTextField'));
+          await tester.tap(commentReductionDurationTextFieldFinder);
+          await tester.enterText(
+              commentReductionDurationTextFieldFinder, '0:05.0');
+          await tester.pumpAndSettle();
+
+          // Confirm the comment edition by tapping the save button
+          Finder saveEditedCommentButtonFinder =
+              find.byKey(const Key('saveEditedSegmentButton'));
+          await tester.tap(saveEditedCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now edit the third comment to modify its start and end positions,
+          // its increase duration and reduction position and duration
+
+          // This opens the edit comment dialog
+          editCommentIconButtonFinder =
+              find.byKey(const Key('editSegmentButtonKey_2'));
+          await tester.tap(editCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now, modify the start position to 3:56.0
+          commentStartPositionTextFieldFinder =
+              find.byKey(const Key('startPositionTextField'));
+          await tester.tap(commentStartPositionTextFieldFinder);
+          await tester.enterText(commentStartPositionTextFieldFinder, '3:56.0');
+          await tester.pumpAndSettle();
+
+          // Modify the end position to 4:26.0
+          commentEndPositionTextFieldFinder =
+              find.byKey(const Key('endPositionTextField'));
+          await tester.tap(commentEndPositionTextFieldFinder);
+          await tester.enterText(commentEndPositionTextFieldFinder, '4:26.0');
+          await tester.pumpAndSettle();
+
+          // Modify the fade-in duration to 0:05.0
+          commentFadeInDurationTextFieldFinder =
+              find.byKey(const Key('fadeInDurationTextField'));
+          await tester.tap(commentFadeInDurationTextFieldFinder);
+          await tester.enterText(
+              commentFadeInDurationTextFieldFinder, '0:05.0');
+          await tester.pumpAndSettle();
+
+          // Modify the reduction position to 4:20.0
+          commentReductionPositionTextFieldFinder =
+              find.byKey(const Key('soundReductionPositionTextField'));
+          await tester.tap(commentReductionPositionTextFieldFinder);
+          await tester.enterText(
+              commentReductionPositionTextFieldFinder, '4:20.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Modify the reduction duration to 0:06.0
+          commentReductionDurationTextFieldFinder =
+              find.byKey(const Key('soundReductionDurationTextField'));
+          await tester.tap(commentReductionDurationTextFieldFinder);
+          await tester.enterText(
+              commentReductionDurationTextFieldFinder, '0:06.0');
+          await tester.pumpAndSettle();
+
+          // Confirm the comment edition by tapping the save button
+          saveEditedCommentButtonFinder =
+              find.byKey(const Key('saveEditedSegmentButton'));
+          await tester.tap(saveEditedCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now, type on the Extract MP3 button
+          final Finder extractMp3ButtonFinder =
+              find.byKey(const Key('extractMp3Button'));
+          await tester.tap(extractMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          await Future.delayed(const Duration(milliseconds: 1500));
+          await tester.pumpAndSettle();
+
+          // Verify the extract comments to MP3 success dialog message
+          // and play and pause the extracted MP3 file
+          await _verifyAndPlayExtractedMp3Method(
+            tester: tester,
+            extractionSuccessMessage:
+                'Extracted MP3 saved to:\nC:\\development\\flutter\\audiolearn\\test\\data\\audio\\saved\\MP3\\musicQuality_250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27_2_comments.mp3',
+            extractionPlayingMessage:
+                'Playing: musicQuality_250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27_2_comments.mp3',
+            extractedAudioDuration: '0:51.0',
+          );
+
+          // Then, tap the back button to go back to the playlist
+          // download screen
+          Finder audioExtractorScreenBackButton =
+              find.byKey(const Key('audioExtractorBackButton'));
+          await tester.tap(audioExtractorScreenBackButton);
+          await tester.pumpAndSettle();
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
+            '''Extract to dir with play speed modified and in music quality an audio with
+           3 comments. Comment 2 is removed before the extraction. The first comment play
+           speed is set to 0.7 and the third comment play speed is set to 1.25.''',
+            (WidgetTester tester) async {
+          const String audioTitle =
+              "Glorious - Laisse-moi te parler de Jésus #louange";
+
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'extract_comments_to_mp3_test',
+          );
+
+          // First, find the '1 long music' playlist audio ListTile Text widget
+          final Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+          // Then obtain the audio ListTile widget enclosing the Text widget
+          // by finding its ancestor
+          final Finder audioTitleTileWidgetFinder = find.ancestor(
+            of: audioTitleTileTextWidgetFinder,
+            matching: find.byType(ListTile),
+          );
+
+          // Now we want to tap the popup menu of the audioTitle ListTile
+
+          // Find the leading menu icon button of the audioTitle ListTile
+          // and tap on it
+          final Finder audioTitleTileLeadingMenuIconButton = find.descendant(
+            of: audioTitleTileWidgetFinder,
+            matching: find.byIcon(Icons.menu),
+          );
+
+          // Tap the leading menu icon button to open the popup menu
+          await tester.tap(audioTitleTileLeadingMenuIconButton);
+          await tester.pumpAndSettle();
+
+          // Now find the 'Audio Comments ...' popup menu item and
+          // tap on it
+          final Finder audioCommentsPopupMenuItem =
+              find.byKey(const Key("popup_menu_audio_comment"));
+
+          await tester.tap(audioCommentsPopupMenuItem);
+          await tester.pumpAndSettle();
+
+          final Finder audioCommentsLstFinder = find.byKey(const Key(
+            'audioCommentsListKey',
+          ));
+
+          // Ensure the list has 3 child widgets
+          expect(
+            tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+            3,
+          );
+
+          // Now open the extract comments to MP3 dialog
+
+          // Find the extract comments to MP3 text button of the comment
+          // add dialog and tap on it
+          final Finder extractCommentsToMp3ButtonFinder =
+              find.byKey(const Key('extractCommentsToMp3TextButton'));
+          await tester.tap(extractCommentsToMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the extract comments to MP3 dialog commentTitle
+          expect(find.text('Comments to MP3'), findsOneWidget);
+
+          // Verify the presence of the help icon button
+          expect(find.byIcon(Icons.help_outline), findsOneWidget);
+
+          // Verify the Comments number commentTitle
+          expect(find.text('Comments (3)'), findsOneWidget);
+
+          // Now, delete the second comment
+
+          // This opens the delete comment confirmation dialog
+          final Finder deleteCommentIconButtonFinder =
+              find.byKey(const Key('deleteSegmentButtonKey_2'));
+          await tester.tap(deleteCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the delete comment confirmation dialog commentTitle
+          expect(find.text('Remove Comment'), findsOneWidget);
+
+          // Verify the delete comment confirmation dialog content
+          expect(
+              find.text(
+                  'Are you sure you want to remove this comment from the comment extraction to MP3 functionality ?'),
+              findsOneWidget);
+
+          // Confirm the deletion by tapping the delete button
+          final Finder deleteCommentButtonFinder =
+              find.byKey(const Key('confirmDeleteSegmentButton'));
+          await tester.tap(deleteCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the Comments number commentTitle
+          expect(find.text('Comments (2)'), findsOneWidget);
+
+          await IntegrationTestUtil.checkExtractionCommentDetails(
+            tester: tester,
+            segmentDetailsList: [
+              {
+                'number': 1,
+                'commentTitle': "First part",
+                'startPosition': '0:00.0',
+                'endPosition': '3:01.0',
+                'playSpeed': 'Play speed: 1.0',
+                'increaseDuration': 'Increase duration: 0:00.0',
+                'reductionPosition': 'Reduction position: 2:50.0',
+                'reductionDuration': 'Reduction duration: 0:11.0',
+                'duration': 'Duration: 3:01.0 + silence 0:01.0',
+              },
+              {
+                'number': 2,
+                'commentTitle':
+                    "2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+                'startPosition': '3:56.1',
+                'endPosition': '5:20.8',
+                'playSpeed': 'Play speed: 1.0',
+                'increaseDuration': 'Increase duration: 0:09.0',
+                'reductionPosition': 'Reduction position: 5:11.0',
+                'reductionDuration': 'Reduction duration: 0:09.8',
+                'duration': 'Duration: 1:24.7',
+              },
+            ],
+          );
+
+          // Now edit the 'First part' comment to modify its start and
+          // end positions, its play speed, its increase duration and reduction position
+          // and duration
+
+          // Necessary to drag up vertically to make visible the edit
+          // icon button of the 1st comment
+          await tester.drag(
+            find.byType(AudioExtractorScreen),
+            const Offset(
+                0, 300), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // This opens the edit comment dialog
+          Finder editCommentIconButtonFinder =
+              find.byKey(const Key('editSegmentButtonKey_1'));
+          await tester.tap(editCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now, modify the start position to 0:10.0
+          Finder commentStartPositionTextFieldFinder =
+              find.byKey(const Key('startPositionTextField'));
+          await tester.tap(commentStartPositionTextFieldFinder);
+          await tester.enterText(commentStartPositionTextFieldFinder, '0:10.0');
+          await tester.pumpAndSettle();
+
+          // Modify the end position to 0:30.0
+          Finder commentEndPositionTextFieldFinder =
+              find.byKey(const Key('endPositionTextField'));
+          await tester.tap(commentEndPositionTextFieldFinder);
+          await tester.enterText(commentEndPositionTextFieldFinder, '0:30.0');
+          await tester.pumpAndSettle();
+
+          // Modify the silence duration to 0:01.0
+          Finder commentSilenceDurationTextFieldFinder =
+              find.byKey(const Key('silenceDurationTextField'));
+          await tester.tap(commentSilenceDurationTextFieldFinder);
+          await tester.enterText(
+              commentSilenceDurationTextFieldFinder, '0:01.0');
+          await tester.pumpAndSettle();
+
+          // Modify the play speed to 0.7
+          await _correctPlaySpeedEnterCode(
+            tester: tester,
+            playSpeedValue: '0.7',
+          );
+
+          // Modify the fade-in duration to 0:08.0
+          Finder commentFadeInDurationTextFieldFinder =
+              find.byKey(const Key('fadeInDurationTextField'));
+          await tester.tap(commentFadeInDurationTextFieldFinder);
+          await tester.enterText(
+              commentFadeInDurationTextFieldFinder, '0:08.0');
+          await tester.pumpAndSettle();
+
+          // Modify the reduction position to 0:25.0
+          Finder commentReductionPositionTextFieldFinder =
+              find.byKey(const Key('soundReductionPositionTextField'));
+          await tester.tap(commentReductionPositionTextFieldFinder);
+          await tester.enterText(
+              commentReductionPositionTextFieldFinder, '0:25.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Modify the reduction duration to 0:05.0
+          Finder commentReductionDurationTextFieldFinder =
+              find.byKey(const Key('soundReductionDurationTextField'));
+          await tester.tap(commentReductionDurationTextFieldFinder);
+          await tester.enterText(
+              commentReductionDurationTextFieldFinder, '0:05.0');
+          await tester.pumpAndSettle();
+
+          // Confirm the comment edition by tapping the save button
+          Finder saveEditedCommentButtonFinder =
+              find.byKey(const Key('saveEditedSegmentButton'));
+          await tester.tap(saveEditedCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the displayed comment details in the comment card
+          // after the comment play speed modifications
+          await IntegrationTestUtil.checkExtractionCommentDetails(
+            tester: tester,
+            segmentDetailsList: [
+              {
+                'number': 1,
+                'commentTitle': "First part",
+                'startPosition': '0:14.3',
+                'endPosition': '0:42.9',
+                'playSpeed': 'Play speed: 0.7',
+                'increaseDuration': 'Increase duration: 0:08.0',
+                'reductionPosition': 'Reduction position: 0:25.0',
+                'reductionDuration': 'Reduction duration: 0:05.0',
+                'duration': 'Duration: 0:28.6 + silence 0:01.0',
+              },
+            ],
+          );
+
+          // Now type on the segment play button to play the comment
+          // segment with the modified play speed and verify the played
+          // audio duration
+          Finder playCommentSegmentButtonFinder =
+              find.byKey(const Key('playSegmentButtonKey_1'));
+          await tester.tap(playCommentSegmentButtonFinder);
+          await tester.pumpAndSettle();
+
+          await Future.delayed(const Duration(milliseconds: 1500));
+          await tester.pumpAndSettle();
+
+          Text audioDurationText = tester.widget<Text>(
+              find.byKey(const Key('extractedAudioDurationTextKey')));
+          expect(audioDurationText.data, '0:29.6',
+              reason:
+                  'The played audio duration is not correct after the comment play speed modification.');
+
+          // Now edit the third comment to save it again after setting
+          // its play speed to 1.25. This modification removes the
+          // 'Comment not included' message
+
+          // This opens the edit comment dialog
+          editCommentIconButtonFinder =
+              find.byKey(const Key('editSegmentButtonKey_2'));
+          await tester.tap(editCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now, modify the start position to 3:56.0
+          commentStartPositionTextFieldFinder =
+              find.byKey(const Key('startPositionTextField'));
+          await tester.tap(commentStartPositionTextFieldFinder);
+          await tester.enterText(commentStartPositionTextFieldFinder, '3:56.0');
+          await tester.pumpAndSettle();
+
+          // Modify the end position to 4:26.0
+          commentEndPositionTextFieldFinder =
+              find.byKey(const Key('endPositionTextField'));
+          await tester.tap(commentEndPositionTextFieldFinder);
+          await tester.enterText(commentEndPositionTextFieldFinder, '4:26.0');
+          await tester.pumpAndSettle();
+
+          // Modify the play speed to 1.25
+          await _correctPlaySpeedEnterCode(
+            tester: tester,
+            playSpeedValue: '1.25',
+          );
+
+          // Modify the fade-in duration to 0:05.0
+          commentFadeInDurationTextFieldFinder =
+              find.byKey(const Key('fadeInDurationTextField'));
+          await tester.tap(commentFadeInDurationTextFieldFinder);
+          await tester.enterText(
+              commentFadeInDurationTextFieldFinder, '0:05.0');
+          await tester.pumpAndSettle();
+
+          // Modify the reduction position to 4:20.0
+          commentReductionPositionTextFieldFinder =
+              find.byKey(const Key('soundReductionPositionTextField'));
+          await tester.tap(commentReductionPositionTextFieldFinder);
+          await tester.enterText(
+              commentReductionPositionTextFieldFinder, '4:20.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Modify the reduction duration to 0:06.0
+          commentReductionDurationTextFieldFinder =
+              find.byKey(const Key('soundReductionDurationTextField'));
+          await tester.tap(commentReductionDurationTextFieldFinder);
+          await tester.enterText(
+              commentReductionDurationTextFieldFinder, '0:06.0');
+          await tester.pumpAndSettle();
+
+          // Confirm the comment edition by tapping the save button
+          saveEditedCommentButtonFinder =
+              find.byKey(const Key('saveEditedSegmentButton'));
+          await tester.tap(saveEditedCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically to make visible the edit
+          // icon button of the 1st comment
+          await tester.drag(
+            find.byType(AudioExtractorScreen),
+            const Offset(
+                0, -100), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Verify the displayed comment details in the comment card
+          // after the comment play speed modifications
+          await IntegrationTestUtil.checkExtractionCommentDetails(
+            tester: tester,
+            segmentDetailsList: [
+              {
+                'number': 2,
+                'commentTitle':
+                    "2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+                'startPosition': '3:08.8',
+                'endPosition': '3:32.8',
+                'playSpeed': 'Play speed: 1.25',
+                'increaseDuration': 'Increase duration: 0:05.0',
+                'reductionPosition': 'Reduction position: 4:20.0',
+                'reductionDuration': 'Reduction duration: 0:06.0',
+                'duration': 'Duration: 0:24.0',
+              },
+            ],
+          );
+
+          // Now type on the segment play button to play the comment
+          // segment with the modified play speed and verify the played
+          // audio duration
+          playCommentSegmentButtonFinder =
+              find.byKey(const Key('playSegmentButtonKey_2'));
+          await tester.tap(playCommentSegmentButtonFinder);
+          await tester.pumpAndSettle();
+
+          await Future.delayed(const Duration(milliseconds: 1500));
+          await tester.pumpAndSettle();
+
+          audioDurationText = tester.widget<Text>(
+              find.byKey(const Key('extractedAudioDurationTextKey')));
+          expect(audioDurationText.data, '0:24.0',
+              reason:
+                  'The played audio duration is not correct after the comment play speed modification.');
+
+          // Now, type on the Extract MP3 button
+          final Finder extractMp3ButtonFinder =
+              find.byKey(const Key('extractMp3Button'));
+          await tester.tap(extractMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          await Future.delayed(const Duration(milliseconds: 1500));
+          await tester.pumpAndSettle();
+
+          // Verify the extract comments to MP3 success dialog message
+          // and play and pause the extracted MP3 file
+          await _verifyAndPlayExtractedMp3Method(
+            tester: tester,
+            extractionSuccessMessage:
+                'Extracted MP3 saved to:\nC:\\development\\flutter\\audiolearn\\test\\data\\audio\\saved\\MP3\\musicQuality_250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27_2_comments.mp3',
+            extractionPlayingMessage:
+                'Playing: musicQuality_250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27_2_comments.mp3',
+            extractedAudioDuration: '0:53.6',
+          );
+
+          // Then, tap the back button to go back to the playlist
+          // download screen
+          Finder audioExtractorScreenBackButton =
+              find.byKey(const Key('audioExtractorBackButton'));
+          await tester.tap(audioExtractorScreenBackButton);
+          await tester.pumpAndSettle();
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
+            '''Extract to playlist in music quality an audio with 3 comments. 1 comment is
+           removed before the extraction. Then, verify in the playlist extracted audio
+           the content of the audio info dialog. Also verify the URL relation presence
+           in the audio menu as well as in the audio player view left appbar menu.''',
+            (WidgetTester tester) async {
+          const String audioTitle =
+              "Glorious - Laisse-moi te parler de Jésus #louange";
+
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'extract_comments_to_mp3_test',
+          );
+
+          // First, find the '1 long music' playlist audio ListTile Text widget
+          final Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+          // Then obtain the audio ListTile widget enclosing the Text widget
+          // by finding its ancestor
+          final Finder audioTitleTileWidgetFinder = find.ancestor(
+            of: audioTitleTileTextWidgetFinder,
+            matching: find.byType(ListTile),
+          );
+
+          // Now we want to tap the popup menu of the audioTitle ListTile
+
+          // Find the leading menu icon button of the audioTitle ListTile
+          // and tap on it
+          final Finder audioTitleTileLeadingMenuIconButton = find.descendant(
+            of: audioTitleTileWidgetFinder,
+            matching: find.byIcon(Icons.menu),
+          );
+
+          // Tap the leading menu icon button to open the popup menu
+          await tester.tap(audioTitleTileLeadingMenuIconButton);
+          await tester.pumpAndSettle();
+
+          // Now find the 'Audio Comments ...' popup menu item and
+          // tap on it
+          final Finder audioCommentsPopupMenuItem =
+              find.byKey(const Key("popup_menu_audio_comment"));
+
+          await tester.tap(audioCommentsPopupMenuItem);
+          await tester.pumpAndSettle();
+
+          final Finder audioCommentsLstFinder = find.byKey(const Key(
+            'audioCommentsListKey',
+          ));
+
+          // Ensure the list has 3 child widgets
+          expect(
+            tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+            3,
+          );
+
+          // Now open the extract comments to MP3 dialog
+
+          // Find the extract comments to MP3 text button of the comment
+          // add dialog and tap on it
+          final Finder extractCommentsToMp3ButtonFinder =
+              find.byKey(const Key('extractCommentsToMp3TextButton'));
+          await tester.tap(extractCommentsToMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the total duration text
+          Finder totalDurationTextFinder =
+              find.byKey(const Key('totalSegmentsDurationTextKey'));
+          expect(
+            tester.widget<Text>(totalDurationTextFinder).data,
+            'Total duration: 5:21.3',
+          );
+
+          // Now, delete the second comment
+
+          // This opens the delete comment confirmation dialog
+          final Finder deleteCommentIconButtonFinder =
+              find.byKey(const Key('deleteSegmentButtonKey_2'));
+          await tester.tap(deleteCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Confirm the deletion by tapping the delete button
+          final Finder deleteCommentButtonFinder =
+              find.byKey(const Key('confirmDeleteSegmentButton'));
+          await tester.tap(deleteCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the total duration text
+          totalDurationTextFinder =
+              find.byKey(const Key('totalSegmentsDurationTextKey'));
+          expect(
+            tester.widget<Text>(totalDurationTextFinder).data,
+            'Total duration: 4:26.7',
+          );
+
+          await IntegrationTestUtil.checkExtractionCommentDetails(
+            tester: tester,
+            segmentDetailsList: [
+              {
+                'number': 1,
+                'commentTitle': "First part",
+                'startPosition': '0:00.0',
+                'endPosition': '3:01.0',
+                'playSpeed': 'Play speed: 1.0',
+                'increaseDuration': 'Increase duration: 0:00.0',
+                'reductionPosition': 'Reduction position: 2:50.0',
+                'reductionDuration': 'Reduction duration: 0:11.0',
+                'duration': 'Duration: 3:01.0 + silence 0:01.0',
+              },
+              {
+                'number': 2,
+                'commentTitle':
+                    "2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+                'startPosition': '3:56.1',
+                'endPosition': '5:20.8',
+                'playSpeed': 'Play speed: 1.0',
+                'increaseDuration': 'Increase duration: 0:09.0',
+                'reductionPosition': 'Reduction position: 5:11.0',
+                'reductionDuration': 'Reduction duration: 0:09.8',
+                'duration': 'Duration: 1:24.7',
+              },
+            ],
+          );
+
+          // Now edit the 'First part' comment to modify its start and end positions,
+          // its play speed, its increase duration and reduction position and duration
+
+          // Necessary to drag up vertically to make visible the edit
+          // icon button of the 1st comment
+          await tester.drag(
+            find.byType(AudioExtractorScreen),
+            const Offset(
+                0, 300), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // This opens the edit comment dialog
+          Finder editCommentIconButtonFinder =
+              find.byKey(const Key('editSegmentButtonKey_1'));
+          await tester.tap(editCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now, modify the start position to 0:10.0
+          Finder commentStartPositionTextFieldFinder =
+              find.byKey(const Key('startPositionTextField'));
+          await tester.tap(commentStartPositionTextFieldFinder);
+          await tester.enterText(commentStartPositionTextFieldFinder, '0:10.0');
+          await tester.pumpAndSettle();
+
+          // Modify the end position to 0:30.0
+          Finder commentEndPositionTextFieldFinder =
+              find.byKey(const Key('endPositionTextField'));
+          await tester.tap(commentEndPositionTextFieldFinder);
+          await tester.enterText(commentEndPositionTextFieldFinder, '0:30.0');
+          await tester.pumpAndSettle();
+
+          // Modify the silence duration to 0:01.0
+          Finder commentSilenceDurationTextFieldFinder =
+              find.byKey(const Key('silenceDurationTextField'));
+          await tester.tap(commentSilenceDurationTextFieldFinder);
+          await tester.enterText(
+              commentSilenceDurationTextFieldFinder, '0:01.0');
+          await tester.pumpAndSettle();
+
+          // Modify the fade-in duration to 0:08.0
+          Finder commentFadeInDurationTextFieldFinder =
+              find.byKey(const Key('fadeInDurationTextField'));
+          await tester.tap(commentFadeInDurationTextFieldFinder);
+          await tester.enterText(
+              commentFadeInDurationTextFieldFinder, '0:08.0');
+          await tester.pumpAndSettle();
+
+          // Modify the reduction position to 0:25.0
+          Finder commentReductionPositionTextFieldFinder =
+              find.byKey(const Key('soundReductionPositionTextField'));
+          await tester.tap(commentReductionPositionTextFieldFinder);
+          await tester.enterText(
+              commentReductionPositionTextFieldFinder, '0:25.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Modify the reduction duration to 0:05.0
+          Finder commentReductionDurationTextFieldFinder =
+              find.byKey(const Key('soundReductionDurationTextField'));
+          await tester.tap(commentReductionDurationTextFieldFinder);
+          await tester.enterText(
+              commentReductionDurationTextFieldFinder, '0:05.0');
+          await tester.pumpAndSettle();
+
+          // Confirm the comment edition by tapping the save button
+          Finder saveEditedCommentButtonFinder =
+              find.byKey(const Key('saveEditedSegmentButton'));
+          await tester.tap(saveEditedCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now edit the third comment to save it again after setting
+          // its play speed to 1.25. This modification removes the
+          // 'Comment not included' message
+
+          // This opens the edit comment dialog
+          editCommentIconButtonFinder =
+              find.byKey(const Key('editSegmentButtonKey_2'));
+          await tester.tap(editCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now, modify the start position to 3:56.0
+          commentStartPositionTextFieldFinder =
+              find.byKey(const Key('startPositionTextField'));
+          await tester.tap(commentStartPositionTextFieldFinder);
+          await tester.enterText(commentStartPositionTextFieldFinder, '3:56.0');
+          await tester.pumpAndSettle();
+
+          // Modify the end position to 4:26.0
+          commentEndPositionTextFieldFinder =
+              find.byKey(const Key('endPositionTextField'));
+          await tester.tap(commentEndPositionTextFieldFinder);
+          await tester.enterText(commentEndPositionTextFieldFinder, '4:26.0');
+          await tester.pumpAndSettle();
+
+          // Modify the fade-in duration to 0:05.0
+          commentFadeInDurationTextFieldFinder =
+              find.byKey(const Key('fadeInDurationTextField'));
+          await tester.tap(commentFadeInDurationTextFieldFinder);
+          await tester.enterText(
+              commentFadeInDurationTextFieldFinder, '0:05.0');
+          await tester.pumpAndSettle();
+
+          // Modify the reduction position to 4:20.0
+          commentReductionPositionTextFieldFinder =
+              find.byKey(const Key('soundReductionPositionTextField'));
+          await tester.tap(commentReductionPositionTextFieldFinder);
+          await tester.enterText(
+              commentReductionPositionTextFieldFinder, '4:20.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Modify the reduction duration to 0:06.0
+          commentReductionDurationTextFieldFinder =
+              find.byKey(const Key('soundReductionDurationTextField'));
+          await tester.tap(commentReductionDurationTextFieldFinder);
+          await tester.enterText(
+              commentReductionDurationTextFieldFinder, '0:06.0');
+          await tester.pumpAndSettle();
+
+          // Confirm the comment edition by tapping the save button
+          saveEditedCommentButtonFinder =
+              find.byKey(const Key('saveEditedSegmentButton'));
+          await tester.tap(saveEditedCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Type on 'In playlist' checkbox to set it
+          final Finder inPlaylistCheckboxFinder =
+              find.byKey(const Key('inPlaylistCheckBox'));
+          await tester.tap(inPlaylistCheckboxFinder);
+          await tester.pumpAndSettle();
+
+          // Now, type on the Extract MP3 button. This opens the playlist
+          // selection dialog
+
+          final Finder extractMp3ButtonFinder =
+              find.byKey(const Key('extractMp3Button'));
+          await tester.tap(extractMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Find the RadioListTile target playlist to which the
+          // extracted audio will be moved
+
+          final Finder radioListTile = find
+              .ancestor(
+                of: find.text('local with no comment'),
+                matching: find.byType(ListTile),
+              )
+              .last;
+
+          // Tap the target playlist RadioListTile to select it
+          await tester.tap(radioListTile);
+          await tester.pumpAndSettle();
+
+          // Now find the confirm button and tap on it
+          await tester.tap(find.byKey(const Key('confirmButton')));
+          await tester.pumpAndSettle();
+
+          await Future.delayed(const Duration(milliseconds: 1500));
+          await tester.pumpAndSettle();
+
+          // Verify the extract comments to MP3 success dialog message
+          // and play and pause the extracted MP3 file
+          await _verifyAndPlayExtractedMp3Method(
+            tester: tester,
+            extractionSuccessMessage:
+                'Extracted MP3 saved to:\nC:\\development\\flutter\\audiolearn\\test\\data\\audio\\playlists\\local with no comment\\250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27.mp3',
+            extractionPlayingMessage:
+                'Playing: 250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27.mp3',
+            extractedAudioDuration: '0:51.0',
+          );
+
+          // Then, tap the back button to go back to the playlist
+          // download screen
+          Finder audioExtractorScreenBackButton =
+              find.byKey(const Key('audioExtractorBackButton'));
+          await tester.tap(audioExtractorScreenBackButton);
+          await tester.pumpAndSettle();
+
+          // Tap the 'Toggle List' button to show the list of playlist's.
+          await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+          await tester.pumpAndSettle();
+
+          const String targetPlaylistTitle = 'local with no comment';
+
+          await IntegrationTestUtil.selectPlaylist(
+            tester: tester,
+            playlistToSelectTitle: targetPlaylistTitle,
+          );
+
+          const String extractedAudioTitle =
+              "Glorious - Laisse-moi te parler de Jésus #louange";
+
+          await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            audioType: AudioType.extracted,
+            validVideoTitleOrAudioTitle: extractedAudioTitle,
+            audioDownloadDateTimeOne:
+                frenchDateTimeFormat.format(DateTime.now()),
+            isAudioPlayable: true,
+            videoUrl: "https://www.youtube.com/watch?v=eXc6isyEKsw",
+            audioEnclosingPlaylistTitle: targetPlaylistTitle,
+            extractedFromPlaylistTitle: '1 long music',
+            audioDuration: '0:00:51.0',
+            audioPosition: '0:00:00.0',
+            audioState: 'not listened',
+            lastListenDateTime: '',
+            audioFileName:
+                '250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27.mp3',
+            audioFileSize: '1.23 MB',
+            isMusicQuality: true, // Is music quality
+            audioPlaySpeed: '1.0',
+            audioVolume: '50.0 %',
+            audioCommentNumber: 3,
+          );
+
+          const String pictureFileName = "Screenshot_20250829_123429.jpg";
+          const String audioForPictureTitle =
+              'Glorious - Laisse-moi te parler de Jésus #louange';
+          const String audioForPictureTitleDurationStr = '0:51';
+          const List<String> audioForPictureTitleLstJesusJeTaime = [
+            "1 long music|250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27",
+            '1 long music|260126-192653-Quand Dieu transforme l’épreuve en victoire 26-01-26',
+            "local with no comment|250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27",
+          ];
+          String playlistPictureJsonFilesDir =
+              "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$targetPlaylistTitle${path.separator}$kPictureDirName";
+          const List<String> pictureFileNamesLst = [
+            "250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27.json",
+          ];
+          final String applicationPictureDir =
+              "$kApplicationPathWindowsTest${path.separator}$kPictureDirName";
+
+          // Now verifying the audio picture addition result
+          await IntegrationTestUtil.verifyPictureAddition(
+            tester: tester,
+            applicationPictureDir: applicationPictureDir,
+            playlistPictureJsonFilesDir: playlistPictureJsonFilesDir,
+            pictureFileNameOne: pictureFileName,
+            audioForPictureTitle: audioForPictureTitle,
+            audioForPictureTitleDurationStr: audioForPictureTitleDurationStr,
+            playlistAudioPictureJsonFileNameLst: pictureFileNamesLst,
+            audioForPictureTitleOneLst: audioForPictureTitleLstJesusJeTaime,
+            mustPlayableAudioListBeUsed: true,
+          );
+
+          // Then return to playlist download view in order to execute
+          // the playlist JSON files update
+          Finder applicationViewNavButton =
+              find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+          await tester.tap(applicationViewNavButton);
+          await tester.pumpAndSettle();
+
+          // First, find the Audio sublist ListTile Text widget
+          final Finder audioTitleTextWidgetFinder =
+              find.text(extractedAudioTitle);
+
+          // Then obtain the Audio ListTile widget enclosing the Text widget by
+          // finding its ancestor
+          final Finder audioListTileWidgetFinder = find.ancestor(
+            of: audioTitleTextWidgetFinder,
+            matching: find.byType(ListTile),
+          );
+
+          // Verify that the extracted audio URL is available in the audio
+          // item menu
+
+          // Find the leading menu icon button of the Audio ListTile and tap
+          // on it
+          final Finder audioListTileLeadingMenuIconButton = find.descendant(
+            of: audioListTileWidgetFinder,
+            matching: find.byIcon(Icons.menu),
+          );
+
+          // Tap the leading menu icon button to open the popup menu
+          await tester.tap(audioListTileLeadingMenuIconButton);
+          await tester.pumpAndSettle();
+
+          expect(
+            find.byKey(const Key('popup_menu_open_youtube_video')),
+            findsOneWidget,
+          );
+
+          expect(
+            find.byKey(const Key('popup_copy_youtube_video_url')),
+            findsOneWidget,
+          );
+
+          // Go to the audio player view to verify that the extracted
+          // audio URL is available in the audio player view left appbar
+          // menu
+
+          applicationViewNavButton =
+              find.byKey(const ValueKey('audioPlayerViewIconButton'));
+
+          // To close the audio menu
+          await tester.tap(applicationViewNavButton);
+          await tester.pumpAndSettle();
+
+          // Tap the extracted audio ListTile to open the Audio Player view
+          await tester.tap(audioTitleTextWidgetFinder);
+          await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+            tester: tester,
+          );
+
+          // Tap the appbar leading popup menu button to verify the
+          // presence of the extracted audio URL menu items
+          await tester
+              .tap(find.byKey(const Key('appBarLeadingPopupMenuWidget')));
+          await tester.pumpAndSettle();
+
+          expect(
+            find.byKey(const Key('popup_menu_open_youtube_video')),
+            findsOneWidget,
+          );
+
+          expect(
+            find.byKey(const Key('popup_copy_youtube_video_url')),
+            findsOneWidget,
+          );
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
+            '''Extract to playlist with play speed modified in music quality an audio with
+           3 comments. 1 comment is removed before the extraction. Then, verify in the
+           playlist extracted audio the content of the audio info dialog. Also verify the
+           URL relation presence in the audio menu as well as in the audio player view left
+           appbar menu.''', (WidgetTester tester) async {
+          const String audioTitle =
+              "Glorious - Laisse-moi te parler de Jésus #louange";
+
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'extract_comments_to_mp3_test',
+          );
+
+          // First, find the '1 long music' playlist audio ListTile Text widget
+          final Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+          // Then obtain the audio ListTile widget enclosing the Text widget
+          // by finding its ancestor
+          final Finder audioTitleTileWidgetFinder = find.ancestor(
+            of: audioTitleTileTextWidgetFinder,
+            matching: find.byType(ListTile),
+          );
+
+          // Now we want to tap the popup menu of the audioTitle ListTile
+
+          // Find the leading menu icon button of the audioTitle ListTile
+          // and tap on it
+          final Finder audioTitleTileLeadingMenuIconButton = find.descendant(
+            of: audioTitleTileWidgetFinder,
+            matching: find.byIcon(Icons.menu),
+          );
+
+          // Tap the leading menu icon button to open the popup menu
+          await tester.tap(audioTitleTileLeadingMenuIconButton);
+          await tester.pumpAndSettle();
+
+          // Now find the 'Audio Comments ...' popup menu item and
+          // tap on it
+          final Finder audioCommentsPopupMenuItem =
+              find.byKey(const Key("popup_menu_audio_comment"));
+
+          await tester.tap(audioCommentsPopupMenuItem);
+          await tester.pumpAndSettle();
+
+          final Finder audioCommentsLstFinder = find.byKey(const Key(
+            'audioCommentsListKey',
+          ));
+
+          // Ensure the list has 3 child widgets
+          expect(
+            tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+            3,
+          );
+
+          // Now open the extract comments to MP3 dialog
+
+          // Find the extract comments to MP3 text button of the comment
+          // add dialog and tap on it
+          final Finder extractCommentsToMp3ButtonFinder =
+              find.byKey(const Key('extractCommentsToMp3TextButton'));
+          await tester.tap(extractCommentsToMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the total duration text
+          Finder totalDurationTextFinder =
+              find.byKey(const Key('totalSegmentsDurationTextKey'));
+          expect(
+            tester.widget<Text>(totalDurationTextFinder).data,
+            'Total duration: 5:21.3',
+          );
+
+          // Now, delete the second comment
+
+          // This opens the delete comment confirmation dialog
+          final Finder deleteCommentIconButtonFinder =
+              find.byKey(const Key('deleteSegmentButtonKey_2'));
+          await tester.tap(deleteCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Confirm the deletion by tapping the delete button
+          final Finder deleteCommentButtonFinder =
+              find.byKey(const Key('confirmDeleteSegmentButton'));
+          await tester.tap(deleteCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the total duration text
+          totalDurationTextFinder =
+              find.byKey(const Key('totalSegmentsDurationTextKey'));
+          expect(
+            tester.widget<Text>(totalDurationTextFinder).data,
+            'Total duration: 4:26.7',
+          );
+
+          await IntegrationTestUtil.checkExtractionCommentDetails(
+            tester: tester,
+            segmentDetailsList: [
+              {
+                'number': 1,
+                'commentTitle': "First part",
+                'startPosition': '0:00.0',
+                'endPosition': '3:01.0',
+                'playSpeed': 'Play speed: 1.0',
+                'increaseDuration': 'Increase duration: 0:00.0',
+                'reductionPosition': 'Reduction position: 2:50.0',
+                'reductionDuration': 'Reduction duration: 0:11.0',
+                'duration': 'Duration: 3:01.0 + silence 0:01.0',
+              },
+              {
+                'number': 2,
+                'commentTitle':
+                    "2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+                'startPosition': '3:56.1',
+                'endPosition': '5:20.8',
+                'playSpeed': 'Play speed: 1.0',
+                'increaseDuration': 'Increase duration: 0:09.0',
+                'reductionPosition': 'Reduction position: 5:11.0',
+                'reductionDuration': 'Reduction duration: 0:09.8',
+                'duration': 'Duration: 1:24.7',
+              },
+            ],
+          );
+
+          // Now edit the 'First part' comment to modify its start and end positions,
+          // its play speed, its increase duration and reduction position and duration
+
+          // Necessary to drag up vertically to make visible the edit
+          // icon button of the 1st comment
+          await tester.drag(
+            find.byType(AudioExtractorScreen),
+            const Offset(
+                0, 300), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // This opens the edit comment dialog
+          Finder editCommentIconButtonFinder =
+              find.byKey(const Key('editSegmentButtonKey_1'));
+          await tester.tap(editCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now, modify the start position to 0:10.0
+          Finder commentStartPositionTextFieldFinder =
+              find.byKey(const Key('startPositionTextField'));
+          await tester.tap(commentStartPositionTextFieldFinder);
+          await tester.enterText(commentStartPositionTextFieldFinder, '0:10.0');
+          await tester.pumpAndSettle();
+
+          // Modify the end position to 0:30.0
+          Finder commentEndPositionTextFieldFinder =
+              find.byKey(const Key('endPositionTextField'));
+          await tester.tap(commentEndPositionTextFieldFinder);
+          await tester.enterText(commentEndPositionTextFieldFinder, '0:30.0');
+          await tester.pumpAndSettle();
+
+          // Modify the silence duration to 0:01.0
+          Finder commentSilenceDurationTextFieldFinder =
+              find.byKey(const Key('silenceDurationTextField'));
+          await tester.tap(commentSilenceDurationTextFieldFinder);
+          await tester.enterText(
+              commentSilenceDurationTextFieldFinder, '0:01.0');
+          await tester.pumpAndSettle();
+
+          // Modify the play speed to 0.7
+          await _correctPlaySpeedEnterCode(
+            tester: tester,
+            playSpeedValue: '0.7',
+          );
+
+          // Modify the fade-in duration to 0:08.0
+          Finder commentFadeInDurationTextFieldFinder =
+              find.byKey(const Key('fadeInDurationTextField'));
+          await tester.tap(commentFadeInDurationTextFieldFinder);
+          await tester.enterText(
+              commentFadeInDurationTextFieldFinder, '0:08.0');
+          await tester.pumpAndSettle();
+
+          // Modify the reduction position to 0:25.0
+          Finder commentReductionPositionTextFieldFinder =
+              find.byKey(const Key('soundReductionPositionTextField'));
+          await tester.tap(commentReductionPositionTextFieldFinder);
+          await tester.enterText(
+              commentReductionPositionTextFieldFinder, '0:25.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Modify the reduction duration to 0:05.0
+          Finder commentReductionDurationTextFieldFinder =
+              find.byKey(const Key('soundReductionDurationTextField'));
+          await tester.tap(commentReductionDurationTextFieldFinder);
+          await tester.enterText(
+              commentReductionDurationTextFieldFinder, '0:05.0');
+          await tester.pumpAndSettle();
+
+          // Confirm the comment edition by tapping the save button
+          Finder saveEditedCommentButtonFinder =
+              find.byKey(const Key('saveEditedSegmentButton'));
+          await tester.tap(saveEditedCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now edit the third comment to save it again after setting
+          // its play speed to 1.25. This modification removes the
+          // 'Comment not included' message
+
+          // This opens the edit comment dialog
+          editCommentIconButtonFinder =
+              find.byKey(const Key('editSegmentButtonKey_2'));
+          await tester.tap(editCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now, modify the start position to 3:56.0
+          commentStartPositionTextFieldFinder =
+              find.byKey(const Key('startPositionTextField'));
+          await tester.tap(commentStartPositionTextFieldFinder);
+          await tester.enterText(commentStartPositionTextFieldFinder, '3:56.0');
+          await tester.pumpAndSettle();
+
+          // Modify the end position to 4:26.0
+          commentEndPositionTextFieldFinder =
+              find.byKey(const Key('endPositionTextField'));
+          await tester.tap(commentEndPositionTextFieldFinder);
+          await tester.enterText(commentEndPositionTextFieldFinder, '4:26.0');
+          await tester.pumpAndSettle();
+
+          // Modify the fade-in duration to 0:05.0
+          commentFadeInDurationTextFieldFinder =
+              find.byKey(const Key('fadeInDurationTextField'));
+          await tester.tap(commentFadeInDurationTextFieldFinder);
+          await tester.enterText(
+              commentFadeInDurationTextFieldFinder, '0:05.0');
+          await tester.pumpAndSettle();
+
+          // Modify the reduction position to 4:20.0
+          commentReductionPositionTextFieldFinder =
+              find.byKey(const Key('soundReductionPositionTextField'));
+          await tester.tap(commentReductionPositionTextFieldFinder);
+          await tester.enterText(
+              commentReductionPositionTextFieldFinder, '4:20.0');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Modify the reduction duration to 0:06.0
+          commentReductionDurationTextFieldFinder =
+              find.byKey(const Key('soundReductionDurationTextField'));
+          await tester.tap(commentReductionDurationTextFieldFinder);
+          await tester.enterText(
+              commentReductionDurationTextFieldFinder, '0:06.0');
+          await tester.pumpAndSettle();
+
+          // Confirm the comment edition by tapping the save button
+          saveEditedCommentButtonFinder =
+              find.byKey(const Key('saveEditedSegmentButton'));
+          await tester.tap(saveEditedCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Type on 'In playlist' checkbox to set it
+          final Finder inPlaylistCheckboxFinder =
+              find.byKey(const Key('inPlaylistCheckBox'));
+          await tester.tap(inPlaylistCheckboxFinder);
+          await tester.pumpAndSettle();
+
+          // Now, type on the Extract MP3 button. This opens the playlist
+          // selection dialog
+
+          final Finder extractMp3ButtonFinder =
+              find.byKey(const Key('extractMp3Button'));
+          await tester.tap(extractMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Find the RadioListTile target playlist to which the
+          // extracted audio will be moved
+
+          final Finder radioListTile = find
+              .ancestor(
+                of: find.text('local with no comment'),
+                matching: find.byType(ListTile),
+              )
+              .last;
+
+          // Tap the target playlist RadioListTile to select it
+          await tester.tap(radioListTile);
+          await tester.pumpAndSettle();
+
+          // Now find the confirm button and tap on it
+          await tester.tap(find.byKey(const Key('confirmButton')));
+          await tester.pumpAndSettle();
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+      });
+      group('Extract one comments', () {
+        testWidgets(
+            '''Extract to dir in spoken quality with play speed modified an audio with 1
+           comment. The unique comment play seed is set to 0.7.''',
+            (WidgetTester tester) async {
+          const String audioTitle =
+              "Quand Dieu transforme l’épreuve en victoire";
+
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'extract_comments_to_mp3_test',
+          );
+
+          // First, find the '1 long music' playlist audio ListTile Text widget
+          final Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+          // Then obtain the audio ListTile widget enclosing the Text widget
+          // by finding its ancestor
+          final Finder audioTitleTileWidgetFinder = find.ancestor(
+            of: audioTitleTileTextWidgetFinder,
+            matching: find.byType(ListTile),
+          );
+
+          // Now we want to tap the popup menu of the audioTitle ListTile
+
+          // Find the leading menu icon button of the audioTitle ListTile
+          // and tap on it
+          final Finder audioTitleTileLeadingMenuIconButton = find.descendant(
+            of: audioTitleTileWidgetFinder,
+            matching: find.byIcon(Icons.menu),
+          );
+
+          // Tap the leading menu icon button to open the popup menu
+          await tester.tap(audioTitleTileLeadingMenuIconButton);
+          await tester.pumpAndSettle();
+
+          // Now find the 'Audio Comments ...' popup menu item and
+          // tap on it
+          final Finder audioCommentsPopupMenuItem =
+              find.byKey(const Key("popup_menu_audio_comment"));
+
+          await tester.tap(audioCommentsPopupMenuItem);
+          await tester.pumpAndSettle();
+
+          final Finder audioCommentsLstFinder = find.byKey(const Key(
+            'audioCommentsListKey',
+          ));
+
+          // Ensure the list has 1 child widget
+          expect(
+            tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+            1,
+          );
+
+          // Now open the extract comments to MP3 dialog
+
+          // Find the extract comments to MP3 text button of the comment
+          // add dialog and tap on it
+          final Finder extractCommentsToMp3ButtonFinder =
+              find.byKey(const Key('extractCommentsToMp3TextButton'));
+          await tester.tap(extractCommentsToMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the extract comments to MP3 dialog commentTitle
+          expect(find.text('Comments to MP3'), findsOneWidget);
+
+          // Verify the presence of the help icon button
+          expect(find.byIcon(Icons.help_outline), findsOneWidget);
+
+          // Verify the Comments number commentTitle
+          expect(find.text('Comments (1)'), findsOneWidget);
+
+          await IntegrationTestUtil.checkExtractionCommentDetails(
+            tester: tester,
+            segmentDetailsList: [
+              {
+                'number': 1,
+                'commentTitle': "Prière à Dieu pour nos difficultés ",
+                'startPosition': '23:15.7',
+                'endPosition': '24:10.0',
+                'playSpeed': 'Play speed: 1.0',
+                'increaseDuration': 'Increase duration: 0:00.0',
+                'reductionPosition': 'Reduction position: 0:00.0',
+                'reductionDuration': 'Reduction duration: 0:00.0',
+                'duration': 'Duration: 0:54.3',
+              },
+            ],
+          );
+
+          // Now edit the 'Prière à Dieu pour nos difficultés ' comment to modify its
+          // play speed, its increase duration and reduction position and duration
+
+          // This opens the edit comment dialog
+          Finder editCommentIconButtonFinder =
+              find.byKey(const Key('editSegmentButtonKey_1'));
+          await tester.tap(editCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Modify the play speed to 0.7
+          await _correctPlaySpeedEnterCode(
+            tester: tester,
+            playSpeedValue: '0.7',
+          );
+
+          // Modify the fade-in duration to 0:05.0
+          Finder commentFadeInDurationTextFieldFinder =
+              find.byKey(const Key('fadeInDurationTextField'));
+          await tester.tap(commentFadeInDurationTextFieldFinder);
+          await tester.enterText(
+              commentFadeInDurationTextFieldFinder, '0:05.0');
+          await tester.pumpAndSettle();
+
+          // Modify the reduction position to 24:06.5
+          Finder commentReductionPositionTextFieldFinder =
+              find.byKey(const Key('soundReductionPositionTextField'));
+          await tester.tap(commentReductionPositionTextFieldFinder);
+          await tester.enterText(
+              commentReductionPositionTextFieldFinder, '24:06.5');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Modify the reduction duration to 0:03.5
+          Finder commentReductionDurationTextFieldFinder =
+              find.byKey(const Key('soundReductionDurationTextField'));
+          await tester.tap(commentReductionDurationTextFieldFinder);
+          await tester.enterText(
+              commentReductionDurationTextFieldFinder, '0:03.5');
+          await tester.pumpAndSettle();
+
+          // Confirm the comment edition by tapping the save button
+          Finder saveEditedCommentButtonFinder =
+              find.byKey(const Key('saveEditedSegmentButton'));
+          await tester.tap(saveEditedCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Now, type on the Extract MP3 button
+          final Finder extractMp3ButtonFinder =
+              find.byKey(const Key('extractMp3Button'));
+          await tester.tap(extractMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          await Future.delayed(const Duration(milliseconds: 1000));
+          await tester.pumpAndSettle();
+
+          // Verify the extract comments to MP3 success dialog message
+          // and play and pause the extracted MP3 file
+          await _verifyAndPlayExtractedMp3Method(
+            tester: tester,
+            extractionSuccessMessage:
+                'Extracted MP3 saved to:\nC:\\development\\flutter\\audiolearn\\test\\data\\audio\\saved\\MP3\\260126-192653-Quand Dieu transforme l’épreuve en victoire 26-01-26 from 23-15.7 to 24-10.0.mp3',
+            extractionPlayingMessage:
+                'Playing: 260126-192653-Quand Dieu transforme l’épreuve en victoire 26-01-26 from 23-15.7 to 24-10.0.mp3',
+            extractedAudioDuration: '1:17.6',
+          );
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
+            '''Extract to playlist in spoken quality an audio with 1 comment.''',
+            (WidgetTester tester) async {
+          const String audioTitle =
+              "Quand Dieu transforme l’épreuve en victoire";
+
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'extract_comments_to_mp3_test',
+          );
+
+          // First, find the '1 long music' playlist audio ListTile Text widget
+          final Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+          // Then obtain the audio ListTile widget enclosing the Text widget
+          // by finding its ancestor
+          final Finder audioTitleTileWidgetFinder = find.ancestor(
+            of: audioTitleTileTextWidgetFinder,
+            matching: find.byType(ListTile),
+          );
+
+          // Now we want to tap the popup menu of the audioTitle ListTile
+
+          // Find the leading menu icon button of the audioTitle ListTile
+          // and tap on it
+          final Finder audioTitleTileLeadingMenuIconButton = find.descendant(
+            of: audioTitleTileWidgetFinder,
+            matching: find.byIcon(Icons.menu),
+          );
+
+          // Tap the leading menu icon button to open the popup menu
+          await tester.tap(audioTitleTileLeadingMenuIconButton);
+          await tester.pumpAndSettle();
+
+          // Now find the 'Audio Comments ...' popup menu item and
+          // tap on it
+          final Finder audioCommentsPopupMenuItem =
+              find.byKey(const Key("popup_menu_audio_comment"));
+
+          await tester.tap(audioCommentsPopupMenuItem);
+          await tester.pumpAndSettle();
+
+          final Finder audioCommentsLstFinder = find.byKey(const Key(
+            'audioCommentsListKey',
+          ));
+
+          // Ensure the list has 1 child widget
+          expect(
+            tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+            1,
+          );
+
+          // Now open the extract comments to MP3 dialog
+
+          // Find the extract comments to MP3 text button of the comment
+          // add dialog and tap on it
+          final Finder extractCommentsToMp3ButtonFinder =
+              find.byKey(const Key('extractCommentsToMp3TextButton'));
+          await tester.tap(extractCommentsToMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the extract comments to MP3 dialog commentTitle
+          expect(find.text('Comments to MP3'), findsOneWidget);
+
+          // Verify the presence of the help icon button
+          expect(find.byIcon(Icons.help_outline), findsOneWidget);
+
+          // Verify the Comments number commentTitle
+          expect(find.text('Comments (1)'), findsOneWidget);
+
+          await IntegrationTestUtil.checkExtractionCommentDetails(
+            tester: tester,
+            segmentDetailsList: [
+              {
+                'number': 1,
+                'commentTitle': "Prière à Dieu pour nos difficultés ",
+                'startPosition': '23:15.7',
+                'endPosition': '24:10.0',
+                'playSpeed': 'Play speed: 1.0',
+                'increaseDuration': 'Increase duration: 0:00.0',
+                'reductionPosition': 'Reduction position: 0:00.0',
+                'reductionDuration': 'Reduction duration: 0:00.0',
+                'duration': 'Duration: 0:54.3',
+              },
+            ],
+          );
+
+          // Now edit the 'Prière à Dieu pour nos difficultés ' comment to modify its
+          // play speed, its increase duration and reduction position and duration
+
+          // This opens the edit comment dialog
+          Finder editCommentIconButtonFinder =
+              find.byKey(const Key('editSegmentButtonKey_1'));
+          await tester.tap(editCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Modify the fade-in duration to 0:05.0
+          Finder commentFadeInDurationTextFieldFinder =
+              find.byKey(const Key('fadeInDurationTextField'));
+          await tester.tap(commentFadeInDurationTextFieldFinder);
+          await tester.enterText(
+              commentFadeInDurationTextFieldFinder, '0:05.0');
+          await tester.pumpAndSettle();
+
+          // Modify the reduction position to 24:06.5
+          Finder commentReductionPositionTextFieldFinder =
+              find.byKey(const Key('soundReductionPositionTextField'));
+          await tester.tap(commentReductionPositionTextFieldFinder);
+          await tester.enterText(
+              commentReductionPositionTextFieldFinder, '24:06.5');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Modify the reduction duration to 0:03.5
+          Finder commentReductionDurationTextFieldFinder =
+              find.byKey(const Key('soundReductionDurationTextField'));
+          await tester.tap(commentReductionDurationTextFieldFinder);
+          await tester.enterText(
+              commentReductionDurationTextFieldFinder, '0:03.5');
+          await tester.pumpAndSettle();
+
+          // Confirm the comment edition by tapping the save button
+          Finder saveEditedCommentButtonFinder =
+              find.byKey(const Key('saveEditedSegmentButton'));
+          await tester.tap(saveEditedCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Type on 'In playlist' checkbox to set it
+          final Finder inPlaylistCheckboxFinder =
+              find.byKey(const Key('inPlaylistCheckBox'));
+          await tester.tap(inPlaylistCheckboxFinder);
+          await tester.pumpAndSettle();
+
+          // Now, type on the Extract MP3 button. This opens the playlist
+          // selection dialog
+
+          final Finder extractMp3ButtonFinder =
+              find.byKey(const Key('extractMp3Button'));
+          await tester.tap(extractMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Find the RadioListTile target playlist to which the
+          // extracted audio will be moved
+
+          final Finder radioListTile = find
+              .ancestor(
+                of: find.text('local with no comment'),
+                matching: find.byType(ListTile),
+              )
+              .last;
+
+          // Tap the target playlist RadioListTile to select it
+          await tester.tap(radioListTile);
+          await tester.pumpAndSettle();
+
+          // Now find the confirm button and tap on it
+          await tester.tap(find.byKey(const Key('confirmButton')));
+          await tester.pumpAndSettle();
+
+          await Future.delayed(const Duration(milliseconds: 1500));
+          await tester.pumpAndSettle();
+
+          // Verify the extract comments to MP3 success dialog message
+          // and play and pause the extracted MP3 file
+          await _verifyAndPlayExtractedMp3Method(
+            tester: tester,
+            extractionSuccessMessage:
+                'Extracted MP3 saved to:\nC:\\development\\flutter\\audiolearn\\test\\data\\audio\\playlists\\local with no comment\\260126-192653-Quand Dieu transforme l’épreuve en victoire 26-01-26.mp3',
+            extractionPlayingMessage:
+                'Playing: 260126-192653-Quand Dieu transforme l’épreuve en victoire 26-01-26.mp3',
+            extractedAudioDuration: '0:54.3',
+          );
+
+          // Then, tap the back button to go back to the playlist
+          // download screen
+          Finder audioExtractorScreenBackButton =
+              find.byKey(const Key('audioExtractorBackButton'));
+          await tester.tap(audioExtractorScreenBackButton);
+          await tester.pumpAndSettle();
+
+          // Tap the 'Toggle List' button to show the list of playlist's.
+          await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+          await tester.pumpAndSettle();
+
+          const String targetPlaylistTitle = 'local with no comment';
+
+          await IntegrationTestUtil.selectPlaylist(
+            tester: tester,
+            playlistToSelectTitle: targetPlaylistTitle,
+          );
+
+          const String extractedAudioTitle =
+              "Quand Dieu transforme l’épreuve en victoire";
+
+          await IntegrationTestUtil.verifyAudioInfoDialog(
+            tester: tester,
+            audioType: AudioType.extracted,
+            validVideoTitleOrAudioTitle: extractedAudioTitle,
+            audioDownloadDateTimeOne:
+                frenchDateTimeFormat.format(DateTime.now()),
+            isAudioPlayable: true,
+            videoUrl: "https://www.youtube.com/watch?v=7GukCEXM03k",
+            audioEnclosingPlaylistTitle: targetPlaylistTitle,
+            extractedFromPlaylistTitle: '1 long music',
+            audioDuration: '0:00:54.3',
+            audioPosition: '0:00:00.0',
+            audioState: 'not listened',
+            lastListenDateTime: '',
+            audioFileName:
+                '260126-192653-Quand Dieu transforme l’épreuve en victoire 26-01-26.mp3',
+            audioFileSize: '434.9 KB',
+            isMusicQuality: false, // Is music quality
+            audioPlaySpeed: '1.0',
+            audioVolume: '50.0 %',
+            audioCommentNumber: 1,
+          );
+
+          const String pictureFileName = "Screenshot_20250829_123429.jpg";
+          const String audioForPictureTitle =
+              'Quand Dieu transforme l’épreuve en victoire';
+          const String audioForPictureTitleDurationStr = '0:54';
+          const List<String> audioForPictureTitleLstJesusJeTaime = [
+            "1 long music|250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27",
+            "1 long music|260126-192653-Quand Dieu transforme l’épreuve en victoire 26-01-26",
+            "local with no comment|260126-192653-Quand Dieu transforme l’épreuve en victoire 26-01-26"
+          ];
+          String playlistPictureJsonFilesDir =
+              "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$targetPlaylistTitle${path.separator}$kPictureDirName";
+          const List<String> pictureFileNamesLst = [
+            "260126-192653-Quand Dieu transforme l’épreuve en victoire 26-01-26.json",
+          ];
+          final String applicationPictureDir =
+              "$kApplicationPathWindowsTest${path.separator}$kPictureDirName";
+
+          // Now verifying the audio picture addition result
+          await IntegrationTestUtil.verifyPictureAddition(
+            tester: tester,
+            applicationPictureDir: applicationPictureDir,
+            playlistPictureJsonFilesDir: playlistPictureJsonFilesDir,
+            pictureFileNameOne: pictureFileName,
+            audioForPictureTitle: audioForPictureTitle,
+            audioForPictureTitleDurationStr: audioForPictureTitleDurationStr,
+            playlistAudioPictureJsonFileNameLst: pictureFileNamesLst,
+            audioForPictureTitleOneLst: audioForPictureTitleLstJesusJeTaime,
+            mustPlayableAudioListBeUsed: true,
+          );
+
+          // Then return to playlist download view in order to execute
+          // the playlist JSON files update
+          Finder applicationViewNavButton =
+              find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+          await tester.tap(applicationViewNavButton);
+          await tester.pumpAndSettle();
+
+          // First, find the Audio sublist ListTile Text widget
+          final Finder audioTitleTextWidgetFinder =
+              find.text(extractedAudioTitle);
+
+          // Then obtain the Audio ListTile widget enclosing the Text widget by
+          // finding its ancestor
+          final Finder audioListTileWidgetFinder = find.ancestor(
+            of: audioTitleTextWidgetFinder,
+            matching: find.byType(ListTile),
+          );
+
+          // Verify that the extracted audio URL is available in the audio
+          // item menu
+
+          // Find the leading menu icon button of the Audio ListTile and tap
+          // on it
+          final Finder audioListTileLeadingMenuIconButton = find.descendant(
+            of: audioListTileWidgetFinder,
+            matching: find.byIcon(Icons.menu),
+          );
+
+          // Tap the leading menu icon button to open the popup menu
+          await tester.tap(audioListTileLeadingMenuIconButton);
+          await tester.pumpAndSettle();
+
+          expect(
+            find.byKey(const Key('popup_menu_open_youtube_video')),
+            findsOneWidget,
+          );
+
+          expect(
+            find.byKey(const Key('popup_copy_youtube_video_url')),
+            findsOneWidget,
+          );
+
+          // Go to the audio player view to verify that the extracted
+          // audio URL is available in the audio player view left appbar
+          // menu
+
+          applicationViewNavButton =
+              find.byKey(const ValueKey('audioPlayerViewIconButton'));
+
+          // To close the audio menu
+          await tester.tap(applicationViewNavButton);
+          await tester.pumpAndSettle();
+
+          // Tap the extracted audio ListTile to open the Audio Player view
+          await tester.tap(audioTitleTextWidgetFinder);
+          await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+            tester: tester,
+          );
+
+          // Tap the appbar leading popup menu button to verify the
+          // presence of the extracted audio URL menu items
+          await tester
+              .tap(find.byKey(const Key('appBarLeadingPopupMenuWidget')));
+          await tester.pumpAndSettle();
+
+          expect(
+            find.byKey(const Key('popup_menu_open_youtube_video')),
+            findsOneWidget,
+          );
+
+          expect(
+            find.byKey(const Key('popup_copy_youtube_video_url')),
+            findsOneWidget,
+          );
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
+            '''Extract to playlist with play speed modified in spoken quality an audio with 1 comment.''',
+            (WidgetTester tester) async {
+          const String audioTitle =
+              "Quand Dieu transforme l’épreuve en victoire";
+
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'extract_comments_to_mp3_test',
+          );
+
+          // First, find the '1 long music' playlist audio ListTile Text widget
+          final Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+          // Then obtain the audio ListTile widget enclosing the Text widget
+          // by finding its ancestor
+          final Finder audioTitleTileWidgetFinder = find.ancestor(
+            of: audioTitleTileTextWidgetFinder,
+            matching: find.byType(ListTile),
+          );
+
+          // Now we want to tap the popup menu of the audioTitle ListTile
+
+          // Find the leading menu icon button of the audioTitle ListTile
+          // and tap on it
+          final Finder audioTitleTileLeadingMenuIconButton = find.descendant(
+            of: audioTitleTileWidgetFinder,
+            matching: find.byIcon(Icons.menu),
+          );
+
+          // Tap the leading menu icon button to open the popup menu
+          await tester.tap(audioTitleTileLeadingMenuIconButton);
+          await tester.pumpAndSettle();
+
+          // Now find the 'Audio Comments ...' popup menu item and
+          // tap on it
+          final Finder audioCommentsPopupMenuItem =
+              find.byKey(const Key("popup_menu_audio_comment"));
+
+          await tester.tap(audioCommentsPopupMenuItem);
+          await tester.pumpAndSettle();
+
+          final Finder audioCommentsLstFinder = find.byKey(const Key(
+            'audioCommentsListKey',
+          ));
+
+          // Ensure the list has 1 child widget
+          expect(
+            tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+            1,
+          );
+
+          // Now open the extract comments to MP3 dialog
+
+          // Find the extract comments to MP3 text button of the comment
+          // add dialog and tap on it
+          final Finder extractCommentsToMp3ButtonFinder =
+              find.byKey(const Key('extractCommentsToMp3TextButton'));
+          await tester.tap(extractCommentsToMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Verify the extract comments to MP3 dialog commentTitle
+          expect(find.text('Comments to MP3'), findsOneWidget);
+
+          // Verify the presence of the help icon button
+          expect(find.byIcon(Icons.help_outline), findsOneWidget);
+
+          // Verify the Comments number commentTitle
+          expect(find.text('Comments (1)'), findsOneWidget);
+
+          await IntegrationTestUtil.checkExtractionCommentDetails(
+            tester: tester,
+            segmentDetailsList: [
+              {
+                'number': 1,
+                'commentTitle': "Prière à Dieu pour nos difficultés ",
+                'startPosition': '23:15.7',
+                'endPosition': '24:10.0',
+                'playSpeed': 'Play speed: 1.0',
+                'increaseDuration': 'Increase duration: 0:00.0',
+                'reductionPosition': 'Reduction position: 0:00.0',
+                'reductionDuration': 'Reduction duration: 0:00.0',
+                'duration': 'Duration: 0:54.3',
+              },
+            ],
+          );
+
+          // Now edit the 'Prière à Dieu pour nos difficultés ' comment to modify its
+          // play speed, its increase duration and reduction position and duration
+
+          // This opens the edit comment dialog
+          Finder editCommentIconButtonFinder =
+              find.byKey(const Key('editSegmentButtonKey_1'));
+          await tester.tap(editCommentIconButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Modify the play speed to 0.7
+          await _correctPlaySpeedEnterCode(
+            tester: tester,
+            playSpeedValue: '0.7',
+          );
+
+          // Modify the fade-in duration to 0:05.0
+          Finder commentFadeInDurationTextFieldFinder =
+              find.byKey(const Key('fadeInDurationTextField'));
+          await tester.tap(commentFadeInDurationTextFieldFinder);
+          await tester.enterText(
+              commentFadeInDurationTextFieldFinder, '0:05.0');
+          await tester.pumpAndSettle();
+
+          // Modify the reduction position to 24:06.5
+          Finder commentReductionPositionTextFieldFinder =
+              find.byKey(const Key('soundReductionPositionTextField'));
+          await tester.tap(commentReductionPositionTextFieldFinder);
+          await tester.enterText(
+              commentReductionPositionTextFieldFinder, '24:06.5');
+          await tester.pumpAndSettle();
+
+          // Necessary to drag down vertically the add s4egment dialog
+          await tester.drag(
+            find.byType(AddSegmentDialog),
+            const Offset(
+                0, -500), // Negative value for vertical drag to scroll down
+          );
+          await tester.pumpAndSettle();
+
+          // Modify the reduction duration to 0:03.5
+          Finder commentReductionDurationTextFieldFinder =
+              find.byKey(const Key('soundReductionDurationTextField'));
+          await tester.tap(commentReductionDurationTextFieldFinder);
+          await tester.enterText(
+              commentReductionDurationTextFieldFinder, '0:03.5');
+          await tester.pumpAndSettle();
+
+          // Confirm the comment edition by tapping the save button
+          Finder saveEditedCommentButtonFinder =
+              find.byKey(const Key('saveEditedSegmentButton'));
+          await tester.tap(saveEditedCommentButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Type on 'In playlist' checkbox to set it
+          final Finder inPlaylistCheckboxFinder =
+              find.byKey(const Key('inPlaylistCheckBox'));
+          await tester.tap(inPlaylistCheckboxFinder);
+          await tester.pumpAndSettle();
+
+          // Now, type on the Extract MP3 button. This opens the playlist
+          // selection dialog
+
+          final Finder extractMp3ButtonFinder =
+              find.byKey(const Key('extractMp3Button'));
+          await tester.tap(extractMp3ButtonFinder);
+          await tester.pumpAndSettle();
+
+          // Find the RadioListTile target playlist to which the
+          // extracted audio will be moved
+
+          final Finder radioListTile = find
+              .ancestor(
+                of: find.text('local with no comment'),
+                matching: find.byType(ListTile),
+              )
+              .last;
+
+          // Tap the target playlist RadioListTile to select it
+          await tester.tap(radioListTile);
+          await tester.pumpAndSettle();
+
+          // Now find the confirm button and tap on it
+          await tester.tap(find.byKey(const Key('confirmButton')));
+          await tester.pumpAndSettle();
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+      });
+      testWidgets(
+          '''Delete and resave the extract comments. Modify their play speed and positions and verify
+           that this is memorized, is correctly stored in the comment json file and is correctly
+           displayed in the AudioExtractorScreen after closing and reopening it.''',
+          (WidgetTester tester) async {
+        const String audioTitle =
+            "Glorious - Laisse-moi te parler de Jésus #louange";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'extract_comments_to_mp3_test',
+        );
+
+        // First, find the '1 long music' playlist audio ListTile Text widget
+        Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+        // Then obtain the audio ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        Finder audioTitleTileWidgetFinder = find.ancestor(
+          of: audioTitleTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now we want to tap the popup menu of the audioTitle ListTile
+
+        // Find the leading menu icon button of the audioTitle ListTile
+        // and tap on it
+        Finder audioTitleTileLeadingMenuIconButton = find.descendant(
+          of: audioTitleTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioTitleTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the 'Audio Comments ...' popup menu item and
+        // tap on it
+        Finder audioCommentsPopupMenuItem =
+            find.byKey(const Key("popup_menu_audio_comment"));
+
+        await tester.tap(audioCommentsPopupMenuItem);
+        await tester.pumpAndSettle();
+
+        Finder audioCommentsLstFinder = find.byKey(const Key(
+          'audioCommentsListKey',
+        ));
+
+        // Ensure the list has 3 child widgets
+        expect(
+          tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+          3,
+        );
+
+        // Now open the extract comments to MP3 dialog
+
+        // Find the extract comments to MP3 text button of the comment
+        // add dialog and tap on it
+        Finder extractCommentsToMp3ButtonFinder =
+            find.byKey(const Key('extractCommentsToMp3TextButton'));
+        await tester.tap(extractCommentsToMp3ButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the Comments number title
+        expect(find.text('Comments (3)'), findsOneWidget);
+
+        await IntegrationTestUtil.checkExtractionCommentDetails(
+          tester: tester,
+          segmentDetailsList: [
+            {
+              'number': 1,
+              'commentTitle': "First part",
+              'startPosition': '0:00.0',
+              'endPosition': '3:01.0',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:00.0',
+              'reductionPosition': 'Reduction position: 2:50.0',
+              'reductionDuration': 'Reduction duration: 0:11.0',
+              'duration': 'Duration: 3:01.0 + silence 0:01.0',
+            },
+            {
+              'number': 2,
+              'commentTitle':
+                  "1st ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+              'startPosition': '3:00.0',
+              'endPosition': '3:54.6',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:00.0',
+              'reductionPosition': 'Reduction position: 0:00.0',
+              'reductionDuration': 'Reduction duration: 0:00.0',
+              'duration': 'Duration: 0:54.6',
+            },
+            {
+              'number': 3,
+              'commentTitle':
+                  "2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+              'startPosition': '3:56.1',
+              'endPosition': '5:20.8',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:09.0',
+              'reductionPosition': 'Reduction position: 5:11.0',
+              'reductionDuration': 'Reduction duration: 0:09.8',
+              'duration': 'Duration: 1:24.7',
+            },
+          ],
+        );
+
+        final String commentsFilePath = path.join(
+          'C:',
+          'development',
+          'flutter',
+          'audiolearn',
+          'test',
+          'data',
+          'audio',
+          'playlists',
+          '1 long music',
+          'comments',
+          '250830-192540-Glorious - Laisse-moi te parler de Jésus #louange 24-06-27.json',
+        );
+
+        // Verifying the content of the comments json file
+
+        File commentsFile = File(commentsFilePath);
+
+        String jsonContent = commentsFile.readAsStringSync();
+        List<dynamic> commentsLst = jsonDecode(jsonContent) as List<dynamic>;
+
+        Map<String, dynamic> firstComment =
+            commentsLst[0] as Map<String, dynamic>;
+
+        expect(firstComment['id'], 'First part_1766333790797487');
+        expect(firstComment['title'], 'First part');
+        expect(firstComment['content'], '');
+        expect(firstComment['commentStartPositionInTenthOfSeconds'], 0);
+        expect(firstComment['commentEndPositionInTenthOfSeconds'], 1810);
+        expect(firstComment['silenceDuration'], 1.0);
+        expect(firstComment['playSpeed'], 1.0);
+        expect(firstComment['fadeInDuration'], 0.0);
+        expect(firstComment['soundReductionPosition'], 170.0);
+        expect(firstComment['soundReductionDuration'], 11.0);
+        expect(firstComment['deleted'], null);
+        expect(firstComment['creationDateTime'], '2025-12-21T17:16:30.000');
+        expect(
+            firstComment['lastUpdateDateTime'], '2025-12-22T05:47:28.517838');
+
+        Map<String, dynamic> secondComment =
+            commentsLst[1] as Map<String, dynamic>;
+
+        expect(secondComment['id'],
+            '1st ce qu\'Il a fait pour Moïse, Il peut le faire pour toi_1766400108231148');
+        expect(secondComment['title'],
+            '1st ce qu\'Il a fait pour Moïse, Il peut le faire pour toi');
+        expect(
+          secondComment['content'],
+          "A remplacer par 2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi which is longer.",
+        );
+        expect(secondComment['commentStartPositionInTenthOfSeconds'], 1800);
+        expect(secondComment['commentEndPositionInTenthOfSeconds'], 2346);
+        expect(secondComment['silenceDuration'], 0.0);
+        expect(secondComment['playSpeed'], 1.0);
+        expect(secondComment['fadeInDuration'], 0.0);
+        expect(secondComment['soundReductionPosition'], 0.0);
+        expect(secondComment['soundReductionDuration'], 0.0);
+        expect(secondComment['deleted'], null,
+            reason: 'Second comment should be deleted');
+        expect(secondComment['creationDateTime'], '2025-12-22T11:41:48.000');
+        expect(secondComment['lastUpdateDateTime'], '2025-12-22T16:07:01.000');
+
+        Map<String, dynamic> thirdComment =
+            commentsLst[2] as Map<String, dynamic>;
+
+        expect(thirdComment['id'],
+            '1st ce qu\'Il a fait pour Moïse, Il peut le faire pour toi_1766334317917836');
+        expect(thirdComment['title'],
+            '2nd ce qu\'Il a fait pour Moïse, Il peut le faire pour toi');
+        expect(thirdComment['content'], '');
+        expect(thirdComment['commentStartPositionInTenthOfSeconds'], 2361);
+        expect(thirdComment['commentEndPositionInTenthOfSeconds'], 3208);
+        expect(thirdComment['silenceDuration'], 0.0);
+        expect(thirdComment['playSpeed'], 1.0);
+        expect(thirdComment['fadeInDuration'], 9.0,
+            reason: 'Should have 9 seconds fade-in');
+        expect(thirdComment['soundReductionPosition'], 311.0);
+        expect(thirdComment['soundReductionDuration'], 9.8,
+            reason: 'Should have 9.8 seconds fade-out');
+        expect(thirdComment['deleted'], null);
+        expect(thirdComment['creationDateTime'], '2025-12-21T17:25:17.000');
+        expect(thirdComment['lastUpdateDateTime'], '2025-12-22T16:06:46.000');
+
+        // Now, delete the second comment
+
+        // This opens the delete comment confirmation dialog
+        Finder deleteCommentIconButtonFinder =
+            find.byKey(const Key('deleteSegmentButtonKey_2'));
+        await tester.tap(deleteCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the deletion by tapping the delete button
+        Finder deleteCommentButtonFinder =
+            find.byKey(const Key('confirmDeleteSegmentButton'));
+        await tester.tap(deleteCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the Comments number title
+        expect(find.text('Comments (2)'), findsOneWidget);
+
+        await IntegrationTestUtil.checkExtractionCommentDetails(
+          tester: tester,
+          segmentDetailsList: [
+            {
+              'number': 1,
+              'commentTitle': "First part",
+              'startPosition': '0:00.0',
+              'endPosition': '3:01.0',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:00.0',
+              'reductionPosition': 'Reduction position: 2:50.0',
+              'reductionDuration': 'Reduction duration: 0:11.0',
+              'duration': 'Duration: 3:01.0 + silence 0:01.0',
+            },
+            {
+              'number': 2,
+              'commentTitle':
+                  "2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+              'startPosition': '3:56.1',
+              'endPosition': '5:20.8',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:09.0',
+              'reductionPosition': 'Reduction position: 5:11.0',
+              'reductionDuration': 'Reduction duration: 0:09.8',
+              'duration': 'Duration: 1:24.7',
+            },
+          ],
+        );
+
+        // Verifying the content of the comments json file
+
+        commentsFile = File(commentsFilePath);
+
+        jsonContent = commentsFile.readAsStringSync();
+        commentsLst = jsonDecode(jsonContent) as List<dynamic>;
+
+        firstComment = commentsLst[0] as Map<String, dynamic>;
+
+        expect(firstComment['id'], 'First part_1766333790797487');
+        expect(firstComment['title'], 'First part');
+        expect(firstComment['content'], '');
+        expect(firstComment['commentStartPositionInTenthOfSeconds'], 0);
+        expect(firstComment['commentEndPositionInTenthOfSeconds'], 1810);
+        expect(firstComment['silenceDuration'], 1.0);
+        expect(firstComment['playSpeed'], 1.0);
+        expect(firstComment['fadeInDuration'], 0.0);
+        expect(firstComment['soundReductionPosition'], 170.0);
+        expect(firstComment['soundReductionDuration'], 11.0);
+        expect(firstComment['deleted'], false);
+        expect(firstComment['creationDateTime'], '2025-12-21T17:16:30.000');
+        expect(
+            firstComment['lastUpdateDateTime'], '2025-12-22T05:47:28.517838');
+
+        secondComment = commentsLst[1] as Map<String, dynamic>;
+
+        expect(secondComment['id'],
+            '1st ce qu\'Il a fait pour Moïse, Il peut le faire pour toi_1766400108231148');
+        expect(secondComment['title'],
+            '1st ce qu\'Il a fait pour Moïse, Il peut le faire pour toi');
+        expect(
+          secondComment['content'],
+          "A remplacer par 2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi which is longer.",
+        );
+        expect(secondComment['commentStartPositionInTenthOfSeconds'], 1800);
+        expect(secondComment['commentEndPositionInTenthOfSeconds'], 2346);
+        expect(secondComment['silenceDuration'], 0.0);
+        expect(secondComment['playSpeed'], 1.0);
+        expect(secondComment['fadeInDuration'], 0.0);
+        expect(secondComment['soundReductionPosition'], 0.0);
+        expect(secondComment['soundReductionDuration'], 0.0);
+        expect(secondComment['deleted'], true,
+            reason: 'Second comment should be deleted');
+        expect(secondComment['creationDateTime'], '2025-12-22T11:41:48.000');
+        DateTime now = DateTime.now();
+        String yearStr = now.year.toString();
+        String monthStr = now.month.toString();
+        monthStr = (monthStr.length == 1) ? "0$monthStr" : monthStr;
+        String dayStr = now.day.toString();
+        dayStr = (dayStr.length == 1) ? "0$dayStr" : dayStr;
+        String hourStr = now.hour.toString();
+        hourStr = (hourStr.length == 1) ? "0$hourStr" : hourStr;
+        String minuteStr = now.minute.toString();
+        minuteStr = (minuteStr.length == 1) ? "0$minuteStr" : minuteStr;
+        expect(secondComment['lastUpdateDateTime'],
+            contains("$yearStr-$monthStr-${dayStr}T$hourStr:$minuteStr"),
+            reason:
+                'Last update date time should be today\'s date with current hour and minute');
+
+        thirdComment = commentsLst[2] as Map<String, dynamic>;
+
+        expect(thirdComment['id'],
+            '1st ce qu\'Il a fait pour Moïse, Il peut le faire pour toi_1766334317917836');
+        expect(thirdComment['title'],
+            '2nd ce qu\'Il a fait pour Moïse, Il peut le faire pour toi');
+        expect(thirdComment['content'], '');
+        expect(thirdComment['commentStartPositionInTenthOfSeconds'], 2361);
+        expect(thirdComment['commentEndPositionInTenthOfSeconds'], 3208);
+        expect(thirdComment['silenceDuration'], 0.0);
+        expect(thirdComment['playSpeed'], 1.0);
+        expect(thirdComment['fadeInDuration'], 9.0,
+            reason: 'Should have 9 seconds fade-in');
+        expect(thirdComment['soundReductionPosition'], 311.0);
+        expect(thirdComment['soundReductionDuration'], 9.8,
+            reason: 'Should have 9.8 seconds fade-out');
+        expect(thirdComment['deleted'], false);
+        expect(thirdComment['creationDateTime'], '2025-12-21T17:25:17.000');
+        expect(thirdComment['lastUpdateDateTime'], '2025-12-22T16:06:46.000');
+
+        // Then, tap the back button to go back to the playlist
+        // download screen
+        Finder audioExtractorScreenBackButton =
+            find.byKey(const Key('audioExtractorBackButton'));
+        await tester.tap(audioExtractorScreenBackButton);
+        await tester.pumpAndSettle();
+
+        // Now re-open the audio extractor dialog to verify that the
+        // deleted comment is still present
+
+        // First, find the '1 long music' playlist audio ListTile Text widget
+        audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+        // Then obtain the audio ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        audioTitleTileWidgetFinder = find.ancestor(
+          of: audioTitleTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now we want to tap the popup menu of the audioTitle ListTile
+
+        // Find the leading menu icon button of the audioTitle ListTile
+        // and tap on it
+        audioTitleTileLeadingMenuIconButton = find.descendant(
+          of: audioTitleTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioTitleTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the 'Audio Comments ...' popup menu item and
+        // tap on it
+        audioCommentsPopupMenuItem =
+            find.byKey(const Key("popup_menu_audio_comment"));
+
+        await tester.tap(audioCommentsPopupMenuItem);
+        await tester.pumpAndSettle();
+
+        audioCommentsLstFinder = find.byKey(const Key(
+          'audioCommentsListKey',
+        ));
+
+        // Ensure the list has 3 child widgets
+        expect(
+          tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+          3,
+        );
+
+        // Now open the extract comments to MP3 dialog
+
+        // Find the extract comments to MP3 text button of the comment
+        // add dialog and tap on it
+        extractCommentsToMp3ButtonFinder =
+            find.byKey(const Key('extractCommentsToMp3TextButton'));
+        await tester.tap(extractCommentsToMp3ButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the total duration text
+        Finder totalDurationTextFinder =
+            find.byKey(const Key('totalSegmentsDurationTextKey'));
+        expect(
+          tester.widget<Text>(totalDurationTextFinder).data,
+          'Total duration: 4:26.7',
+        );
+
+        // Verify the Comments number commentTitle
+        expect(find.text('Comments (3)'), findsOneWidget);
+
+        await IntegrationTestUtil.checkExtractionCommentDetails(
+          tester: tester,
+          segmentDetailsList: [
+            {
+              'number': 1,
+              'commentTitle': "First part",
+              'startPosition': '0:00.0',
+              'endPosition': '3:01.0',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:00.0',
+              'reductionPosition': 'Reduction position: 2:50.0',
+              'reductionDuration': 'Reduction duration: 0:11.0',
+              'duration': 'Duration: 3:01.0 + silence 0:01.0',
+            },
+            {
+              'number': 2,
+              'commentTitle':
+                  "1st ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+              'startPosition': '3:00.0',
+              'endPosition': '3:54.6',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:00.0',
+              'reductionPosition': 'Reduction position: 0:00.0',
+              'reductionDuration': 'Reduction duration: 0:00.0',
+              'duration': 'Duration: 0:54.6',
+            },
+            {
+              'number': 3,
+              'commentTitle':
+                  "2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+              'startPosition': '3:56.1',
+              'endPosition': '5:20.8',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:09.0',
+              'reductionPosition': 'Reduction position: 5:11.0',
+              'reductionDuration': 'Reduction duration: 0:09.8',
+              'duration': 'Duration: 1:24.7',
+            },
+          ],
+          connentDeletedNumberLst: [
+            2,
+          ],
+        );
+
+        // Now, delete all comments
+
+        // Necessary to drag up vertically to make visible the delete
+        // icon button of the 1st comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, 300), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // This opens the delete 1st comment confirmation dialog
+        deleteCommentIconButtonFinder =
+            find.byKey(const Key('deleteSegmentButtonKey_1'));
+        await tester.tap(deleteCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the 1st deletion by tapping the delete button
+        deleteCommentButtonFinder =
+            find.byKey(const Key('confirmDeleteSegmentButton'));
+        await tester.tap(deleteCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // This opens the delete 2nd comment confirmation dialog
+        deleteCommentIconButtonFinder =
+            find.byKey(const Key('deleteSegmentButtonKey_1'));
+        await tester.tap(deleteCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the 2nd deletion by tapping the delete button
+        deleteCommentButtonFinder =
+            find.byKey(const Key('confirmDeleteSegmentButton'));
+        await tester.tap(deleteCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Necessary to drag down vertically to make visible the delete
+        // icon button of the 3rd comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, 300), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // This opens the delete 3rd comment confirmation dialog
+        deleteCommentIconButtonFinder =
+            find.byKey(const Key('deleteSegmentButtonKey_1'));
+        await tester.tap(deleteCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the 3rd deletion by tapping the delete button
+        deleteCommentButtonFinder =
+            find.byKey(const Key('confirmDeleteSegmentButton'));
+        await tester.tap(deleteCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        await _verifyAllCommentsAfterQuittingAndCommingBackToExtracDialog(
+          tester: tester,
+          commentNumberTitleBeforeQuittingDialog: 'Comments (0)',
+          audioTitle: audioTitle,
+          backButtonFinder: audioExtractorScreenBackButton,
+          audioTitleTileTextWidgetFinder: audioTitleTileTextWidgetFinder,
+          audioTitleTileWidgetFinder: audioTitleTileWidgetFinder,
+          audioTitleTileLeadingMenuIconButton:
+              audioTitleTileLeadingMenuIconButton,
+          audioCommentsPopupMenuItem: audioCommentsPopupMenuItem,
+          audioCommentsLstFinder: audioCommentsLstFinder,
+          extractCommentsToMp3ButtonFinder: extractCommentsToMp3ButtonFinder,
+          segmentDetailsList: [
+            {
+              'number': 1,
+              'commentTitle': "First part",
+              'startPosition': '0:00.0',
+              'endPosition': '3:01.0',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:00.0',
+              'reductionPosition': 'Reduction position: 2:50.0',
+              'reductionDuration': 'Reduction duration: 0:11.0',
+              'duration': 'Duration: 3:01.0 + silence 0:01.0',
+            },
+            {
+              'number': 2,
+              'commentTitle':
+                  "1st ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+              'startPosition': '3:00.0',
+              'endPosition': '3:54.6',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:00.0',
+              'reductionPosition': 'Reduction position: 0:00.0',
+              'reductionDuration': 'Reduction duration: 0:00.0',
+              'duration': 'Duration: 0:54.6',
+            },
+            {
+              'number': 3,
+              'commentTitle':
+                  "2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+              'startPosition': '3:56.1',
+              'endPosition': '5:20.8',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:09.0',
+              'reductionPosition': 'Reduction position: 5:11.0',
+              'reductionDuration': 'Reduction duration: 0:09.8',
+              'duration': 'Duration: 1:24.7',
+            },
+          ],
+          connentDeletedNumberLst: [
+            1,
+            2,
+            3,
+          ],
+        );
+
+        // Verify the total duration text
+        totalDurationTextFinder =
+            find.byKey(const Key('totalSegmentsDurationTextKey'));
+        expect(
+          tester.widget<Text>(totalDurationTextFinder).data,
+          'Total duration: 0:00.0',
+        );
+
+        // Now edit the 'First part' comment to modify its start and
+        // end positions, its play speed, its increase duration and reduction position
+        // and duration
+
+        // Necessary to drag up vertically to make visible the edit
+        // icon button of the 1st comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, 300), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // This opens the edit comment dialog
+        Finder editCommentIconButtonFinder =
+            find.byKey(const Key('editSegmentButtonKey_1'));
+        await tester.tap(editCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Now, modify the start position to 0:10.0
+        Finder commentStartPositionTextFieldFinder =
+            find.byKey(const Key('startPositionTextField'));
+        await tester.tap(commentStartPositionTextFieldFinder);
+        await tester.enterText(commentStartPositionTextFieldFinder, '0:10.0');
+        await tester.pumpAndSettle();
+
+        // Modify the end position to 2:20.0
+        Finder commentEndPositionTextFieldFinder =
+            find.byKey(const Key('endPositionTextField'));
+        await tester.tap(commentEndPositionTextFieldFinder);
+        await tester.enterText(commentEndPositionTextFieldFinder, '2:20.0');
+        await tester.pumpAndSettle();
+
+        // Modify the silence duration to 0:05.0
+        Finder commentSilenceDurationTextFieldFinder =
+            find.byKey(const Key('silenceDurationTextField'));
+        await tester.tap(commentSilenceDurationTextFieldFinder);
+        await tester.enterText(commentSilenceDurationTextFieldFinder, '0:05.0');
+        await tester.pumpAndSettle();
+
+        // Modify the play speed to 0.7
+        await _correctPlaySpeedEnterCode(
+          tester: tester,
+          playSpeedValue: '0.7',
+        );
+
+        // Modify the fade-in duration to 0:08.0
+        Finder commentFadeInDurationTextFieldFinder =
+            find.byKey(const Key('fadeInDurationTextField'));
+        await tester.tap(commentFadeInDurationTextFieldFinder);
+        await tester.enterText(commentFadeInDurationTextFieldFinder, '0:08.0');
+        await tester.pumpAndSettle();
+
+        // Modify the reduction position to 2:10.1
+        Finder commentReductionPositionTextFieldFinder =
+            find.byKey(const Key('soundReductionPositionTextField'));
+        await tester.tap(commentReductionPositionTextFieldFinder);
+        await tester.enterText(
+            commentReductionPositionTextFieldFinder, '2:10.1');
+        await tester.pumpAndSettle();
+
+        // Necessary to drag down vertically the add s4egment dialog
+        await tester.drag(
+          find.byType(AddSegmentDialog),
+          const Offset(
+              0, -500), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Modify the reduction duration to 0:09.9
+        Finder commentReductionDurationTextFieldFinder =
+            find.byKey(const Key('soundReductionDurationTextField'));
+        await tester.tap(commentReductionDurationTextFieldFinder);
+        await tester.enterText(
+            commentReductionDurationTextFieldFinder, '0:09.9');
+        await tester.pumpAndSettle();
+
+        // Confirm the comment edition by tapping the save button
+        Finder saveEditedCommentButtonFinder =
+            find.byKey(const Key('saveEditedSegmentButton'));
+        await tester.tap(saveEditedCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verifying the first modified comment in the comments json file
+
+        commentsFile = File(commentsFilePath);
+
+        jsonContent = commentsFile.readAsStringSync();
+        commentsLst = jsonDecode(jsonContent) as List<dynamic>;
+
+        firstComment = commentsLst[0] as Map<String, dynamic>;
+
+        expect(firstComment['id'], 'First part_1766333790797487');
+        expect(firstComment['title'], 'First part');
+        expect(firstComment['content'], '');
+        expect(firstComment['commentStartPositionInTenthOfSeconds'], 100);
+        expect(firstComment['commentEndPositionInTenthOfSeconds'], 1400);
+        expect(firstComment['silenceDuration'], 5.0);
+        expect(firstComment['playSpeed'], 0.7);
+        expect(firstComment['fadeInDuration'], 8.0);
+        expect(firstComment['soundReductionPosition'], 130.1);
+        expect(firstComment['soundReductionDuration'], 9.9);
+        expect(firstComment['deleted'], false);
+        expect(firstComment['creationDateTime'], '2025-12-21T17:16:30.000');
+        now = DateTime.now();
+        yearStr = now.year.toString();
+        monthStr = now.month.toString();
+        monthStr = (monthStr.length == 1) ? "0$monthStr" : monthStr;
+        dayStr = now.day.toString();
+        dayStr = (dayStr.length == 1) ? "0$dayStr" : dayStr;
+        hourStr = now.hour.toString();
+        hourStr = (hourStr.length == 1) ? "0$hourStr" : hourStr;
+        minuteStr = now.minute.toString();
+        minuteStr = (minuteStr.length == 1) ? "0$minuteStr" : minuteStr;
+        expect(firstComment['lastUpdateDateTime'],
+            contains("$yearStr-$monthStr-${dayStr}T$hourStr:$minuteStr"),
+            reason:
+                'Last update date time should be today\'s date with current hour and minute');
+
+        // Now edit the second comment to save it again without
+        // modification to remove the 'Comment not included' message
+
+        // This opens the edit comment dialog
+        editCommentIconButtonFinder =
+            find.byKey(const Key('editSegmentButtonKey_2'));
+        await tester.tap(editCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the comment edition by tapping the save button
+        saveEditedCommentButtonFinder =
+            find.byKey(const Key('saveEditedSegmentButton'));
+        await tester.tap(saveEditedCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Necessary to drag down vertically to make visible the edit
+        // icon button of the 3rd comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, -300), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Now edit the third comment to save it again after setting
+        // its play speed to 1.25. This modification removes the
+        // 'Comment not included' message
+
+        // This opens the edit comment dialog
+        editCommentIconButtonFinder =
+            find.byKey(const Key('editSegmentButtonKey_3'));
+        await tester.tap(editCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Modify the play speed to 1.25
+        await _correctPlaySpeedEnterCode(
+          tester: tester,
+          playSpeedValue: '1.25',
+        );
+
+        // Confirm the comment edition by tapping the save button
+        saveEditedCommentButtonFinder =
+            find.byKey(const Key('saveEditedSegmentButton'));
+        await tester.tap(saveEditedCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(0, 300), // Positive value for vertical drag to scroll up
+        );
+        await tester.pumpAndSettle();
+
+        await _verifyAllCommentsAfterQuittingAndCommingBackToExtracDialog(
+          tester: tester,
+          commentNumberTitleBeforeQuittingDialog: 'Comments (3)',
+          audioTitle: audioTitle,
+          backButtonFinder: audioExtractorScreenBackButton,
+          audioTitleTileTextWidgetFinder: audioTitleTileTextWidgetFinder,
+          audioTitleTileWidgetFinder: audioTitleTileWidgetFinder,
+          audioTitleTileLeadingMenuIconButton:
+              audioTitleTileLeadingMenuIconButton,
+          audioCommentsPopupMenuItem: audioCommentsPopupMenuItem,
+          audioCommentsLstFinder: audioCommentsLstFinder,
+          extractCommentsToMp3ButtonFinder: extractCommentsToMp3ButtonFinder,
+          segmentDetailsList: [
+            {
+              'number': 1,
+              'commentTitle': "First part",
+              'startPosition': '0:14.3',
+              'endPosition': '3:20.0',
+              'playSpeed': 'Play speed: 0.7',
+              'increaseDuration': 'Increase duration: 0:08.0',
+              'reductionPosition': 'Reduction position: 2:10.1',
+              'reductionDuration': 'Reduction duration: 0:09.9',
+              'duration': 'Duration: 3:05.7 + silence 0:05.0',
+            },
+            {
+              'number': 2,
+              'commentTitle':
+                  "1st ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+              'startPosition': '3:00.0',
+              'endPosition': '3:54.6',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:00.0',
+              'reductionPosition': 'Reduction position: 0:00.0',
+              'reductionDuration': 'Reduction duration: 0:00.0',
+              'duration': 'Duration: 0:54.6',
+            },
+            {
+              'number': 3,
+              'commentTitle':
+                  "2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+              'startPosition': '3:08.9',
+              'endPosition': '4:16.6',
+              'playSpeed': 'Play speed: 1.25',
+              'increaseDuration': 'Increase duration: 0:09.0',
+              'reductionPosition': 'Reduction position: 5:11.0',
+              'reductionDuration': 'Reduction duration: 0:09.8',
+              'duration': 'Duration: 1:07.8',
+            },
+          ],
+        );
+
+        // Verify the total duration text
+        totalDurationTextFinder =
+            find.byKey(const Key('totalSegmentsDurationTextKey'));
+        expect(
+          tester.widget<Text>(totalDurationTextFinder).data,
+          'Total duration: 5:13.1',
+        );
+
+        // Now, tap on 'Clear all' button to delete all comments at once
+        Finder clearAllCommentsButtonFinder =
+            find.byKey(const Key('clearAllSegmentsButton'));
+        await tester.tap(clearAllCommentsButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the deletion by tapping the delete button
+        deleteCommentButtonFinder =
+            find.byKey(const Key('confirmClearAllSegmentsButton'));
+        await tester.tap(deleteCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        await _verifyAllCommentsAfterQuittingAndCommingBackToExtracDialog(
+          tester: tester,
+          commentNumberTitleBeforeQuittingDialog: 'Comments (0)',
+          audioTitle: audioTitle,
+          backButtonFinder: audioExtractorScreenBackButton,
+          audioTitleTileTextWidgetFinder: audioTitleTileTextWidgetFinder,
+          audioTitleTileWidgetFinder: audioTitleTileWidgetFinder,
+          audioTitleTileLeadingMenuIconButton:
+              audioTitleTileLeadingMenuIconButton,
+          audioCommentsPopupMenuItem: audioCommentsPopupMenuItem,
+          audioCommentsLstFinder: audioCommentsLstFinder,
+          extractCommentsToMp3ButtonFinder: extractCommentsToMp3ButtonFinder,
+          segmentDetailsList: [
+            {
+              'number': 1,
+              'commentTitle': "First part",
+              'startPosition': '0:14.3',
+              'endPosition': '3:20.0',
+              'playSpeed': 'Play speed: 0.7',
+              'increaseDuration': 'Increase duration: 0:08.0',
+              'reductionPosition': 'Reduction position: 2:10.1',
+              'reductionDuration': 'Reduction duration: 0:09.9',
+              'duration': 'Duration: 3:05.7 + silence 0:05.0',
+            },
+            {
+              'number': 2,
+              'commentTitle':
+                  "1st ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+              'startPosition': '3:00.0',
+              'endPosition': '3:54.6',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:00.0',
+              'reductionPosition': 'Reduction position: 0:00.0',
+              'reductionDuration': 'Reduction duration: 0:00.0',
+              'duration': 'Duration: 0:54.6',
+            },
+            {
+              'number': 3,
+              'commentTitle':
+                  "2nd ce qu'Il a fait pour Moïse, Il peut le faire pour toi",
+              'startPosition': '3:08.9',
+              'endPosition': '4:16.6',
+              'playSpeed': 'Play speed: 1.25',
+              'increaseDuration': 'Increase duration: 0:09.0',
+              'reductionPosition': 'Reduction position: 5:11.0',
+              'reductionDuration': 'Reduction duration: 0:09.8',
+              'duration': 'Duration: 1:07.8',
+            },
+          ],
+          connentDeletedNumberLst: [
+            1,
+            2,
+            3,
+          ],
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Invalid comments with durations greater than audio duration. ''',
+          (WidgetTester tester) async {
+        const String audioTitle = "Jésus, c'est le plus beau nom";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'extract_comments_to_mp3_test',
+          selectedPlaylistTitle: '1 music with invalid comment',
+        );
+
+        // First, find the '1 music with invalid comment' playlist audio ListTile Text widget
+        Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+        // Then obtain the audio ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        Finder audioTitleTileWidgetFinder = find.ancestor(
+          of: audioTitleTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now we want to tap the popup menu of the audioTitle ListTile
+
+        // Find the leading menu icon button of the audioTitle ListTile
+        // and tap on it
+        Finder audioTitleTileLeadingMenuIconButton = find.descendant(
+          of: audioTitleTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioTitleTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the 'Audio Comments ...' popup menu item and
+        // tap on it
+        Finder audioCommentsPopupMenuItem =
+            find.byKey(const Key("popup_menu_audio_comment"));
+
+        await tester.tap(audioCommentsPopupMenuItem);
+        await tester.pumpAndSettle();
+
+        Finder audioCommentsLstFinder = find.byKey(const Key(
+          'audioCommentsListKey',
+        ));
+
+        // Ensure the list has 3 child widgets
+        expect(
+          tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+          3,
+        );
+
+        // Now open the extract comments to MP3 dialog
+
+        // Find the extract comments to MP3 text button of the comment
+        // add dialog and tap on it
+        Finder extractCommentsToMp3ButtonFinder =
+            find.byKey(const Key('extractCommentsToMp3TextButton'));
+        await tester.tap(extractCommentsToMp3ButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the Comments number title
+        expect(find.text('Comments (3)'), findsOneWidget);
+
+        // Verify the presence of the invalid comment error message
+        expect(
+          find.text(
+              "Delete invalid comment(s) with end position greater than audio duration which is 2:56.8."),
+          findsOneWidget,
+        );
+
+        // Now, delete the third comment whose end position is greater
+        // than the audio duration
+
+        // Necessary to drag down vertically to make visible the third
+        // comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, -300), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // This opens the delete comment confirmation dialog
+        Finder deleteCommentIconButtonFinder =
+            find.byKey(const Key('deleteSegmentButtonKey_3'));
+        await tester.tap(deleteCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the deletion by tapping the delete button
+        Finder deleteCommentButtonFinder =
+            find.byKey(const Key('confirmDeleteSegmentButton'));
+        await tester.tap(deleteCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the Comments number title
+        expect(find.text('Comments (2)'), findsOneWidget);
+
+        // Verify the presence of the invalid comment error message
+        expect(
+          find.text(
+              "Delete invalid comment(s) with end position greater than audio duration which is 2:56.8."),
+          findsOneWidget,
+        );
+
+        // Now, delete the second comment whose end position is greater
+        // than the audio duration
+
+        // This opens the delete comment confirmation dialog
+        deleteCommentIconButtonFinder =
+            find.byKey(const Key('deleteSegmentButtonKey_2'));
+        await tester.tap(deleteCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the deletion by tapping the delete button
+        deleteCommentButtonFinder =
+            find.byKey(const Key('confirmDeleteSegmentButton'));
+        await tester.tap(deleteCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the Comments number title
+        expect(find.text('Comments (1)'), findsOneWidget);
+
+        // Verify the presence of the Extract MP3 elements(Extract
+        // MP3 button and 3 checkboxes)
+        _verifyPresenceOfExtractMp3Widgets(tester);
+
+        // Then, tap the back button to go back to the playlist
+        // download screen
+        Finder audioExtractorScreenBackButton =
+            find.byKey(const Key('audioExtractorBackButton'));
+        await tester.tap(audioExtractorScreenBackButton);
+        await tester.pumpAndSettle();
+
+        // Now re-open the audio extractor dialog to verify that the
+        // deleted comment is still present
+
+        // First, find the '1 music with invalid comment' playlist
+        // audio ListTile Text widget
+        audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+        // Then obtain the audio ListTile widget enclosing the Text
+        // widget by finding its ancestor
+        audioTitleTileWidgetFinder = find.ancestor(
+          of: audioTitleTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now we want to tap the popup menu of the audioTitle ListTile
+
+        // Find the leading menu icon button of the audioTitle ListTile
+        // and tap on it
+        audioTitleTileLeadingMenuIconButton = find.descendant(
+          of: audioTitleTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioTitleTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the 'Audio Comments ...' popup menu item and
+        // tap on it
+        audioCommentsPopupMenuItem =
+            find.byKey(const Key("popup_menu_audio_comment"));
+
+        await tester.tap(audioCommentsPopupMenuItem);
+        await tester.pumpAndSettle();
+
+        audioCommentsLstFinder = find.byKey(const Key(
+          'audioCommentsListKey',
+        ));
+
+        // Ensure the list has 3 child widgets
+        expect(
+          tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+          3,
+        );
+
+        // Now open the extract comments to MP3 dialog
+
+        // Find the extract comments to MP3 text button of the comment
+        // add dialog and tap on it
+        extractCommentsToMp3ButtonFinder =
+            find.byKey(const Key('extractCommentsToMp3TextButton'));
+        await tester.tap(extractCommentsToMp3ButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the total duration text
+        Finder totalDurationTextFinder =
+            find.byKey(const Key('totalSegmentsDurationTextKey'));
+        expect(
+          tester.widget<Text>(totalDurationTextFinder).data,
+          'Total duration: 1:12.8',
+        );
+
+        // Verify the Comments number commentTitle
+        expect(find.text('Comments (3)'), findsOneWidget);
+
+        // Necessary to drag down vertically to make visible the
+        // third comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, -300), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Verify the presence of the 'Comment not included' 3rd
+        // comment message
+        Finder commentNotIncludedMessageFinder =
+            find.byKey(const Key('commentDeletedTextKey_3'));
+        expect(
+          tester.widget<Text>(commentNotIncludedMessageFinder).data,
+          'Comment not included',
+        );
+
+        // This opens the edit 3rd comment dialog
+        Finder editCommentIconButtonFinder =
+            find.byKey(const Key('editSegmentButtonKey_3'));
+        await tester.tap(editCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the comment edition by tapping the save button
+        Finder saveEditedCommentButtonFinder =
+            find.byKey(const Key('saveEditedSegmentButton'));
+        await tester.tap(saveEditedCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the displayed AlertDialog for invalid comment
+
+        // Verify the presence of the invalid comment error title
+        Finder segmentErrorDialogTextFinder =
+            find.byKey(const Key('segmentErrorDialogTitleKey'));
+        expect(
+          tester.widget<Text>(segmentErrorDialogTextFinder).data,
+          'Error',
+        );
+
+        // Verify the presence of the invalid comment error message
+        segmentErrorDialogTextFinder =
+            find.byKey(const Key('segmentErrorDialogMessageKey'));
+        expect(
+          tester.widget<Text>(segmentErrorDialogTextFinder).data,
+          'Start position must be between 0 and 2:56.7 inclusive.',
+        );
+
+        // Tap the Ok button to close the invalid comment error
+        // dialog
+        Finder segmentErrorDialogOkButtonFinder =
+            find.byKey(const Key('segmentErrorDialogOkButtonKey'));
+        await tester.tap(segmentErrorDialogOkButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Quit the comment edition by tapping the Cancel button
+        Finder cancelEditedCommentButtonFinder =
+            find.byKey(const Key('cancelEditedSegmentButton'));
+        await tester.tap(cancelEditedCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the presence of the remaining 'Comment not included'
+        // message
+        commentNotIncludedMessageFinder =
+            find.byKey(const Key('commentDeletedTextKey_3'));
+        expect(
+          tester.widget<Text>(commentNotIncludedMessageFinder).data,
+          'Comment not included',
+        );
+
+        // Necessary to drag up vertically to make visible the
+        // second comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, 300), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Verify the presence of the 'Comment not included' 2nd
+        // comment message
+        commentNotIncludedMessageFinder =
+            find.byKey(const Key('commentDeletedTextKey_2'));
+        expect(
+          tester.widget<Text>(commentNotIncludedMessageFinder).data,
+          'Comment not included',
+        );
+
+        // This opens the edit 2nd comment dialog
+        editCommentIconButtonFinder =
+            find.byKey(const Key('editSegmentButtonKey_2'));
+        await tester.tap(editCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the comment edition by tapping the save button
+        saveEditedCommentButtonFinder =
+            find.byKey(const Key('saveEditedSegmentButton'));
+        await tester.tap(saveEditedCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the displayed AlertDialog for invalid comment
+
+        // Verify the presence of the invalid comment error message
+        segmentErrorDialogTextFinder =
+            find.byKey(const Key('segmentErrorDialogMessageKey'));
+        expect(
+          tester.widget<Text>(segmentErrorDialogTextFinder).data,
+          'End position must be after start position (1:25.0) and not exceed 2:56.8.',
+        );
+
+        // Tap the Ok button to close the invalid comment error
+        // dialog
+        segmentErrorDialogOkButtonFinder =
+            find.byKey(const Key('segmentErrorDialogOkButtonKey'));
+        await tester.tap(segmentErrorDialogOkButtonFinder);
+        await tester.pumpAndSettle();
+
+        // This opens the edit 1st comment dialog
+        editCommentIconButtonFinder =
+            find.byKey(const Key('editSegmentButtonKey_2'));
+        await tester.tap(editCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Now modify the end position to 2:50.0
+        Finder commentEndPositionTextFieldFinder =
+            find.byKey(const Key('endPositionTextField'));
+        await tester.tap(commentEndPositionTextFieldFinder);
+        await tester.enterText(commentEndPositionTextFieldFinder, '2:50.0');
+        await tester.pumpAndSettle();
+
+        // Confirm the comment edition by tapping the save button
+        saveEditedCommentButtonFinder =
+            find.byKey(const Key('saveEditedSegmentButton'));
+        await tester.tap(saveEditedCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the absence of the remaining 'Comment not included'
+        // message
+        expect(
+          find.byKey(const Key('commentDeletedTextKey_2')),
+          findsNothing,
+        );
+
+        // Verify the total duration text
+        totalDurationTextFinder =
+            find.byKey(const Key('totalSegmentsDurationTextKey'));
+        expect(
+          tester.widget<Text>(totalDurationTextFinder).data,
+          'Total duration: 2:37.8',
+        );
+
+        // Verify the presence of the Extract MP3 elements
+        _verifyPresenceOfExtractMp3Widgets(tester);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets('''Remaining errors test. ''', (WidgetTester tester) async {
+        const String audioTitle = "Jésus, c'est le plus beau nom";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'extract_comments_to_mp3_test',
+          selectedPlaylistTitle: '1 music with invalid comment',
+        );
+
+        // First, find the '1 music with invalid comment' playlist audio ListTile Text widget
+        Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+        // Then obtain the audio ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        Finder audioTitleTileWidgetFinder = find.ancestor(
+          of: audioTitleTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now we want to tap the popup menu of the audioTitle ListTile
+
+        // Find the leading menu icon button of the audioTitle ListTile
+        // and tap on it
+        Finder audioTitleTileLeadingMenuIconButton = find.descendant(
+          of: audioTitleTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioTitleTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the 'Audio Comments ...' popup menu item and
+        // tap on it
+        Finder audioCommentsPopupMenuItem =
+            find.byKey(const Key("popup_menu_audio_comment"));
+
+        await tester.tap(audioCommentsPopupMenuItem);
+        await tester.pumpAndSettle();
+
+        // Now open the extract comments to MP3 dialog
+
+        // Find the extract comments to MP3 text button of the comment
+        // add dialog and tap on it
+        Finder extractCommentsToMp3ButtonFinder =
+            find.byKey(const Key('extractCommentsToMp3TextButton'));
+        await tester.tap(extractCommentsToMp3ButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the presence of the invalid comment error message
+        expect(
+          find.text(
+              "Delete invalid comment(s) with end position greater than audio duration which is 2:56.8."),
+          findsOneWidget,
+        );
+
+        // Now, delete the third comment whose end position is greater
+        // than the audio duration
+
+        // Necessary to drag down vertically to make visible the third
+        // comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, -300), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // This opens the delete comment confirmation dialog
+        Finder deleteCommentIconButtonFinder =
+            find.byKey(const Key('deleteSegmentButtonKey_3'));
+        await tester.tap(deleteCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the deletion by tapping the delete button
+        Finder deleteCommentButtonFinder =
+            find.byKey(const Key('confirmDeleteSegmentButton'));
+        await tester.tap(deleteCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the presence of the invalid comment error message
+        expect(
+          find.text(
+              "Delete invalid comment(s) with end position greater than audio duration which is 2:56.8."),
+          findsOneWidget,
+        );
+
+        // Now, delete the second comment whose end position is greater
+        // than the audio duration
+
+        // This opens the delete comment confirmation dialog
+        deleteCommentIconButtonFinder =
+            find.byKey(const Key('deleteSegmentButtonKey_2'));
+        await tester.tap(deleteCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Confirm the deletion by tapping the delete button
+        deleteCommentButtonFinder =
+            find.byKey(const Key('confirmDeleteSegmentButton'));
+        await tester.tap(deleteCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the absence of the invalid comment error message
+        expect(
+          find.text(
+              "Delete invalid comment(s) with end position greater than audio duration which is 2:56.8."),
+          findsNothing,
+        );
+
+        // Verify the Comments number title
+        expect(find.text('Comments (1)'), findsOneWidget);
+
+        // Verify the presence of the Extract MP3 elements(Extract
+        // MP3 button and 3 checkboxes)
+        _verifyPresenceOfExtractMp3Widgets(tester);
+
+        // This opens the edit 1st comment dialog
+        Finder editCommentIconButtonFinder =
+            find.byKey(const Key('editSegmentButtonKey_1'));
+        await tester.tap(editCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Now modify the start position to -0:00.1 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'startPositionTextField',
+          enteredValue: '-0:00.1',
+          expectedErrorMessage:
+              'Start position must be between 0 and 2:56.7 inclusive.',
+        );
+
+        // Now modify the start position to -0:01.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'startPositionTextField',
+          enteredValue: '-0:01.0',
+          expectedErrorMessage:
+              'Start position must be between 0 and 2:56.7 inclusive.',
+        );
+
+        // Now modify the start position to -0:10.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'startPositionTextField',
+          enteredValue: '-0:10.0',
+          expectedErrorMessage:
+              'Start position must be between 0 and 2:56.7 inclusive.',
+        );
+
+        // Now modify the start position to -1:00.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'startPositionTextField',
+          enteredValue: '-1:00.0',
+          expectedErrorMessage:
+              'Start position must be between 0 and 2:56.7 inclusive.',
+        );
+
+        // Now modify the start position to -0:00.0
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'startPositionTextField',
+          enteredValue: '-0:00.0',
+          doNotTapOnSaveButton: true,
+        );
+
+        // Now modify the end position to 0:00.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'endPositionTextField',
+          enteredValue: '0:00.0',
+          expectedErrorMessage:
+              "End position must be after start position (0:00.0) and not exceed 2:56.8.",
+        );
+
+        // Now modify the end position to 3:12.8 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'endPositionTextField',
+          enteredValue: '3:12.8',
+          expectedErrorMessage:
+              "End position must be after start position (0:00.0) and not exceed 2:56.8.",
+        );
+
+        // Now modify the end position to 3:12.8 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'endPositionTextField',
+          enteredValue: '3:12.8',
+          expectedErrorMessage:
+              "End position must be after start position (0:00.0) and not exceed 2:56.8.",
+        );
+
+        // Now modify the end position to 2:12.8
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'endPositionTextField',
+          enteredValue: '2:12.8',
+          doNotTapOnSaveButton: true,
+        );
+
+        // Now modify the silence duration to -0:00.1 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'silenceDurationTextField',
+          enteredValue: '-0:00.1',
+          expectedErrorMessage: 'Silence duration cannot be negative.',
+        );
+
+        // Now modify the silence duration to -0:01.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'silenceDurationTextField',
+          enteredValue: '-0:01.0',
+          expectedErrorMessage: 'Silence duration cannot be negative.',
+        );
+
+        // Now modify the silence duration to -0:10.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'silenceDurationTextField',
+          enteredValue: '-0:10.0',
+          expectedErrorMessage: 'Silence duration cannot be negative.',
+        );
+
+        // Now modify the silence duration to -1:00.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'silenceDurationTextField',
+          enteredValue: '-1:00.0',
+          expectedErrorMessage: 'Silence duration cannot be negative.',
+        );
+
+        // Now modify the silnceposition to -0:00.0
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'silenceDurationTextField',
+          enteredValue: '-0:00.0',
+          doNotTapOnSaveButton: true,
+        );
+
+        // Verify the presence of the Extract MP3 elements
+        _verifyPresenceOfExtractMp3Widgets(tester);
+
+        // Now modify the play speed to -1.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'playSpeedTextField',
+          enteredValue: '-1.0',
+          expectedErrorMessage:
+              "The defined play speed must be between 0.5 and 2.0.",
+        );
+
+        // Now modify the play speed to 0.4 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'playSpeedTextField',
+          enteredValue: '0.4',
+          expectedErrorMessage:
+              "The defined play speed must be between 0.5 and 2.0.",
+        );
+
+        // Now modify the play speed to 2.1 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'playSpeedTextField',
+          enteredValue: '2.1',
+          expectedErrorMessage:
+              "The defined play speed must be between 0.5 and 2.0.",
+        );
+
+        // Now modify the play speed to 1.0
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'playSpeedTextField',
+          enteredValue: '1.0',
+          doNotTapOnSaveButton: true,
+        );
+
+        // Now modify the Volume fade-in duration to -0:00.1 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'fadeInDurationTextField',
+          enteredValue: '-0:00.1',
+          expectedErrorMessage: 'Increase duration cannot be negative.',
+        );
+
+        // Now modify the Volume fade-in duration to -0:01.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'fadeInDurationTextField',
+          enteredValue: '-0:01.0',
+          expectedErrorMessage: 'Increase duration cannot be negative.',
+        );
+
+        // Now modify the Volume fade-in duration to -0:10.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'fadeInDurationTextField',
+          enteredValue: '-0:10.0',
+          expectedErrorMessage: 'Increase duration cannot be negative.',
+        );
+
+        // Now modify the Volume fade-in duration to -1:00.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'fadeInDurationTextField',
+          enteredValue: '-1:00.0',
+          expectedErrorMessage: 'Increase duration cannot be negative.',
+        );
+
+        // Now modify the Volume fade-in duration to 2:12.9 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'fadeInDurationTextField',
+          enteredValue: '2:12.9',
+          expectedErrorMessage:
+              "Increase duration end (0:00.0 + 2:12.9 = 2:12.9) cannot exceed comment end position (2:12.8).",
+        );
+
+        // Now modify the start position to 0:16.0
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'startPositionTextField',
+          enteredValue: '0:16.0',
+          doNotTapOnSaveButton: true,
+        );
+
+        // Now modify the end position to 0:32.0
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'endPositionTextField',
+          enteredValue: '0:32.0',
+          doNotTapOnSaveButton: true,
+        );
+
+        // Now modify the Volume fade-in duration to 0:18.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'fadeInDurationTextField',
+          enteredValue: '0:18.0',
+          expectedErrorMessage:
+              "Increase duration end (0:16.0 + 0:18.0 = 0:34.0) cannot exceed comment end position (0:32.0).",
+        );
+
+        // Now modify the Volume fade-in duration to 0:00.0
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'fadeInDurationTextField',
+          enteredValue: '0:00.0',
+          doNotTapOnSaveButton: true,
+        );
+
+        // Now modify the Volume fade-out position to -0:00.1 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionPositionTextField',
+          enteredValue: '-0:00.1',
+          expectedErrorMessage: 'Sound reduction position cannot be negative.',
+        );
+
+        // Now modify the Volume fade-out position to -0:01.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionPositionTextField',
+          enteredValue: '-0:01.0',
+          expectedErrorMessage: 'Sound reduction position cannot be negative.',
+        );
+
+        // Now modify the Volume fade-out position to -0:10.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionPositionTextField',
+          enteredValue: '-0:10.0',
+          expectedErrorMessage: 'Sound reduction position cannot be negative.',
+        );
+
+        // Now modify the Volume fade-out position to -1:00.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionPositionTextField',
+          enteredValue: '-1:00.0',
+          expectedErrorMessage: 'Sound reduction position cannot be negative.',
+        );
+
+        // Now modify the Volume fade-out position to 0:20.0
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionPositionTextField',
+          enteredValue: '0:20.0',
+          doNotTapOnSaveButton: true,
+        );
+
+        // Necessary to drag down vertically the add s4egment dialog
+        await tester.drag(
+          find.byType(AddSegmentDialog),
+          const Offset(
+              0, -500), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Now modify the Volume fade-out duration to -0:00.1 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionDurationTextField',
+          enteredValue: '-0:00.1',
+          expectedErrorMessage: 'Sound reduction duration cannot be negative.',
+        );
+
+        // Now modify the Volume fade-out duration to -0:01.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionDurationTextField',
+          enteredValue: '-0:01.0',
+          expectedErrorMessage: 'Sound reduction duration cannot be negative.',
+        );
+
+        // Now modify the Volume fade-out duration to -0:10.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionDurationTextField',
+          enteredValue: '-0:10.0',
+          expectedErrorMessage: 'Sound reduction duration cannot be negative.',
+        );
+
+        // Now modify the Volume fade-out duration to -1:00.0 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionDurationTextField',
+          enteredValue: '-1:00.0',
+          expectedErrorMessage: 'Sound reduction duration cannot be negative.',
+        );
+
+        // Now modify the Volume fade-out duration to 0:05.0
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionDurationTextField',
+          enteredValue: '0:05.0',
+          doNotTapOnSaveButton: true,
+        );
+
+        // Now modify the Volume fade-out position to 0:15.9 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionPositionTextField',
+          enteredValue: '0:33.0',
+          expectedErrorMessage:
+              'Sound reduction position (0:33.0) must be before the comment end position (0:32.0).',
+        );
+
+        // Now modify the Volume fade-out position to 0:15.9 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionPositionTextField',
+          enteredValue: '0:15.9',
+          expectedErrorMessage:
+              'Sound reduction position (0:15.9) must be after or at the comment start position (0:16.0).',
+        );
+
+        // Now modify the Volume fade-out position to 1:08.8 and verify
+        // the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionPositionTextField',
+          enteredValue: '0:28.0',
+          expectedErrorMessage:
+              'Sound reduction of 0:28.0 + 0:05.0 = 0:33.0 must complete before or at the comment end position (0:32.0).',
+        );
+
+        // Now modify the Volume fade-out position to 0:16.0 and verify
+        // the no message is shown
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'soundReductionPositionTextField',
+          enteredValue: '0:16.0',
+          expectedErrorMessage: '',
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+    group('Extract multiple audio comments', () {
+      testWidgets(
+          '''Extract to dir in spoken quality with play speed modification multiple audios, one has 1
+           comment. Then save all comments, do new modifications and save again all comments under a
+           new name. Then load the first saved comments. Finally, close the extract comments to MP3
+           dialog and reopen it to verify that the modifications can be reloaded.''',
+          (WidgetTester tester) async {
+        const String playlistTitle = "Les prières de cette playlist";
+        const String playlistSubMenuKeyStr =
+            'popup_menu_extract_filtered_audio';
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'extract_comments_to_mp3_test',
+          tapOnPlaylistToggleButton: false,
+        );
+
+        // Open the Extract filtered Audios to unique MP3 dialog by clicking
+        // first on the 'Filtered Audio Actions ...' playlist menu item and
+        // then on the 'Extract filtered Audios to unique MP3 ...' sub-menu
+        // item
+        await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+          tester: tester,
+          playlistTitle: playlistTitle,
+          playlistSubMenuKeyStr: playlistSubMenuKeyStr,
+        );
+
+        // Verify the extract audios to MP3 dialog commentTitle
+        expect(find.text('Audios to MP3'), findsOneWidget);
+
+        // Verify the presence of the help icon button
+        expect(find.byIcon(Icons.help_outline), findsOneWidget);
+
+        // Verify the Comments number commentTitle
+        expect(find.text('Audios (4)'), findsOneWidget);
+
+        // Necessary to drag down vertically to make visible the edit
+        // icon button of the 4th audio comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, -1000), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        expect(
+            tester
+                .widget<Text>(
+                  find.byKey(const Key('videoTitleKey_3')),
+                )
+                .data,
+            "Seigneur, je T'en prie, mets moi dans le feu de Ton Amour");
+
+        expect(
+            tester
+                .widget<Text>(
+                  find.byKey(const Key('segmentNumberAndDurationKey_3')),
+                )
+                .data,
+            "1 segment(s) - 0:28.6");
+
+        await IntegrationTestUtil.checkExtractionCommentDetails(
+          tester: tester,
+          segmentDetailsList: [
+            {
+              'number': 4.1,
+              'commentTitle': "Seigneur",
+              'startPosition': '0:00.0',
+              'endPosition': '0:28.6',
+              'playSpeed': 'Play speed: 1.0',
+              'increaseDuration': 'Increase duration: 0:00.0',
+              'reductionPosition': 'Reduction position: 0:00.0',
+              'reductionDuration': 'Reduction duration: 0:00.0',
+              'duration': 'Duration: 0:28.6',
+            },
+          ],
+        );
+
+        // Now edit the 'Seigneur' comment to modify its play speed, its increase
+        // duration and reduction position and duration
+
+        // This opens the edit comment dialog
+        Finder editCommentIconButtonFinder =
+            find.byKey(const Key('editSegmentButtonKey_4.1'));
+        await tester.tap(editCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Modify the play speed to 0.7
+        await _correctPlaySpeedEnterCode(
+          tester: tester,
+          playSpeedValue: '0.7',
+        );
+
+        // Modify the fade-in duration to 0:05.0
+        Finder commentFadeInDurationTextFieldFinder =
+            find.byKey(const Key('fadeInDurationTextField'));
+        await tester.tap(commentFadeInDurationTextFieldFinder);
+        await tester.enterText(commentFadeInDurationTextFieldFinder, '0:05.0');
+        await tester.pumpAndSettle();
+
+        // Modify the reduction position to 0:20.6
+        Finder commentReductionPositionTextFieldFinder =
+            find.byKey(const Key('soundReductionPositionTextField'));
+        await tester.tap(commentReductionPositionTextFieldFinder);
+        await tester.enterText(
+            commentReductionPositionTextFieldFinder, '0:20.6');
+        await tester.pumpAndSettle();
+
+        // Necessary to drag down vertically the add s4egment dialog
+        await tester.drag(
+          find.byType(AddSegmentDialog),
+          const Offset(
+              0, -500), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Modify the reduction duration to 0:08.0
+        Finder commentReductionDurationTextFieldFinder =
+            find.byKey(const Key('soundReductionDurationTextField'));
+        await tester.tap(commentReductionDurationTextFieldFinder);
+        await tester.enterText(
+            commentReductionDurationTextFieldFinder, '0:08.0');
+        await tester.pumpAndSettle();
+
+        // Confirm the comment edition by tapping the save button
+        Finder saveEditedCommentButtonFinder =
+            find.byKey(const Key('saveEditedSegmentButton'));
+        await tester.tap(saveEditedCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the total duration text
+        Finder segmentsDurationTextFinder =
+            find.byKey(const Key('segmentNumberAndDurationKey_3'));
+        expect(
+          tester.widget<Text>(segmentsDurationTextFinder).data,
+          '1 segment(s) - 0:40.9',
+        );
+
+        // Verify the displayed comment details in the comment card
+        // after the comment play speed modifications
+        await IntegrationTestUtil.checkExtractionCommentDetails(
+          tester: tester,
+          segmentDetailsList: [
+            {
+              'number': 4.1,
+              'commentTitle': "Seigneur",
+              'startPosition': '0:00.0',
+              'endPosition': '0:40.9',
+              'playSpeed': 'Play speed: 0.7',
+              'increaseDuration': 'Increase duration: 0:05.0',
+              'reductionPosition': 'Reduction position: 0:20.6',
+              'reductionDuration': 'Reduction duration: 0:08.0',
+              'duration': 'Duration: 0:40.9',
+            },
+          ],
+        );
+
+        // Now type on the segment play button to play the comment
+        // segment with the modified play speed and verify the played
+        // audio duration
+        Finder playCommentSegmentButtonFinder =
+            find.byKey(const Key('playSegmentButtonKey_4.1'));
+        await tester.tap(playCommentSegmentButtonFinder);
+        await tester.pumpAndSettle();
+
+        await Future.delayed(const Duration(milliseconds: 1500));
+        await tester.pumpAndSettle();
+
+        Text audioDurationText = tester.widget<Text>(
+            find.byKey(const Key('extractedAudioDurationTextKey')));
+        expect(audioDurationText.data, '0:40.9',
+            reason:
+                'The played audio duration is not correct after the comment play speed modification.');
+
+        // Verifying the content of the comments json file
+
+        final String commentsFilePath = path.join(
+          'C:',
+          'development',
+          'flutter',
+          'audiolearn',
+          'test',
+          'data',
+          'audio',
+          'playlists',
+          playlistTitle,
+          'comments',
+          "250904-084829-Seigneur, je T'en prie, mets moi dans le feu de Ton Amour 25-09-03.json",
+        );
+
+        File commentsFile = File(commentsFilePath);
+
+        String jsonContent = commentsFile.readAsStringSync();
+        List<dynamic> commentsLst = jsonDecode(jsonContent) as List<dynamic>;
+
+        Map<String, dynamic> firstComment =
+            commentsLst[0] as Map<String, dynamic>;
+
+        expect(firstComment['id'], '_1770663736263469');
+        expect(firstComment['title'], 'Seigneur');
+        expect(firstComment['content'], '');
+        expect(firstComment['commentStartPositionInTenthOfSeconds'], 0);
+        expect(firstComment['commentEndPositionInTenthOfSeconds'], 286);
+        expect(firstComment['silenceDuration'], 0.0);
+        expect(firstComment['playSpeed'], 0.7);
+        expect(firstComment['fadeInDuration'], 5.0);
+        expect(firstComment['soundReductionPosition'], 20.6);
+        expect(firstComment['soundReductionDuration'], 8.0);
+        expect(firstComment['deleted'], false);
+        expect(firstComment['creationDateTime'], '2026-02-09T20:02:16.000');
+        DateTime now = DateTime.now();
+        String yearStr = now.year.toString();
+        String monthStr = now.month.toString();
+        monthStr = (monthStr.length == 1) ? "0$monthStr" : monthStr;
+        String dayStr = now.day.toString();
+        dayStr = (dayStr.length == 1) ? "0$dayStr" : dayStr;
+        String hourStr = now.hour.toString();
+        hourStr = (hourStr.length == 1) ? "0$hourStr" : hourStr;
+        String minuteStr = now.minute.toString();
+        minuteStr = (minuteStr.length == 1) ? "0$minuteStr" : minuteStr;
+        expect(
+            firstComment['lastUpdateDateTime'].contains(
+                    "$yearStr-$monthStr-${dayStr}T$hourStr:$minuteStr") ||
+                firstComment['lastUpdateDateTime'].contains(
+                    "$yearStr-$monthStr-${dayStr}T$hourStr:${(now.minute - 1).toString()}"),
+            true);
+
+        String totalDurationStr = '2:30.5';
+
+        // Verify the total duration text
+        Finder totalDurationTextFinder =
+            find.byKey(const Key('totalSegmentsDurationTextKey'));
+        expect(
+          tester.widget<Text>(totalDurationTextFinder).data,
+          'Total duration: $totalDurationStr',
+        );
+
+        // Now, type on the Extract MP3 button
+        Finder extractMp3ButtonFinder =
+            find.byKey(const Key('extractMp3Button'));
+        await tester.tap(extractMp3ButtonFinder);
+        await tester.pumpAndSettle();
+
+        await Future.delayed(const Duration(milliseconds: 1500));
+        await tester.pumpAndSettle();
+
+        // Verify the extract comments to MP3 success dialog message
+        // and play and pause the extracted MP3 file
+        await _verifyAndPlayExtractedMp3Method(
+          tester: tester,
+          extractionSuccessMessage:
+              'Extracted MP3 saved to:\nC:\\development\\flutter\\audiolearn\\test\\data\\audio\\saved\\MP3\\multi_4_audios_4_segments.mp3',
+          extractionPlayingMessage: 'Playing: multi_4_audios_4_segments.mp3',
+          extractedAudioDuration: totalDurationStr,
+        );
+
+        // Necessary to drag up vertically to make visible the edit
+        // icon button of the 3rd audio comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, 400), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Now edit the 'Père céleste, merci pour cette nouvelle journée que
+        // Tu me donnes' generated comment to modify its play speed, its increase
+        // duration and reduction position and duration
+
+        // This opens the edit comment dialog
+        editCommentIconButtonFinder =
+            find.byKey(const Key('editSegmentButtonKey_3.1'));
+        await tester.tap(editCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Modify the play speed to 0.7
+        await _correctPlaySpeedEnterCode(
+          tester: tester,
+          playSpeedValue: '1.7',
+        );
+
+        // Modify the fade-in duration to 0:05.5
+        commentFadeInDurationTextFieldFinder =
+            find.byKey(const Key('fadeInDurationTextField'));
+        await tester.tap(commentFadeInDurationTextFieldFinder);
+        await tester.enterText(commentFadeInDurationTextFieldFinder, '0:05.5');
+        await tester.pumpAndSettle();
+
+        // Modify the reduction position to 0:20
+        commentReductionPositionTextFieldFinder =
+            find.byKey(const Key('soundReductionPositionTextField'));
+        await tester.tap(commentReductionPositionTextFieldFinder);
+        await tester.enterText(
+            commentReductionPositionTextFieldFinder, '0:20.0');
+        await tester.pumpAndSettle();
+
+        // Necessary to drag down vertically the add s4egment dialog
+        await tester.drag(
+          find.byType(AddSegmentDialog),
+          const Offset(
+              0, -500), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Modify the reduction duration to 0:08.6
+        commentReductionDurationTextFieldFinder =
+            find.byKey(const Key('soundReductionDurationTextField'));
+        await tester.tap(commentReductionDurationTextFieldFinder);
+        await tester.enterText(
+            commentReductionDurationTextFieldFinder, '0:08.6');
+        await tester.pumpAndSettle();
+
+        // Confirm the comment edition by tapping the save button
+        saveEditedCommentButtonFinder =
+            find.byKey(const Key('saveEditedSegmentButton'));
+        await tester.tap(saveEditedCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Necessary to drag down vertically to make totally visible the
+        // 3rd audio comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, -100), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Verify the segment duration text
+        segmentsDurationTextFinder =
+            find.byKey(const Key('segmentNumberAndDurationKey_2'));
+        expect(
+          tester.widget<Text>(segmentsDurationTextFinder).data,
+          '1 segment(s) - 0:17.8',
+        );
+
+        // Verify the displayed comment details in the comment card
+        // after the comment play speed modifications
+        await IntegrationTestUtil.checkExtractionCommentDetails(
+          tester: tester,
+          segmentDetailsList: [
+            {
+              'number': 3.1,
+              'commentTitle':
+                  "Père céleste, merci pour cette nouvelle journée que Tu me donnes",
+              'startPosition': '0:00.0',
+              'endPosition': '0:16.8',
+              'playSpeed': 'Play speed: 1.7',
+              'increaseDuration': 'Increase duration: 0:05.5',
+              'reductionPosition': 'Reduction position: 0:20.0',
+              'reductionDuration': 'Reduction duration: 0:08.6',
+              'duration': 'Duration: 0:16.8 + silence 0:01.0',
+            },
+          ],
+        );
+
+        totalDurationStr = '2:18.7';
+
+        // Verify the total duration text
+        totalDurationTextFinder =
+            find.byKey(const Key('totalSegmentsDurationTextKey'));
+        expect(
+          tester.widget<Text>(totalDurationTextFinder).data,
+          'Total duration: $totalDurationStr',
+        );
+
+        // Now type on the segment play button to play the comment
+        // segment with the modified play speed and verify the played
+        // audio duration
+        playCommentSegmentButtonFinder =
+            find.byKey(const Key('playSegmentButtonKey_3.1'));
+        await tester.tap(playCommentSegmentButtonFinder);
+        await tester.pumpAndSettle();
+
+        await Future.delayed(const Duration(milliseconds: 1500));
+        await tester.pumpAndSettle();
+
+        // Necessary to drag down vertically the audio extractor screen
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, -600), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        audioDurationText = tester.widget<Text>(
+            find.byKey(const Key('extractedAudioDurationTextKey')));
+
+        expect(
+          audioDurationText.data,
+          '0:17.8',
+          reason:
+              'The played audio duration is not correct after the comment play speed modification.',
+        );
+
+        // Now, type on the Save Comments button
+        Finder saveCommentButtonFinder =
+            find.byKey(const Key('saveCommentsButtonKey'));
+        await tester.tap(saveCommentButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the save comments dialog title
+        expect(find.text('Save Comments'), findsOneWidget);
+
+        // Delete the existing text in the file name text field and enter
+        // a new file name
+        const String firstSavedCommentsName = 'first_saved_comments';
+        Finder saveCommentsFileNameTextFieldFinder =
+            find.byKey(const Key('saveCommentsFileNameTextField'));
+        await tester.tap(saveCommentsFileNameTextFieldFinder);
+        await tester.enterText(saveCommentsFileNameTextFieldFinder, '');
+        await tester.pumpAndSettle();
+        await tester.enterText(
+          saveCommentsFileNameTextFieldFinder,
+          firstSavedCommentsName,
+        );
+        await tester.pumpAndSettle(const Duration(milliseconds: 200));
+
+        // Type on the Save button
+        Finder saveButtonButtonFinder =
+            find.byKey(const Key('saveCommentsButtonInSaveCommentsDialogKey'));
+        await tester.tap(saveButtonButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Now, type on the Extract MP3 button
+        extractMp3ButtonFinder = find.byKey(const Key('extractMp3Button'));
+        await tester.tap(extractMp3ButtonFinder);
+        await tester.pumpAndSettle();
+
+        await Future.delayed(const Duration(milliseconds: 1000));
+        await tester.pumpAndSettle();
+
+        // Necessary to drag down vertically to make visible the edit
+        // icon button of the 4th audio comment
+        await tester.drag(
+          find.byType(AudioExtractorScreen),
+          const Offset(
+              0, -200), // Negative value for vertical drag to scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Necessary, otherwise the test fails. 3 seconds are necessary.
+        // Without that, the test passed if break point was set on the
+        // _verifyAndPlayExtractedMp3Method method below, but failed
+        // without break point.
+        await Future.delayed(const Duration(seconds: 3));
+        await tester.pumpAndSettle();
+
+        // Verify the extract comments to MP3 success dialog message
+        // and play and pause the extracted MP3 file
+        await _verifyAndPlayExtractedMp3Method(
+          tester: tester,
+          extractionSuccessMessage:
+              'Extracted MP3 saved to:\nC:\\development\\flutter\\audiolearn\\test\\data\\audio\\saved\\MP3\\multi_4_audios_4_segments.mp3',
+          extractionPlayingMessage: 'Playing: multi_4_audios_4_segments.mp3',
+          extractedAudioDuration: totalDurationStr,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+  });
+  group('Audio item menu Modify Audio URL test', () {
+    testWidgets('''Apply adding URL to a imported audio.''',
+        (WidgetTester tester) async {
+      const String playlistTitle = "Prières 1";
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'Modify_Audio_URL_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      // Now we want to tap the popup menu of the Audio ListTile
+      // "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne
+      // mon coeur!"
+
+      const String audioToSetURLTitle =
+          "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!";
+
+      // First, find the Audio sublist ListTile Text widget
+      final Finder audioToPositionTitleTextWidgetFinder =
+          find.text(audioToSetURLTitle);
+
+      // Then obtain the Audio ListTile widget enclosing the Text widget by
+      // finding its ancestor
+      final Finder audioToPositionListTileWidgetFinder = find.ancestor(
+        of: audioToPositionTitleTextWidgetFinder,
+        matching: find.byType(ListTile),
+      );
+
+      // Now find the leading menu icon button of the Audio ListTile
+      // and tap on it
+      Finder audioToPositionListTileLeadingMenuIconButton = find.descendant(
+        of: audioToPositionListTileWidgetFinder,
+        matching: find.byIcon(Icons.menu),
+      );
+
+      // Tap the leading menu icon button to open the popup menu
+      await tester.tap(audioToPositionListTileLeadingMenuIconButton);
+      await tester.pumpAndSettle();
+
+      // Now find the 'Modify Audio URL ...' audio popup menu item
+      // and tap on it
+      final Finder popupMoveAudioMenuItem =
+          find.byKey(const Key("popup_menu_modify_audio_url"));
+
+      await tester.tap(popupMoveAudioMenuItem);
+      await tester.pumpAndSettle();
+
+      // Verify the dialog title
+      expect(find.text('Modify Audio URL'), findsOneWidget);
+
+      // Find the TextField using the Key
+      final Finder textFieldFinder =
+          find.byKey(const Key('audioModificationTextField'));
+
+      // Retrieve the TextField widget
+      final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+      // Verify the initial value of the TextField
+
+      expect(textField.controller!.text, "");
+
+      // Enter the Audio URL
+
+      const String audioUrl =
+          "https://youtu.be/NeMwbCQ3mE0?is=QoFSlHzeK5m4lBfW";
+
+      await tester.enterText(
+        textFieldFinder,
+        audioUrl,
+      );
+      await tester.pumpAndSettle();
+
+      // Now tap the 'Modify'' button
+      await tester.tap(find.byKey(const Key('audioModificationButton')));
+      await tester.pumpAndSettle();
+
+      // Verifying audio info dialog fields related of the modified audio
+      await IntegrationTestUtil.verifyAudioInfoDialog(
+        tester: tester,
+        audioType: AudioType.imported,
+        videoUrl: audioUrl,
+        validVideoTitleOrAudioTitle: audioToSetURLTitle,
+        audioDownloadDateTimeOne: '20/06/2025 11:19',
+        isAudioPlayable: false, // the audio is not playable because
+        // in the test data, the audio file is not present in the
+        // playlist directory
+        audioEnclosingPlaylistTitle: playlistTitle,
+        audioDuration: '0:01:41.1',
+        audioPosition: '0:00:00.0',
+        audioState: 'not listened',
+        lastListenDateTime: '10/12/2025 08:04',
+        audioFileName:
+            'Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!.mp3',
+        audioFileSize: '2.43 MB',
+        isMusicQuality: false, // Is spoken quality
+        audioPlaySpeed: '1.0',
+        audioVolume: '100.0 %',
+        audioCommentNumber: 0,
+      );
+
+      // Now verify the added audio item menus
+
+      // Now find the leading menu icon button of the Audio ListTile
+      // and tap on it
+      audioToPositionListTileLeadingMenuIconButton = find.descendant(
+        of: audioToPositionListTileWidgetFinder,
+        matching: find.byIcon(Icons.menu),
+      );
+
+      // Tap the leading menu icon button to open the popup menu
+      await tester.tap(audioToPositionListTileLeadingMenuIconButton);
+      await tester.pumpAndSettle();
+
+      // Now ensure that the 'Open Youtube Video' audio popup menu
+      // item is present
+      expect(
+        find.byKey(const Key("popup_menu_open_youtube_video")),
+        findsOneWidget,
+      );
+
+      // And ensure that the 'Copy Youtube Video' audio popup menu
+      // item is present
+      expect(
+        find.byKey(const Key("popup_copy_youtube_video_url")),
+        findsOneWidget,
+      );
+
+      // Tap outside the popup menu to close it
+      await tester.tapAt(const Offset(10, 10));
+      await tester.pumpAndSettle();
+
+      // Now, open the AudioPlayerView
+
+      final Finder lastDownloadedAudioListTileTextWidgetFinder = find.text(
+        audioToSetURLTitle,
+      );
+
+      await tester.tap(lastDownloadedAudioListTileTextWidgetFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Tap the appbar leading popup menu button
+      await tester.tap(find.byKey(const Key('appBarLeadingPopupMenuWidget')));
+      await tester.pumpAndSettle();
+
+      // Now ensure that the 'Open Youtube Video' audio popup menu
+      // item is present
+      expect(
+        find.byKey(const Key("popup_menu_open_youtube_video")),
+        findsOneWidget,
+      );
+
+      // And ensure that the 'Copy Youtube Video' audio popup menu
+      // item is present
+      expect(
+        find.byKey(const Key("popup_copy_youtube_video_url")),
+        findsOneWidget,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group(
+      'Error displayed if json file is invalid. The tested exception is thrown by JsonDataService.',
+      () {
+    group('Error displayed in english.', () {
+      testWidgets(
+          '''Error if 'Prière 5.json' format is invalid. The exception is thrown by the JsonDataService
+           loadFromFile() method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the Prières 5.json file by the invalid format
+        // Prières 5.json file
+        final String targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle";
+        final String targetFileName = '$playlistTitle.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid Prières 5.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Starting the app with an invalid format Prières 5.json file
+        // which will cause an error message to be displayed
+        await app.main();
+        await tester.pumpAndSettle();
+
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "JSON format error in $targetDirectoryPath\\$targetFileName at line 64 or 65, column 9, unexpected character \"}\".\n\nException message: Unexpected character.\n\nTry finding the problem in order to correct it before executing again the operation.\n\nThen execute the \"Update Playlist JSON Files ...\" menu in order to restore the playlist \"$playlistTitle\".",
+          isWarningConfirming: false,
+          tapTwiceOnOkButton:
+              true, // Tap twice on the Ok button because of the 2 displayed dialogs (error dialog and then the warning dialog
+        );
+
+        // Verify that the playlist title is not displayed in the playlist list because of the
+        // invalid format of its json file
+        expect(
+          find.text(playlistTitle),
+          findsNothing,
+        );
+
+        // Replacing the invalid format Prières 5.json file by the valid
+        // formatn Prières 5.json file
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid Prières 5.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Now execute the 'Update Playlist JSON Files'
+        // appbar menu
+        await IntegrationTestUtil.executeUpdatePlaylistJsonFiles(
+          tester: tester,
+          doRemoveDeletedAudioFiles: false,
+        );
+
+        // Verify that the playlist title is now displayed in the playlist list because the invalid
+        // format of its json file wasa corrected and the 'Update Playlist JSON Files ...' menu was
+        // executed
+        expect(
+          find.text(playlistTitle),
+          findsOneWidget,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Error 'Prière 5' audio comment of 'Louange qui bouleverse le coeur. Même quand Dieu se tait'
+           json file format is invalid. The exception is thrown by the JsonDataService loadListFromFile()
+           method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Starting the app
+        await app.main();
+        await tester.pumpAndSettle();
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the 'Louange qui bouleverse le coeur. Même quand
+        // Dieu se tait' comment json file by the invalid json file
+        // format
+        final String targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle${path.separator}comments";
+        const String targetFileName =
+            '260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid comment 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        Finder audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        // Install handler BEFORE tapping
+        final List<FlutterErrorDetails> errors = [];
+        final FlutterExceptionHandler? originalHandler = FlutterError.onError;
+        FlutterError.onError = (FlutterErrorDetails details) {
+          errors.add(details);
+        };
+
+        // NOW tap - the exception fires during this pump
+        await tester.tap(audioTitleFinder);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
+
+        // Restore handler
+        FlutterError.onError = originalHandler;
+
+        // Verify
+        expect(errors, isNotEmpty);
+        expect(
+          errors.first.exception.toString(),
+          contains(
+            'JSON format error in $targetDirectoryPath\\$targetFileName'
+            ' at line 14 or 15, column 9, unexpected character """.',
+          ),
+        );
+
+        // Replacing the invalid 'Louange qui bouleverse le coeur.
+        // Même quand Dieu se tait' comment json file by the valid
+        // json file format
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid comment 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then return to playlist download view
+        final Finder playlistDownloadViewNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(playlistDownloadViewNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        await tester.tap(audioTitleFinder);
+        await tester.pumpAndSettle();
+
+        // Now verifying that the error text is no longer displayed
+        expect(
+          find.text(
+              "JSON format error in $targetDirectoryPath\\$targetFileName at line 14 or 15, column 9, unexpected character \"\"\".\n\nException message: Unexpected character See also: https://docs.flutter.dev/testing/errors"),
+          findsNothing,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Error 'Prière 5' audio picture of 'Louange qui bouleverse le coeur. Même quand Dieu se tait'
+           json file format is invalid. The exception is thrown by the JsonDataService loadListFromFile()
+           method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Starting the app
+        await app.main();
+        await tester.pumpAndSettle();
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the 'Louange qui bouleverse le coeur. Même quand
+        // Dieu se tait' comment json file by the invalid json file
+        // format
+        final String targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle${path.separator}pictures";
+        const String targetFileName =
+            '260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid picture 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        Finder audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        // Install handler BEFORE tapping
+        final List<FlutterErrorDetails> errors = [];
+        final FlutterExceptionHandler? originalHandler = FlutterError.onError;
+        FlutterError.onError = (FlutterErrorDetails details) {
+          errors.add(details);
+        };
+
+        // NOW tap - the exception fires during this pump
+        await tester.tap(audioTitleFinder);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
+
+        // Restore handler
+        FlutterError.onError = originalHandler;
+
+        // Verify
+        expect(errors, isNotEmpty);
+        expect(
+          errors.first.exception.toString(),
+          contains(
+            'JSON format error in $targetDirectoryPath\\$targetFileName'
+            ' at line 5 or 6, column 9, unexpected character """.',
+          ),
+        );
+
+        // Replacing the invalid 'Louange qui bouleverse le coeur.
+        // Même quand Dieu se tait' comment json file by the valid
+        // json file format
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid picture 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then return to playlist download view
+        final Finder playlistDownloadViewNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(playlistDownloadViewNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        await tester.tap(audioTitleFinder);
+        await tester.pumpAndSettle();
+
+        // Now verifying that the error text is no longer displayed
+        expect(
+          find.text(
+              "JSON format error in $targetDirectoryPath\\$targetFileName at line 14 or 15, column 9, unexpected character \"\"\".\n\nException message: Unexpected character See also: https://docs.flutter.dev/testing/errors"),
+          findsNothing,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+    group('Error displayed in french.', () {
+      testWidgets(
+          '''Error if 'Prière 5.json' format is invalid. The exception is thrown by the JsonDataService
+           loadFromFile() method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the settings.json file with the english app language by
+        // the settings.json file with the french app language
+        String targetDirectoryPath =
+            "$kApplicationPathWindowsTest${path.separator}";
+        String targetFileName = 'settings.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}french settings.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Replacing the Prières 5.json file by the invalid format
+        // Prières 5.json file
+        targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle";
+        targetFileName = '$playlistTitle.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid Prières 5.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Starting the app with an invalid format Prières 5.json file
+        // which will cause an error message to be displayed
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Now verifying the warning dialog and close it
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Erreur de format JSON dans $targetDirectoryPath\\$targetFileName à la ligne 64 ou 65, colonne 9, caractère inattendu \"}\".\n\nMessage de l'exception: Unexpected character.\n\nEssayez de trouver le probléme afin de le corriger avant de réexéuter l'opération.\n\nEnsuite, exécutez le menu \"Mettre à jour les fichiers playlist JSON ...\" afin de restaurer la playlist \"$playlistTitle\".",
+          isWarningConfirming: false,
+          tapTwiceOnOkButton:
+              true, // Tap twice on the Ok button because of the 2 displayed dialogs (error dialog and then the warning dialog
+          warningTitle: 'AVERTISSEMENT',
+        );
+
+        // Verify that the playlist title is not displayed in the playlist list because of the
+        // invalid format of its json file
+        expect(
+          find.text(playlistTitle),
+          findsNothing,
+        );
+
+        // Replacing the invalid format Prières 5.json file by the valid
+        // formatn Prières 5.json file
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid Prières 5.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Now execute the 'Update Playlist JSON Files'
+        // appbar menu
+        await IntegrationTestUtil.executeUpdatePlaylistJsonFiles(
+          tester: tester,
+          doRemoveDeletedAudioFiles: false,
+        );
+
+        // Verify that the playlist title is now displayed in the playlist list because the invalid
+        // format of its json file wasa corrected and the 'Update Playlist JSON Files ...' menu was
+        // executed
+        expect(
+          find.text(playlistTitle),
+          findsOneWidget,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Error 'Prière 5' audio comment of 'Louange qui bouleverse le coeur. Même quand Dieu se tait'
+           json file format is invalid. The exception is thrown by the JsonDataService loadListFromFile()
+           method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Starting the app
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to french
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.french,
+        );
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the 'Louange qui bouleverse le coeur. Même quand
+        // Dieu se tait' comment json file by the invalid json file
+        // format
+        final String targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle${path.separator}comments";
+        const String targetFileName =
+            '260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid comment 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        Finder audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        // Install handler BEFORE tapping
+        final List<FlutterErrorDetails> errors = [];
+        final FlutterExceptionHandler? originalHandler = FlutterError.onError;
+        FlutterError.onError = (FlutterErrorDetails details) {
+          errors.add(details);
+        };
+
+        // NOW tap - the exception fires during this pump
+        await tester.tap(audioTitleFinder);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
+
+        // Restore handler
+        FlutterError.onError = originalHandler;
+
+        // Verify
+        expect(errors, isNotEmpty);
+        expect(
+          errors.first.exception.toString(),
+          contains(
+            'Erreur de format JSON dans $targetDirectoryPath\\$targetFileName'
+            ' à la ligne 14 ou 15, colonne 9, caractère inattendu """.',
+          ),
+        );
+
+        // Replacing the invalid 'Louange qui bouleverse le coeur.
+        // Même quand Dieu se tait' comment json file by the valid
+        // json file format
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid comment 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then return to playlist download view
+        final Finder playlistDownloadViewNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(playlistDownloadViewNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        await tester.tap(audioTitleFinder);
+        await tester.pumpAndSettle();
+
+        // Now verifying that the error text is no longer displayed
+        expect(
+          find.text(
+              "Erreur de format JSON dans $targetDirectoryPath\\$targetFileName à la ligne 14 ou 15, colonne 9, caractère inattendu \"\"\".\n\nMessage de l'exception: Unexpected character See also: https://docs.flutter.dev/testing/errors"),
+          findsNothing,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Error 'Prière 5' audio picture of 'Louange qui bouleverse le coeur. Même quand Dieu se tait'
+           json file format is invalid. The exception is thrown by the JsonDataService loadListFromFile()
+           method.''', (WidgetTester tester) async {
+        const String playlistTitle = "Prières 5";
+
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirsWithRetry(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        const String savedTestDataDirName = 'invalid_json_data_format_test';
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}$savedTestDataDirName",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Starting the app
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // First, set the application language to french
+        await IntegrationTestUtil.setApplicationLanguage(
+          tester: tester,
+          language: Language.french,
+        );
+
+        final String invalidAndValidDirectoryPath =
+            '$kApplicationPathWindowsTest${path.separator}invalidAndValid';
+
+        // Replacing the 'Louange qui bouleverse le coeur. Même quand
+        // Dieu se tait' comment json file by the invalid json file
+        // format
+        final String targetDirectoryPath =
+            "$kPlaylistDownloadRootPathWindowsTest${path.separator}$playlistTitle${path.separator}pictures";
+        const String targetFileName =
+            '260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json';
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}invalid picture 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        Finder audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        // Install handler BEFORE tapping
+        final List<FlutterErrorDetails> errors = [];
+        final FlutterExceptionHandler? originalHandler = FlutterError.onError;
+        FlutterError.onError = (FlutterErrorDetails details) {
+          errors.add(details);
+        };
+
+        // NOW tap - the exception fires during this pump
+        await tester.tap(audioTitleFinder);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
+
+        // Restore handler
+        FlutterError.onError = originalHandler;
+
+        // Verify
+        expect(errors, isNotEmpty);
+        expect(
+          errors.first.exception.toString(),
+          contains(
+            'Erreur de format JSON dans $targetDirectoryPath\\$targetFileName'
+            ' à la ligne 5 ou 6, colonne 9, caractère inattendu """.',
+          ),
+        );
+
+        // Replacing the invalid 'Louange qui bouleverse le coeur.
+        // Même quand Dieu se tait' comment json file by the valid
+        // json file format
+
+        DirUtil.copyFileToDirectorySync(
+          sourceFilePathName:
+              '$invalidAndValidDirectoryPath${path.separator}valid picture 260511-150730-Louange qui bouleverse le coeur. Même quand Dieu se tait 26-04-18.json',
+          targetDirectoryPath: targetDirectoryPath,
+          targetFileName: targetFileName,
+          overwriteFileIfExist: true,
+        );
+
+        // Then return to playlist download view
+        final Finder playlistDownloadViewNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(playlistDownloadViewNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Then tap on the audio title to open the audio player view
+        // and trigger the loading of the comments json file with the
+        // invalid format which will cause an error message to be
+        // displayed
+        audioTitleFinder = find
+            .text('2_Louange qui bouleverse le coeur. Même quand Dieu se tait');
+
+        await tester.tap(audioTitleFinder);
+        await tester.pumpAndSettle();
+
+        // Now verifying that the error text is no longer displayed
+        expect(
+          find.text(
+              "Erreur de format JSON dans $targetDirectoryPath\\$targetFileName à la ligne 14 ou 15, colonne 9, caractère inattendu \"\"\".\n\nMessage de l'exception: Unexpected character See also: https://docs.flutter.dev/testing/errors"),
+          findsNothing,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+  });
 
 }
 
@@ -14014,3 +31998,1825 @@ Future<void> _checkAudioCommentInAudioPlayerView({
   await tester.pumpAndSettle();
 }
 
+Future<void> _verifyDateFormatApplication({
+  required WidgetTester tester,
+  required List<String> audioSubTitles,
+  required List<String> audioSubTitlesWithAudioDownloadDuration,
+  required List<String> audioSubTitlesWithAudioRemainingDuration,
+  required List<String> audioSubTitlesLastListenedDateTimeDescending,
+  required List<String> audioSubTitlesTitleAsc,
+  required List<String> audioSubTitlesVideoUploadDate,
+  required List<String> audioSubTitlesWithAudioDownloadSpeed,
+  required String playlistTitle,
+  required String videoUploadDate,
+  required audioDownloadDateTime,
+  String audioPausedDateTime = '',
+  String importedAudioDateTime = '',
+  String importedAudioPausedDateTime = '',
+  String convertedAudioDateTime = '',
+  String convertedAudioPausedDateTime = '',
+  String extractedAudioDateTime = '',
+  String extractedAudioPausedDateTime = '',
+  String extractedAudioPausedDate = '',
+  required String playlistLastDownloadDateTime,
+  required String commentCreationDate,
+  required String commentUpdateDate,
+  required String datePickerDateStr,
+  required String savePlaylistsAudioMp3DateFormat,
+  required String savePlaylistsAudioMp3OldestDate,
+  required String latestAudioDownloadDate,
+}) async {
+  IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
+    tester: tester,
+    audioSubTitlesAcceptableLst: audioSubTitles,
+  );
+
+  // Now we want to tap the popup menu of the Audio ListTile
+  // "Jancovici m'explique l’importance des ordres de grandeur
+  // face au changement climatique",
+
+  await _verifyAudioInfoDialogDateFormat(
+    tester: tester,
+    audioTitle:
+        // Downloaded audio not yet listened
+        "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+    videoUploadDate: videoUploadDate,
+    audioDownloadDateTime: audioDownloadDateTime,
+  );
+
+  if (audioPausedDateTime.isNotEmpty) {
+    await _verifyAudioInfoDialogDateFormat(
+      tester: tester,
+      // Downloaded audio already listened
+      audioTitle: "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
+      audioPausedDateTime: audioPausedDateTime, // Last listened date/time
+    );
+  }
+
+  if (importedAudioDateTime.isNotEmpty) {
+    await _verifyAudioInfoDialogDateFormat(
+      tester: tester,
+      audioTitle: "Prière au Seigneur", // Imported audio
+      importedAudioDateTime: importedAudioDateTime,
+      audioPausedDateTime:
+          importedAudioPausedDateTime, // Last listened date/time
+    );
+  }
+
+  if (convertedAudioDateTime.isNotEmpty) {
+    await _verifyAudioInfoDialogDateFormat(
+      tester: tester,
+      audioTitle: "essai de conversion", // Converted audio
+      convertedAudioDateTime: convertedAudioDateTime,
+      audioPausedDateTime:
+          convertedAudioPausedDateTime, // Last listened date/time
+    );
+  }
+
+  if (extractedAudioDateTime.isNotEmpty) {
+    await _verifyAudioInfoDialogDateFormat(
+      tester: tester,
+      audioTitle: "Jancovici short comment extraction", // Extracted audio
+      extractedAudioDateTime: extractedAudioDateTime,
+      audioPausedDateTime:
+          extractedAudioPausedDateTime, // Last listened date/time
+    );
+  }
+
+  // Tap the 'Toggle List' button to display the list of playlist's.
+  await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+  await tester.pumpAndSettle();
+
+  // Find the playlist whose audio are commented
+
+  // First, find the Playlist ListTile Text widget. Two exist:
+  // "S8 audio" under the 'Youtube Link or Search' text field and
+  // "S8 audio" as PlaylistItem
+  final Finder playlistToExamineInfoTextWidgetFinder =
+      find.text(playlistTitle).at(1);
+
+  // Then obtain the Playlist ListTile widget enclosing the Text widget
+  // by finding its ancestor
+  final Finder playlistWithCommentedAudioListTileWidgetFinder = find.ancestor(
+    of: playlistToExamineInfoTextWidgetFinder,
+    matching: find.byType(ListTile),
+  );
+
+  // Now find the leading menu icon button of the playlist and tap on it
+  final Finder playlistListTileLeadingMenuIconButton = find.descendant(
+    of: playlistWithCommentedAudioListTileWidgetFinder,
+    matching: find.byIcon(Icons.menu),
+  );
+
+  // Tap the leading menu icon button to open the popup menu
+  await tester.tap(playlistListTileLeadingMenuIconButton);
+  await tester.pumpAndSettle(); // Wait for popup menu to appear
+
+  // Now find the playlist info popup menu item and tap on it
+  // to open the PlaylistInfoDialog
+  final Finder popupPlaylistInfoMenuItem =
+      find.byKey(const Key("popup_menu_display_playlist_info"));
+
+  await tester.tap(popupPlaylistInfoMenuItem);
+  await tester.pumpAndSettle();
+
+  // Verify the playlist last download date time
+
+  final Text playlistLastDownloadDateTimeTextWidget = tester.widget<Text>(
+      find.byKey(const Key('playlist_last_download_date_time_key')));
+
+  expect(
+    playlistLastDownloadDateTimeTextWidget.data,
+    playlistLastDownloadDateTime,
+  );
+
+  // Now find the ok button of the playlist info dialog
+  // and tap on it
+  await tester.tap(find.byKey(const Key('playlist_info_ok_button_key')));
+  await tester.pumpAndSettle();
+
+  // Tap the 'Toggle List' button to hide the list of playlist's.
+  await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+  await tester.pumpAndSettle();
+
+  // Now, selecting 'audio downl dur' dropdown button item to
+  // apply this sort/filter parms
+  await _selectApplyAndVerifySortFilterParms(
+    tester: tester,
+    sortFilterParms: 'downl dur',
+    audioSubTitles: audioSubTitlesWithAudioDownloadDuration,
+  );
+
+  // Now, selecting 'audio remai. duration' dropdown button item to
+  // apply this sort/filter parms
+  await _selectApplyAndVerifySortFilterParms(
+    tester: tester,
+    sortFilterParms: 'audio remai. duration',
+    audioSubTitles: audioSubTitlesWithAudioRemainingDuration,
+  );
+
+  // Now, selecting 'desc listened' dropdown button item to
+  // apply this sort/filter parms
+  await _selectApplyAndVerifySortFilterParms(
+    tester: tester,
+    sortFilterParms: 'desc listened',
+    audioSubTitles: audioSubTitlesLastListenedDateTimeDescending,
+  );
+
+  // Now, selecting 'Title asc' dropdown button item to
+  // apply this sort/filter parms
+  await _selectApplyAndVerifySortFilterParms(
+    tester: tester,
+    sortFilterParms: 'Title asc',
+    audioSubTitles: audioSubTitlesTitleAsc,
+  );
+
+  // Now, selecting 'video upl date' dropdown button item to
+  // apply this sort/filter parms
+  await _selectApplyAndVerifySortFilterParms(
+    tester: tester,
+    sortFilterParms: 'video upl date',
+    audioSubTitles: audioSubTitlesVideoUploadDate,
+  );
+
+  // Now, selecting 'downl speed' dropdown button item to
+  // apply this sort/filter parms
+  await _selectApplyAndVerifySortFilterParms(
+    tester: tester,
+    sortFilterParms: 'downl speed',
+    audioSubTitles: audioSubTitlesWithAudioDownloadSpeed,
+  );
+
+  // Reset 'default' sort/filter parm
+
+  final Finder dropDownButtonFinder =
+      find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+  final Finder dropDownButtonTextFinder = find.descendant(
+    of: dropDownButtonFinder,
+    matching: find.byType(Text),
+  );
+
+  // Tap on the current dropdown button item to open the dropdown
+  // button items list
+  await tester.tap(dropDownButtonTextFinder);
+  await tester.pumpAndSettle();
+
+  // And select the 'default' sort/filter item
+  final Finder defaultDropDownTextFinder = find.text('default');
+  await tester.tap(defaultDropDownTextFinder);
+  await tester.pumpAndSettle();
+
+  // Verifying the comment date format
+
+  // First, find the Audio sublist ListTile Text widget
+  Finder targetAudioListTileTextWidgetFinder = find.text(
+      "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique");
+
+  // Then obtain the Audio ListTile widget enclosing the Text widget by
+  // finding its ancestor
+  Finder targetAudioListTileWidgetFinder = find.ancestor(
+    of: targetAudioListTileTextWidgetFinder,
+    matching: find.byType(ListTile),
+  );
+
+  // Now find the leading menu icon button of the Audio ListTile and tap
+  // on it
+  Finder targetAudioListTileLeadingMenuIconButton = find.descendant(
+    of: targetAudioListTileWidgetFinder,
+    matching: find.byIcon(Icons.menu),
+  );
+
+  // Tap the leading menu icon button to open the popup menu
+  await tester.tap(targetAudioListTileLeadingMenuIconButton);
+  await tester.pumpAndSettle();
+
+  // Now find the popup menu item and tap on it
+  final Finder popupDisplayAudioCommentMenuItemFinder =
+      find.byKey(const Key("popup_menu_audio_comment"));
+
+  await tester.tap(popupDisplayAudioCommentMenuItemFinder);
+  await tester.pumpAndSettle();
+
+  expect(find.text(commentCreationDate), findsOneWidget);
+  expect(find.text(commentUpdateDate), findsOneWidget);
+
+  // Now close the comment list dialog
+  await tester.tap(find.byKey(const Key('closeDialogTextButton')));
+  await tester.pumpAndSettle();
+
+  // Now verify the date picker date format usage in the
+  // start download date field
+
+  await _openSortFilterThenDatePickerDialog(tester);
+
+  // Confirm the date picker dialog
+  final Finder confirmButton = find.text('OK');
+  await tester.tap(confirmButton);
+  await tester.pumpAndSettle();
+
+  // Verify the set date displayed in the start download date text
+  // field
+  final Finder selectedDateText =
+      find.byKey(const Key('startDownloadDateTextField'));
+  expect(
+    tester.widget<TextField>(selectedDateText).controller!.text,
+    datePickerDateStr,
+  );
+
+  // Now close the audio sort filter dialog by tapping on its cancel
+  // button
+  await tester.tap(find.byKey(const Key('cancelSortFilterButton')));
+  await tester.pumpAndSettle();
+
+  // Now verify the date format on the 'Set the Download Date dialog'.
+  // On the left appbar menu, tap on the 'Save Playlists Audio's MP3
+  // to ZIP File ...' menu.
+
+  // Replace the platform instance with your mock
+  MockFilePicker mockFilePicker = MockFilePicker();
+  FilePicker.platform = mockFilePicker;
+
+  // Setting the path value returned by the FilePicker mock.
+  mockFilePicker.setPathToSelect(
+    pathToSelectStr: kApplicationPathWindowsTest,
+  );
+
+  // Tap the appbar leading popup menu button Then, the 'Save
+  // Playlists Audio's MP3 to ZIP File' menu is selected.
+  await IntegrationTestUtil.typeOnAppbarMenuItem(
+    tester: tester,
+    appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+  );
+
+  expect(find.text('Date/time ($savePlaylistsAudioMp3DateFormat hh:mm)'),
+      findsOneWidget);
+  expect(find.text('$savePlaylistsAudioMp3OldestDate 09:45'), findsOneWidget);
+
+  await tester.tap(find.byKey(const Key('setValueToTargetCancelButton')));
+  await tester.pumpAndSettle();
+
+  // Tap the appbar leading popup menu button Then, the 'Get the latest
+  // download Date of the multiple Playlists restored Audios ...' menu
+  // is selected.
+  await IntegrationTestUtil.typeOnAppbarMenuItem(
+    tester: tester,
+    appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+  );
+
+  expect(
+      find.text(
+          'This is the latest download date/time of the multiple playlists restored audios: $latestAudioDownloadDate.'),
+      findsOneWidget);
+
+  await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+  await tester.pumpAndSettle();
+
+  // Now verify the date format on the 'Define that the Audio is
+  // playable every n Days ...' dialog.
+
+  // First, find the audio sublist ListTile Text widget of the audio
+  // whose title is "Jancovici short comment extraction"
+  Finder audioListTileTextWidgetFinder =
+      find.text("Jancovici short comment extraction");
+
+  // Then obtain the audio ListTile widget enclosing the Text widget
+  // by finding its ancestor
+  Finder audioListTileWidgetFinder = find.ancestor(
+    of: audioListTileTextWidgetFinder,
+    matching: find.byType(ListTile),
+  );
+
+  // Now we want to tap the popup menu of the audio ListTile
+  // "Jancovici short comment extraction"
+
+  // Find the leading menu icon button of the audio ListTile
+  // and tap on it
+  Finder audioListTileLeadingMenuIconButton = find.descendant(
+    of: audioListTileWidgetFinder,
+    matching: find.byIcon(Icons.menu),
+  );
+
+  // Tap the leading menu icon button to open the popup menu
+  await tester.tap(audioListTileLeadingMenuIconButton);
+  await tester.pumpAndSettle();
+
+  // Now find the "Define that the Audio is playable every n
+  // Days ..." popup menu item and tap on it
+  final Finder popupModifyAudioTitleMenuItem =
+      find.byKey(const Key("popup_menu_define_playable_every_n_days"));
+
+  await tester.tap(popupModifyAudioTitleMenuItem);
+  await tester.pumpAndSettle();
+
+  expect(find.textContaining("Last played date: $extractedAudioPausedDate."),
+      findsOneWidget);
+
+  // Now tap on the Cancel button
+  final Finder audioModificationCancelButtonFinder =
+      find.byKey(const Key('audioModificationCancelButton'));
+
+  await tester.tap(audioModificationCancelButtonFinder);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _verifyAudioInfoDialogDateFormat({
+  required WidgetTester tester,
+  required String audioTitle,
+  String videoUploadDate = '',
+  String audioDownloadDateTime = '',
+  String audioPausedDateTime = '', // Last listened date/time
+  String importedAudioDateTime = '',
+  String convertedAudioDateTime = '',
+  String extractedAudioDateTime = '',
+}) async {
+  // First, find the Audio sublist ListTile Text widget
+  Finder targetAudioListTileTextWidgetFinder = find.text(audioTitle);
+
+  // Then obtain the Audio ListTile widget enclosing the Text widget by
+  // finding its ancestor
+  Finder targetAudioListTileWidgetFinder = find.ancestor(
+    of: targetAudioListTileTextWidgetFinder,
+    matching: find.byType(ListTile),
+  );
+
+  // Now find the leading menu icon button of the Audio ListTile and tap
+  // on it
+  Finder targetAudioListTileLeadingMenuIconButton = find.descendant(
+    of: targetAudioListTileWidgetFinder,
+    matching: find.byIcon(Icons.menu),
+  );
+
+  // Tap the leading menu icon button to open the popup menu
+  await tester.tap(targetAudioListTileLeadingMenuIconButton);
+  await tester.pumpAndSettle();
+
+  // Now find the popup menu item and tap on it
+  final Finder popupDisplayAudioInfoMenuItemFinder =
+      find.byKey(const Key("popup_menu_display_audio_info"));
+
+  await tester.tap(popupDisplayAudioInfoMenuItemFinder);
+  await tester.pumpAndSettle();
+
+  // Now verifying the display audio info audio copied dialog
+  // elements
+
+  // Verify the video upload date of the audio if not empty
+
+  if (videoUploadDate.isNotEmpty) {
+    final Text videoUploadDateTextWidget =
+        tester.widget<Text>(find.byKey(const Key('videoUploadDateKey')));
+
+    expect(
+      videoUploadDateTextWidget.data,
+      videoUploadDate,
+    );
+  }
+
+  // Verify the audio download date time of the audio if not empty
+
+  if (audioDownloadDateTime.isNotEmpty) {
+    final Text audioDownloadDateTimeTextWidget =
+        tester.widget<Text>(find.byKey(const Key('audioDownloadDateTimeKey')));
+
+    expect(
+      audioDownloadDateTimeTextWidget.data,
+      audioDownloadDateTime,
+    );
+  }
+
+  // Verify the audio paused date time of the audio if not empty
+
+  if (audioPausedDateTime.isNotEmpty) {
+    final Text audioPausedDateTimeTextWidget =
+        tester.widget<Text>(find.byKey(const Key('lastListenDateTimeKey')));
+
+    expect(
+      audioPausedDateTimeTextWidget.data,
+      audioPausedDateTime,
+    );
+  }
+
+  // Now find the close button of the audio info dialog
+  // and tap on it
+  await tester.tap(find.byKey(const Key('audio_info_close_button_key')));
+  await tester.pumpAndSettle();
+}
+
+Future<void> _selectApplyAndVerifySortFilterParms({
+  required WidgetTester tester,
+  required String sortFilterParms,
+  required List<String> audioSubTitles,
+}) async {
+  final Finder dropDownButtonFinder =
+      find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+  final Finder dropDownButtonTextFinder = find.descendant(
+    of: dropDownButtonFinder,
+    matching: find.byType(Text),
+  );
+
+  // Tap on the current dropdown button item to open the dropdown
+  // button items list
+  await tester.tap(dropDownButtonTextFinder);
+  await tester.pumpAndSettle();
+
+  // And select the sortFilterParms sort/filter item
+  final Finder titleAscDropDownTextFinder = find.text(sortFilterParms);
+  await tester.tap(titleAscDropDownTextFinder);
+  await tester.pumpAndSettle();
+
+  // Verify the audio sub-titles order in the list tile which correspond
+  // to the sortFilterParms sort order selected parms
+  IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
+    tester: tester,
+    audioSubTitlesAcceptableLst: audioSubTitles,
+  );
+}
+
+Future<void> _selectDateFormat({
+  required WidgetTester tester,
+  required String dateFormatToSelect,
+  required String previouslySelectedDateFormat,
+}) async {
+  await tester.tap(find.byKey(const Key('appBarRightPopupMenu')));
+  await tester.pumpAndSettle();
+
+  // Open the date format selection dialog
+  await tester.tap(find.byKey(const Key('appBarMenuDateFormat')));
+  await tester.pumpAndSettle();
+
+  // Check the value of the date format selection dialog title
+  Text alertDialogTitle =
+      tester.widget(find.byKey(const Key('dateFormatSelectionDialogTitleKey')));
+  expect(alertDialogTitle.data, 'Select the Application Date Format');
+
+  // Find the RadioListTile date format to select
+
+  Finder radioListTile = find.ancestor(
+    of: find.textContaining(dateFormatToSelect),
+    matching: find.byType(ListTile),
+  );
+  // Tap the target dateformat RadioListTile to select it
+  await tester.tap(radioListTile);
+  await tester.pumpAndSettle();
+
+  await _verifyApplicationSettingsDateFormatValue(
+    dateFormatValue: previouslySelectedDateFormat,
+  );
+
+  // Now find the confirm button and tap on it
+  await tester.tap(find.byKey(const Key('confirmButton')));
+  await tester.pumpAndSettle();
+
+  await _verifyApplicationSettingsDateFormatValue(
+    dateFormatValue: dateFormatToSelect,
+  );
+}
+
+Future<void> _verifyApplicationSettingsDateFormatValue({
+  required String dateFormatValue,
+}) async {
+  SettingsDataService settingsDataService = SettingsDataService();
+
+  await settingsDataService.loadSettingsFromFile(
+      settingsJsonPathFileName:
+          "$kApplicationPathWindowsTest${Platform.pathSeparator}$kSettingsFileName");
+
+  expect(
+      settingsDataService.get(
+          settingType: SettingType.formatOfDate,
+          settingSubType: FormatOfDate.formatOfDate),
+      dateFormatValue);
+}
+
+Future<void> _testMovingOrCopyingFilteredAudio({
+  required WidgetTester tester,
+  required String sourcePlaylistTitle,
+  required String targetPlaylistTitle,
+  required String sortFilterParmName,
+  required bool isMove, // true: move, false: copy
+  required int movedOrCopiedAudioNumber,
+  required int commentedAudioNumber,
+  required int unmovedOrUncopiedAudioNumber,
+}) async {
+  // Now test moving the filtered audio
+
+  String playlistSubMenuKeyStr;
+
+  if (isMove) {
+    playlistSubMenuKeyStr = 'popup_menu_move_filtered_audio';
+  } else {
+    playlistSubMenuKeyStr = 'popup_menu_copy_filtered_audio';
+  }
+
+  // Open the move or copy filtered audio dialog by clicking first on
+  // the 'Filtered Audio Actions ...' playlist menu item and then
+  // on the 'Move/Copy Filtered Audio to Playlist ...' sub-menu item
+  await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+    tester: tester,
+    playlistTitle: sourcePlaylistTitle,
+    playlistSubMenuKeyStr: playlistSubMenuKeyStr,
+  );
+
+  // Select the target 'temp' playlist
+
+  // Check the value of the select one playlist AlertDialog
+  // dialog title
+  Text alertDialogTitle = tester
+      .widget(find.byKey(const Key('playlistOneSelectableDialogTitleKey')));
+  expect(alertDialogTitle.data, 'Select a Playlist');
+
+  // Find the RadioListTile target playlist to which the audio
+  // will be moved or copied
+
+  Finder radioListTile = find
+      .ancestor(
+        of: find.text(targetPlaylistTitle),
+        matching: find.byType(ListTile),
+      )
+      .last;
+
+  // Tap the target playlist RadioListTile to select it
+  await tester.tap(radioListTile);
+  await tester.pumpAndSettle();
+
+  // Now find the confirm button and tap on it
+  await tester.tap(find.byKey(const Key('confirmButton')));
+  await tester.pumpAndSettle();
+
+  // Verifying the confirm warning title
+
+  Text moveFilteredAudioConfirmWarningTitleWidget =
+      tester.widget<Text>(find.byKey(const Key('warningDialogTitle')));
+
+  expect(moveFilteredAudioConfirmWarningTitleWidget.data, 'CONFIRMATION');
+
+  // Verifying the confirm warning message
+
+  Text moveFilteredAudioConfirmWarningMessageWidget =
+      tester.widget<Text>(find.byKey(const Key('warningDialogMessage')));
+
+  if (isMove) {
+    expect(moveFilteredAudioConfirmWarningMessageWidget.data,
+        'Applying Sort/Filter parms "$sortFilterParmName", from Youtube playlist "$sourcePlaylistTitle" to local playlist "$targetPlaylistTitle", $movedOrCopiedAudioNumber audio(s) were moved from which $commentedAudioNumber were commented, and $unmovedOrUncopiedAudioNumber audio(s) were unmoved.');
+  } else {
+    // copying
+    expect(moveFilteredAudioConfirmWarningMessageWidget.data,
+        'Applying Sort/Filter parms "$sortFilterParmName", from Youtube playlist "$sourcePlaylistTitle" to local playlist "$targetPlaylistTitle", $movedOrCopiedAudioNumber audio(s) were copied from which $commentedAudioNumber were commented, and $unmovedOrUncopiedAudioNumber audio(s) were not copied.');
+  }
+
+  // Now find the ok button of the confirm dialog and tap on it
+  await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+  await tester.pumpAndSettle();
+}
+
+Playlist loadPlaylist(String playListOneName) {
+  return JsonDataService.loadFromFile(
+      jsonPathFileName:
+          "$kApplicationPathWindowsTest${path.separator}$playListOneName${path.separator}$playListOneName.json",
+      type: Playlist);
+}
+
+void _verifyFrenchInPlaylistDownloadView() {
+  expect(find.text('Téléch. Audio'), findsOneWidget);
+  expect(find.text('Lien Youtube ou recherche'), findsOneWidget);
+  expect(find.text('défaut'), findsOneWidget);
+  expect(find.text('Ajout'), findsOneWidget);
+  expect(find.text('Un'), findsOneWidget);
+}
+
+Future<void> _verifyDatePickerTitleTranslation({
+  required WidgetTester tester,
+  required String datePickerCancelButtonTranslatedStr,
+}) async {
+  await _openSortFilterThenDatePickerDialog(tester);
+
+  // Now close the DatePicker dialog by tapping on the cancel button
+  await tester.tap(find.text(datePickerCancelButtonTranslatedStr).last);
+  await tester.pumpAndSettle();
+
+  // Now close the audio sort filter dialog by tapping on its cancel
+  // button
+  await tester.tap(find.byKey(const Key('cancelSortFilterButton')));
+  await tester.pumpAndSettle();
+}
+
+void _verifyEnglishInPlaylistDownloadView() {
+  expect(find.text('Download Audio'), findsOneWidget);
+  expect(find.text('Youtube Link or Search'), findsOneWidget);
+  expect(find.text('default'), findsOneWidget);
+  expect(find.text('Add'), findsOneWidget);
+  expect(find.text('One'), findsOneWidget);
+}
+
+Map _loadSettingsMap() {
+  final String settingsJsonStr =
+      File("$kApplicationPathWindowsTest${path.separator}$kSettingsFileName")
+          .readAsStringSync();
+
+  Map settingsMap = jsonDecode(settingsJsonStr);
+
+  return settingsMap;
+}
+Future<void> verifyCommentAndReturnToPlaylistDownloadView({
+  required WidgetTester tester,
+  required String expectedCommentTitle,
+}) async {
+  // Tap on the selected playlist unique audio title to open the
+  // audio player view
+
+  final Finder alreadyCommentedAudioFinder =
+      find.text('audio learn test short video one');
+  await tester.tap(alreadyCommentedAudioFinder);
+  await tester.pumpAndSettle(const Duration(milliseconds: 200));
+
+  // Tap on the comment icon button to open the comment add list
+  // dialog
+  final Finder commentInkWellButtonFinder = find.byKey(
+    const Key('commentsInkWellButton'),
+  );
+
+  await tester.tap(commentInkWellButtonFinder);
+  await tester.pumpAndSettle();
+
+  // Verify that the comment list dialog now displays the
+  // correct comment
+
+  // Find the list body containing the comments
+  final Finder commentListDialogFinder =
+      find.byKey(const Key('audioCommentsListKey'));
+
+  List<String> expectedTitles = [
+    expectedCommentTitle,
+  ];
+
+  final Finder commentTitlesFinder = find.descendant(
+    of: commentListDialogFinder,
+    matching: find.byKey(const Key('commentTitleKey')),
+  );
+
+  final Finder specificCommentTitleFinder = commentTitlesFinder.at(0);
+
+  expect(
+    tester.widget<Text>(specificCommentTitleFinder).data,
+    expectedTitles[0],
+  );
+
+  // Now close the comment list dialog
+  await tester.tap(find.byKey(const Key('closeDialogTextButton')));
+  await tester.pumpAndSettle();
+
+  // And return to playlist download view
+  final Finder playlistDownloadViewNavigationButton =
+      find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+  await tester.tap(playlistDownloadViewNavigationButton);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _restoreMultipleOrSinglePlaylistMp3({
+  required WidgetTester tester,
+  required MockFilePicker mockFilePicker,
+  required String restorableMp3ZipName,
+  required String restorableMp3ZipDirectory,
+  required int restorableMp3ZipSize,
+  required String restoredFromPartMessage,
+  String restoreUniquePlaylistTitle = '',
+}) async {
+  String restorableMp3ZipFilePathName =
+      '$restorableMp3ZipDirectory${path.separator}$restorableMp3ZipName';
+
+  // Setting the mp3 zip file to select in the mock file
+  // picker. This zip contains multiple playlists MP3 files
+  mockFilePicker.setSelectedFiles([
+    PlatformFile(
+        name: restorableMp3ZipName,
+        path: restorableMp3ZipFilePathName,
+        size: restorableMp3ZipSize),
+  ]);
+
+  if (restoreUniquePlaylistTitle.isEmpty) {
+    await IntegrationTestUtil.typeOnAppbarMenuItem(
+      tester: tester,
+      appbarMenuKeyStr: 'appBarMenuRestorePlaylistsAudioMp3FilesFromZip',
+    );
+  } else {
+    await IntegrationTestUtil.typeOnPlaylistMenuItem(
+      tester: tester,
+      playlistTitle: restoreUniquePlaylistTitle,
+      playlistMenuKeyStr:
+          'popup_menu_restore_playlist_audio_mp3_files_from_zip',
+      dragToBottom: true,
+    );
+  }
+
+  // Tap on the Ok button to close the MP3 Restoration dialog
+  await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+  await tester.pumpAndSettle();
+
+  // Now tap on the 'A single ZIP File' button
+  await tester.tap(find.byKey(const Key('selectFileButton')));
+  await tester.pumpAndSettle();
+
+  // Verify the displayed warning confirmation dialog
+  await IntegrationTestUtil.verifyAndCloseWarningDialog(
+    tester: tester,
+    warningDialogMessage:
+        '$restoredFromPartMessage the MP3 zip file "$restorableMp3ZipFilePathName".',
+    isWarningConfirming: true,
+  );
+}
+
+Future<void> _restoreMultipleOrIndividualPlaylist({
+  required WidgetTester tester,
+  required MockFilePicker mockFilePicker,
+  required String savedMultipleOrUniquePlaylistZipName,
+  required String savedZipFilePath,
+  required String saveFromPartMessage,
+  required String saveSincePartMessage,
+  required int savedZipSize,
+  required List<String> playlistTitlesOrderedLst,
+  required List<String> audioTitlesOrderedLst,
+}) async {
+  mockFilePicker.setSelectedFiles([
+    PlatformFile(
+        name: savedMultipleOrUniquePlaylistZipName,
+        path:
+            '$savedZipFilePath${path.separator}$savedMultipleOrUniquePlaylistZipName',
+        size: savedZipSize),
+  ]);
+
+  // Execute the 'Restore Playlists, Comments and Settings from Zip
+  // File ...' menu without replacing the existing playlists and
+  // without deleting playlist not contained in zip.
+  await IntegrationTestUtil.executeRestorePlaylists(
+    tester: tester,
+    doReplaceExistingPlaylists: false,
+    doDeleteExistingPlaylistsNotContainedInZip: false,
+    closeRestoreConfirmDialog: false,
+  );
+
+  await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+  // Verify the displayed warning confirmation dialog
+  await IntegrationTestUtil.verifyAndCloseWarningDialog(
+    tester: tester,
+    warningDialogMessage:
+        '$saveFromPartMessage "$savedZipFilePath\\$savedMultipleOrUniquePlaylistZipName".$saveSincePartMessage',
+    isWarningConfirming: true,
+    warningTitle: 'CONFIRMATION',
+  );
+
+  // Verifying the existing and the restored playlists
+  // list as well as the selected playlist displayed
+  // audio titles.
+  IntegrationTestUtil.checkPlaylistAndAudioTitlesOrderInListTile(
+    tester: tester,
+    playlistTitlesOrderedLst: playlistTitlesOrderedLst,
+    audioTitlesOrderedLst: audioTitlesOrderedLst,
+  );
+}
+
+/// This method tests the saving of playlists and their mp3 files in zip files and
+/// the verification of the zip file content.
+///
+/// [
+///   savedMultiplePlaylistsZipName, is the name of the zip file which contains the
+///                                  saved playlists and their comments and pictures
+///                                  json files
+///   savedMp3ZipName,               is the name of the zip file which contains the
+///                                  saved mp3 files of the saved playlists
+/// ] is returned by this method.
+Future<List<String>> _saveAllPlaylistsAndTheirMp3({
+  required WidgetTester tester,
+  required String saveZipFilePath,
+  required String savedPicturesMessage,
+  required List<String> expectedPlaylistsZipContentLst,
+  required String oldestAudioDownloadDateTimeStr,
+  required String totalSavedMessage,
+  required String savedMp3DirectoryPath,
+  required String mp3ZipNameFirstPart,
+  required List<String> expectedMp3ZipContentLst,
+}) async {
+  // Tap the appbar leading popup menu button Then, the 'Save
+  // Playlists and Comments to zip File' menu is selected.
+  await IntegrationTestUtil.typeOnAppbarMenuItem(
+    tester: tester,
+    appbarMenuKeyStr: 'appBarMenuSavePlaylistsAndCommentsToZip',
+  );
+
+  // Check the "Add all JPG pictures to ZIP" checkbox
+  await tester.tap(find.byKey(const Key('checkbox_0_key')));
+  await tester.pumpAndSettle();
+
+  // Close the dialog with the OK button
+  await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+  await tester.pumpAndSettle();
+
+  String actualMessage = tester
+      .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+      .data!;
+
+  expect(
+    actualMessage,
+    contains(
+      "Saved playlist, comment and picture JSON files as well as application settings to \"$saveZipFilePath${path.separator}audioLearn_",
+    ),
+  );
+
+  expect(
+    actualMessage,
+    contains(
+      savedPicturesMessage,
+    ),
+  );
+
+  List<String> zipLst = DirUtil.listFileNamesInDir(
+    directoryPath: saveZipFilePath,
+    fileExtension: 'zip',
+  );
+
+  final String savedMultiplePlaylistsZipName = zipLst[0];
+  List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+    zipFilePathName:
+        "$saveZipFilePath${path.separator}$savedMultiplePlaylistsZipName",
+  );
+
+  expect(
+    zipContentLst,
+    expectedPlaylistsZipContentLst,
+  );
+
+  // Tap on the Ok button to close the warning confirmation dialog
+  await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+  await tester.pumpAndSettle();
+
+  // Save the mp3 of the playlists contained in the app test dir
+
+  // Tap the appbar leading popup menu button Then, the 'Save
+  // Playlists Audio's MP3 to ZIP File' menu is selected.
+  await IntegrationTestUtil.typeOnAppbarMenuItem(
+    tester: tester,
+    appbarMenuKeyStr: 'appBarMenuSavePlaylistsAudioMp3FilesToZip',
+  );
+
+  // Tap on the Ok button to accept the download date time.
+  await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+  await tester.pumpAndSettle();
+
+  // Tap on the confirm button of the confirm action dialog
+  await tester.tap(find.byKey(const Key('confirmButton')));
+  await tester.pumpAndSettle();
+
+  actualMessage = tester
+      .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+      .data!;
+
+  expect(
+      actualMessage,
+      contains(
+          "Saved to ZIP all playlists audio MP3 files downloaded from $oldestAudioDownloadDateTimeStr.\n\n$totalSavedMessage"));
+
+  expect(
+      actualMessage,
+      contains(
+          "ZIP file path name: \"$savedMp3DirectoryPath${path.separator}$mp3ZipNameFirstPart"));
+
+  zipLst = DirUtil.listFileNamesInDir(
+    directoryPath: savedMp3DirectoryPath,
+    fileExtension: 'zip',
+  );
+
+  final String savedMp3ZipName = zipLst.firstWhere(
+    (zipName) {
+      return zipName.contains(mp3ZipNameFirstPart);
+    },
+  );
+
+  zipContentLst = await DirUtil.listPathFileNamesInZip(
+    zipFilePathName:
+        "$saveZipFilePath${path.separator}MP3${path.separator}${zipLst[0]}",
+  );
+
+  expect(
+    zipContentLst,
+    expectedMp3ZipContentLst,
+  );
+
+  // Tap on the Ok button to close the warning confirmation dialog
+  await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+  await tester.pumpAndSettle();
+
+  return [
+    savedMultiplePlaylistsZipName,
+    savedMp3ZipName,
+  ];
+}
+
+Future<String> _saveUniquePlaylistAndItsMp3({
+  required WidgetTester tester,
+  required String playlistToSaveTitle,
+  required String saveZipFilePath,
+  required String savedPicturesMessage,
+  required List<String> expectedPlaylistZipContentLst,
+  required String oldestAudioDownloadDateTimeStr,
+  required String savedAudioMessage,
+  required String savedMp3DirectoryPath,
+  required String mp3ZipNameFirstPart,
+  bool dragToBottom = false,
+}) async {
+  await IntegrationTestUtil.typeOnPlaylistMenuItem(
+    tester: tester,
+    playlistTitle: playlistToSaveTitle,
+    playlistMenuKeyStr: 'popup_menu_save_playlist_comments_pictures_to_zip',
+  );
+
+  // Verify the displayed warning dialog
+  await IntegrationTestUtil.verifyAndCloseWarningDialog(
+    tester: tester,
+    warningDialogMessage: (savedPicturesMessage.isEmpty)
+        ? "Saved playlist, comment and picture JSON files to \"$saveZipFilePath${path.separator}$playlistToSaveTitle.zip\"."
+        : "Saved playlist, comment and picture JSON files to \"$saveZipFilePath${path.separator}$playlistToSaveTitle.zip\".\n\n$savedPicturesMessage",
+    isWarningConfirming: true,
+  );
+
+  // Verify that the zip file has been created
+
+  List<String> zipLst = DirUtil.listFileNamesInDir(
+    directoryPath: saveZipFilePath,
+    fileExtension: 'zip',
+  );
+
+  expect(
+    zipLst.contains('$playlistToSaveTitle.zip'),
+    true,
+  );
+
+  // Verify the content of the created ZIP file
+
+  String zipFilePathName =
+      path.join(saveZipFilePath, '$playlistToSaveTitle.zip');
+
+  List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+    zipFilePathName: zipFilePathName,
+  );
+
+  // Verify ZIP content
+  expect(
+    zipContentLst,
+    expectedPlaylistZipContentLst,
+  );
+
+  // Save the mp3 of the unique playlist contained in the app test dir
+
+  await IntegrationTestUtil.typeOnPlaylistMenuItem(
+    tester: tester,
+    playlistTitle: playlistToSaveTitle,
+    playlistMenuKeyStr: 'popup_menu_save_playlist_audio_mp3_files_to_zip',
+    dragToBottom: dragToBottom,
+  );
+
+  // Tap on the Ok button to accept the download date time.
+  await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+  await tester.pumpAndSettle();
+
+  // Tap on the confirm button of the confirm action dialog
+  await tester.tap(find.byKey(const Key('confirmButton')));
+  await tester.pumpAndSettle();
+
+  String actualMessage = tester
+      .widget<Text>(find.byKey(const Key('warningDialogMessage')).last)
+      .data!;
+
+  expect(
+      actualMessage,
+      contains(
+          "Saved to ZIP file(s) unique playlist audio MP3 files downloaded from $oldestAudioDownloadDateTimeStr.\n\n$savedAudioMessage."));
+  expect(actualMessage, contains("number of created ZIP file(s): 1."));
+  expect(
+      actualMessage,
+      contains(
+          "ZIP file path name: \"$savedMp3DirectoryPath${path.separator}$mp3ZipNameFirstPart"));
+
+  // Tap on the Ok button to close the warning confirmation dialog
+  await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+  await tester.pumpAndSettle();
+
+  zipLst = DirUtil.listFileNamesInDir(
+    directoryPath: savedMp3DirectoryPath,
+    fileExtension: 'zip',
+  );
+
+  return zipLst.firstWhere(
+    (zipName) {
+      return zipName.contains(mp3ZipNameFirstPart);
+    },
+  );
+}
+
+Future<void> _correctPlaySpeedEnterCode({
+  required WidgetTester tester,
+  required String playSpeedValue,
+}) async {
+  // Modify the play speed to 0.7
+  Finder commentPlaySpeedTextFieldFinder =
+      find.byKey(const Key('playSpeedTextField'));
+  await tester.tap(commentPlaySpeedTextFieldFinder);
+  await tester.pumpAndSettle();
+
+  // Clear the existing text first
+  await tester.enterText(commentPlaySpeedTextFieldFinder, '');
+  await tester.pumpAndSettle();
+
+  // Then enter the new value
+  await tester.enterText(
+    commentPlaySpeedTextFieldFinder,
+    playSpeedValue,
+  );
+  await tester.pumpAndSettle();
+}
+
+Future<void> _verifyExistenceOfErrorMessage({
+  required WidgetTester tester,
+  required String positionTextFieldKey,
+  required String enteredValue,
+  String expectedErrorMessage = '',
+  bool doNotTapOnSaveButton = false,
+}) async {
+  Finder textFieldFinder = find.byKey(Key(positionTextFieldKey));
+  await tester.tap(textFieldFinder);
+  await tester.enterText(textFieldFinder, enteredValue);
+  await tester.pumpAndSettle();
+
+  if (doNotTapOnSaveButton) {
+    return;
+  }
+
+  // Confirm the comment edition by tapping the save button
+  Finder saveEditedCommentButtonFinder =
+      find.byKey(const Key('saveEditedSegmentButton'));
+  await tester.tap(saveEditedCommentButtonFinder);
+  await tester.pumpAndSettle();
+
+  if (expectedErrorMessage.isEmpty) {
+    // Verify the absence of the invalid comment error message
+    expect(
+      find.byKey(const Key('segmentErrorDialogMessageKey')),
+      findsNothing,
+    );
+    return;
+  }
+
+  // Verify the presence of the invalid comment error message
+  Finder segmentErrorDialogTextFinder =
+      find.byKey(const Key('segmentErrorDialogMessageKey'));
+  expect(
+    tester.widget<Text>(segmentErrorDialogTextFinder).data,
+    expectedErrorMessage,
+  );
+
+  // Tap the Ok button to close the invalid comment error
+  Finder segmentErrorDialogOkButtonFinder =
+      find.byKey(const Key('segmentErrorDialogOkButtonKey'));
+  await tester.tap(segmentErrorDialogOkButtonFinder);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _changePlaylistRootPathAndSaveAppSettings({
+  required WidgetTester tester,
+  required MockFilePicker mockFilePicker,
+  required String pathToSelectStr,
+  required List<String> playlistTitlesOrderInModifiedDir,
+  required String expectedSettingsContent,
+  required String selectedPlaylistTitle,
+  String confirmDialogTitleOne = '',
+  String confirmDialogMessage = '',
+  bool confirmOrCancelAction = true, // true: confirm, false: cancel
+}) async {
+  // Tap the appbar leading popup menu button Then, the
+  // app settings dialog is opened ...
+  await _changeAndSavePlaylistRootPath(
+    tester: tester,
+    mockFilePicker: mockFilePicker,
+    pathToSelectStr: pathToSelectStr,
+  );
+
+  if (confirmDialogTitleOne.isNotEmpty) {
+    // Verify the ConfirmActionDialog which asks to the user if he wants
+    // to restore the saved playlist titles order or keep the current
+    // order
+    await IntegrationTestUtil.verifyAndCloseConfirmActionDialog(
+      tester: tester,
+      confirmDialogTitleOne: confirmDialogTitleOne,
+      confirmDialogMessage: confirmDialogMessage,
+      confirmOrCancelAction: confirmOrCancelAction, // Confirm button is tapped
+    );
+  }
+
+  // Verify the modified directory playlist titles
+
+  IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+    tester: tester,
+    audioOrPlaylistTitlesOrderedLst: playlistTitlesOrderInModifiedDir,
+  );
+
+  // Verify the selected playlist
+  IntegrationTestUtil.verifyPlaylistSelection(
+    tester: tester,
+    playlistTitle: selectedPlaylistTitle,
+    modifiedPlaylistRootPath: pathToSelectStr,
+  );
+
+  // Ensure settings json file has been modified
+  expect(
+    File("$kApplicationPathWindowsTest${path.separator}$kSettingsFileName")
+        .readAsStringSync(),
+    expectedSettingsContent,
+  );
+}
+
+Future<void> _changeAndSavePlaylistRootPath({
+  required WidgetTester tester,
+  required MockFilePicker mockFilePicker,
+  required String pathToSelectStr,
+}) async {
+  // Tap the appbar leading popup menu button Then, the
+  // app settings dialog is opened.
+  await IntegrationTestUtil.typeOnAppbarMenuItem(
+    tester: tester,
+    appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+  );
+
+  // Select the modified dir path. Tapping on the select directory
+  // icon button does not open the directory picker dialog. Instead,
+  // the FilePicker mock is used to simulate the selection of the
+  // directory.
+
+  // Setting the path value returned by the FilePicker mock.
+  mockFilePicker.setPathToSelect(
+    pathToSelectStr: pathToSelectStr,
+  );
+
+  await tester.tap(find.byKey(const Key('openDirectoryIconButton')));
+  await tester.pumpAndSettle();
+
+  // Find the Text using the Key
+  final Finder textFinder = find.byKey(const Key('playlistsRootPathText'));
+
+  // Retrieve the Text widget
+  String text = tester.widget<Text>(textFinder).data ?? '';
+
+  // Verify the selected directory path
+  expect(
+    text,
+    pathToSelectStr,
+  );
+
+  // And tap on save button
+  await tester.tap(find.byKey(const Key('saveButton')));
+  await tester.pumpAndSettle(const Duration(milliseconds: 2000));
+}
+
+Future<void> _openSortFilterThenDatePickerDialog(WidgetTester tester) async {
+  // Open the audio popup menu
+  await tester.tap(find.byKey(const Key('audio_popup_menu_button')));
+  await tester.pumpAndSettle();
+
+  // Find the sort/filter audio menu item and tap on it to
+  // open the audio sort filter dialog
+  await tester
+      .tap(find.byKey(const Key('define_sort_and_filter_audio_menu_item')));
+  await tester.pumpAndSettle();
+
+  // Now open the DatePicker dialog, but first scroll down the dialog so that
+  // the date text fields are visible.
+
+  await tester.drag(
+    find.byType(AudioSortFilterDialog),
+    const Offset(0, -300), // Negative value for vertical drag to scroll down
+  );
+  await tester.pumpAndSettle();
+
+  // Find the DatePicker dialog icon button and tap on it to
+  // open the dialog
+  await tester.tap(find.byKey(const Key('startDownloadDateIconButton')));
+  await tester.pumpAndSettle();
+}
+
+Future<String> _createNewLocalPlaylist({
+  required WidgetTester tester,
+  required String newPlaylistTitle,
+}) async {
+  // Open the add playlist dialog by tapping the add playlist
+  // button
+  await tester.tap(find.byKey(const Key('addPlaylistButton')));
+  await tester.pumpAndSettle();
+
+  // Enter the title of the local playlist
+  await tester.enterText(
+    find.byKey(const Key('playlistLocalTitleConfirmDialogTextField')),
+    newPlaylistTitle,
+  );
+
+  // Confirm the addition by tapping the confirmation button in
+  // the AlertDialog
+  await tester.tap(find.byKey(const Key('addPlaylistConfirmDialogAddButton')));
+  await tester.pumpAndSettle();
+
+  // Close the warning dialog
+  await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
+  await tester.pumpAndSettle();
+  return newPlaylistTitle;
+}
+
+Future<void> _verifyCreatedZipFilesContent({
+  required List<String> zipLst,
+  required List<List<String>> expectedZipContentLst,
+}) async {
+  for (int i = 0; i < zipLst.length; i++) {
+    List<String> zipContentLst = await DirUtil.listPathFileNamesInZip(
+      zipFilePathName:
+          "$kApplicationPathWindowsTest${path.separator}$kSavedPlaylistsDirName${path.separator}MP3${path.separator}${zipLst[i]}",
+    );
+
+    expect(
+      zipContentLst,
+      expectedZipContentLst[i],
+    );
+  }
+}
+
+/// Returns the added [pictureFilePathName]
+Future<String> _addPictureToAudioExecutingAudioListItemMenu({
+  required WidgetTester tester,
+  required MockFilePicker mockFilePicker,
+  required String pictureFileName,
+  required String pictureSourcePath,
+  required int pictureFileSize,
+  required String audioForPictureTitle,
+}) async {
+  String pictureFilePathName =
+      "$pictureSourcePath${path.separator}$pictureFileName";
+
+  mockFilePicker.setSelectedFiles([
+    PlatformFile(
+        name: pictureFileName,
+        path: pictureFilePathName,
+        size: pictureFileSize),
+  ]);
+
+  // Now we want to tap the popup menu of the Audio ListTile
+
+  // First, find the Audio sublist ListTile Text widget
+  await IntegrationTestUtil.typeOnAudioMenuItem(
+    tester: tester,
+    audioTitle: audioForPictureTitle,
+    audioMenuKeyStr: 'popup_menu_add_audio_picture',
+  );
+
+  return pictureFilePathName;
+}
+
+Future<void> _removeAudioPictureExecutingAudioListItemMenu({
+  required WidgetTester tester,
+  required String picturedAudioTitle,
+}) async {
+  // Tapping the popup menu of the Audio ListTile
+
+  // First, find the Audio sublist ListTile Text widget
+  Finder audioForPictureTitleTextWidgetFinder = find.text(picturedAudioTitle);
+
+  // Then obtain the Audio ListTile widget enclosing the Text widget by
+  // finding its ancestor
+  Finder audioForPictureListTileWidgetFinder = find.ancestor(
+    of: audioForPictureTitleTextWidgetFinder,
+    matching: find.byType(ListTile),
+  );
+
+  // Now find the leading menu icon button of the Audio ListTile and tap
+  // on it
+  Finder audioForPictureListTileLeadingMenuIconButton = find.descendant(
+    of: audioForPictureListTileWidgetFinder,
+    matching: find.byIcon(Icons.menu),
+  );
+
+  // Tap the leading menu icon button to open the popup menu
+  await tester.tap(audioForPictureListTileLeadingMenuIconButton);
+  await tester.pumpAndSettle();
+
+  // Find the Remove Audio Picture popup menu item and tap on it
+  Finder addPictureMenuItem =
+      find.byKey(const Key("popup_menu_remove_audio_picture"));
+
+  await tester.tap(addPictureMenuItem);
+  await tester.pumpAndSettle(const Duration(microseconds: 200));
+}
+
+Future<void> _createAndSavePlayableSortFilterParms({
+  required WidgetTester tester,
+  required String saveAsTitle,
+}) async {
+  // Now open the audio popup menu
+  await tester.tap(find.byKey(const Key('audio_popup_menu_button')));
+  await tester.pumpAndSettle();
+
+  // Find the sort/filter audio menu item and tap on it to
+  // open the audio sort filter dialog
+  await tester
+      .tap(find.byKey(const Key('define_sort_and_filter_audio_menu_item')));
+  await tester.pumpAndSettle();
+
+  // Type "Playable" in the 'Save as' TextField
+
+  await tester.enterText(
+      find.byKey(const Key('sortFilterSaveAsUniqueNameTextField')),
+      saveAsTitle);
+  await tester.pumpAndSettle();
+
+  // Scrolling down the sort filter dialog so that the checkboxes
+  // are visible and so accessible by the integration test.
+  // WARNING: Scrolling down must be done before setting sort
+  // options, otherwise, it does not work.
+  await tester.drag(
+    find.byType(AudioSortFilterDialog),
+    const Offset(0, -300), // Negative value for vertical drag to scroll down
+  );
+  await tester.pumpAndSettle();
+
+  // Tap on the 'Not playable' checkbox to unselect it
+  await tester.tap(find.byKey(const Key('filterNotPlayableCheckbox')));
+  await tester.pumpAndSettle();
+
+  // Click on the "Save" button.
+  await tester.tap(find.byKey(const Key('saveSortFilterOptionsTextButton')));
+  await tester.pumpAndSettle();
+}
+
+Future<void> _verifyPlaylistAudioQuality({
+  required WidgetTester tester,
+  required String playlistTitle,
+  required bool isPlaylistLocal,
+  required PlaylistQuality playlistQuality,
+}) async {
+  if (isPlaylistLocal) {
+    IntegrationTestUtil.verifyWidgetIsDisabled(
+      tester: tester,
+      widgetKeyStr: 'audio_quality_checkbox',
+    );
+  } else {
+    IntegrationTestUtil.verifyWidgetIsEnabled(
+      tester: tester,
+      widgetKeyStr: 'audio_quality_checkbox',
+    );
+  }
+
+  Finder downloadAtMusicalQualityCheckBoxFinder =
+      find.byKey(const Key('audio_quality_checkbox'));
+  Checkbox downloadAtMusicalQualityCheckBoxWidget =
+      tester.widget<Checkbox>(downloadAtMusicalQualityCheckBoxFinder);
+  String playlistAudioQuality;
+
+  if (playlistQuality == PlaylistQuality.music) {
+    // Verify that the download at musical quality checkbox is
+    // checked
+    expect(downloadAtMusicalQualityCheckBoxWidget.value, true);
+    playlistAudioQuality = 'musical';
+  } else {
+    // Verify that the download at musical quality checkbox is
+    // unchecked
+    expect(downloadAtMusicalQualityCheckBoxWidget.value, false);
+    playlistAudioQuality = 'spoken';
+  }
+
+  await IntegrationTestUtil.verifyPlaylistInfoDialogContent(
+    tester: tester,
+    playlistTitle: playlistTitle,
+    playlistDownloadAudioSortFilterParmsName: 'default',
+    playlistPlayAudioSortFilterParmsName: 'default',
+    playlistAudioQuality: playlistAudioQuality,
+  );
+}
+
+Future<void> _tapOnSetAudioQualityMenu({
+  required WidgetTester tester,
+  required String playlistToModifyTitle,
+  required bool setMusicQuality, // true: set music quality,
+  //                                 false: set spoken quality
+}) async {
+  // Tap on the set audio quality playlist popup menu
+  await IntegrationTestUtil.typeOnPlaylistMenuItem(
+    tester: tester,
+    playlistTitle: playlistToModifyTitle,
+    playlistMenuKeyStr: 'popup_menu_set_audio_quality',
+    dragToBottom: true,
+  );
+
+  await IntegrationTestUtil.verifySetValueToTargetDialog(
+    tester: tester,
+    dialogTitle: 'Playlist Audio Quality',
+    dialogMessage: 'Select audio quality',
+  );
+
+  if (setMusicQuality) {
+    // Tap on the 'musical' quality checkbox to select it
+    await tester.tap(find.byKey(const Key('checkbox_1_key')));
+    await tester.pumpAndSettle();
+  } else {
+    // Tap on the 'spoken' quality checkbox to select it
+    await tester.tap(find.byKey(const Key('checkbox_0_key')));
+    await tester.pumpAndSettle();
+  }
+
+  // And click on the 'OK' button to confirm the selection
+  await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+  await tester.pumpAndSettle();
+}
+
+Future<void> _resetUnselectedPlaylistAudioQualityAndThenSelectPlaylist({
+  required WidgetTester tester,
+  required String playlistTitle,
+  required bool isPlaylistLocal,
+  required PlaylistQuality playlistQuality,
+}) async {
+  if (playlistQuality == PlaylistQuality.voice) {
+    // Re-set the unselected MyValTest playlist audio quality
+    // to spoken.
+    await _tapOnSetAudioQualityMenu(
+      tester: tester,
+      playlistToModifyTitle: playlistTitle,
+      setMusicQuality: false,
+    );
+  } else {
+    // Re-set the unselected MyValTest playlist audio quality
+    // to musical.
+    await _tapOnSetAudioQualityMenu(
+      tester: tester,
+      playlistToModifyTitle: playlistTitle,
+      setMusicQuality: true,
+    );
+  }
+
+  // Now selecting the MyValTest playlist by tapping on the
+  // playlist checkbox.
+  await IntegrationTestUtil.selectPlaylist(
+    tester: tester,
+    playlistToSelectTitle: playlistTitle,
+  );
+
+  if (!isPlaylistLocal) {
+    // Verify that the music quality checkbox is enabled
+    IntegrationTestUtil.verifyWidgetIsEnabled(
+      tester: tester,
+      widgetKeyStr: 'audio_quality_checkbox',
+    );
+  } else {
+    // Verify that the music quality checkbox is disabled
+    IntegrationTestUtil.verifyWidgetIsDisabled(
+      tester: tester,
+      widgetKeyStr: 'audio_quality_checkbox',
+    );
+  }
+
+  Finder downloadAtMusicalQualityCheckBoxFinder =
+      find.byKey(const Key('audio_quality_checkbox'));
+  Checkbox downloadAtMusicalQualityCheckBoxWidget =
+      tester.widget<Checkbox>(downloadAtMusicalQualityCheckBoxFinder);
+
+  if (playlistQuality == PlaylistQuality.voice) {
+    expect(downloadAtMusicalQualityCheckBoxWidget.value, false);
+  } else {
+    expect(downloadAtMusicalQualityCheckBoxWidget.value, true);
+  }
+}
+
+Future<void> _tapOnDownloadURLsFromTextFileMenu({
+  required WidgetTester tester,
+  required String playlistToDownloadInTitle,
+  required bool initialSpokenCheckboxState, // true: spoken checkbox is checked,
+  required bool initialMusicCheckboxState, // true: music checkbox is checked,
+  required bool setMusicQuality, // true: set music quality,
+  //                                false: set spoken quality
+  bool uncheckAllCheckboxes = false, // true: uncheck all checkboxes
+}) async {
+  await IntegrationTestUtil.typeOnPlaylistMenuItem(
+    tester: tester,
+    playlistTitle: playlistToDownloadInTitle,
+    playlistMenuKeyStr: 'popup_menu_download_video_urls_in_playlist',
+    dragToBottom: true,
+  );
+
+  // Check the value of the AlertDialog dialog title and check the
+  // value of the AlertDialog dialog text
+  await IntegrationTestUtil.verifySetValueToTargetDialog(
+    tester: tester,
+    dialogTitle:
+        "Download video audio to playlist \"$playlistToDownloadInTitle\"",
+    dialogMessage: "Downloading 2 audios in selected quality.",
+  );
+
+  // Verify the checkbox state
+  final Checkbox checkboxZeroWidget =
+      tester.widget<Checkbox>(find.byKey(const Key('checkbox_0_key')));
+  expect(checkboxZeroWidget.value, initialSpokenCheckboxState);
+
+  final Checkbox checkboxOneWidget =
+      tester.widget<Checkbox>(find.byKey(const Key('checkbox_1_key')));
+  expect(checkboxOneWidget.value, initialMusicCheckboxState);
+
+  if (setMusicQuality) {
+    // Tap on the 'musical' quality checkbox to select it
+    await tester.tap(find.byKey(const Key('checkbox_1_key')));
+    await tester.pumpAndSettle();
+  } else {
+    // Tap on the 'spoken' quality checkbox to select it
+    await tester.tap(find.byKey(const Key('checkbox_0_key')));
+    await tester.pumpAndSettle();
+  }
+
+  if (uncheckAllCheckboxes) {
+    // Uncheck all checkboxes. This will cause tapping on the
+    // 'OK' button to not close the dialog
+    if (!setMusicQuality) {
+      await tester.tap(find.byKey(const Key('checkbox_0_key')));
+    } else {
+      await tester.tap(find.byKey(const Key('checkbox_1_key')));
+    }
+
+    await tester.pumpAndSettle();
+  }
+
+  // And click on the 'OK' button to confirm the selection
+  await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+  await tester.pumpAndSettle();
+}
+
+void _verifyAppPictureAudioMapContent({
+  required Map<String, List<String>> applicationPictureAudioMap,
+  required String wallpaperPlaylistTitle,
+  required String liguriaPlaylistTitle,
+}) {
+  List pictureAudioMapLst =
+      (applicationPictureAudioMap["wallpaper.jpg"] as List);
+
+  expect(pictureAudioMapLst.length, 1);
+  expect(
+    pictureAudioMapLst[0],
+    "$wallpaperPlaylistTitle|hello",
+  );
+
+  pictureAudioMapLst = (applicationPictureAudioMap[
+          "Liguria_Italy_Coast_Houses_Riomaggiore_Crag_513222_3840x2400.jpg"]
+      as List);
+
+  expect(pictureAudioMapLst.length, 1);
+  expect(
+    pictureAudioMapLst[0],
+    "$liguriaPlaylistTitle|251120-121150-Gibbons - Voluntary (Fancy) in D Minor 21-06-25",
+  );
+
+  pictureAudioMapLst = (applicationPictureAudioMap["Jancovici.jpg"] as List);
+
+  expect(pictureAudioMapLst.length, 1);
+  expect(
+    pictureAudioMapLst[0],
+    "local two|new converted audio",
+  );
+}
+
+Future<void> _verifyAndPlayExtractedMp3Method({
+  required WidgetTester tester,
+  required String extractionSuccessMessage,
+  required String extractionPlayingMessage,
+  required String extractedAudioDuration,
+}) async {
+  expect(
+    find.text(extractionSuccessMessage),
+    findsOneWidget,
+  );
+
+  // Make the play button visible by scrolling to it
+  await tester.ensureVisible(find.byKey(const Key('playPauseButton')));
+  await tester.pumpAndSettle();
+
+  Finder playPauseButtonFinder = find.byKey(const Key('playPauseButton'));
+
+  expect(playPauseButtonFinder, findsOneWidget);
+
+  // Tap the play button
+  await tester.tap(playPauseButtonFinder);
+  await tester.pumpAndSettle();
+
+  await Future.delayed(const Duration(milliseconds: 500));
+  await tester.pumpAndSettle();
+
+  // Tap pause
+  await tester.tap(playPauseButtonFinder);
+  await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+  // Necessary to drag down vertically to make visible the extraction
+  // playing message
+  await tester.drag(
+    find.byType(AudioExtractorScreen),
+    const Offset(0, -600), // Negative value for vertical drag to scroll down
+  );
+  await tester.pumpAndSettle();
+
+  await tester.ensureVisible(find.text(extractionPlayingMessage));
+  await tester.pumpAndSettle();
+
+  Text audioDurationText = tester
+      .widget<Text>(find.byKey(const Key('extractedAudioDurationTextKey')));
+  expect(audioDurationText.data, extractedAudioDuration);
+
+  expect(
+    find.text(extractionPlayingMessage),
+    findsOneWidget,
+  );
+}
+
+Future<void> _verifyAllCommentsAfterQuittingAndCommingBackToExtracDialog({
+  required WidgetTester tester,
+  required String commentNumberTitleBeforeQuittingDialog,
+  required String audioTitle,
+  required Finder backButtonFinder,
+  required Finder audioTitleTileTextWidgetFinder,
+  required Finder audioTitleTileWidgetFinder,
+  required Finder audioTitleTileLeadingMenuIconButton,
+  required Finder audioCommentsPopupMenuItem,
+  required Finder audioCommentsLstFinder,
+  required Finder extractCommentsToMp3ButtonFinder,
+  required List<Map<String, dynamic>> segmentDetailsList,
+  List<int> connentDeletedNumberLst = const [],
+}) async {
+  // Verify the Comments number title
+  expect(find.text(commentNumberTitleBeforeQuittingDialog), findsOneWidget);
+
+  // Find the back button widget
+  expect(backButtonFinder, findsOneWidget);
+
+  // Tap on it to quit the audio extractor dialog
+  await tester.tap(backButtonFinder);
+  await tester.pumpAndSettle();
+
+  // Now re-open the audio extractor dialog to verify that the
+  // deleted comment is still present
+
+  // First, find the '1 long music' playlist audio ListTile Text widget
+  audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+  // Then obtain the audio ListTile widget enclosing the Text widget
+  // by finding its ancestor
+  audioTitleTileWidgetFinder = find.ancestor(
+    of: audioTitleTileTextWidgetFinder,
+    matching: find.byType(ListTile),
+  );
+
+  // Now we want to tap the popup menu of the audioTitle ListTile
+
+  // Find the leading menu icon button of the audioTitle ListTile
+  // and tap on it
+  audioTitleTileLeadingMenuIconButton = find.descendant(
+    of: audioTitleTileWidgetFinder,
+    matching: find.byIcon(Icons.menu),
+  );
+
+  // Tap the leading menu icon button to open the popup menu
+  await tester.tap(audioTitleTileLeadingMenuIconButton);
+  await tester.pumpAndSettle();
+
+  // Now find the 'Audio Comments ...' popup menu item and
+  // tap on it
+  audioCommentsPopupMenuItem =
+      find.byKey(const Key("popup_menu_audio_comment"));
+
+  await tester.tap(audioCommentsPopupMenuItem);
+  await tester.pumpAndSettle();
+
+  audioCommentsLstFinder = find.byKey(const Key(
+    'audioCommentsListKey',
+  ));
+
+  // Ensure the list has 3 child widgets
+  expect(
+    tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+    3,
+  );
+
+  // Now open the extract comments to MP3 dialog
+
+  // Find the extract comments to MP3 text button of the comment
+  // add dialog and tap on it
+  extractCommentsToMp3ButtonFinder =
+      find.byKey(const Key('extractCommentsToMp3TextButton'));
+  await tester.tap(extractCommentsToMp3ButtonFinder);
+  await tester.pumpAndSettle();
+
+  // Verify the Comments number title
+  expect(find.text('Comments (3)'), findsOneWidget);
+
+  await IntegrationTestUtil.checkExtractionCommentDetails(
+    tester: tester,
+    segmentDetailsList: segmentDetailsList,
+    connentDeletedNumberLst: connentDeletedNumberLst,
+  );
+}
+
+void _verifyPresenceOfExtractMp3Widgets(WidgetTester tester) {
+  // Verify the presence of the Clear all button
+  expect(
+    find.byIcon(Icons.clear_all),
+    findsOneWidget,
+  );
+  expect(
+    find.text("Clear all"),
+    findsOneWidget,
+  );
+
+  // Verify the presence of the Extract MP3 button
+  expect(
+    find.byKey(const Key('extractMp3Button')),
+    findsOneWidget,
+  );
+
+  // Verify the presence and the value of the 'In music
+  // quality' checkbox
+  Finder musicalQualityCheckBoxFinder =
+      find.byKey(const Key('musicalQualityCheckBox'));
+  expect(
+    musicalQualityCheckBoxFinder,
+    findsOneWidget,
+  );
+  Checkbox checkboxWidget =
+      tester.widget<Checkbox>(musicalQualityCheckBoxFinder);
+  expect(
+    checkboxWidget.value,
+    isTrue,
+  );
+
+  // Verify the presence and the value of the 'In directory'
+  // checkbox
+  Finder onDirectoryCheckBoxFinder =
+      find.byKey(const Key('onDirectoryCheckBox'));
+  expect(
+    onDirectoryCheckBoxFinder,
+    findsOneWidget,
+  );
+  checkboxWidget = tester.widget<Checkbox>(onDirectoryCheckBoxFinder);
+  expect(
+    checkboxWidget.value,
+    isTrue,
+  );
+
+  // Verify the presence and the value of the 'In playlist'
+  // checkbox
+  Finder inPlaylistCheckBoxFinder = find.byKey(const Key('inPlaylistCheckBox'));
+  expect(
+    inPlaylistCheckBoxFinder,
+    findsOneWidget,
+  );
+  checkboxWidget = tester.widget<Checkbox>(inPlaylistCheckBoxFinder);
+  expect(
+    checkboxWidget.value,
+    isFalse,
+  );
+}

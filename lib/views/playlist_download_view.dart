@@ -105,6 +105,11 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   final String _debugWindowId =
       DateTime.now().millisecondsSinceEpoch.toString().substring(8);
 
+  // Tracks whether the audio list was empty on the previous build, to
+  // detect when its emptiness (and therefore its Key) is about to
+  // change on this build.
+  bool _wasAudioListEmptyLastBuild = false;
+
   @override
   initState() {
     super.initState();
@@ -388,17 +393,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
 
     Expanded expanded = Expanded(
       child: ScrollablePositionedList.builder(
-        // The list's internal position/extent cache can end up corrupted
-        // after the underlying data transitions through an empty state
-        // (itemCount going from N to 0 and back to N while reusing the
-        // same widget instance, as happens when switching to a filter
-        // that yields no results and back). Changing the key only across
-        // that specific empty <-> non-empty transition forces Flutter to
-        // recreate the widget (and its internal cache) exactly when that
-        // corruption would otherwise persist, while keeping the key
-        // stable in every other case (content changes, playlist
-        // switches with non-empty results) so scroll state survives
-        // navigation to AudioPlayerView and back.
         key: ValueKey(
           _selectedPlaylistPlayableAudioLst.isEmpty
               ? 'audio_list_empty'
@@ -426,10 +420,37 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
 
     _doNotScroll = false;
 
-    _scrollToCurrentAudioItem(
-      playlistListVMlistenTrue: playlistListVMlistenTrue,
-      audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
-    );
+    // The Key above changes exactly when the list's emptiness changes
+    // (empty <-> non-empty), which makes Flutter tear down the old
+    // ScrollablePositionedList and mount a brand new one. At this point
+    // in build(), that new widget isn't mounted yet, so calling
+    // scrollTo() synchronously here would still target the old,
+    // about-to-be-disposed instance's controller attachment - the new
+    // instance then starts at its default (top) position, ignoring the
+    // requested scroll. Deferring to the next frame in that specific
+    // case lets the new widget finish mounting and attach its
+    // controller first. In every other case (Key unchanged, widget
+    // reused) the synchronous call is kept, since it works correctly
+    // and changing that would affect scroll behavior when navigating
+    // away to AudioPlayerView and back.
+    final bool audioListIsEmpty = _selectedPlaylistPlayableAudioLst.isEmpty;
+    final bool audioListEmptinessChanged =
+        audioListIsEmpty != _wasAudioListEmptyLastBuild;
+    _wasAudioListEmptyLastBuild = audioListIsEmpty;
+
+    if (audioListEmptinessChanged) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollToCurrentAudioItem(
+          playlistListVMlistenTrue: playlistListVMlistenTrue,
+          audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
+        );
+      });
+    } else {
+      _scrollToCurrentAudioItem(
+        playlistListVMlistenTrue: playlistListVMlistenTrue,
+        audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
+      );
+    }
 
     return expanded;
   }

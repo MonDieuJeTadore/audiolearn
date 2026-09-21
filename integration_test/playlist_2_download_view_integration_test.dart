@@ -36807,7 +36807,7 @@ void main() {
       // Find the audio list widget using its key
       Finder listFinder = find.byKey(const Key('audio_list'));
       // Perform the scroll down action
-      await tester.drag(listFinder, const Offset(0, -300));
+      await tester.drag(listFinder, const Offset(0, -10000));
       await tester.pumpAndSettle();
 
       // Tap on "1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'"
@@ -36828,17 +36828,19 @@ void main() {
       await tester.tap(find.byKey(const Key('audioPlayerViewSkipToEndButton')));
       await tester.pumpAndSettle();
 
-      // Now, go back to the playlist download view
+      // Return to the playlist download view
       Finder audioPlayerNavButtonFinder =
           find.byKey(const ValueKey('playlistDownloadViewIconButton'));
       await tester.tap(audioPlayerNavButtonFinder);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.tap(
+          audioPlayerNavButtonFinder); // Necessary to avoid "Failed assertion:
+      //                                 line 171 pos 12: '_positions.isNotEmpty'"
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       // Find the audio list widget using its key
       listFinder = find.byKey(const Key('audio_list'));
-      // Perform the scroll down action
-      await tester.drag(listFinder, const Offset(0, 5000));
-      await tester.pumpAndSettle();
 
       // Tap on "41_Dédier une ou deux heures par jour à une vraie
       // vie spirituelle" to open the audio player view
@@ -36858,7 +36860,12 @@ void main() {
       audioPlayerNavButtonFinder =
           find.byKey(const ValueKey('playlistDownloadViewIconButton'));
       await tester.tap(audioPlayerNavButtonFinder);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.tap(
+          audioPlayerNavButtonFinder); // Necessary to avoid "Failed assertion:
+      //                                 line 171 pos 12: '_positions.isNotEmpty'"
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       // Execute the 'Rewind all Audios to Start' playlist menu item
       await IntegrationTestUtil.typeOnPlaylistMenuItem(
@@ -36903,7 +36910,6 @@ void main() {
     });
   });
 }
-
 
 Future<void> _selectExistingMp3File({
   required WidgetTester tester,

@@ -101,6 +101,10 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   // so _hasUserSelectedSortFilterInThisWindow can be reset accordingly.
   String? _lastKnownSelectedPlaylistTitle;
 
+  // DEBUG - à retirer après diagnostic
+  final String _debugWindowId =
+      DateTime.now().millisecondsSinceEpoch.toString().substring(8);
+
   @override
   initState() {
     super.initState();
@@ -335,6 +339,14 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
             ? _selectedSortFilterParametersName!
             : _selectedPlaylistAudioSortFilterParmsName;
 
+    // DEBUG - à retirer après diagnostic
+    debugPrint(
+        '[$_debugWindowId][AUDIO_LIST] playlist=${playlistListVMlistenTrue.uniqueSelectedPlaylist?.title} '
+        'hasUserSelected=$_hasUserSelectedSortFilterInThisWindow '
+        '_selectedSortFilterParametersName=$_selectedSortFilterParametersName '
+        '_selectedPlaylistAudioSortFilterParmsName=$_selectedPlaylistAudioSortFilterParmsName '
+        'sortFilterParmsNameForQuery=$sortFilterParmsNameForQuery');
+
     if (_wasSortFilterAudioSettingsApplied) {
       List<Audio> sortedFilteredSelectedPlaylistPlayableAudioLst;
 
@@ -358,6 +370,10 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       );
     }
 
+    // DEBUG - à retirer après diagnostic
+    debugPrint(
+        '[$_debugWindowId][AUDIO_LIST] resulting list length=${_selectedPlaylistPlayableAudioLst.length}');
+
     Playlist? playlist = playlistListVMlistenTrue.uniqueSelectedPlaylist;
     Audio? currentAudio;
 
@@ -372,7 +388,22 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
 
     Expanded expanded = Expanded(
       child: ScrollablePositionedList.builder(
-        key: const Key('audio_list'),
+        // The list's internal position/extent cache can end up corrupted
+        // after the underlying data transitions through an empty state
+        // (itemCount going from N to 0 and back to N while reusing the
+        // same widget instance, as happens when switching to a filter
+        // that yields no results and back). Changing the key only across
+        // that specific empty <-> non-empty transition forces Flutter to
+        // recreate the widget (and its internal cache) exactly when that
+        // corruption would otherwise persist, while keeping the key
+        // stable in every other case (content changes, playlist
+        // switches with non-empty results) so scroll state survives
+        // navigation to AudioPlayerView and back.
+        key: ValueKey(
+          _selectedPlaylistPlayableAudioLst.isEmpty
+              ? 'audio_list_empty'
+              : 'audio_list_non_empty',
+        ),
         itemScrollController: _audioItemScrollController,
         itemPositionsListener: _audioItemPositionsListener,
         itemCount: _selectedPlaylistPlayableAudioLst.length,
@@ -447,7 +478,15 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     int audioToScrollPosition =
         playlistListVMlistenTrue.determineAudioToScrollPosition();
 
+// DEBUG - à retirer après diagnostic
+    debugPrint(
+        '[$_debugWindowId][SCROLL] audioToScrollPosition=$audioToScrollPosition '
+        'isAttached=${_audioItemScrollController.isAttached}');
+
     if (audioToScrollPosition <= 0) {
+      // DEBUG - à retirer après diagnostic
+      debugPrint('[$_debugWindowId][SCROLL] skipped (<=0)');
+
       // Either no audio is selected, or the current audio is already
       // the first one in the list: nothing to scroll to.
       return;
@@ -483,6 +522,9 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   }) {
     if (!_audioItemScrollController.isAttached) {
       if (retryCount >= 10) {
+        // DEBUG - à retirer après diagnostic
+        debugPrint(
+            '[$_debugWindowId][SCROLL] giving up, not attached after 10 retries');
         return;
       }
 
@@ -495,6 +537,10 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
 
       return;
     }
+
+    // DEBUG - à retirer après diagnostic
+    debugPrint(
+        '[$_debugWindowId][SCROLL] calling scrollTo index=$index retryCount=$retryCount');
 
     _audioItemScrollController.scrollTo(
       index: index,
@@ -1526,6 +1572,15 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     required PlaylistListVM playlistListVMlistenFalseOrTrue,
     notifyListeners = false,
   }) {
+    // DEBUG - à retirer après diagnostic
+    debugPrint(
+        '[APPLY_SF] called, hasUserSelected=$_hasUserSelectedSortFilterInThisWindow '
+        'before=$_selectedSortFilterParametersName');
+
+    debugPrint(
+        '[$_debugWindowId][APPLY_SF] called, hasUserSelected=$_hasUserSelectedSortFilterInThisWindow '
+        'before=$_selectedSortFilterParametersName');
+
     if (!_hasUserSelectedSortFilterInThisWindow &&
         _selectedSortFilterParametersName !=
             AppLocalizations.of(context)!.sortFilterParametersDefaultName) {
@@ -1554,6 +1609,10 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         notifyListeners: notifyListeners,
       );
     }
+
+    // DEBUG - à retirer après diagnostic
+    debugPrint(
+        '[$_debugWindowId][APPLY_SF] returning=$_selectedSortFilterParametersName');
 
     return _selectedSortFilterParametersName!;
   }

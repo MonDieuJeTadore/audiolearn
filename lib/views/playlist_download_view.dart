@@ -88,6 +88,19 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     return _playlistItemKeys.putIfAbsent(index, () => GlobalKey());
   }
 
+  // True once the user has explicitly picked a sort/filter parms name in
+  // THIS window's dropdown. PlaylistListVM is shared across all windows, and
+  // its _playlistAudioSFparmsNamesForPlaylistDownloadViewMap is keyed only
+  // by playlist title, so any other window looking at the same playlist can
+  // silently overwrite what this window's dropdown just selected. Once the
+  // user picks something here, that choice must be authoritative for this
+  // window until the selected playlist itself changes.
+  bool _hasUserSelectedSortFilterInThisWindow = false;
+
+  // Used to detect, on each build, whether the selected playlist changed,
+  // so _hasUserSelectedSortFilterInThisWindow can be reset accordingly.
+  String? _lastKnownSelectedPlaylistTitle;
+
   @override
   initState() {
     super.initState();
@@ -1269,6 +1282,18 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     required PlaylistListVM playlistListVMlistenTrue,
     required WarningMessageVM warningMessageVMlistenFalse,
   }) {
+    // Reset this window's "user made an explicit choice" flag whenever the
+    // selected playlist changes, so the newly selected playlist's saved
+    // sort/filter (from the VM's shared map or its own json file) is
+    // consulted again, instead of keeping a stale choice made for a
+    // different playlist.
+    final String? currentPlaylistTitle =
+        playlistListVMlistenTrue.uniqueSelectedPlaylist?.title;
+    if (currentPlaylistTitle != _lastKnownSelectedPlaylistTitle) {
+      _hasUserSelectedSortFilterInThisWindow = false;
+      _lastKnownSelectedPlaylistTitle = currentPlaylistTitle;
+    }
+
     String sortFilterDefaultMenuItemNameCorrespondingToLanguage =
         AppLocalizations.of(context)!.sortFilterParametersDefaultName;
     String sortFilterAppliedMenuItemNameCorrespondingToLanguage =
@@ -1478,6 +1503,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
             },
             onChanged: (value) {
               _selectedSortFilterParametersName = value;
+              _hasUserSelectedSortFilterInThisWindow = true; // <-- ajouté
               setState(() {
                 _selectedSortFilterAudioNumber =
                     _updatePlaylistSortedFilteredAudioList(
@@ -1500,9 +1526,16 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     required PlaylistListVM playlistListVMlistenFalseOrTrue,
     notifyListeners = false,
   }) {
-    if (_selectedSortFilterParametersName !=
-        AppLocalizations.of(context)!.sortFilterParametersDefaultName) {
-      // The case if default or défaut is selected in the dropdown button list
+    if (!_hasUserSelectedSortFilterInThisWindow &&
+        _selectedSortFilterParametersName !=
+            AppLocalizations.of(context)!.sortFilterParametersDefaultName) {
+      // Only consult the VM's shared, playlist-title-keyed map when this
+      // window hasn't yet made its own explicit choice for the currently
+      // selected playlist (e.g. right after selecting it, to restore
+      // whatever was last saved). Once the user picks something in this
+      // window's dropdown, that choice is authoritative here and must not
+      // be silently overwritten by another window sharing the same
+      // playlist title.
       _selectedSortFilterParametersName = playlistListVMlistenFalseOrTrue
           .getSelectedPlaylistAudioSortFilterParmsNameForView(
         audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,

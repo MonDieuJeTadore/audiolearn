@@ -300,27 +300,37 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     required AudioDownloadVM audioDownloadVMlistenTrue,
     required WarningMessageVM warningMessageVMlistenFalse,
   }) {
+    // PlaylistListVM is shared across all windows. Its
+    // _playlistAudioSFparmsNamesForPlaylistDownloadViewMap is keyed only by
+    // playlist title, so any window showing the same playlist can overwrite
+    // it with its own selection. _selectedPlaylistAudioSortFilterParmsName is
+    // reset to '' on every build as soon as the playlist list is collapsed
+    // (see _buildYoutubeUrlOrSearchPlusSelectedPlaylistTitle, called earlier
+    // in this same build via _buildFirstLine); querying with that empty value
+    // makes the request fall back to the VM's shared map, which may have just
+    // been overwritten by an unrelated window rebuilding due to the same VM's
+    // notifyListeners(). This is what causes the sort/filter selection made in
+    // this window to be silently replaced right after being applied.
+    //
+    // _selectedSortFilterParametersName is only ever written by this window's
+    // own dropdown actions and is never reset as a side effect of an unrelated
+    // rebuild, so it reliably reflects what this window's dropdown currently
+    // shows. Prefer it over the shared VM map for the actual query.
+    final String sortFilterParmsNameForQuery =
+        (_selectedSortFilterParametersName != null &&
+                _selectedSortFilterParametersName!.isNotEmpty)
+            ? _selectedSortFilterParametersName!
+            : _selectedPlaylistAudioSortFilterParmsName;
+
     if (_wasSortFilterAudioSettingsApplied) {
       List<Audio> sortedFilteredSelectedPlaylistPlayableAudioLst;
 
       sortedFilteredSelectedPlaylistPlayableAudioLst = playlistListVMlistenTrue
           .getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
               audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
-              passedAudioSortFilterParametersName:
-                  _selectedPlaylistAudioSortFilterParmsName);
+              passedAudioSortFilterParametersName: sortFilterParmsNameForQuery);
 
       if (sortedFilteredSelectedPlaylistPlayableAudioLst.isNotEmpty) {
-        // Here, the user has selected a sort filter parameters
-        // in (defined sf parms or default sf parms) in the sort
-        // filter parameters button or he has defined a sf parms
-        // in the sort filter dialog and clicked on the save or
-        // on the apply button.
-        //
-        // If the sort and filter audio settings have been applied
-        // then the sortedFilteredSelectedPlaylistPlayableAudioLst
-        // which contains the audio sorted and filtered by the sf
-        // parms selected or defined by the user is used to display
-        // the audio list.
         _selectedPlaylistPlayableAudioLst =
             sortedFilteredSelectedPlaylistPlayableAudioLst;
         _wasSortFilterAudioSettingsApplied = false;
@@ -331,8 +341,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       _selectedPlaylistPlayableAudioLst = playlistListVMlistenTrue
           .getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
         audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
-        passedAudioSortFilterParametersName:
-            _selectedPlaylistAudioSortFilterParmsName,
+        passedAudioSortFilterParametersName: sortFilterParmsNameForQuery,
       );
     }
 

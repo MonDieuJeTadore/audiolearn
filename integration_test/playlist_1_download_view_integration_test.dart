@@ -131,7 +131,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Enter the new Youtube playlist URL into the url text field
@@ -436,7 +436,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Enter the new Youtube playlist URL into the url text field
@@ -586,7 +586,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Enter the new Youtube playlist URL into the url text field
@@ -857,7 +857,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Enter the new Youtube playlist URL into the url text field
@@ -932,7 +932,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Tap the 'Toggle List' button to hide the playlist list. Since
@@ -1184,7 +1184,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Open the add playlist dialog by tapping the add playlist
@@ -1415,7 +1415,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Open the add playlist dialog by tapping the add playlist
@@ -1495,7 +1495,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Open the add playlist dialog by tapping the add playlist
@@ -1566,7 +1566,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Open the add playlist dialog by tapping the add playlist
@@ -1685,7 +1685,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Enter the new Youtube playlist URL into the url text field
@@ -1771,7 +1771,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Open the add playlist dialog by tapping the add playlist
@@ -1919,7 +1919,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Enter the new Youtube playlist URL into the url text field
@@ -2121,7 +2121,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       const String invalidYoutubePlaylistUrl = 'list=invalid';
@@ -2558,7 +2558,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Enter the 'Essai' Youtube playlist URL into the url text field
@@ -2602,6 +2602,12 @@ void main() {
       await tester.tap(find.byKey(const Key('download_sel_playlist_button')));
       await tester.pumpAndSettle();
 
+      // Tap the 'Toggle List' button to avoid displaying the list
+      // of playlists which may hide the audio title we want to
+      // tap on
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
       // And verify the downloaded playlist audio titles
 
       List<String> essaiDownloadedAudioTitles = [
@@ -2612,7 +2618,7 @@ void main() {
       IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
         tester: tester,
         audioOrPlaylistTitlesOrderedLst: essaiDownloadedAudioTitles,
-        firstAudioListTileIndex: 1,
+        firstAudioListTileIndex: 0,
       );
 
       // Enter the 'audio_player_view_2_shorts_test' Youtube playlist URL
@@ -2861,7 +2867,7 @@ void main() {
 
       // The playlist list and audio list should exist now but be
       // empty (no ListTile widgets)
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNothing);
 
       // Enter the new Youtube playlist URL into the url text field.
@@ -3512,7 +3518,7 @@ void main() {
 
       // The playlist list displays two items, but the audio
       // list is empty
-      expect(find.byType(ListView), findsNWidgets(2));
+      expect(find.byType(ListView), findsNWidgets(1));
       expect(find.byType(ListTile), findsNWidgets(2));
 
       // Open the add playlist dialog by tapping the add playlist
@@ -5125,6 +5131,12 @@ void main() {
         playlistToSelectTitle: youtubeAudioSourcePlaylistTitle,
       );
 
+      // Tap the 'Toggle List' button to avoid displaying the list
+      // of playlists which may hide the audio title we want to
+      // tap on
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
       // Now we want to tap the popup menu of the Audio ListTile
       // "audio learn test short video one"
 
@@ -5413,6 +5425,11 @@ void main() {
         tester: tester,
         playlistToSelectTitle: youtubeAudioSourcePlaylistTitle,
       );
+
+      // Tap the 'Toggle List' button to display the list of
+      // playlists
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
 
       // Now we want to tap the popup menu of the Audio ListTile
       // "audio learn test short video one"
@@ -6509,6 +6526,12 @@ void main() {
         playlistToSelectTitle: youtubeAudioSourcePlaylistTitle,
       );
 
+      // Tap the 'Toggle List' button to avoid displaying the list
+      // of playlists which may hide the audio title we want to
+      // tap on
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
       targetAudioListTileWidgetFinder =
           await IntegrationTestUtil.verifyAudioInfoDialog(
         tester: tester,
@@ -6581,6 +6604,11 @@ void main() {
       // Now find the ok button of the displayed confirm warning
       // dialog and tap on it
       await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+      await tester.pumpAndSettle();
+
+      // Tap the 'Toggle List' button to display again the list
+      // of playlists
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
       // Find the target ListTile Playlist containing the audio moved
@@ -7810,6 +7838,12 @@ void main() {
       // Now we want to tap the popup menu of the Audio ListTile
       // "audio learn test short video one"
 
+      // Tap the 'Toggle List' button to avoid displaying the list
+      // of playlists which may hide the audio title we want to
+      // tap on
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
       // First, find the Audio sublist ListTile Text widget
       final Finder sourceAudioListTileTextWidgetFinder =
           find.text(copiedAudioTitle);
@@ -7911,6 +7945,11 @@ void main() {
       // Verify the local target playlist directory content
       expect(targetPlaylistMp3Lst,
           ["230628-033811-audio learn test short video one 23-06-10.mp3"]);
+
+      // Tap the 'Toggle List' button to display again the list
+      // of playlists
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
 
       // Now verifying the copied audio informations in the source
       // playlist
@@ -8243,6 +8282,13 @@ void main() {
         matching: find.byType(ListTile),
       );
 
+
+      // Tap the 'Toggle List' button to avoid displaying the list
+      // of playlists which may hide the audio title we want to
+      // tap on
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
       // Now find the leading menu icon button of the Audio ListTile
       // and tap on it
       final Finder sourceAudioListTileLeadingMenuIconButton = find.descendant(
@@ -8332,6 +8378,11 @@ void main() {
       // Verify the local target playlist directory content
       expect(targetPlaylistMp3Lst,
           ["230628-033811-audio learn test short video one 23-06-10.mp3"]);
+
+      // Tap the 'Toggle List' button to display again the list
+      // of playlists
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
 
       // Now verifying the moved audio informations in the target
       // playlist. In the source playlist, the audio is no longer
@@ -8736,6 +8787,12 @@ void main() {
         directoryPath: urgentActusyoutubeplaylistpath,
         fileExtension: 'mp3',
       );
+
+      // Tap the 'Toggle List' button to avoid displaying the list
+      // of playlists which may hide the audio title we want to
+      // tap on
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
 
       for (String audioTitle in urgentActusyoutubeplaylistmp3lst) {
         audioTitle = audioTitle

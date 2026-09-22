@@ -4594,7 +4594,7 @@ void main() {
         // audio title to delete
 
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 200));
@@ -4734,7 +4734,7 @@ void main() {
         );
 
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 600));
@@ -4832,7 +4832,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 200));
@@ -5037,7 +5037,7 @@ void main() {
             '0:10:14.1 3.75 Mo à 1.64 Mo/sec le 03/11/2024 à 15:19';
 
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -7260,7 +7260,7 @@ void main() {
         // Scrolling up the audios list in order to display the last
         // downloaded audio title
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 500));
@@ -9065,7 +9065,7 @@ void main() {
         // downloaded audio title
 
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 400));
@@ -10623,7 +10623,7 @@ void main() {
           // duration of 1.8 seconds
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll action
           await tester.drag(
               listFinder,
@@ -10661,7 +10661,7 @@ void main() {
           // duration of 8.6 seconds
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll action
           await tester.drag(
               listFinder,
@@ -10710,7 +10710,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -11043,7 +11043,7 @@ void main() {
           // duration of 1.8 seconds
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll action
           await tester.drag(
               listFinder,
@@ -11082,7 +11082,7 @@ void main() {
           // duration of 8.6 seconds
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll action
           await tester.drag(
               listFinder,
@@ -11131,7 +11131,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -11449,7 +11449,7 @@ void main() {
           // duration of 1.8 seconds
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll action
           await tester.drag(
               listFinder,
@@ -11487,7 +11487,7 @@ void main() {
           // duration of 8.6 seconds
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll action
           await tester.drag(
               listFinder,
@@ -11706,7 +11706,7 @@ void main() {
           await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
           await tester.pumpAndSettle();
 
-          final Finder audioListFinder = find.byKey(const Key('audio_list'));
+          final Finder audioListFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(audioListFinder, const Offset(0, 400));
@@ -11851,7 +11851,7 @@ void main() {
           // duration of 1.8 seconds
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll action
           await tester.drag(
               listFinder,
@@ -11890,7 +11890,7 @@ void main() {
           // duration of 8.6 seconds
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll action
           await tester.drag(
               listFinder,
@@ -14728,7 +14728,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list'));
+          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -14866,7 +14866,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list'));
+          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -22095,7 +22095,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list'));
+          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -22256,7 +22256,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list'));
+          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -27487,7 +27487,7 @@ void main() {
       );
 
       // Find the audio list widget using its key
-      Finder listFinder = find.byKey(const Key('audio_list'));
+      Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
       // Perform the scroll down action
       await tester.drag(listFinder, const Offset(0, 400));
       await tester.pumpAndSettle();
@@ -27517,7 +27517,7 @@ void main() {
       // that the deleted audio import work
 
       // Find the audio list widget using its key
-      listFinder = find.byKey(const Key('audio_list'));
+      listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       await _deleteAudioFromPlaylist(
         tester: tester,
@@ -27553,7 +27553,7 @@ void main() {
       // import work.
 
       // Find the audio list widget using its key
-      listFinder = find.byKey(const Key('audio_list'));
+      listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       // The scroll action is not necessary now.
       await tester.drag(listFinder, const Offset(0, 800));
@@ -27885,7 +27885,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
-        Finder listFinder = find.byKey(const Key('audio_list'));
+        Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -27912,7 +27912,7 @@ void main() {
         );
 
         // Find the audio list widget using its key
-        listFinder = find.byKey(const Key('audio_list'));
+        listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -28093,7 +28093,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
-        listFinder = find.byKey(const Key('audio_list'));
+        listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 600));
@@ -28120,7 +28120,7 @@ void main() {
         );
 
         // Find the audio list widget using its key
-        listFinder = find.byKey(const Key('audio_list'));
+        listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -29035,7 +29035,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -29148,7 +29148,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -29653,7 +29653,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
-        Finder listFinder = find.byKey(const Key('audio_list'));
+        Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -29680,7 +29680,7 @@ void main() {
         );
 
         // Find the audio list widget using its key
-        listFinder = find.byKey(const Key('audio_list'));
+        listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -29862,7 +29862,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
-        listFinder = find.byKey(const Key('audio_list'));
+        listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 600));
@@ -29889,7 +29889,7 @@ void main() {
         );
 
         // Find the audio list widget using its key
-        listFinder = find.byKey(const Key('audio_list'));
+        listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -30785,7 +30785,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -30892,7 +30892,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -31167,7 +31167,7 @@ void main() {
           firstAudioListTileIndex: 3,
         );
 
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
         // Perform the scroll down action
         await tester.drag(listFinder, const Offset(0, -2000));
         await tester.pumpAndSettle();
@@ -31271,7 +31271,7 @@ void main() {
           firstAudioListTileIndex: 3,
         );
 
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
         // Perform the scroll down action
         await tester.drag(listFinder, const Offset(0, -2000));
         await tester.pumpAndSettle();
@@ -31380,7 +31380,7 @@ void main() {
           firstAudioListTileIndex: 3,
         );
 
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
         // Perform the scroll down action
         await tester.drag(listFinder, const Offset(0, -2000));
         await tester.pumpAndSettle();
@@ -31489,7 +31489,7 @@ void main() {
           firstAudioListTileIndex: 3,
         );
 
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
         // Perform the scroll down action
         await tester.drag(listFinder, const Offset(0, -2000));
         await tester.pumpAndSettle();
@@ -31614,7 +31614,7 @@ void main() {
           firstAudioListTileIndex: 3,
         );
 
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
         // Perform the scroll down action
         await tester.drag(listFinder, const Offset(0, -2000));
         await tester.pumpAndSettle();
@@ -31724,7 +31724,7 @@ void main() {
           firstAudioListTileIndex: 3,
         );
 
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
         // Perform the scroll down action
         await tester.drag(listFinder, const Offset(0, -2000));
         await tester.pumpAndSettle();
@@ -31835,7 +31835,7 @@ void main() {
           firstAudioListTileIndex: 3,
         );
 
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
         // Perform the scroll down action
         await tester.drag(listFinder, const Offset(0, -2000));
         await tester.pumpAndSettle();
@@ -31946,7 +31946,7 @@ void main() {
           firstAudioListTileIndex: 3,
         );
 
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
         // Perform the scroll down action
         await tester.drag(listFinder, const Offset(0, -2000));
         await tester.pumpAndSettle();
@@ -32033,7 +32033,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -32048,7 +32048,7 @@ void main() {
           // Upload the audio list
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 3000));
@@ -32130,7 +32130,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -32201,7 +32201,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -32216,7 +32216,7 @@ void main() {
           // Upload the audio list
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 3000));
@@ -32288,7 +32288,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -32360,7 +32360,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 3000));
@@ -32440,7 +32440,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, 3000));
@@ -32512,7 +32512,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 3000));
@@ -32592,7 +32592,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, 3000));
@@ -32665,7 +32665,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 3000));
@@ -32745,7 +32745,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 3000));
@@ -32814,7 +32814,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -32836,7 +32836,7 @@ void main() {
           // Upload the audio list
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 500));
@@ -32963,7 +32963,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -33040,7 +33040,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -33117,7 +33117,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -33180,7 +33180,7 @@ void main() {
           await tester
               .pumpAndSettle(); // Enter the not yet positioned audio position
 
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -33257,7 +33257,7 @@ void main() {
           await tester.tap(find.byKey(const Key('moveAudioToPositionButton')));
           await tester.pumpAndSettle();
 
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -33331,7 +33331,7 @@ void main() {
           await tester
               .pumpAndSettle(); // Enter the not yet positioned audio position
 
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -33406,7 +33406,7 @@ void main() {
           await tester.tap(find.byKey(const Key('moveAudioToPositionButton')));
           await tester.pumpAndSettle();
 
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -33479,7 +33479,7 @@ void main() {
           await tester
               .pumpAndSettle(); // Enter the not yet positioned audio position
 
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -33554,7 +33554,7 @@ void main() {
           await tester.tap(find.byKey(const Key('moveAudioToPositionButton')));
           await tester.pumpAndSettle();
 
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -33627,7 +33627,7 @@ void main() {
           await tester
               .pumpAndSettle(); // Enter the not yet positioned audio position
 
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -33703,7 +33703,7 @@ void main() {
           await tester.tap(find.byKey(const Key('moveAudioToPositionButton')));
           await tester.pumpAndSettle();
 
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -33777,7 +33777,7 @@ void main() {
           await tester
               .pumpAndSettle(); // Enter the not yet positioned audio position
 
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -33853,7 +33853,7 @@ void main() {
           await tester.tap(find.byKey(const Key('moveAudioToPositionButton')));
           await tester.pumpAndSettle();
 
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -33927,7 +33927,7 @@ void main() {
           await tester
               .pumpAndSettle(); // Enter the not yet positioned audio position
 
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -34002,7 +34002,7 @@ void main() {
           await tester.tap(find.byKey(const Key('moveAudioToPositionButton')));
           await tester.pumpAndSettle();
 
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -34077,7 +34077,7 @@ void main() {
           await tester.tap(find.byKey(const Key('moveAudioToPositionButton')));
           await tester.pumpAndSettle();
 
-          // listFinder = find.byKey(const Key('audio_list'));
+          // listFinder = find.byKey(const Key('audio_list_non_empty'));
           // // Perform the scroll up action
           // await tester.drag(listFinder, const Offset(0, 200));
           // await tester.pumpAndSettle();
@@ -34149,7 +34149,7 @@ void main() {
           await tester
               .pumpAndSettle(); // Enter the not yet positioned audio position
 
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -34224,7 +34224,7 @@ void main() {
           await tester.tap(find.byKey(const Key('moveAudioToPositionButton')));
           await tester.pumpAndSettle();
 
-          // listFinder = find.byKey(const Key('audio_list'));
+          // listFinder = find.byKey(const Key('audio_list_non_empty'));
           // // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 220));
           await tester.pumpAndSettle();
@@ -34298,7 +34298,7 @@ void main() {
           await tester
               .pumpAndSettle(); // Enter the not yet positioned audio position
 
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -34375,7 +34375,7 @@ void main() {
           await tester.tap(find.byKey(const Key('moveAudioToPositionButton')));
           await tester.pumpAndSettle();
 
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -34449,7 +34449,7 @@ void main() {
           await tester
               .pumpAndSettle(); // Enter the not yet positioned audio position
 
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -34526,7 +34526,7 @@ void main() {
           await tester.tap(find.byKey(const Key('moveAudioToPositionButton')));
           await tester.pumpAndSettle();
 
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 200));
           await tester.pumpAndSettle();
@@ -34607,7 +34607,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -34685,7 +34685,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -34761,7 +34761,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -34831,7 +34831,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -34909,7 +34909,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -34989,7 +34989,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -35114,7 +35114,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -35191,7 +35191,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -35264,7 +35264,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -300));
@@ -35286,7 +35286,7 @@ void main() {
           // Upload the audio list
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -3000));
@@ -35358,7 +35358,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 500));
@@ -35436,7 +35436,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -35451,7 +35451,7 @@ void main() {
           // Upload the audio list
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -3000));
@@ -35524,7 +35524,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 3000));
@@ -35602,7 +35602,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -3000));
@@ -35617,7 +35617,7 @@ void main() {
           // Upload the audio list
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Now we want to tap the popup menu of the Audio ListTile
           // "Laissez tomber les 'pourquoi'...  #mariavaltorta #jesus"
@@ -35686,7 +35686,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -3000));
@@ -35764,7 +35764,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -3000));
@@ -35779,7 +35779,7 @@ void main() {
           // Upload the audio list
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Now we want to tap the popup menu of the Audio ListTile
           // "Laissez tomber les 'pourquoi'...  #mariavaltorta #jesus"
@@ -35848,7 +35848,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -3000));
@@ -35927,7 +35927,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -3000));
@@ -35942,7 +35942,7 @@ void main() {
           // Upload the audio list
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Now we want to tap the popup menu of the Audio ListTile
           // "Laissez tomber les 'pourquoi'...  #mariavaltorta #jesus"
@@ -36011,7 +36011,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll down action
           await tester.drag(listFinder, const Offset(0, -3000));
@@ -36088,7 +36088,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 100));
@@ -36165,7 +36165,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
             tester: tester,
@@ -36238,7 +36238,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 3000));
@@ -36315,7 +36315,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 100));
@@ -36392,7 +36392,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
             tester: tester,
@@ -36465,7 +36465,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 100));
@@ -36544,7 +36544,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
             tester: tester,
@@ -36617,7 +36617,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 3000));
@@ -36694,7 +36694,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          Finder listFinder = find.byKey(const Key('audio_list'));
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(listFinder, const Offset(0, 100));
@@ -36772,7 +36772,7 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          listFinder = find.byKey(const Key('audio_list'));
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
             tester: tester,
@@ -36805,7 +36805,7 @@ void main() {
       );
 
       // Find the audio list widget using its key
-      Finder listFinder = find.byKey(const Key('audio_list'));
+      Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
       // Perform the scroll down action
       await tester.drag(listFinder, const Offset(0, -10000));
       await tester.pumpAndSettle();
@@ -36840,7 +36840,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 500));
 
       // Find the audio list widget using its key
-      listFinder = find.byKey(const Key('audio_list'));
+      listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       // Tap on "41_Dédier une ou deux heures par jour à une vraie
       // vie spirituelle" to open the audio player view
@@ -36883,7 +36883,7 @@ void main() {
       );
 
       // Find the audio list widget using its key
-      listFinder = find.byKey(const Key('audio_list'));
+      listFinder = find.byKey(const Key('audio_list_non_empty'));
       // Perform the scroll down action
       await tester.drag(listFinder, const Offset(0, -300));
       await tester.pumpAndSettle();
@@ -36993,7 +36993,7 @@ Future<void> _movePositionedAudioAndVerifyResult({
   // Verify the the modified ordered audio titles
 
   // Find the audio list widget using its key
-  final Finder listFinder = find.byKey(const Key('audio_list'));
+  final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
   // Perform the scroll down action
   await tester.drag(listFinder, const Offset(0, -300));
@@ -37910,7 +37910,7 @@ Future<List<String>> _enteringFirstAndSecondLetterOfLocalPlaylistSearchWord({
   ];
 
   // Find the audio list widget using its key
-  Finder listFinder = find.byKey(const Key('audio_list'));
+  Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
   // Perform the scroll action
   await tester.drag(listFinder, const Offset(0, 100));
   await tester.pumpAndSettle();

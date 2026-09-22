@@ -1911,7 +1911,7 @@ void main() {
           // audio title to delete
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list'));
+          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, -1000));
@@ -2558,7 +2558,7 @@ void main() {
           // audio title to delete
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list'));
+          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, -1000));
@@ -2819,7 +2819,7 @@ void main() {
           // audio title to delete
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list'));
+          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, -1000));
@@ -3642,7 +3642,7 @@ void main() {
 
         // Drag up to make sure that the audio to delete is visible
         // Find the audio list widget using its key
-        Finder listFinder = find.byKey(const Key('audio_list'));
+        Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 100));
@@ -3664,7 +3664,7 @@ void main() {
         );
 
         // Find the audio list widget using its key
-        listFinder = find.byKey(const Key('audio_list'));
+        listFinder = find.byKey(const Key('audio_list_non_empty'));
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 200));
         await tester.pumpAndSettle();
@@ -3832,7 +3832,7 @@ void main() {
 
         // Drag up to make sure that the audio to delete is visible
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -4260,7 +4260,7 @@ void main() {
 
         // Drag up to make sure that the audio to delete is visible
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -5233,7 +5233,7 @@ void main() {
 
         // Drag up to make sure that the audio to delete is visible
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
@@ -5517,7 +5517,7 @@ void main() {
 
           // Drag up to make sure that the audio to delete is visible
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list'));
+          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -15449,7 +15449,7 @@ void main() {
         // downloaded audio title
 
         // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list'));
+        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
         // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 400));
@@ -22695,7 +22695,7 @@ void main() {
       // the MP3 files of the playlist
 
       // Find the audio list widget using its key
-      Finder listFinder = find.byKey(const Key('audio_list'));
+      Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       expect(
         tester
@@ -22762,7 +22762,7 @@ void main() {
       // the MP3 files of the playlist
 
       // Find the audio list widget using its key
-      listFinder = find.byKey(const Key('audio_list'));
+      listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       expect(
         tester
@@ -22887,7 +22887,7 @@ void main() {
       // the MP3 files of the playlist
 
       // Find the audio list widget using its key
-      Finder listFinder = find.byKey(const Key('audio_list'));
+      Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       expect(
         tester
@@ -22942,7 +22942,7 @@ void main() {
       // the MP3 files of the playlist
 
       // Find the audio list widget using its key
-      listFinder = find.byKey(const Key('audio_list'));
+      listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       expect(
         tester
@@ -23051,7 +23051,7 @@ void main() {
       // the MP3 files of the playlist
 
       // Find the audio list widget using its key
-      Finder listFinder = find.byKey(const Key('audio_list'));
+      Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       expect(
         tester
@@ -23115,7 +23115,7 @@ void main() {
       // the MP3 files of the playlist
 
       // Find the audio list widget using its key
-      listFinder = find.byKey(const Key('audio_list'));
+      listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       expect(
         tester
@@ -23208,7 +23208,7 @@ void main() {
       // the MP3 files of the playlist
 
       // Find the audio list widget using its key
-      Finder listFinder = find.byKey(const Key('audio_list'));
+      Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       expect(
         tester
@@ -23272,7 +23272,7 @@ void main() {
       // the MP3 files of the playlist
 
       // Find the audio list widget using its key
-      listFinder = find.byKey(const Key('audio_list'));
+      listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       expect(
         tester
@@ -23363,7 +23363,7 @@ void main() {
       // the MP3 files of the playlist
 
       // Find the audio list widget using its key
-      Finder listFinder = find.byKey(const Key('audio_list'));
+      Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       expect(
         tester
@@ -23427,7 +23427,7 @@ void main() {
       // the MP3 files of the playlist
 
       // Find the audio list widget using its key
-      listFinder = find.byKey(const Key('audio_list'));
+      listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       expect(
         tester
@@ -24997,7 +24997,7 @@ void main() {
       // vivrai d’après l'amour!'" audio
 
       // Find the audio list widget using its key
-      Finder listFinder = find.byKey(const Key('audio_list'));
+      Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       // Perform the scroll down action
       await tester.drag(listFinder, const Offset(0, -500));

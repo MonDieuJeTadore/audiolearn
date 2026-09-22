@@ -344,14 +344,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
             ? _selectedSortFilterParametersName!
             : _selectedPlaylistAudioSortFilterParmsName;
 
-    // DEBUG - à retirer après diagnostic
-    debugPrint(
-        '[$_debugWindowId][AUDIO_LIST] playlist=${playlistListVMlistenTrue.uniqueSelectedPlaylist?.title} '
-        'hasUserSelected=$_hasUserSelectedSortFilterInThisWindow '
-        '_selectedSortFilterParametersName=$_selectedSortFilterParametersName '
-        '_selectedPlaylistAudioSortFilterParmsName=$_selectedPlaylistAudioSortFilterParmsName '
-        'sortFilterParmsNameForQuery=$sortFilterParmsNameForQuery');
-
     if (_wasSortFilterAudioSettingsApplied) {
       List<Audio> sortedFilteredSelectedPlaylistPlayableAudioLst;
 
@@ -374,10 +366,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         passedAudioSortFilterParametersName: sortFilterParmsNameForQuery,
       );
     }
-
-    // DEBUG - à retirer après diagnostic
-    debugPrint(
-        '[$_debugWindowId][AUDIO_LIST] resulting list length=${_selectedPlaylistPlayableAudioLst.length}');
 
     Playlist? playlist = playlistListVMlistenTrue.uniqueSelectedPlaylist;
     Audio? currentAudio;
@@ -499,15 +487,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     int audioToScrollPosition =
         playlistListVMlistenTrue.determineAudioToScrollPosition();
 
-    // DEBUG - à retirer après diagnostic
-    debugPrint(
-        '[$_debugWindowId][SCROLL] audioToScrollPosition=$audioToScrollPosition '
-        'isAttached=${_audioItemScrollController.isAttached}');
-
     if (audioToScrollPosition < 0) {
-      // DEBUG - à retirer après diagnostic
-      debugPrint('[$_debugWindowId][SCROLL] skipped (<=0)');
-
       // No audio is selected in the current list: nothing to scroll to.
       return;
     }
@@ -555,9 +535,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   }) {
     if (!_audioItemScrollController.isAttached) {
       if (retryCount >= 10) {
-        // DEBUG - à retirer après diagnostic
-        debugPrint(
-            '[$_debugWindowId][SCROLL] giving up, not attached after 10 retries');
         return;
       }
 
@@ -570,10 +547,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
 
       return;
     }
-
-    // DEBUG - à retirer après diagnostic
-    debugPrint(
-        '[$_debugWindowId][SCROLL] calling scrollTo index=$index retryCount=$retryCount');
 
     _audioItemScrollController.scrollTo(
       index: index,
@@ -1605,15 +1578,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     required PlaylistListVM playlistListVMlistenFalseOrTrue,
     notifyListeners = false,
   }) {
-    // DEBUG - à retirer après diagnostic
-    debugPrint(
-        '[APPLY_SF] called, hasUserSelected=$_hasUserSelectedSortFilterInThisWindow '
-        'before=$_selectedSortFilterParametersName');
-
-    debugPrint(
-        '[$_debugWindowId][APPLY_SF] called, hasUserSelected=$_hasUserSelectedSortFilterInThisWindow '
-        'before=$_selectedSortFilterParametersName');
-
     if (!_hasUserSelectedSortFilterInThisWindow &&
         _selectedSortFilterParametersName !=
             AppLocalizations.of(context)!.sortFilterParametersDefaultName) {
@@ -1642,10 +1606,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         notifyListeners: notifyListeners,
       );
     }
-
-    // DEBUG - à retirer après diagnostic
-    debugPrint(
-        '[$_debugWindowId][APPLY_SF] returning=$_selectedSortFilterParametersName');
 
     return _selectedSortFilterParametersName!;
   }

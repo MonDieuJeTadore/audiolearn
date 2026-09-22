@@ -499,20 +499,32 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     int audioToScrollPosition =
         playlistListVMlistenTrue.determineAudioToScrollPosition();
 
-// DEBUG - à retirer après diagnostic
+    // DEBUG - à retirer après diagnostic
     debugPrint(
         '[$_debugWindowId][SCROLL] audioToScrollPosition=$audioToScrollPosition '
         'isAttached=${_audioItemScrollController.isAttached}');
 
-    if (audioToScrollPosition <= 0) {
+    if (audioToScrollPosition < 0) {
       // DEBUG - à retirer après diagnostic
       debugPrint('[$_debugWindowId][SCROLL] skipped (<=0)');
 
-      // Either no audio is selected, or the current audio is already
-      // the first one in the list: nothing to scroll to.
+      // No audio is selected in the current list: nothing to scroll to.
       return;
     }
 
+    // An audioToScrollPosition of 0 means the current audio was found at
+    // the very first position of the (possibly newly sorted/filtered)
+    // list — this still requires an explicit scroll. Since the
+    // ScrollablePositionedList widget is reused across non-empty <->
+    // non-empty content changes (same Key), it keeps whatever scroll
+    // offset it had before the content changed (e.g. scrolled near the
+    // bottom under a previous sort/filter). Skipping the scroll call
+    // when the target is index 0 used to assume the viewport was
+    // already showing the top, which is no longer guaranteed once the
+    // underlying sort/filter changes while the widget instance
+    // persists. Always issuing the scroll call, including for index 0,
+    // ensures the viewport is correctly moved to the audio's actual
+    // position regardless of where it was previously scrolled.
     _scrollAudioListToIndex(index: audioToScrollPosition, retryCount: 0);
   }
 

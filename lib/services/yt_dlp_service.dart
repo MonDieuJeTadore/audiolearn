@@ -27,6 +27,20 @@ class YtDlpPlaylistVideo {
   });
 }
 
+class YtDlpProgress {
+  final double percent;
+  final int downloadedBytes;
+  final int totalBytes;
+  final double speedBytesPerSecond;
+
+  const YtDlpProgress({
+    required this.percent,
+    required this.downloadedBytes,
+    required this.totalBytes,
+    required this.speedBytesPerSecond,
+  });
+}
+
 class YtDlpService {
   static const MethodChannel _androidChannel =
       MethodChannel('audiolearn/yt_dlp');
@@ -188,7 +202,7 @@ class YtDlpService {
     required String videoUrl,
     required String targetDirectory,
     required String temporaryBaseFileName,
-    void Function(double progress)? onProgress,
+    void Function(YtDlpProgress progress)? onProgress,
   }) async {
     if (Platform.isWindows) {
       return _downloadAudioWindows(
@@ -217,12 +231,14 @@ class YtDlpService {
     required String videoUrl,
     required String targetDirectory,
     required String temporaryBaseFileName,
-    void Function(double progress)? onProgress,
+    void Function(YtDlpProgress progress)? onProgress,
   }) async {
     final String outputTemplate =
         '$targetDirectory${Platform.pathSeparator}$temporaryBaseFileName.%(ext)s';
     final List<String> arguments = [
       '--newline',
+      '--progress-template',
+      'download:PROGRESS|%(progress._percent_str)s|%(progress.downloaded_bytes)s|%(progress.total_bytes)s|%(progress.total_bytes_estimate)s|%(progress.speed)s',
       '--no-playlist',
       // Download the best available audio-only stream.
       '-f',
@@ -240,7 +256,6 @@ class YtDlpService {
 
     final StringBuffer completeOutput = StringBuffer();
     String? downloadedFilePath;
-    final RegExp progressRegExp = RegExp(r'\[download\]\s+(\d+(?:\.\d+)?)%');
     final RegExp destinationRegExp =
         RegExp(r'\[download\] Destination:\s+(.+)$');
 
@@ -250,14 +265,32 @@ class YtDlpService {
         .listen(
       (String line) {
         completeOutput.writeln(line);
-        final Match? progressMatch = progressRegExp.firstMatch(line);
+        if (line.startsWith('PROGRESS|')) {
+          final List<String> parts = line.split('|');
 
-        if (progressMatch != null) {
-          final double? progress =
-              double.tryParse(progressMatch.group(1) ?? '');
+          if (parts.length >= 6) {
+            final double percent = double.tryParse(
+                  parts[1].replaceAll('%', '').trim(),
+                ) ??
+                0.0;
 
-          if (progress != null) {
-            onProgress?.call(progress);
+            final int downloadedBytes = int.tryParse(parts[2].trim()) ?? 0;
+
+            final int? totalBytes = int.tryParse(parts[3].trim());
+
+            final int? totalBytesEstimate = int.tryParse(parts[4].trim());
+
+            final double speedBytesPerSecond =
+                double.tryParse(parts[5].trim()) ?? 0.0;
+
+            onProgress?.call(
+              YtDlpProgress(
+                percent: percent,
+                downloadedBytes: downloadedBytes,
+                totalBytes: totalBytes ?? totalBytesEstimate ?? 0,
+                speedBytesPerSecond: speedBytesPerSecond,
+              ),
+            );
           }
         }
 
@@ -309,7 +342,7 @@ class YtDlpService {
     required String videoUrl,
     required String targetDirectory,
     required String temporaryBaseFileName,
-    void Function(double progress)? onProgress,
+    void Function(YtDlpProgress progress)? onProgress,
   }) async {
     try {
       final Map<dynamic, dynamic>? response =

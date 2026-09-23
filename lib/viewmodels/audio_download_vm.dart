@@ -3384,8 +3384,13 @@ class AudioDownloadVM extends ChangeNotifier {
         videoUrl: videoUrl,
         targetDirectory: audio.enclosingPlaylist!.downloadPath,
         temporaryBaseFileName: temporaryBaseFileName,
-        onProgress: (double progress) {
-          _audioDownloadProgress = progress / 100.0;
+        onProgress: (YtDlpProgress progress) {
+          _audioDownloadProgress = progress.percent / 100.0;
+
+          _currentDownloadingAudio.audioFileSize = progress.totalBytes;
+
+          _lastSecondAudioDownloadSpeed = progress.speedBytesPerSecond.round();
+
           notifyListeners();
         },
       );

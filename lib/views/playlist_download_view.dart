@@ -2039,8 +2039,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
                 },
               ).then((filterSortAudioAndParmLst) {
                 if (filterSortAudioAndParmLst != null) {
-                  // user clicked on Save or Apply button on sort and filter
-                  // dialog opened by the popup menu button item
                   List<Audio> returnedAudioList = filterSortAudioAndParmLst[0];
                   AudioSortFilterParameters audioSortFilterParameters =
                       filterSortAudioAndParmLst[1];
@@ -2059,6 +2057,19 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
                             .sortFilterParametersAppliedName,
                   );
                   _wasSortFilterAudioSettingsApplied = true;
+
+                  // Missing before: without this, _selectedSortFilterParametersName
+                  // kept its previous value (e.g. "desc listened"). As long as
+                  // _hasUserSelectedSortFilterInThisWindow is false this went
+                  // unnoticed because _applySortFilterParmsNameChange re-fetched the
+                  // name from the VM's shared map, which was correctly updated by
+                  // setSortFilterForSelectedPlaylistPlayableAudiosAndParms above.
+                  // But once the user has made an explicit dropdown choice in this
+                  // window, that re-fetch is skipped on purpose (see
+                  // _hasUserSelectedSortFilterInThisWindow), so this window's own
+                  // record of the selected name must be kept in sync here too.
+                  _selectedSortFilterParametersName =
+                      audioSortFilterParametersName;
 
                   setState(() {
                     // Update the count from the already-computed returned list

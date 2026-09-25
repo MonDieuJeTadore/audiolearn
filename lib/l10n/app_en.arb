@@ -1188,6 +1188,7 @@
   "extractCommentsToMp3TextButtonTooltip": "Extract audio segments defined by comment timestamps to MP3.",
   "audioExtractorDialogTitle": "Comments to MP3",
   "editCommentDialogTitle": "Edit Comment",
+  "editAudioTitle": "Edit Audio",
   "addCommentDialogTitle": "Add Comment",
   "deleteCommentDialogTitle": "Remove Comment",
   "deleteCommentExplanation": "Are you sure you want to remove this comment from the comment extraction to MP3 functionality ?",

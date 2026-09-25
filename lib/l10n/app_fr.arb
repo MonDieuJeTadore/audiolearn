@@ -1609,6 +1609,7 @@
   "extractCommentsToMp3TextButtonTooltip": "Extraire les segments audio définis par les commentaires dans un fichier MP3.",
   "audioExtractorDialogTitle": "Commentaires->MP3",
   "editCommentDialogTitle": "Éditer le commentaire",
+  "editAudioTitle": "Editer l'audio",
   "addCommentDialogTitle": "Ajouter un commentaire",
   "deleteCommentDialogTitle": "Enlever le commentaire",
   "deleteCommentExplanation": "Etes-vous sûr que vous voulez enlever ce commentaire de la fonctionalité d'extraction en MP3 ?",

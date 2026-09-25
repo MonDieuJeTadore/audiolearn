@@ -2651,6 +2651,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get editCommentDialogTitle => 'Éditer le commentaire';
 
   @override
+  String get editAudioTitle => 'Editer l\'audio';
+
+  @override
   String get addCommentDialogTitle => 'Ajouter un commentaire';
 
   @override

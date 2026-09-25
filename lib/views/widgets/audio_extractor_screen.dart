@@ -1195,8 +1195,8 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                 ...List.generate(
                   audioWithSegments.segments.length,
                   (segmentIndex) {
-                    final segment = audioWithSegments.segments[segmentIndex];
-                    final displayedIndex =
+                    final AudioSegment segment = audioWithSegments.segments[segmentIndex];
+                    final String displayedIndex =
                         '${audioIndex + 1}.${segmentIndex + 1}';
 
                     return _buildSegmentCard(

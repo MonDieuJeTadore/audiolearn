@@ -4187,6 +4187,12 @@ abstract class AppLocalizations {
   /// **'Edit Comment'**
   String get editCommentDialogTitle;
 
+  /// No description provided for @editAudioTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Audio'**
+  String get editAudioTitle;
+
   /// No description provided for @addCommentDialogTitle.
   ///
   /// In en, this message translates to:

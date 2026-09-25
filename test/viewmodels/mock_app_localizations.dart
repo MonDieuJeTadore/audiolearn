@@ -3419,4 +3419,7 @@ class MockAppLocalizations extends AppLocalizations {
     Object dateStr,
   ) =>
       "Since the time format in $dateStr is invalid, only the date with 00:00 time is used.";
+
+  @override
+  String get editAudioTitle => "Edit Audio";
 }

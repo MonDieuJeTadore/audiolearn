@@ -256,6 +256,19 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
 
   @override
   Widget build(BuildContext context) {
+
+    AudioSegment? existingSegment = widget.existingSegment;
+    String dialogTitle = '';
+
+    if (existingSegment != null) {
+      if (existingSegment.commentId.contains('full_audio_')) {
+        dialogTitle = AppLocalizations.of(context)!.editAudioTitle;
+      } else {
+        dialogTitle = AppLocalizations.of(context)!.editCommentDialogTitle;
+      }
+    }
+
+
     return Actions(
       actions: {
         ActivateIntent: CallbackAction<ActivateIntent>(
@@ -274,8 +287,8 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
           autofocus: true,
           child: AlertDialog(
             title: Text(
-              widget.existingSegment != null
-                  ? AppLocalizations.of(context)!.editCommentDialogTitle
+              existingSegment != null
+                  ? dialogTitle
                   : AppLocalizations.of(context)!.addCommentDialogTitle,
               textAlign: TextAlign.center,
               maxLines: 2,

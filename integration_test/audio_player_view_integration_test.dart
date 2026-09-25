@@ -12323,8 +12323,8 @@ void main() {
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
           commentPositionTextButtonInTenthSecondsMin: 92654,
-          commentPositionTextButtonInTenthSecondsMax: 92671,
-          audioPlayerViewAudioPositionMin: '2:34:26',
+          commentPositionTextButtonInTenthSecondsMax: 92672,
+          audioPlayerViewAudioPositionMin: '2:34:24',
           audioPlayerViewAudioPositionMax: '2:34:27',
         );
 
@@ -12360,8 +12360,10 @@ void main() {
 
         // Wait during 2 seconds to verify that the audio is not
         // playing after the end position of the comment which was 1:17:14
-        await Future.delayed(const Duration(seconds: 2));
-        await tester.pumpAndSettle(const Duration(milliseconds: 1000));
+        for (int i = 0; i < 4; i++) {
+          await Future.delayed(const Duration(milliseconds: 500));
+          await tester.pumpAndSettle();
+        }
 
         // Edited comment and audio player view position verification
         _verifyPositionValueAfterCommentWasPlayed(

@@ -1349,7 +1349,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                             .commentStartPositionTooltip,
                         child: Text(
                           TimeFormatUtil.formatSeconds(
-                              segment.startPosition / segment.playSpeed),
+                              segment.startPosition),
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
@@ -1366,7 +1366,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
                         AppLocalizations.of(context)!.commentEndPositionTooltip,
                     child: Text(
                       TimeFormatUtil.formatSeconds(
-                          segment.endPosition / segment.playSpeed),
+                          segment.endPosition),
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
@@ -2467,7 +2467,7 @@ class _AudioExtractorScreenState extends State<AudioExtractorScreen>
           content: Text(
             '▶ ${segment.commentTitle}  '
             '(${TimeFormatUtil.formatSeconds(segment.startPosition)} → '
-            '${TimeFormatUtil.formatSeconds(segment.endPosition / segment.playSpeed)})',
+            '${TimeFormatUtil.formatSeconds(segment.endPosition)})',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(

@@ -548,11 +548,9 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       return;
     }
 
-    _audioItemScrollController.scrollTo(
+    _audioItemScrollController.jumpTo(
       index: index,
-      duration: kScrollDuration,
-      curve: Curves.easeInOut,
-      alignment: 0.1, // 0.0 = top of viewport, 1.0 = bottom
+      alignment: 0.1,
     );
   }
 

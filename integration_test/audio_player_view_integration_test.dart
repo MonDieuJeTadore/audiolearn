@@ -6477,13 +6477,9 @@ void main() {
       Finder appScreenNavigationButton =
           find.byKey(const ValueKey('audioPlayerViewIconButton'));
       await tester.tap(appScreenNavigationButton);
-      // await tester.pumpAndSettle();
-      await tester.pump();
-      await tester.tap(
-          appScreenNavigationButton); // Necessary to avoid "Failed assertion:
-      //                                 line 171 pos 12: '_positions.isNotEmpty'"
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
 
       // Verify that the comment icon button is disabled since no
       // audio is available to be played or commented
@@ -6500,13 +6496,7 @@ void main() {
       appScreenNavigationButton =
           find.byKey(const ValueKey('playlistDownloadViewIconButton'));
       await tester.tap(appScreenNavigationButton);
-      // await tester.pumpAndSettle();
-      await tester.pump();
-      await tester.tap(
-          appScreenNavigationButton); // Necessary to avoid "Failed assertion:
-      //                                 line 171 pos 12: '_positions.isNotEmpty'"
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle();
 
       // Copy an uncommented audio from the Youtube playlist to
       // the empty playlist

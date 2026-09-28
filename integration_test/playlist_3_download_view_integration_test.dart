@@ -1911,7 +1911,8 @@ void main() {
           // audio title to delete
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+          final Finder listFinder =
+              find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, -1000));
@@ -2558,7 +2559,8 @@ void main() {
           // audio title to delete
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+          final Finder listFinder =
+              find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, -1000));
@@ -2819,7 +2821,8 @@ void main() {
           // audio title to delete
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+          final Finder listFinder =
+              find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, -1000));
@@ -5517,7 +5520,8 @@ void main() {
 
           // Drag up to make sure that the audio to delete is visible
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+          final Finder listFinder =
+              find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));

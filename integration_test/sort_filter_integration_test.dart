@@ -9411,13 +9411,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         appScreenNavigationButton =
             find.byKey(const ValueKey('playlistDownloadViewIconButton'));
         await tester.tap(appScreenNavigationButton);
-        // await tester.pumpAndSettle();
-        await tester.pump();
-        await tester.tap(
-            appScreenNavigationButton); // Necessary to avoid "Failed assertion:
-        //                                 line 171 pos 12: '_positions.isNotEmpty'"
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
 
         // Click on playlist toggle button to display the playlist list
         await tester.tap(find.byKey(const Key('playlist_toggle_button')));
@@ -10676,8 +10670,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           Finder appScreenNavigationButton =
               find.byKey(const ValueKey('playlistDownloadViewIconButton'));
           await tester.tap(appScreenNavigationButton);
-          await tester.pump();
-          // await tester.pump(const Duration(milliseconds: 500)); // causes _switchToPlaylist failure !
+          await tester.pumpAndSettle();
 
           // Now switch back to the 'S8 audio' playlist
           await _switchToPlaylist(
@@ -10733,13 +10726,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           appScreenNavigationButton =
               find.byKey(const ValueKey('playlistDownloadViewIconButton'));
           await tester.tap(appScreenNavigationButton);
-          // await tester.pumpAndSettle();
-          await tester.pump();
-          await tester.tap(
-              appScreenNavigationButton); // Necessary to avoid "Failed assertion:
-          //                                              line 171 pos 12: '_positions.isNotEmpty'"
-          await tester.pump();
-          await tester.pump(const Duration(milliseconds: 500));
+          await tester.pumpAndSettle();
 
           // Now recreate the 'Title asc' sort/filter parms
 

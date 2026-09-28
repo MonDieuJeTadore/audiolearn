@@ -36832,12 +36832,7 @@ void main() {
       Finder audioPlayerNavButtonFinder =
           find.byKey(const ValueKey('playlistDownloadViewIconButton'));
       await tester.tap(audioPlayerNavButtonFinder);
-      await tester.pump();
-      await tester.tap(
-          audioPlayerNavButtonFinder); // Necessary to avoid "Failed assertion:
-      //                                 line 171 pos 12: '_positions.isNotEmpty'"
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle();
 
       // Find the audio list widget using its key
       listFinder = find.byKey(const Key('audio_list_non_empty'));
@@ -36860,12 +36855,7 @@ void main() {
       audioPlayerNavButtonFinder =
           find.byKey(const ValueKey('playlistDownloadViewIconButton'));
       await tester.tap(audioPlayerNavButtonFinder);
-      await tester.pump();
-      await tester.tap(
-          audioPlayerNavButtonFinder); // Necessary to avoid "Failed assertion:
-      //                                 line 171 pos 12: '_positions.isNotEmpty'"
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle();
 
       // Execute the 'Rewind all Audios to Start' playlist menu item
       await IntegrationTestUtil.typeOnPlaylistMenuItem(

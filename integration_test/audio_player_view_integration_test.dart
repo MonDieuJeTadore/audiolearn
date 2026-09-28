@@ -4675,8 +4675,11 @@ void main() {
 
       // Avoids integration test failure due to the fact that the
       // position is 660 or 680 and not 0 !
-      await Future.delayed(const Duration(milliseconds: 500));
-      await tester.pumpAndSettle(); // must be used !
+      // Ensure that the audio position is updated
+      for (int i = 0; i < 6; i++) {
+        await Future.delayed(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
+      }
 
       // If this test fails, try to rexecute it several times. If
       // the test continue to fail, restart your computer and

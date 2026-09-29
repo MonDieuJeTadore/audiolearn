@@ -2208,6 +2208,7 @@ void main() {
           tester: tester,
           audioSubTitlesAcceptableLst: [
             '0:00:05.6 56.4 Ko converti le ${DateFormat('dd/MM/yyyy').format(now)} à ${DateFormat('HH:mm').format(now)}',
+            "0:00:01.5 15.0 Ko converti le 07/09/2025 à 07:37",
           ],
           firstAudioListTileIndex: 0,
         );

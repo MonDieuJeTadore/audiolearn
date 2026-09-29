@@ -1554,6 +1554,35 @@ class IntegrationTestUtil {
         expectedAudioPlaySpeed);
   }
 
+  /// Returns the ListTile finders sorted by their on-screen position
+  /// (top to bottom).
+  ///
+  /// find.byType() returns widgets in element-tree order, which is not
+  /// guaranteed to be the visual order: ScrollablePositionedList builds
+  /// the items located before its target index in reverse order after
+  /// a jumpTo().
+  static List<Finder> _getListTilesSortedByScreenPosition({
+    required WidgetTester tester,
+  }) {
+    final Finder listTilesFinder = find.byType(ListTile);
+    final int listTilesCount = listTilesFinder.evaluate().length;
+
+    final List<Finder> sortedListTileFinders =
+        List<Finder>.generate(listTilesCount, (int i) => listTilesFinder.at(i));
+
+    sortedListTileFinders.sort((Finder a, Finder b) {
+      final Offset aTopLeft = tester.getTopLeft(a);
+      final Offset bTopLeft = tester.getTopLeft(b);
+      final int dyComparison = aTopLeft.dy.compareTo(bTopLeft.dy);
+
+      return (dyComparison != 0)
+          ? dyComparison
+          : aTopLeft.dx.compareTo(bTopLeft.dx);
+    });
+
+    return sortedListTileFinders;
+  }
+
   /// Method used to verify the presence and the order of the listed
   /// playlist titles or the listed audio titles in the playlist download
   /// view or the audio player view. If the audio list is verifyed, the
@@ -1568,19 +1597,18 @@ class IntegrationTestUtil {
     required List<String> audioOrPlaylistTitlesOrderedLst,
     int firstAudioListTileIndex = 0,
   }) {
-    // Obtains all the ListTile widgets present in the playlist
-    // download view
-    final Finder listTilesFinder = find.byType(ListTile);
+    final List<Finder> sortedListTileFinders =
+        _getListTilesSortedByScreenPosition(tester: tester);
 
     for (String title in audioOrPlaylistTitlesOrderedLst) {
-      Finder playlistTitleTextFinder = find.descendant(
-        of: listTilesFinder.at(firstAudioListTileIndex++),
+      final Finder titleTextFinder = find.descendant(
+        of: sortedListTileFinders[firstAudioListTileIndex++],
         matching: find.byType(Text),
       );
 
       expect(
         // 2 Text widgets exist in audio ListTile: the title and sub title
-        tester.widget<Text>(playlistTitleTextFinder.at(0)).data,
+        tester.widget<Text>(titleTextFinder.at(0)).data,
         title,
       );
     }
@@ -1590,7 +1618,7 @@ class IntegrationTestUtil {
     // firstAudioListTileIndex
     if (audioOrPlaylistTitlesOrderedLst.isEmpty) {
       expect(
-        tester.widgetList(listTilesFinder).length,
+        sortedListTileFinders.length,
         firstAudioListTileIndex,
       );
     }
@@ -3069,6 +3097,12 @@ class IntegrationTestUtil {
         matching: find.text(segmentDetails['playSpeed']),
       );
       expect(playSpeed, findsOneWidget);
+
+      final Finder volume = find.descendant(
+        of: firstSegmentCard,
+        matching: find.text(segmentDetails['volume']),
+      );
+      expect(volume, findsOneWidget);
 
       final Finder increaseDuration = find.descendant(
         of: firstSegmentCard,

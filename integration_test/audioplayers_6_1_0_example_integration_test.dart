@@ -8,7 +8,7 @@ import 'package:audiolearn/tools/audioplayers_example.dart' as app;
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  group('Audio Player Integration Test', () {
+  group('Audio Player 6.1.0 Integration Test', () {
     testWidgets('Play and Pause Test', (WidgetTester tester) async {
       // Launch the app
       app.main();

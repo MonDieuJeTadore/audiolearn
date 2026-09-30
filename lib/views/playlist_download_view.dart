@@ -1569,9 +1569,11 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     );
   }
 
-  /// Method called when the user select a sort/filter parameters in the
-  /// sort/filter dropdown button list. The selected sort/filter parameters
-  /// are applied to the selected playlist playable audio list.
+  /// Method called when app is started or when back from audio player view
+  /// or when a new sort/filter parameters is created or whnen the user select
+  /// a sort/filter parameters in the sort/filter dropdown button list. The
+  /// selected sort/filter parameters are applied to the selected playlist
+  /// playable audio list.
   String _applySortFilterParmsNameChange({
     required PlaylistListVM playlistListVMlistenFalseOrTrue,
     notifyListeners = false,
@@ -1596,14 +1598,12 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
 
     String searchSentence = '';
 
-    if (playlistListVMlistenFalseOrTrue.isSearchSentenceApplied) {
-      searchSentence = _playlistUrlOrSearchController.text;
-      _selectedSortFilterAudioNumber = _updatePlaylistSortedFilteredAudioList(
-        playlistListVMlistenFalseOrTrue: playlistListVMlistenFalseOrTrue,
-        searchSentence: searchSentence,
-        notifyListeners: notifyListeners,
-      );
-    }
+    searchSentence = _playlistUrlOrSearchController.text;
+    _selectedSortFilterAudioNumber = _updatePlaylistSortedFilteredAudioList(
+      playlistListVMlistenFalseOrTrue: playlistListVMlistenFalseOrTrue,
+      searchSentence: searchSentence,
+      notifyListeners: notifyListeners,
+    );
 
     return _selectedSortFilterParametersName!;
   }

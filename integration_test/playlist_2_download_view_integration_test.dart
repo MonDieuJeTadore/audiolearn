@@ -11706,7 +11706,8 @@ void main() {
           await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
           await tester.pumpAndSettle();
 
-          final Finder audioListFinder = find.byKey(const Key('audio_list_non_empty'));
+          final Finder audioListFinder =
+              find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll up action
           await tester.drag(audioListFinder, const Offset(0, 400));
@@ -14728,7 +14729,8 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+          final Finder listFinder =
+              find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -14866,7 +14868,8 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+          final Finder listFinder =
+              find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -22095,7 +22098,8 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+          final Finder listFinder =
+              find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -22256,7 +22260,8 @@ void main() {
           ];
 
           // Find the audio list widget using its key
-          final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+          final Finder listFinder =
+              find.byKey(const Key('audio_list_non_empty'));
 
           // Perform the scroll action
           await tester.drag(listFinder, const Offset(0, 300));
@@ -33188,13 +33193,14 @@ void main() {
           // Verify the the initial ordered audio titles
 
           List<String> audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
             "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -33265,13 +33271,14 @@ void main() {
           // Verify the the modified ordered audio titles
 
           audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Musique chrétienne en français La vraie prière",
             "7_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
             "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -33339,13 +33346,14 @@ void main() {
           // Verify the the initial ordered audio titles
 
           List<String> audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
             "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -33414,13 +33422,13 @@ void main() {
           // Verify the the modified ordered audio titles
 
           audioPositionedTitles = [
+            "10_Prière pour Dieu",
             "9_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "8_Musique chrétienne en français La vraie prière",
             "7_Prière au Seigneur",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
             "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
             "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -33487,13 +33495,13 @@ void main() {
           // Verify the the initial ordered audio titles
 
           List<String> audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
-            "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -33635,13 +33643,13 @@ void main() {
           // Verify the the initial ordered audio titles
 
           List<String> audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
-            "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -33711,13 +33719,13 @@ void main() {
           // Verify the the modified ordered audio titles
 
           audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Glorious - Laisse-moi te parler de Jesus #louange",
             "6_Musique chrétienne en français La vraie prière",
-            "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -33785,13 +33793,13 @@ void main() {
           // Verify the the initial ordered audio titles
 
           List<String> audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
-            "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -33854,20 +33862,20 @@ void main() {
           await tester.pumpAndSettle();
 
           listFinder = find.byKey(const Key('audio_list_non_empty'));
-          // Perform the scroll up action
-          await tester.drag(listFinder, const Offset(0, 200));
+          // Perform the scroll down action
+          await tester.drag(listFinder, const Offset(0, 50));
           await tester.pumpAndSettle();
 
           // Verify the the modified ordered audio titles
 
           audioPositionedTitles = [
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
             "5_Glorious - Laisse-moi te parler de Jesus #louange",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -33935,13 +33943,13 @@ void main() {
           // Verify the the initial ordered audio titles
 
           List<String> audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
-            "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -34157,13 +34165,13 @@ void main() {
           // Verify the the initial ordered audio titles
 
           List<String> audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
-            "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -34306,13 +34314,13 @@ void main() {
           // Verify the the initial ordered audio titles
 
           List<String> audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
-            "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -34320,6 +34328,13 @@ void main() {
             audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
             firstAudioListTileIndex: 0,
           );
+
+          // Find the audio list widget using its key
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
+
+          // Perform the scroll down action
+          await tester.drag(listFinder, const Offset(0, -200));
+          await tester.pumpAndSettle();
 
           // Now we want to tap the popup menu of the Audio ListTile
           // "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne
@@ -34377,19 +34392,19 @@ void main() {
 
           listFinder = find.byKey(const Key('audio_list_non_empty'));
           // Perform the scroll up action
-          await tester.drag(listFinder, const Offset(0, 200));
+          await tester.drag(listFinder, const Offset(0, 100));
           await tester.pumpAndSettle();
 
           // Verify the the modified ordered audio titles
 
           audioPositionedTitles = [
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
             "5_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "4_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -34457,13 +34472,13 @@ void main() {
           // Verify the the initial ordered audio titles
 
           List<String> audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_Glorious - Laisse-moi te parler de Jesus #louange",
-            "5_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -34471,6 +34486,13 @@ void main() {
             audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
             firstAudioListTileIndex: 0,
           );
+
+          // Find the audio list widget using its key
+          listFinder = find.byKey(const Key('audio_list_non_empty'));
+
+          // Perform the scroll down action
+          await tester.drag(listFinder, const Offset(0, -200));
+          await tester.pumpAndSettle();
 
           // Now we want to tap the popup menu of the Audio ListTile
           // "4_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne
@@ -34534,13 +34556,13 @@ void main() {
           // Verify the the modified ordered audio titles
 
           audioPositionedTitles = [
+            "12_Les commandements de Jésus (version pratique)",
+            "11_Jésus, je te donne tout, je te donne mon coeur LUC DUMONT",
+            "10_Prière pour Dieu",
             "9_Prière au Seigneur",
             "8_Père céleste, merci pour cette nouvelle journée que Tu me donnes",
             "7_Musique chrétienne en français La vraie prière",
             "6_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            "5_Glorious - Laisse-moi te parler de Jesus #louange",
-            "4_JÉSUS, C'EST LE PLUS BEAU NOM _ Louange acoustique",
-            "3_Seigneur, je T'en prie, mets-moi dans le feu de Ton Amour!",
           ];
 
           IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
@@ -36836,6 +36858,12 @@ void main() {
 
       // Find the audio list widget using its key
       listFinder = find.byKey(const Key('audio_list_non_empty'));
+      // Perform the scroll up action
+      await tester.drag(listFinder, const Offset(0, 5000));
+      await tester.pumpAndSettle();
+
+      // Find the audio list widget using its key
+      // listFinder = find.byKey(const Key('audio_list_non_empty'));
 
       // Tap on "41_Dédier une ou deux heures par jour à une vraie
       // vie spirituelle" to open the audio player view

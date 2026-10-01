@@ -1474,54 +1474,77 @@ class IntegrationTestUtil {
     }
   }
 
+  /// Returns the ListTile finders sorted by their on-screen position
+  /// (top to bottom).
+  ///
+  /// find.byType() returns widgets in element-tree order, which is not
+  /// the visual order: after a jumpTo(), ScrollablePositionedList builds
+  /// the items located before its target index in reverse order.
+  static List<Finder> _getListTilesSortedByScreenPosition({
+    required WidgetTester tester,
+  }) {
+    final Finder listTilesFinder = find.byType(ListTile);
+    final int listTilesCount = listTilesFinder.evaluate().length;
+
+    final List<Finder> sortedListTileFinders =
+        List<Finder>.generate(listTilesCount, (int i) => listTilesFinder.at(i));
+
+    sortedListTileFinders.sort((Finder a, Finder b) {
+      final Offset aTopLeft = tester.getTopLeft(a);
+      final Offset bTopLeft = tester.getTopLeft(b);
+      final int dyComparison = aTopLeft.dy.compareTo(bTopLeft.dy);
+
+      return (dyComparison != 0)
+          ? dyComparison
+          : aTopLeft.dx.compareTo(bTopLeft.dx);
+    });
+
+    return sortedListTileFinders;
+  }
+
   static void checkPlaylistAndAudioTitlesOrderInListTile({
     required WidgetTester tester,
     required List<String> playlistTitlesOrderedLst,
     required List<String> audioTitlesOrderedLst,
   }) {
-    // Obtains all the ListTile widgets present in the playlist
-    // download view
-    final Finder listTilesFinder = find.byType(ListTile);
-    int playlistListTileIndex = 0;
+    // ListTiles sorted in on-screen order (playlists first since they
+    // are displayed above the audio list)
+    final List<Finder> sortedListTileFinders =
+        _getListTilesSortedByScreenPosition(tester: tester);
+    int listTileIndex = 0;
 
-    if (playlistTitlesOrderedLst.isNotEmpty) {
-      for (String title in playlistTitlesOrderedLst) {
-        Finder playlistTitleTextFinder = find.descendant(
-          of: listTilesFinder.at(playlistListTileIndex++),
-          matching: find.byType(Text),
-        );
+    for (String title in playlistTitlesOrderedLst) {
+      final Finder titleTextFinder = find.descendant(
+        of: sortedListTileFinders[listTileIndex++],
+        matching: find.byType(Text),
+      );
 
-        expect(
-          tester.widget<Text>(playlistTitleTextFinder.at(0)).data,
-          title,
-        );
-      }
+      expect(
+        tester.widget<Text>(titleTextFinder.at(0)).data,
+        title,
+      );
     }
 
     if (audioTitlesOrderedLst.isNotEmpty) {
       for (String title in audioTitlesOrderedLst) {
-        Finder playlistTitleTextFinder = find.descendant(
-          of: listTilesFinder.at(playlistListTileIndex++),
+        final Finder titleTextFinder = find.descendant(
+          of: sortedListTileFinders[listTileIndex++],
           matching: find.byType(Text),
         );
 
         expect(
-          tester.widget<Text>(playlistTitleTextFinder.at(0)).data,
+          tester.widget<Text>(titleTextFinder.at(0)).data,
           title,
         );
       }
     } else {
-      // Verify that the second list is empty
-      int totalListTiles = tester.widgetList(listTilesFinder).length;
-
-      // The total number of ListTile widgets should equal the
-      // playlist titles count plus the starting index of the first
-      // audio list tile
+      // Verify that the audio list is empty: the total number of
+      // ListTile widgets must equal the playlist titles count
       expect(
-        totalListTiles,
+        sortedListTileFinders.length,
         playlistTitlesOrderedLst.length,
         reason: '''The playlist download view audio list should be empty
-            when the passed audioTitlesOrderedLst is [].''',
+          when the passed audioTitlesOrderedLst is [].''',
       );
     }
   }
@@ -1552,35 +1575,6 @@ class IntegrationTestUtil {
         loadedSelectedPlaylist
             .playableAudioLst[playableAudioLstAudioIndex].audioPlaySpeed,
         expectedAudioPlaySpeed);
-  }
-
-  /// Returns the ListTile finders sorted by their on-screen position
-  /// (top to bottom).
-  ///
-  /// find.byType() returns widgets in element-tree order, which is not
-  /// guaranteed to be the visual order: ScrollablePositionedList builds
-  /// the items located before its target index in reverse order after
-  /// a jumpTo().
-  static List<Finder> _getListTilesSortedByScreenPosition({
-    required WidgetTester tester,
-  }) {
-    final Finder listTilesFinder = find.byType(ListTile);
-    final int listTilesCount = listTilesFinder.evaluate().length;
-
-    final List<Finder> sortedListTileFinders =
-        List<Finder>.generate(listTilesCount, (int i) => listTilesFinder.at(i));
-
-    sortedListTileFinders.sort((Finder a, Finder b) {
-      final Offset aTopLeft = tester.getTopLeft(a);
-      final Offset bTopLeft = tester.getTopLeft(b);
-      final int dyComparison = aTopLeft.dy.compareTo(bTopLeft.dy);
-
-      return (dyComparison != 0)
-          ? dyComparison
-          : aTopLeft.dx.compareTo(bTopLeft.dx);
-    });
-
-    return sortedListTileFinders;
   }
 
   /// Method used to verify the presence and the order of the listed

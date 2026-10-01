@@ -1707,6 +1707,7 @@ class IntegrationTestUtil {
   static void checkDropdopwnButtonSelectedTitle({
     required WidgetTester tester,
     required String dropdownButtonSelectedTitle,
+    int tooltipAudioNumvber = -1,
   }) {
     final Finder dropDownButtonFinder =
         find.byKey(const Key('sort_filter_parms_dropdown_button'));
@@ -1720,6 +1721,19 @@ class IntegrationTestUtil {
       tester.widget<Text>(dropDownButtonTextFinder).data,
       dropdownButtonSelectedTitle,
     );
+
+    if (tooltipAudioNumvber > -1) {
+      // Verify the Tooltip widget exists with the expected message
+      final Tooltip tooltipWidget = tester.widget<Tooltip>(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Tooltip &&
+              widget.message ==
+                  '$dropdownButtonSelectedTitle ($tooltipAudioNumvber)',
+        ),
+      );
+      expect(tooltipWidget, isNotNull);
+    }
   }
 
   /// {confirmOrCancelAction} is true if the confirm button will be tapped.

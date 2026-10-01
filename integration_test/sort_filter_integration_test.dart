@@ -9642,6 +9642,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: descListenedSortFilterName,
+            tooltipAudioNumvber: 7,
           );
 
           // Now open the Remove dialog, check the 'Download Audio' screen

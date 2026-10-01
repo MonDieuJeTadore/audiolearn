@@ -6259,13 +6259,13 @@ void main() {
           // And verify the order of the playlist titles.
 
           const List<String> playlistsTitles = [
-            "local_13",
-            "local_14",
             "local_15",
             "local_2",
             "local_3",
             "local_4",
             "local_5",
+            "local_6",
+            "local_7",
           ];
 
           // Ensure that since the search icon button was used,
@@ -6337,13 +6337,13 @@ void main() {
           // And verify the order of the playlist titles.
 
           const List<String> playlistsTitles = [
-            "local_13",
-            "local_14",
             "local_15",
             "local_3",
             "local_2",
             "local_4",
             "local_5",
+            "local_6",
+            "local_7",
           ];
 
           // Ensure that since the search icon button was used,
@@ -10636,7 +10636,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:37',
+              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:38',
             ],
             firstAudioListTileIndex: 3,
           );
@@ -10674,7 +10674,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:08.0 80.3 KB converted on 07/09/2025 at 07:37',
+              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:38',
             ],
             firstAudioListTileIndex: 3,
           );
@@ -11056,7 +11056,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:37',
+              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:38',
             ],
             firstAudioListTileIndex: 3,
           );
@@ -11095,7 +11095,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:08.0 80.3 KB converted on 07/09/2025 at 07:37',
+              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:38',
             ],
             firstAudioListTileIndex: 3,
           );
@@ -11462,7 +11462,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:37',
+              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:38',
             ],
             firstAudioListTileIndex: 1,
           );
@@ -11500,7 +11500,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:08.0 80.3 KB converted on 07/09/2025 at 07:37',
+              '0:00:08.0 80.3 KB converted on 07/09/2025 at 07:38',
             ],
             firstAudioListTileIndex: 1,
           );
@@ -11865,7 +11865,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:37',
+              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:38',
             ],
             firstAudioListTileIndex: 1,
           );
@@ -11904,7 +11904,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:08.0 80.3 KB converted on 07/09/2025 at 07:37',
+              '0:00:08.0 80.3 KB converted on 07/09/2025 at 07:38',
             ],
             firstAudioListTileIndex: 1,
           );
@@ -15420,7 +15420,7 @@ void main() {
 
           List<String> audioSubTitles = [
             '0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16',
-            "0:19:05.0 6.98 MB at 2.28 MB/sec on 07/01/2024 at 08:16",
+            "0:15:16.0 6.98 MB at 2.28 MB/sec on 07/01/2024 at 08:16",
             "0:16:25.6 7.51 MB at 2.44 MB/sec on 26/12/2023 at 09:45",
             "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
           ];
@@ -15608,7 +15608,7 @@ void main() {
 
           List<String> audioSubTitles = [
             '0:10:55.2 4.99 MB at 2.55 MB/sec on 07/01/2024 at 08:16',
-            "0:19:05.0 6.98 MB at 2.28 MB/sec on 07/01/2024 at 08:16",
+            "0:15:16.0 6.98 MB at 2.28 MB/sec on 07/01/2024 at 08:16",
             "0:16:25.6 7.51 MB at 2.44 MB/sec on 26/12/2023 at 09:45",
             "0:05:11.2 2.37 MB at 1.36 MB/sec on 26/12/2023 at 09:45",
           ];
@@ -16542,7 +16542,7 @@ void main() {
 
             List<String> audioSubTitles = [
               '0:00:24.1 11.2 KB at 7.5 KB/sec on 18/05/2025 at 16:40',
-              "0:00:58.9 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
+              "0:00:59.0 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
               "0:00:09.9 61.3 KB at 30.7 KB/sec on 18/05/2025 at 16:40",
             ];
 
@@ -16901,7 +16901,7 @@ void main() {
 
             List<String> audioSubTitles = [
               '0:00:24.1 11.2 KB at 7.5 KB/sec on 18/05/2025 at 16:40',
-              "0:00:58.9 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
+              "0:00:59.0 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
               "0:00:09.9 61.3 KB at 30.7 KB/sec on 18/05/2025 at 16:40",
             ];
 
@@ -17261,7 +17261,7 @@ void main() {
 
             List<String> audioSubTitles = [
               '0:00:24.1 11.2 KB at 7.5 KB/sec on 18/05/2025 at 16:40',
-              "0:00:58.9 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
+              "0:00:59.0 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
               "0:00:09.9 61.3 KB at 30.7 KB/sec on 18/05/2025 at 16:40",
             ];
 
@@ -17619,7 +17619,7 @@ void main() {
 
             List<String> audioSubTitles = [
               '0:00:24.1 11.2 KB at 7.5 KB/sec on 18/05/2025 at 16:40',
-              "0:00:58.9 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
+              "0:00:59.0 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
               "0:00:09.9 61.3 KB at 30.7 KB/sec on 18/05/2025 at 16:40",
             ];
 
@@ -20584,7 +20584,7 @@ void main() {
 
             List<String> audioSubTitles = [
               '0:00:24.1 11.2 KB at 7.5 KB/sec on 18/05/2025 at 16:40',
-              "0:00:58.9 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
+              "0:00:59.0 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
               "0:00:09.9 61.3 KB at 30.7 KB/sec on 18/05/2025 at 16:40",
             ];
 
@@ -20943,7 +20943,7 @@ void main() {
 
             List<String> audioSubTitles = [
               '0:00:24.1 11.2 KB at 7.5 KB/sec on 18/05/2025 at 16:40',
-              "0:00:58.9 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
+              "0:00:59.0 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
               "0:00:09.9 61.3 KB at 30.7 KB/sec on 18/05/2025 at 16:40",
             ];
 
@@ -21739,7 +21739,7 @@ void main() {
 
             List<String> audioSubTitles = [
               '0:00:24.1 11.2 KB at 7.5 KB/sec on 18/05/2025 at 16:40',
-              "0:00:58.9 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
+              "0:00:59.0 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
               "0:00:09.9 61.3 KB at 30.7 KB/sec on 18/05/2025 at 16:40",
             ];
 
@@ -21935,7 +21935,7 @@ void main() {
 
             List<String> audioSubTitles = [
               '0:00:24.1 11.2 KB at 7.5 KB/sec on 18/05/2025 at 16:40',
-              "0:00:58.9 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
+              "0:00:59.0 360.8 KB at 175.5 KB/sec on 18/05/2025 at 16:40",
               "0:00:09.9 61.3 KB at 30.7 KB/sec on 18/05/2025 at 16:40",
             ];
 
@@ -27380,6 +27380,7 @@ void main() {
         audioPlaySpeed: '1.25',
         audioVolume: '50.0 %',
         audioCommentNumber: 0,
+        doDropDown: true,
       );
 
       String fileNameNoExt = fileName_2.replaceFirst('.mp4', '');
@@ -27401,6 +27402,7 @@ void main() {
         audioPlaySpeed: '1.0',
         audioVolume: '50.0 %',
         audioCommentNumber: 0,
+        doDropDown: true,
       );
 
       // Second import operation
@@ -27445,6 +27447,8 @@ void main() {
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
+      DateTime now = DateTime.now();
+
       await IntegrationTestUtil.typeOnPlaylistMenuItem(
         tester: tester,
         playlistTitle: targetPlaylistTitle,
@@ -27470,13 +27474,18 @@ void main() {
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
+      Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+      // Perform the scroll down action
+      await tester.drag(listFinder, const Offset(0, -100));
+      await tester.pumpAndSettle();
+
       fileNameNoExt = fileName_3.replaceFirst('.mp4', '');
 
       await IntegrationTestUtil.verifyAudioInfoDialog(
         tester: tester,
         audioType: AudioType.imported,
         validVideoTitleOrAudioTitle: fileNameNoExt,
-        audioDownloadDateTimeOne: frenchDateTimeFormat.format(DateTime.now()),
+        audioDownloadDateTimeOne: frenchDateTimeFormat.format(now),
         isAudioPlayable: true,
         audioEnclosingPlaylistTitle: targetPlaylistTitle,
         audioDuration: '0:02:00.1',
@@ -27492,7 +27501,7 @@ void main() {
       );
 
       // Find the audio list widget using its key
-      Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+      listFinder = find.byKey(const Key('audio_list_non_empty'));
       // Perform the scroll down action
       await tester.drag(listFinder, const Offset(0, 400));
       await tester.pumpAndSettle();
@@ -27503,7 +27512,7 @@ void main() {
         tester: tester,
         audioType: AudioType.imported,
         validVideoTitleOrAudioTitle: fileNameNoExt,
-        audioDownloadDateTimeOne: frenchDateTimeFormat.format(DateTime.now()),
+        audioDownloadDateTimeOne: frenchDateTimeFormat.format(now),
         isAudioPlayable: true,
         audioEnclosingPlaylistTitle: targetPlaylistTitle,
         audioDuration: '0:04:03.3',

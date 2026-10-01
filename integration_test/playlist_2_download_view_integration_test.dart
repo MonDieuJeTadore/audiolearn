@@ -1603,6 +1603,7 @@ void main() {
         // verify the newly selected playlist audio titles
 
         List<String> audioTitles = [
+          "Really short video",
           "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
           "La résilience insulaire par Fiona Roche",
           "Les besoins artificiels par R.Keucheyan",
@@ -1688,6 +1689,7 @@ void main() {
         ];
 
         List<String> audioTitles = [
+          "Really short video",
           "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
           "La résilience insulaire par Fiona Roche",
           "Les besoins artificiels par R.Keucheyan",
@@ -1765,6 +1767,7 @@ void main() {
         ];
 
         audioTitles = [
+          "La résilience insulaire par Fiona Roche",
           "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
           "Les besoins artificiels par R.Keucheyan",
           "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
@@ -3214,9 +3217,6 @@ void main() {
           "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
           "Really short video",
-          "morning _ cinematic video",
-          "La résilience insulaire par Fiona Roche",
-          "Les besoins artificiels par R.Keucheyan",
         ];
 
         // Ensure that since the search icon button was un-pressed,
@@ -3253,7 +3253,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: [],
-          firstAudioListTileIndex: 4,
+          firstAudioListTileIndex: 3,
         );
 
         // Now tap on the search icon button to deactivate it
@@ -3422,9 +3422,9 @@ void main() {
 
         // And verify the displayd audio titles list
         playlistDisplayedAudioTitlesLst = [
-          "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
-          "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
-          "Les besoins artificiels par R.Keucheyan",
+          "La surpopulation mondiale par Jancovici et Barrau",
+          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+          "La résilience insulaire par Fiona Roche",
         ];
 
         // Since the displayed playlist list is empty due to the applied search
@@ -3509,12 +3509,12 @@ void main() {
         // And verify the order of the default playlist audio titles
 
         playlistDisplayedAudioTitles = [
-          "morning _ cinematic video",
-          "Really short video",
+          "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
           "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
+          "Really short video",
+          "morning _ cinematic video",
           "La résilience insulaire par Fiona Roche",
           "Les besoins artificiels par R.Keucheyan",
-          "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
         ];
 
         // Ensure that since the search icon button was un-pressed,
@@ -3666,7 +3666,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: [],
-          firstAudioListTileIndex: 4,
+          firstAudioListTileIndex: 3,
         );
 
         // Now tap on the search icon button to deactivate it
@@ -3781,7 +3781,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Enter the 2 letters of the 'mo' search word
+        // Enter the 2 letters of the 'no' search word
         await tester.enterText(
           find.byKey(
             const Key('youtubeUrlOrSearchTextField'),
@@ -4569,7 +4569,7 @@ void main() {
         // Scrolling up the playlists list to display the local_2 playlist
         await tester.drag(
           find.byKey(const Key('expandable_playlist_list')),
-          const Offset(0, 100), // Positive value for vertical drag to scroll up
+          const Offset(0, 200), // Positive value for vertical drag to scroll up
         );
         await tester.pumpAndSettle();
 
@@ -5036,13 +5036,6 @@ void main() {
         String newAudioSubTitle =
             '0:10:14.1 3.75 Mo à 1.64 Mo/sec le 03/11/2024 à 15:19';
 
-        // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
-
-        // Perform the scroll action
-        await tester.drag(listFinder, const Offset(0, 300));
-        await tester.pumpAndSettle();
-
         // Verify that the current audio is displayed with the correct
         // title and subtitle color
         await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
@@ -5484,6 +5477,14 @@ void main() {
           tapOnPlaylistToggleButton: false,
         );
 
+        // Find the playlist list widget using its key
+        Finder playlistListFinder =
+            find.byKey(const Key('expandable_playlist_list'));
+
+        // Perform the scroll up action
+        await tester.drag(playlistListFinder, const Offset(0, 1100));
+        await tester.pumpAndSettle();
+
         // Select the 'Jeunes pianistes extraordinaires' top
         // playlist
 
@@ -5527,8 +5528,7 @@ void main() {
 
         // Verify the moved playlist position
 
-        Finder playlistListFinder =
-            find.byKey(const Key('expandable_playlist_list'));
+        playlistListFinder = find.byKey(const Key('expandable_playlist_list'));
 
         // Perform the scroll down action
         await tester.drag(playlistListFinder, const Offset(0, -1000));
@@ -5607,6 +5607,14 @@ void main() {
             tapOnPlaylistToggleButton: false,
           );
 
+          // Find the playlist list widget using its key
+          Finder playlistListFinder =
+              find.byKey(const Key('expandable_playlist_list'));
+
+          // Perform the scroll up action
+          await tester.drag(playlistListFinder, const Offset(0, 300));
+          await tester.pumpAndSettle();
+
           const String playlistToMoveTitle = 'local_14';
 
           await IntegrationTestUtil.typeOnPlaylistMenuItem(
@@ -5642,13 +5650,13 @@ void main() {
           // And verify the order of the playlist titles.
 
           const List<String> playlistsTitles = [
-            "local_15",
-            "local_2",
-            "local_3",
             "local_4",
             "local_14",
             "local_5",
             "local_6",
+            "local_7",
+            "local_8",
+            "local_9",
           ];
 
           // Ensure that since the search icon button was used,
@@ -5694,6 +5702,14 @@ void main() {
             language: Language.english,
           );
 
+          // Find the playlist list widget using its key
+          Finder playlistListFinder =
+              find.byKey(const Key('expandable_playlist_list'));
+
+          // Perform the scroll up action
+          await tester.drag(playlistListFinder, const Offset(0, 300));
+          await tester.pumpAndSettle();
+
           const String playlistToMoveTitle = 'local_14';
 
           await IntegrationTestUtil.typeOnPlaylistMenuItem(
@@ -5728,13 +5744,13 @@ void main() {
           // And verify the order of the playlist titles.
 
           const List<String> playlistsTitles = [
-            "local_15",
-            "local_2",
-            "local_3",
             "local_4",
             "local_14",
             "local_5",
             "local_6",
+            "local_7",
+            "local_8",
+            "local_9",
           ];
 
           // Ensure that since the search icon button was used,
@@ -5785,7 +5801,7 @@ void main() {
               find.byKey(const Key('expandable_playlist_list'));
 
           // Perform the scroll up action
-          await tester.drag(playlistListFinder, const Offset(0, 400));
+          await tester.drag(playlistListFinder, const Offset(0, 500));
           await tester.pumpAndSettle();
 
           const String playlistToMoveTitle = 'Jeunes pianistes extraordinaires';
@@ -5966,7 +5982,7 @@ void main() {
               find.byKey(const Key('expandable_playlist_list'));
 
           // Perform the scroll up action
-          await tester.drag(playlistListFinder, const Offset(0, 400));
+          await tester.drag(playlistListFinder, const Offset(0, 450));
           await tester.pumpAndSettle();
 
           const String playlistToMoveTitle = 'Jeunes pianistes extraordinaires';
@@ -6089,13 +6105,13 @@ void main() {
           // And verify the not modified order of the playlist titles.
 
           const List<String> playlistsTitles = [
-            "local_10",
             "local_11",
             "local_12",
             "local_13",
             "local_14",
             "local_15",
             "local_2",
+            "local_3",
           ];
 
           // Ensure that since the search icon button was
@@ -6180,13 +6196,13 @@ void main() {
           // And verify the not modified order of the playlist titles.
 
           const List<String> playlistsTitles = [
-            "local_10",
             "local_11",
             "local_12",
             "local_13",
             "local_14",
             "local_15",
             "local_2",
+            "local_3",
           ];
 
           // Ensure that since the search icon button was
@@ -37390,9 +37406,6 @@ Future<void> _selectAndApplySortFilterParms({
 
   // And verify the order of the 'asc listened' playlist audio
   // titles
-
-  // Ensure that since the search icon button was un-pressed,
-  // the displayed audio list returned to the default list.
   IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
     tester: tester,
     audioOrPlaylistTitlesOrderedLst: playlistDisplayedAudioTitlesLst,
@@ -37943,6 +37956,7 @@ Future<List<String>> _enteringFirstAndSecondLetterOfLocalPlaylistSearchWord({
   await tester.pumpAndSettle();
 
   List<String> audioTitles = [
+    "La surpopulation mondiale par Jancovici et Barrau",
     "La résilience insulaire par Fiona Roche",
     "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
     "Les besoins artificiels par R.Keucheyan",
@@ -38009,6 +38023,7 @@ Future<List<String>> _enteringFirstAndSecondLetterOfLocalPlaylistSearchWord({
   ];
 
   audioTitles = [
+    "La résilience insulaire par Fiona Roche",
     "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
     "Les besoins artificiels par R.Keucheyan",
     "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
@@ -38058,6 +38073,7 @@ Future<List<String>> _enteringFirstAndSecondLetterOfYoutubePlaylistSearchWord({
   ];
 
   List<String> audioTitles = [
+    "Really short video",
     "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
     "La résilience insulaire par Fiona Roche",
     "Les besoins artificiels par R.Keucheyan",

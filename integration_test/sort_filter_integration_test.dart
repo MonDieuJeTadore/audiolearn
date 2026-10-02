@@ -8539,6 +8539,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedFrenchTitle,
+            tooltipAudioNumvber: 7,
           );
 
           // And verify the order of the playlist audio titles
@@ -9296,6 +9297,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedFrenchTitle,
+            tooltipAudioNumvber: 7,
           );
 
           // And verifyagain the order of the playlist audio titles

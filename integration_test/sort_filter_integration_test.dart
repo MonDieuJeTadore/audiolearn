@@ -9449,7 +9449,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         );
 
         // Verifying that after returning from the audio player view, the
-        // the selected sort/filter parms tooltip is correctly displayed
+        // selected sort/filter parms tooltip is correctly displayed
         // with the correct tooltip audio number
 
         // Go to audio player view

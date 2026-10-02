@@ -9438,6 +9438,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
           tester: tester,
           dropdownButtonSelectedTitle: titleAscendingSFparmsName,
+          tooltipAudioNumvber: 7,
         );
 
         // Find the audio list widget using its key
@@ -9451,6 +9452,30 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: audioTitlesSortedByTitleAscending,
+        );
+
+        // Verifying that after returning from the audio player view, the
+        // the selected sort/filter parms tooltip is correctly displayed
+        // with the correct tooltip audio number
+
+        // Go to audio player view
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('audioPlayerViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Return to the playlist download view
+        appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        // Verify that the 'desc listened' sort/filter parms is selected
+        // and verify its tooltip audio number.
+        IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
+          tester: tester,
+          dropdownButtonSelectedTitle: titleAscendingSFparmsName,
+          tooltipAudioNumvber: 7,
         );
 
         // Purge the test playlist directory so that the created test
@@ -9645,6 +9670,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           const String titleAscSortFilterName = 'Title asc';
 
           // Verify that the 'desc listened' sort/filter parms is selected
+          // and verify its tooltip audio number.
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: descListenedSortFilterName,

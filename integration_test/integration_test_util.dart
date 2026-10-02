@@ -1709,19 +1709,6 @@ class IntegrationTestUtil {
     required String dropdownButtonSelectedTitle,
     int tooltipAudioNumvber = -1,
   }) {
-    final Finder dropDownButtonFinder =
-        find.byKey(const Key('sort_filter_parms_dropdown_button'));
-
-    final Finder dropDownButtonTextFinder = find.descendant(
-      of: dropDownButtonFinder,
-      matching: find.byType(Text),
-    );
-
-    expect(
-      tester.widget<Text>(dropDownButtonTextFinder).data,
-      dropdownButtonSelectedTitle,
-    );
-
     if (tooltipAudioNumvber > -1) {
       // Verify the Tooltip widget exists with the expected message
       final Tooltip tooltipWidget = tester.widget<Tooltip>(
@@ -1734,6 +1721,19 @@ class IntegrationTestUtil {
       );
       expect(tooltipWidget, isNotNull);
     }
+
+    final Finder dropDownButtonFinder =
+        find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+    final Finder dropDownButtonTextFinder = find.descendant(
+      of: dropDownButtonFinder,
+      matching: find.byType(Text),
+    );
+
+    expect(
+      tester.widget<Text>(dropDownButtonTextFinder).data,
+      dropdownButtonSelectedTitle,
+    );
   }
 
   /// {confirmOrCancelAction} is true if the confirm button will be tapped.

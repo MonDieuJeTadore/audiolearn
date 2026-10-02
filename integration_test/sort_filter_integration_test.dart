@@ -9323,8 +9323,11 @@ void playlistDownloadViewSortFilterIntegrationTest() {
     group('''Verifying playlist selection change applies correctly their named
              sort/filter parms.''', () {
       testWidgets(
-          '''Change the SF parms in the dropdown button list to 'Title asc'
-             and then verify its application. Then go to the audio player view
+          '''First select the 'asc fil listened' sort/filter parms and verify
+             the audio number in its tooltip. Then, select the 'Title asc'
+             sort/filter parms and verify the audio number in its tooltip.
+             
+             Then verify its application. Then go to the audio player view
              and there select another playlist. Then go back to the playlist
              download view, select the previously selected playlist and verify
              that its previously selected named sort/filter parms is selected
@@ -9369,12 +9372,41 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         await tester.tap(dropDownButtonTextFinder);
         await tester.pumpAndSettle();
 
-        // And find the 'Title asc' sort/filter item
-        String titleAscendingSFparmsName = 'Title asc';
+        // And find the 'asc fil' sort/filter item
+        const String ascFilListenedSortFilterName = 'asc fil listened';
+        Finder ascFilDropDownTextFinder =
+            find.text(ascFilListenedSortFilterName);
+        await tester.tap(ascFilDropDownTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify that the 'ascFilListened' SortFilterName sort/filter
+        // parms is selected and verify its tooltip audio number.
+        IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
+          tester: tester,
+          dropdownButtonSelectedTitle: ascFilListenedSortFilterName,
+          tooltipAudioNumvber: 4,
+        );
+
+        // Now retap on the current dropdown button item to open the
+        // dropdown button items list
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // And now find the 'Title asc' sort/filter item
+        const String titleAscendingSFparmsName = 'Title asc';
         Finder titleAscDropDownTextFinder =
             find.text(titleAscendingSFparmsName);
         await tester.tap(titleAscDropDownTextFinder);
         await tester.pumpAndSettle();
+
+        // Verify that the 'Title asc' SortFilterName sort/filter
+        // parms is selected and verify its tooltip audio number.
+        IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
+          tester: tester,
+          dropdownButtonSelectedTitle: titleAscendingSFparmsName,
+          tooltipAudioNumvber: 7,
+        );
 
         // And verify the order of the playlist audio titles
 
@@ -9492,8 +9524,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         testWidgets(
             '''Select the 'desc listened' sort/filter parms. Then, in 'S8 audio',
                save it only to playlist download view. Verify playlist json file
-               as well as the Save and Remove dialogs content..
-               
+               as well as the Save and Remove dialogs content.
+                              
                Then, select 'Title asc' in the sort/filter dropdown button and
                open the Save dialog in order to save this SF parms to the audio
                player view. Now verify the playlist json file as well as the

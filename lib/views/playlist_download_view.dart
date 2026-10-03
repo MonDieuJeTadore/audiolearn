@@ -101,10 +101,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   // so _hasUserSelectedSortFilterInThisWindow can be reset accordingly.
   String? _lastKnownSelectedPlaylistTitle;
 
-  // DEBUG - à retirer après diagnostic
-  final String _debugWindowId =
-      DateTime.now().millisecondsSinceEpoch.toString().substring(8);
-
   // Tracks whether the audio list was empty on the previous build, to
   // detect when its emptiness (and therefore its Key) is about to
   // change on this build.
@@ -338,8 +334,13 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     // own dropdown actions and is never reset as a side effect of an unrelated
     // rebuild, so it reliably reflects what this window's dropdown currently
     // shows. Prefer it over the shared VM map for the actual query.
+    //
+    // _selectedSortFilterParametersName == _selectedPlaylistAudioSortFilterParmsName
+    // The case when the list of playlist is collapsed
     final String sortFilterParmsNameForQuery =
         (_selectedSortFilterParametersName != null &&
+                _selectedSortFilterParametersName ==
+                    _selectedPlaylistAudioSortFilterParmsName &&
                 _selectedSortFilterParametersName!.isNotEmpty)
             ? _selectedSortFilterParametersName!
             : _selectedPlaylistAudioSortFilterParmsName;

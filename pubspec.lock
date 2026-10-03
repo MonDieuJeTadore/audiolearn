@@ -357,10 +357,10 @@ packages:
     dependency: "direct main"
     description:
       name: ffmpeg_kit_flutter_new
-      sha256: "112ca70a36babc2951cddc879990aad98956b75acb69cdc3fbd2d16bfc941753"
+      sha256: "1f2a4bb5789701db25d0b5087c033db05e34aacd23ee91c734d3ede71b5dd48e"
       url: "https://pub.dev"
     source: hosted
-    version: "4.6.2"
+    version: "4.6.4"
   ffmpeg_kit_flutter_platform_interface:
     dependency: transitive
     description:
@@ -1197,10 +1197,10 @@ packages:
     dependency: "direct main"
     description:
       name: url_launcher
-      sha256: f6a7e5c4835bb4e3026a04793a4199ca2d14c739ec378fdfe23fc8075d0439f8
+      sha256: e8cc955c97e06df9879140a1fe301f3d493f01b7c62dec7f46834be31d7e9fda
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.2"
+    version: "6.3.3"
   url_launcher_android:
     dependency: transitive
     description:

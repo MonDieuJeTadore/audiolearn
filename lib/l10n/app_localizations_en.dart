@@ -2570,6 +2570,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String fileToRenameDoesNotExisWarning(Object fileName) {
+    return 'The file \"$fileName\" does not exist and so can not be renamed.';
+  }
+
+  @override
   String playlistWithTitleAlreadyExist(Object title) {
     return 'A playlist with the title \"$title\" already exists in the playlists list and so the playlist can\'t be renamed to this title.';
   }

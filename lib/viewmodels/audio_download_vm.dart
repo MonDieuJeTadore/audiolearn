@@ -1102,6 +1102,10 @@ class AudioDownloadVM extends ChangeNotifier {
       fileToRenameFilePathName: audio.filePathName,
       newFileName: audioModifiedFileName,
     )) {
+      warningMessageVM.fileToRenameDoesNotExist(
+        fileNotExistName: audioOldFileName,
+      );
+
       return;
     }
 

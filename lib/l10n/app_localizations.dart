@@ -4097,6 +4097,12 @@ abstract class AppLocalizations {
   /// **'The picture file name \"{fileName}.json\" already exists in the picture directory and so renaming the audio file with the name \"{fileName}.mp3\" is not possible.'**
   String renamePictureFileNameAlreadyUsed(Object fileName);
 
+  /// No description provided for @fileToRenameDoesNotExisWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'The file \"{fileName}\" does not exist and so can not be renamed.'**
+  String fileToRenameDoesNotExisWarning(Object fileName);
+
   /// No description provided for @playlistWithTitleAlreadyExist.
   ///
   /// In en, this message translates to:

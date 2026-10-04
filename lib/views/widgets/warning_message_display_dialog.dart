@@ -786,6 +786,20 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
         });
 
         return const SizedBox.shrink();
+      case WarningMessageType.fileToRenameDoesNotExist:
+        String fileName = _warningMessageVM.fileNotExistName;
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _displayWarningDialog(
+            context: _context,
+            message: AppLocalizations.of(context)!
+                .fileToRenameDoesNotExisWarning(fileName),
+            warningMessageVM: _warningMessageVM,
+            themeProviderVM: themeProviderVM,
+          );
+        });
+
+        return const SizedBox.shrink();
       case WarningMessageType.invalidPlayableOnlyWeekDays:
         String invalidWeekDaysStr =
             _warningMessageVM.invalidPlayableEveryDaysValue;

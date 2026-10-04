@@ -1521,7 +1521,8 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
                 : _applySortFilterParmsNameChange(
                     playlistListVMlistenFalseOrTrue: playlistListVMlistenFalse,
                   ),
-            items: dropdownMenuItems,
+            items:
+                dropdownMenuItems, // Sort Filter elements displayed when the dropdown is opened
             // Displays a tooltip with the audio count only on the selected item
             selectedItemBuilder: (BuildContext context) {
               return audioSortFilterParametersNamesLst.map((String name) {

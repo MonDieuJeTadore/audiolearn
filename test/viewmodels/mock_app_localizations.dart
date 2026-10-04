@@ -3422,4 +3422,10 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get editAudioTitle => "Edit Audio";
+
+  @override
+  String fileToRenameDoesNotExisWarning(
+    Object fileName,
+  ) =>
+      "The file \"$fileName.mp3\" does not exist and so can not be renamed.";
 }

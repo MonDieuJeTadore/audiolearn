@@ -2597,6 +2597,11 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String fileToRenameDoesNotExisWarning(Object fileName) {
+    return 'Le fichier \"$fileName\" n\'existe pas et ainsi ne peut pas être renommé.';
+  }
+
+  @override
   String playlistWithTitleAlreadyExist(Object title) {
     return 'Une playlist avec le titre \"$title\" existe déjà dans la liste des playlists et donc la playlist ne peut pas être renommée avec ce titre.';
   }

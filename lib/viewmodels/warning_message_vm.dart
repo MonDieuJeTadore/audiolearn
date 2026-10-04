@@ -72,6 +72,8 @@ enum WarningMessageType {
   // name proposed for renaming a picture file is the name of an existing
   // file.
 
+  fileToRenameDoesNotExist, // The case if the file to rename does not exist.
+
   invalidPlayableOnlyWeekDays, // The case if the entered playableOnlyWeekDays
   // are invalid.
 
@@ -131,10 +133,10 @@ enum WarningMessageType {
   // audios were rewinded to start position. This happens when the user clicks
   // on the Rewind Audio to Start playlist menu item.
 
-  filteredAudioNumberAndDuration, // The case if obtaining the filtered 
+  filteredAudioNumberAndDuration, // The case if obtaining the filtered
   // audios number and duration.
 
-  filteredAudioNumberAndDurationOnDate, // The case if obtaining the filtered 
+  filteredAudioNumberAndDurationOnDate, // The case if obtaining the filtered
   // audios number and duration on date.
 
   redownloadedAudioNumbersConfirmation, // The case if the sort
@@ -288,7 +290,7 @@ enum ErrorType {
   textToSpeechApiError, // Text-to-speech synthesis genuinely failed
   // (auth, quota, malformed request, ...) for a reason unrelated to
   // connectivity.
-  
+
   errorInPlaylistJsonFile, // Error in the playlist json file.
 
   dateTimeFormatError, // Error in the date time format.
@@ -705,9 +707,21 @@ class WarningMessageVM extends ChangeNotifier {
     notifyListeners();
   }
 
+  String _fileNotExistName = '';
+  String get fileNotExistName => _fileNotExistName;
+
+  void fileToRenameDoesNotExist({
+    required String fileNotExistName,
+  }) {
+    _fileNotExistName = fileNotExistName;
+    warningMessageType = WarningMessageType.fileToRenameDoesNotExist;
+
+    // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
+    notifyListeners();
+  }
+
   String _invalidPlayableEveryDaysValue = '';
-  String get invalidPlayableEveryDaysValue =>
-      _invalidPlayableEveryDaysValue;
+  String get invalidPlayableEveryDaysValue => _invalidPlayableEveryDaysValue;
 
   void invalidPlayableEveryNDaysWarning({
     required String invalidPlayableEveryDaysValue,
@@ -720,8 +734,7 @@ class WarningMessageVM extends ChangeNotifier {
   }
 
   String _invalidPlayableOnlyMonthDays = '';
-  String get invalidPlayableOnlyMonthDays =>
-      _invalidPlayableOnlyMonthDays;
+  String get invalidPlayableOnlyMonthDays => _invalidPlayableOnlyMonthDays;
 
   String _oldFileName = '';
   String get oldFileName => _oldFileName;
@@ -1464,7 +1477,7 @@ class WarningMessageVM extends ChangeNotifier {
     // Causes the display warning message widget to be displayed.
     notifyListeners();
   }
-  
+
   void filteredAudioNumberAndDuration({
     required int filteredAudiosNumber,
     required String filteredAudiosDurationStr,
@@ -1490,7 +1503,8 @@ class WarningMessageVM extends ChangeNotifier {
     _todayPlayableAudioDurationStr = filteredAudiosDurationStr;
     _onDateStr = onDateStr;
 
-    warningMessageType = WarningMessageType.filteredAudioNumberAndDurationOnDate;
+    warningMessageType =
+        WarningMessageType.filteredAudioNumberAndDurationOnDate;
 
     // Causes the display warning message widget to be displayed.
     notifyListeners();

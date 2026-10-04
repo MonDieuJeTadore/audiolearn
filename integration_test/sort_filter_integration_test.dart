@@ -9372,15 +9372,15 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         await tester.tap(dropDownButtonTextFinder);
         await tester.pumpAndSettle();
 
-        // And find the 'asc fil' sort/filter item
+        // And find the 'asc fil listened' sort/filter item
         const String ascFilListenedSortFilterName = 'asc fil listened';
         Finder ascFilDropDownTextFinder =
             find.text(ascFilListenedSortFilterName);
         await tester.tap(ascFilDropDownTextFinder);
         await tester.pumpAndSettle();
 
-        // Verify that the 'ascFilListened' SortFilterName sort/filter
-        // parms is selected and verify its tooltip audio number.
+        // Verify that the 'asc fil listened' sort/filter parms
+        // is selected and verify its tooltip audio number.
         IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
           tester: tester,
           dropdownButtonSelectedTitle: ascFilListenedSortFilterName,
@@ -9510,6 +9510,121 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           tester: tester,
           dropdownButtonSelectedTitle: titleAscendingSFparmsName,
           tooltipAudioNumvber: 7,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''First select the 'Jouable 9 jours' sort/filter parms in the playlist
+             named 'corrected'. This sort/filter parms causes no audio to be
+             displayed in this playlist. Verify the 0 audio number in the SF
+             tooltip. Then, select the 'Jésus chants' playlist which has no
+             sort/filter parms applied to the PlaylistDownloadView and verify
+             that its audios are displayed correctly.
+             
+             Before the bug fix, the newly selected playlist did not display any
+             audio.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}sort_and_filter_selectinf_other_playlist_bug_test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService();
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the download app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // The 'corrected' playlist is initially selected.
+        // Click on the playlist toggle button to hide the playlist list
+        // and display the sort filter dropdown button
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Tap on the current dropdown button item to open
+        // button items list
+
+        final Finder dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        final Finder dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // And find the 'Jouable 9 jours' sort/filter item
+        const String jouable9joursSortFilterName = 'Jouable 9 jours';
+        Finder jouable9joursTextFinder =
+            find.text(jouable9joursSortFilterName);
+        await tester.tap(jouable9joursTextFinder);
+        await tester.pumpAndSettle();
+
+        // Verify that the 'Jouable 9 jours' sort/filter parms
+        // is selected and verify its tooltip audio number.
+        IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
+          tester: tester,
+          dropdownButtonSelectedTitle: jouable9joursSortFilterName,
+          tooltipAudioNumvber: 0,
+        );
+
+        // Click on playlist toggle button to display the playlist list
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Select the 'Jésus chants' playlist
+        await IntegrationTestUtil.selectPlaylist(
+          tester: tester,
+          playlistToSelectTitle: 'Jésus chants',
+        );
+
+        // Verify the order of the playlist audio titles
+
+        List<String> audioTitlesSortedByTitleAscending = [
+          "Glorious - Laisse-moi te parler de Jesus #louange",
+          "Louons et adorons #Jésus Sauveur avec #Glorious ! 1 heure de louange",
+          "Glorious - Laisse-moi te parler de Jésus #louange",
+          "Aimez-vous les uns les autres 'Jésus, de Nazareth à Jérusalem' (Session acoustique)",
+        ];
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioTitlesSortedByTitleAscending,
+          firstAudioListTileIndex: 3,
+        );
+
+        // Click again on playlist toggle button to hide the playlist list
+        // and display the sort filter dropdown button
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        // Verify that the dropdown button has been updated with the
+        // 'default' sort/filter parms of the 'Jésus chants' playlist
+        IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
+          tester: tester,
+          dropdownButtonSelectedTitle: 'default',
+          // tooltipAudioNumvber: 7, // 'default' tooltip audio number not yet applicable
         );
 
         // Purge the test playlist directory so that the created test

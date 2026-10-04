@@ -8386,6 +8386,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
               tester: tester,
               dropdownButtonSelectedTitle: 'default',
+              tooltipAudioNumvber: 7,
             );
 
             // And verify the order of the playlist audio titles
@@ -9576,8 +9577,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
 
         // And find the 'Jouable 9 jours' sort/filter item
         const String jouable9joursSortFilterName = 'Jouable 9 jours';
-        Finder jouable9joursTextFinder =
-            find.text(jouable9joursSortFilterName);
+        Finder jouable9joursTextFinder = find.text(jouable9joursSortFilterName);
         await tester.tap(jouable9joursTextFinder);
         await tester.pumpAndSettle();
 
@@ -9624,7 +9624,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
           tester: tester,
           dropdownButtonSelectedTitle: 'default',
-          // tooltipAudioNumvber: 7, // 'default' tooltip audio number not yet applicable
+          tooltipAudioNumvber: 6,
         );
 
         // Purge the test playlist directory so that the created test

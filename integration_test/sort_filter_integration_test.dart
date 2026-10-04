@@ -6803,6 +6803,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
+            tooltipAudioNumvber: 7,
           );
 
           // Find the dropdown button with 'applied' text
@@ -6866,6 +6867,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
+            tooltipAudioNumvber: 7,
           );
 
           // And verify the order of the playlist audio titles
@@ -6971,6 +6973,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
+            tooltipAudioNumvber: 7,
           );
 
           // And verify the order of the playlist audio titles
@@ -6999,6 +7002,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
+            tooltipAudioNumvber: 7,
           );
 
           // And verify the order of the playlist audio titles
@@ -7195,6 +7199,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
+            tooltipAudioNumvber: 7,
           );
 
           // And verify the order of the playlist audio titles
@@ -7233,6 +7238,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
+            tooltipAudioNumvber: 7,
           );
 
           // And verify the order of the playlist audio titles
@@ -7494,6 +7500,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
+            tooltipAudioNumvber: 5,
           );
 
           // And verify the order of the playlist audio titles
@@ -7522,6 +7529,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
+            tooltipAudioNumvber: 5,
           );
 
           // Then reselect the 'S8 audio' playlist
@@ -7608,6 +7616,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: defaultTitle,
+            tooltipAudioNumvber: 7,
           );
 
           // And verify the order of the playlist audio titles

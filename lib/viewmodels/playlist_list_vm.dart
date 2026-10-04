@@ -6643,6 +6643,10 @@ class PlaylistListVM extends ChangeNotifier {
     return resultLst[0].isNotEmpty;
   }
 
+  int getSelectedPlaylistPlayableAudioNumber() {
+    return getSelectedPlaylists()[0].playableAudioLst.length;
+  }
+
   void setPlaylistAudioQuality({
     required Playlist playlist,
     required PlaylistQuality playlistQuality,

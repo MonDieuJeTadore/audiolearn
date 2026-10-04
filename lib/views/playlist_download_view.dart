@@ -1498,37 +1498,37 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
           AppLocalizations.of(context)!.sortFilterParametersDefaultName;
     }
 
+    final String? dropdownValue = (playlistListVMlistenTrue
+            .getSelectedPlaylistAudioSortFilterParmsNameForView(
+              audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+              translatedAppliedSortFilterParmsName:
+                  AppLocalizations.of(context)!.sortFilterParametersAppliedName,
+            )
+            .isEmpty)
+        ? null // causes the default sort filter parms to be applied
+        //        and its name to be displayed
+        : _applySortFilterParmsNameChange(
+            playlistListVMlistenFalseOrTrue: playlistListVMlistenFalse,
+          );
+
+    final String dropdownTooltipMessage = (dropdownValue == null)
+        ? '$sortFilterDefaultMenuItemNameCorrespondingToLanguage (${playlistListVMlistenFalse.getSelectedPlaylistPlayableAudioNumber()})'
+        : '$dropdownValue ($_selectedSortFilterAudioNumber)';
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: kDropdownButtonMaxWidth,
-          ),
-          child: DropdownButton<String>(
-            key: const Key('sort_filter_parms_dropdown_button'),
-            value: (playlistListVMlistenTrue
-                    .getSelectedPlaylistAudioSortFilterParmsNameForView(
-                      audioLearnAppViewType:
-                          AudioLearnAppViewType.playlistDownloadView,
-                      translatedAppliedSortFilterParmsName:
-                          AppLocalizations.of(context)!
-                              .sortFilterParametersAppliedName,
-                    )
-                    .isEmpty)
-                ? null // causes the default sort filter parms to be applied
-                //        and its name to be displayed
-                : _applySortFilterParmsNameChange(
-                    playlistListVMlistenFalseOrTrue: playlistListVMlistenFalse,
-                  ),
-            items:
-                dropdownMenuItems, // Sort Filter elements displayed when the dropdown is opened
-            // Displays a tooltip with the audio count only on the selected item
-            selectedItemBuilder: (BuildContext context) {
-              return audioSortFilterParametersNamesLst.map((String name) {
-                return Tooltip(
-                  message: '$name ($_selectedSortFilterAudioNumber)',
-                  child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: kDropdownButtonMaxWidth),
+          child: Tooltip(
+            message: dropdownTooltipMessage,
+            child: DropdownButton<String>(
+              key: const Key('sort_filter_parms_dropdown_button'),
+              value: dropdownValue,
+              items: dropdownMenuItems,
+              selectedItemBuilder: (BuildContext context) {
+                return audioSortFilterParametersNamesLst.map((String name) {
+                  return ConstrainedBox(
                     constraints:
                         BoxConstraints(maxWidth: kDropdownMenuItemMaxWidth),
                     child: Row(
@@ -1549,22 +1549,22 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
                         ),
                       ],
                     ),
-                  ),
-                );
-              }).toList();
-            },
-            onChanged: (value) {
-              _selectedSortFilterParametersName = value;
-              _hasUserSelectedSortFilterInThisWindow = true; // <-- ajouté
-              setState(() {
-                _selectedSortFilterAudioNumber =
-                    _updatePlaylistSortedFilteredAudioList(
-                  playlistListVMlistenFalseOrTrue: playlistListVMlistenFalse,
-                );
-              });
-            },
-            hint: Text(sortFilterDefaultMenuItemNameCorrespondingToLanguage),
-            underline: Container(),
+                  );
+                }).toList();
+              },
+              onChanged: (value) {
+                _selectedSortFilterParametersName = value;
+                _hasUserSelectedSortFilterInThisWindow = true; // <-- ajouté
+                setState(() {
+                  _selectedSortFilterAudioNumber =
+                      _updatePlaylistSortedFilteredAudioList(
+                    playlistListVMlistenFalseOrTrue: playlistListVMlistenFalse,
+                  );
+                });
+              },
+              hint: Text(sortFilterDefaultMenuItemNameCorrespondingToLanguage),
+              underline: Container(),
+            ),
           ),
         ),
       ],

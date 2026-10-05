@@ -3428,4 +3428,19 @@ class MockAppLocalizations extends AppLocalizations {
     Object fileName,
   ) =>
       "The file \"$fileName.mp3\" does not exist and so can not be renamed.";
+
+  @override
+  String get audioInfoDialogTitleTooltip => "Audio downloaded from Youtube.";
+
+  @override
+  String get audioImportedInfoDialogTitleTooltip =>
+      "Audio imported from the device.";
+
+  @override
+  String get audioTextToSpeechInfoDialogTitleTooltip =>
+      "Audio created from text.";
+
+  @override
+  String get audioExtractedInfoDialogTitleTooltip =>
+      "Audio extracted from one or several audios part(s)";
 }

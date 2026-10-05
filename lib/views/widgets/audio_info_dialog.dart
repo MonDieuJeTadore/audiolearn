@@ -53,22 +53,35 @@ class AudioInfoDialog extends StatelessWidget with ScreenMixin {
         }
       },
       child: AlertDialog(
-        title: Text(
-          switch (audio.audioType) {
-            AudioType.downloaded =>
-              AppLocalizations.of(context)!.audioInfoDialogTitle,
-            AudioType.imported =>
-              AppLocalizations.of(context)!.audioImportedInfoDialogTitle,
-            AudioType.textToSpeech =>
-              AppLocalizations.of(context)!.audioTextToSpeechInfoDialogTitle,
-            AudioType.extracted =>
-              AppLocalizations.of(context)!.audioExtractedInfoDialogTitle,
-          },
-          key: const Key(
-            'audioInfoDialogTitleKey',
+        title: Tooltip(
+          message: 
+            switch (audio.audioType) {
+              AudioType.downloaded =>
+                AppLocalizations.of(context)!.audioInfoDialogTitleTooltip,
+              AudioType.imported =>
+                AppLocalizations.of(context)!.audioImportedInfoDialogTitleTooltip,
+              AudioType.textToSpeech =>
+                AppLocalizations.of(context)!.audioTextToSpeechInfoDialogTitleTooltip,
+              AudioType.extracted =>
+                AppLocalizations.of(context)!.audioExtractedInfoDialogTitleTooltip,
+            },
+          child: Text(
+            switch (audio.audioType) {
+              AudioType.downloaded =>
+                AppLocalizations.of(context)!.audioInfoDialogTitle,
+              AudioType.imported =>
+                AppLocalizations.of(context)!.audioImportedInfoDialogTitle,
+              AudioType.textToSpeech =>
+                AppLocalizations.of(context)!.audioTextToSpeechInfoDialogTitle,
+              AudioType.extracted =>
+                AppLocalizations.of(context)!.audioExtractedInfoDialogTitle,
+            },
+            key: const Key(
+              'audioInfoDialogTitleKey',
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 3,
           ),
-          textAlign: TextAlign.center,
-          maxLines: 3,
         ),
         actionsPadding: kDialogActionsPadding,
         content: SingleChildScrollView(

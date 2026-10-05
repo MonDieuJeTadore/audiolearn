@@ -619,6 +619,12 @@ abstract class AppLocalizations {
   /// **'Downloaded Audio Info'**
   String get audioInfoDialogTitle;
 
+  /// No description provided for @audioInfoDialogTitleTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio downloaded from Youtube.'**
+  String get audioInfoDialogTitleTooltip;
+
   /// No description provided for @youtubeChannelLabel.
   ///
   /// In en, this message translates to:
@@ -2052,6 +2058,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Imported Audio Info'**
   String get audioImportedInfoDialogTitle;
+
+  /// No description provided for @audioImportedInfoDialogTitleTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio imported from the device.'**
+  String get audioImportedInfoDialogTitleTooltip;
 
   /// No description provided for @audioTitleLabel.
   ///
@@ -3808,11 +3820,23 @@ abstract class AppLocalizations {
   /// **'Converted Audio Info'**
   String get audioTextToSpeechInfoDialogTitle;
 
+  /// No description provided for @audioTextToSpeechInfoDialogTitleTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio created from text.'**
+  String get audioTextToSpeechInfoDialogTitleTooltip;
+
   /// No description provided for @audioExtractedInfoDialogTitle.
   ///
   /// In en, this message translates to:
   /// **'Audio extracted through Comments Info'**
   String get audioExtractedInfoDialogTitle;
+
+  /// No description provided for @audioExtractedInfoDialogTitleTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio extracted from one or several parts located in one or several audios .'**
+  String get audioExtractedInfoDialogTitleTooltip;
 
   /// No description provided for @convertedAudioDateTimeLabel.
   ///

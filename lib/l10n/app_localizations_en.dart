@@ -316,6 +316,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get audioInfoDialogTitle => 'Downloaded Audio Info';
 
   @override
+  String get audioInfoDialogTitleTooltip => 'Audio downloaded from Youtube.';
+
+  @override
   String get youtubeChannelLabel => 'Youtube channel';
 
   @override
@@ -1187,6 +1190,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get audioImportedInfoDialogTitle => 'Imported Audio Info';
+
+  @override
+  String get audioImportedInfoDialogTitleTooltip =>
+      'Audio imported from the device.';
 
   @override
   String get audioTitleLabel => 'Audio title';
@@ -2376,8 +2383,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get audioTextToSpeechInfoDialogTitle => 'Converted Audio Info';
 
   @override
+  String get audioTextToSpeechInfoDialogTitleTooltip =>
+      'Audio created from text.';
+
+  @override
   String get audioExtractedInfoDialogTitle =>
       'Audio extracted through Comments Info';
+
+  @override
+  String get audioExtractedInfoDialogTitleTooltip =>
+      'Audio extracted from one or several parts located in one or several audios .';
 
   @override
   String get convertedAudioDateTimeLabel => 'Converted text first date/time';

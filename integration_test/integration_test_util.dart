@@ -3293,6 +3293,9 @@ class IntegrationTestUtil {
     await tester.tap(popupDisplayAudioInfoMenuItemFinder);
     await tester.pumpAndSettle();
 
+    final Finder audioInfoDialogTitleTextWidgetFinder =
+        find.byKey(const Key('audioInfoDialogTitleKey'));
+
     // Now verifying the display audio info dialog elements
 
     // Verifying the presence or absence of the audio info dialog
@@ -3301,7 +3304,14 @@ class IntegrationTestUtil {
     if (language == Language.english) {
       switch (audioType) {
         case AudioType.downloaded:
-          expect(find.text('Downloaded Audio Info'), findsOneWidget);
+          await verifyAudioInfoDialogTitle(
+            tester: tester,
+            audioInfoDialogTitleTextWidgetFinder:
+                audioInfoDialogTitleTextWidgetFinder,
+            expectedTitle: 'Downloaded Audio Info',
+            expectedTitleTooltip: 'Audio downloaded from Youtube.',
+          );
+
           expect(find.text('Youtube channel'), findsOneWidget);
           expect(find.text('Original video title'), findsOneWidget);
           expect(find.text('Video upload date'), findsOneWidget);
@@ -3313,7 +3323,14 @@ class IntegrationTestUtil {
 
           break;
         case AudioType.imported:
-          expect(find.text('Imported Audio Info'), findsOneWidget);
+          await verifyAudioInfoDialogTitle(
+            tester: tester,
+            audioInfoDialogTitleTextWidgetFinder:
+                audioInfoDialogTitleTextWidgetFinder,
+            expectedTitle: 'Imported Audio Info',
+            expectedTitleTooltip: 'Audio imported from the device.',
+          );
+
           expect(find.text('Youtube channel'), findsNothing);
           expect(find.text('Audio title'), findsOneWidget);
           expect(find.text('Video upload date'), findsNothing);
@@ -3325,7 +3342,14 @@ class IntegrationTestUtil {
 
           break;
         case AudioType.textToSpeech:
-          expect(find.text('Converted Audio Info'), findsOneWidget);
+          await verifyAudioInfoDialogTitle(
+            tester: tester,
+            audioInfoDialogTitleTextWidgetFinder:
+                audioInfoDialogTitleTextWidgetFinder,
+            expectedTitle: 'Converted Audio Info',
+            expectedTitleTooltip: 'Audio created from text.',
+          );
+          
           expect(find.text('Youtube channel'), findsNothing);
           expect(find.text('Audio title'), findsOneWidget);
           expect(find.text('Video upload date'), findsNothing);
@@ -3337,8 +3361,14 @@ class IntegrationTestUtil {
 
           break;
         case AudioType.extracted:
-          expect(find.text('Audio extracted through Comments Info'),
-              findsOneWidget);
+          await verifyAudioInfoDialogTitle(
+            tester: tester,
+            audioInfoDialogTitleTextWidgetFinder:
+                audioInfoDialogTitleTextWidgetFinder,
+            expectedTitle: 'Audio extracted through Comments Info',
+            expectedTitleTooltip: 'Audio extracted from one or several parts located in one or several audios.',
+          );
+
           expect(find.text('Youtube channel'), findsNothing);
           expect(find.text('Audio title'), findsOneWidget);
           expect(find.text('Video upload date'), findsNothing);
@@ -3354,8 +3384,14 @@ class IntegrationTestUtil {
       // language == Language.french
       switch (audioType) {
         case AudioType.downloaded:
-          expect(
-              find.text("Informations sur l'audio téléchargé"), findsOneWidget);
+          await verifyAudioInfoDialogTitle(
+            tester: tester,
+            audioInfoDialogTitleTextWidgetFinder:
+                audioInfoDialogTitleTextWidgetFinder,
+            expectedTitle: "Informations sur l'audio téléchargé",
+            expectedTitleTooltip: 'Audio téléchargé de Youtube.',
+          );
+          
           expect(find.text('Chaîne Youtube'), findsOneWidget);
           expect(find.text('Titre vidéo original'), findsOneWidget);
           expect(find.text('Date mise en ligne vidéo'), findsOneWidget);
@@ -3367,7 +3403,14 @@ class IntegrationTestUtil {
 
           break;
         case AudioType.imported:
-          expect(find.text("Informations sur l'audio importé"), findsOneWidget);
+          await verifyAudioInfoDialogTitle(
+            tester: tester,
+            audioInfoDialogTitleTextWidgetFinder:
+                audioInfoDialogTitleTextWidgetFinder,
+            expectedTitle: "Informations sur l'audio importé",
+            expectedTitleTooltip: "Audio importé de l'appareil.",
+          );
+          
           expect(find.text('Chaîne Youtube'), findsNothing);
           expect(find.text('Titre audio'), findsOneWidget);
           expect(find.text('Date mise en ligne'), findsNothing);
@@ -3379,8 +3422,14 @@ class IntegrationTestUtil {
 
           break;
         case AudioType.textToSpeech:
-          expect(
-              find.text("Informations sur l'audio converti"), findsOneWidget);
+          await verifyAudioInfoDialogTitle(
+            tester: tester,
+            audioInfoDialogTitleTextWidgetFinder:
+                audioInfoDialogTitleTextWidgetFinder,
+            expectedTitle: "Informations sur l'audio converti",
+            expectedTitleTooltip: "Texte converti en audio.",
+          );
+          
           expect(find.text('Chaîne Youtube'), findsNothing);
           expect(find.text('Titre audio'), findsOneWidget);
           expect(find.text('Date mise en ligne'), findsNothing);
@@ -3396,6 +3445,14 @@ class IntegrationTestUtil {
               find.text(
                   "Informations sur l'audio extrait via des commentaires"),
               findsOneWidget);
+          await verifyAudioInfoDialogTitle(
+            tester: tester,
+            audioInfoDialogTitleTextWidgetFinder:
+                audioInfoDialogTitleTextWidgetFinder,
+            expectedTitle: "Informations sur l'audio extrait via des commentaires",
+            expectedTitleTooltip: "Audio extrait de une ou plusieurs parties contenues dans un ou plusieurs audios.",
+          );
+          
           expect(find.text('Chaîne Youtube'), findsNothing);
           expect(find.text('Titre audio'), findsOneWidget);
           expect(find.text('Date mise en ligne'), findsNothing);
@@ -3785,6 +3842,27 @@ class IntegrationTestUtil {
     await tester.pumpAndSettle();
 
     return targetAudioListTileWidgetFinder;
+  }
+
+  static Future<void> verifyAudioInfoDialogTitle({
+    required WidgetTester tester,
+    required Finder audioInfoDialogTitleTextWidgetFinder,
+    required String expectedTitle,
+    required String expectedTitleTooltip,
+  }) async {
+    expect(
+      tester.widget<Text>(audioInfoDialogTitleTextWidgetFinder).data!,
+      expectedTitle,
+    );
+
+    // Trigger the tooltip with a long press
+    await tester.longPress(audioInfoDialogTitleTextWidgetFinder);
+
+    // Wait for the tooltip to appear
+    await tester.pumpAndSettle();
+
+    // Verify the the audio info dialog title text tooltip
+    expect(find.text(expectedTitleTooltip), findsOneWidget);
   }
 
   static Future<Finder> openPlaylistCommentDialog({

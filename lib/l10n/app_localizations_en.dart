@@ -2392,7 +2392,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get audioExtractedInfoDialogTitleTooltip =>
-      'Audio extracted from one or several parts located in one or several audios .';
+      'Audio extracted from one or several parts located in one or several audios.';
 
   @override
   String get convertedAudioDateTimeLabel => 'Converted text first date/time';

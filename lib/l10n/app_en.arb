@@ -1095,7 +1095,7 @@
   "audioTextToSpeechInfoDialogTitle": "Converted Audio Info",
   "audioTextToSpeechInfoDialogTitleTooltip": "Audio created from text.",
   "audioExtractedInfoDialogTitle": "Audio extracted through Comments Info",
-  "audioExtractedInfoDialogTitleTooltip": "Audio extracted from one or several parts located in one or several audios .",
+  "audioExtractedInfoDialogTitleTooltip": "Audio extracted from one or several parts located in one or several audios.",
   "convertedAudioDateTimeLabel": "Converted text first date/time",
   "convertedAudioDateTimeLabelTooltip": "Date and time when the audio was created from text. If the audio was recreated from updated text or using a different voice, the recreation date and time can be found in the last comment associated with the audio.",
   "fromMp3ZipFileUsedToRestoreUniquePlaylist": "playlist(s) from the MP3 zip file \"{zipFilePathNName}\"",

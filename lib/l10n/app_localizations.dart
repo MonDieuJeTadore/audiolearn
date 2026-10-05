@@ -3835,7 +3835,7 @@ abstract class AppLocalizations {
   /// No description provided for @audioExtractedInfoDialogTitleTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Audio extracted from one or several parts located in one or several audios .'**
+  /// **'Audio extracted from one or several parts located in one or several audios.'**
   String get audioExtractedInfoDialogTitleTooltip;
 
   /// No description provided for @convertedAudioDateTimeLabel.

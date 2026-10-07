@@ -4935,7 +4935,8 @@ void main() {
 
         // Setting to this variables the currently selected audio title of the
         // 'Prières du matin' playlist
-        String currentAudioTitle = "36_UN HOMME DE 85 ANS MEURT, REVIENT ET DÉNONCE - 'L'ÉGLISE VOUS A MENTI'";
+        String currentAudioTitle =
+            "36_UN HOMME DE 85 ANS MEURT, REVIENT ET DÉNONCE - 'L'ÉGLISE VOUS A MENTI'";
         String currentAudioSubTitle =
             '0:02:15.0 756.5 KB extracted on 11/02/2026 at 07:48';
 
@@ -37873,7 +37874,9 @@ Future<void> _selectNewAudioInAudioPlayerViewAndReturnToPlaylistDownloadView({
   Finder appScreenNavigationButton =
       find.byKey(const ValueKey('audioPlayerViewIconButton'));
   await tester.tap(appScreenNavigationButton);
-  await tester.pumpAndSettle();
+  await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+    tester: tester,
+  );
 
   // Now we open the AudioPlayableListDialog by tapping on the
   // audio title

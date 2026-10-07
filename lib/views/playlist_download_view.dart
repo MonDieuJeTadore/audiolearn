@@ -106,6 +106,9 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   // change on this build.
   bool _wasAudioListEmptyLastBuild = false;
 
+  int _pendingAudioScrollIndex = -1;
+  bool _isAudioScrollScheduled = false;
+
   @override
   initState() {
     super.initState();
@@ -427,17 +430,25 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         audioListIsEmpty != _wasAudioListEmptyLastBuild;
     _wasAudioListEmptyLastBuild = audioListIsEmpty;
 
+    final int currentAudioIndex = (currentAudio == null)
+        ? -1
+        : _selectedPlaylistPlayableAudioLst.indexOf(currentAudio);
+
     if (audioListEmptinessChanged) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+
         _scrollToCurrentAudioItem(
           playlistListVMlistenTrue: playlistListVMlistenTrue,
           audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
+          currentAudioIndex: currentAudioIndex,
         );
       });
     } else {
       _scrollToCurrentAudioItem(
         playlistListVMlistenTrue: playlistListVMlistenTrue,
         audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
+        currentAudioIndex: currentAudioIndex,
       );
     }
 
@@ -455,6 +466,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   void _scrollToCurrentAudioItem({
     required PlaylistListVM playlistListVMlistenTrue,
     required AudioDownloadVM audioDownloadVMlistenTrue,
+    required int currentAudioIndex,
   }) {
     if (audioDownloadVMlistenTrue.isAudioDownloading) {
       // When an audio is downloading, the list is not scrolled to the
@@ -485,8 +497,8 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       return;
     }
 
-    int audioToScrollPosition =
-        playlistListVMlistenTrue.determineAudioToScrollPosition();
+    // was: playlistListVMlistenTrue.determineAudioToScrollPosition();
+    int audioToScrollPosition = currentAudioIndex;
 
     if (audioToScrollPosition < 0) {
       // No audio is selected in the current list: nothing to scroll to.
@@ -532,27 +544,61 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   /// screen State is recreated, e.g. when navigating back to this page).
   void _scrollAudioListToIndex({
     required int index,
-    required int retryCount,
+    required int retryCount, // kept so the callers don't change
   }) {
-    if (!_audioItemScrollController.isAttached) {
-      if (retryCount >= 10) {
-        return;
-      }
+    _pendingAudioScrollIndex = index;
 
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _scrollAudioListToIndex(
-          index: index,
-          retryCount: retryCount + 1,
-        ),
-      );
+    if (_isAudioScrollScheduled) {
+      return; // a jump is already pending, it will use the latest index
+    }
 
+    _isAudioScrollScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _performAudioScroll(attempt: 0),
+    );
+  }
+
+  void _performAudioScroll({required int attempt}) {
+    _isAudioScrollScheduled = false;
+
+    if (!mounted) {
       return;
     }
 
-    _audioItemScrollController.jumpTo(
-      index: index,
-      alignment: 0.1,
+    final int index = _pendingAudioScrollIndex;
+
+    if (index < 0 ||
+        index >= _selectedPlaylistPlayableAudioLst.length ||
+        attempt >= 6) {
+      return;
+    }
+
+    if (_audioItemScrollController.isAttached) {
+      if (attempt > 0 && _isAudioItemVisible(index)) {
+        return; // the previous jump worked
+      }
+
+      debugPrint('audio scroll -> index $index, attempt $attempt');
+      _audioItemScrollController.jumpTo(index: index, alignment: 0.1);
+    }
+
+    // Check on the next frame that the item is really displayed.
+    _isAudioScrollScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _performAudioScroll(attempt: attempt + 1),
     );
+    WidgetsBinding.instance.ensureVisualUpdate();
+  }
+
+  bool _isAudioItemVisible(int index) {
+    for (final ItemPosition position
+        in _audioItemPositionsListener.itemPositions.value) {
+      if (position.index == index) {
+        return position.itemLeadingEdge >= 0 && position.itemLeadingEdge < 1;
+      }
+    }
+
+    return false;
   }
 
   Widget _buildExpandedPlaylistList({

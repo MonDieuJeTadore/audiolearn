@@ -4921,6 +4921,68 @@ void main() {
         );
       });
       testWidgets(
+          '''Selecting playlist with 'Chap asc' sort filter parm and verifying that its current audio
+             is automatic scrolled to and is displayed correctly with the current audio colors.''',
+          (WidgetTester tester) async {
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'current_audio_display_test',
+          tapOnPlaylistToggleButton: false,
+        );
+
+        // Setting to this field the next selected playlist title
+        String playlistToSelectTitle = 'Prières du matin chap asc';
+
+        // Setting to this variables the currently selected audio title of the
+        // 'Prières du matin' playlist
+        String currentAudioTitle = "36_UN HOMME DE 85 ANS MEURT, REVIENT ET DÉNONCE - 'L'ÉGLISE VOUS A MENTI'";
+        String currentAudioSubTitle =
+            '0:02:15.0 756.5 KB extracted on 11/02/2026 at 07:48';
+
+        // First, find the Playlist ListTile Text widget
+        Finder playlistToSelectListTileTextWidgetFinder =
+            find.text(playlistToSelectTitle);
+
+        // Then obtain the Playlist ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        Finder playlistToSelectListTileWidgetFinder = find.ancestor(
+          of: playlistToSelectListTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now find the Checkbox widget located in the Playlist ListTile
+        // and tap on it to select the playlist
+        Finder playlistToSelectListTileCheckboxWidgetFinder = find.descendant(
+          of: playlistToSelectListTileWidgetFinder,
+          matching: find.byKey(const Key('playlist_checkbox_key')),
+        );
+
+        // Tap the ListTile Playlist checkbox to select it: This ensure
+        // another bug was solved
+        await tester.tap(playlistToSelectListTileCheckboxWidgetFinder);
+        await tester.pumpAndSettle();
+
+        // Verify that the Playlist ListTile checkbox is checked
+        final Checkbox checkboxWidget = tester
+            .widget<Checkbox>(playlistToSelectListTileCheckboxWidgetFinder);
+
+        expect(checkboxWidget.value!, true);
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: currentAudioTitle,
+          currentAudioSubTitle: currentAudioSubTitle,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
           '''Changing sort/filter parameter, automatic scrolling audio to display current
              audio.''', (WidgetTester tester) async {
         await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(

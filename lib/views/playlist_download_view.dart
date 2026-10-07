@@ -427,17 +427,25 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         audioListIsEmpty != _wasAudioListEmptyLastBuild;
     _wasAudioListEmptyLastBuild = audioListIsEmpty;
 
+    final int currentAudioIndex = (currentAudio == null)
+        ? -1
+        : _selectedPlaylistPlayableAudioLst.indexOf(currentAudio);
+
     if (audioListEmptinessChanged) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        
         _scrollToCurrentAudioItem(
           playlistListVMlistenTrue: playlistListVMlistenTrue,
           audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
+          currentAudioIndex: currentAudioIndex,
         );
       });
     } else {
       _scrollToCurrentAudioItem(
         playlistListVMlistenTrue: playlistListVMlistenTrue,
         audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
+        currentAudioIndex: currentAudioIndex,
       );
     }
 
@@ -455,6 +463,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   void _scrollToCurrentAudioItem({
     required PlaylistListVM playlistListVMlistenTrue,
     required AudioDownloadVM audioDownloadVMlistenTrue,
+    required int currentAudioIndex,
   }) {
     if (audioDownloadVMlistenTrue.isAudioDownloading) {
       // When an audio is downloading, the list is not scrolled to the
@@ -485,8 +494,8 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       return;
     }
 
-    int audioToScrollPosition =
-        playlistListVMlistenTrue.determineAudioToScrollPosition();
+    // was: playlistListVMlistenTrue.determineAudioToScrollPosition();
+    int audioToScrollPosition = currentAudioIndex;
 
     if (audioToScrollPosition < 0) {
       // No audio is selected in the current list: nothing to scroll to.

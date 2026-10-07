@@ -12,7 +12,7 @@
         "SettingType.language": "Language.english"
     },
     "SettingType.playlists": {
-        "Playlists.orderedTitleLst": "[Dieu je T'adore, Prières du matin]",
+        "Playlists.orderedTitleLst": "[Dieu je T'adore, Prières du matin chap asc, Prières du matin chap desc]",
         "Playlists.isMusicQualityByDefault": "false",
         "Playlists.playSpeed": "1.0",
         "Playlists.arePlaylistsDisplayedInPlaylistDownloadView": "true",

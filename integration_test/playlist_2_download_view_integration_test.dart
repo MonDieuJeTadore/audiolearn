@@ -4859,8 +4859,8 @@ void main() {
         );
       });
       testWidgets(
-          '''Selecting playlist and verifying that its current audio is automatic scrolled to and is
-             displayed correctly with the current audio colors.''',
+          '''Selecting playlist with 'Chap desc' sort filter parm and verifying that its current audio
+             is automatic scrolled to and is displayed correctly with the current audio colors.''',
           (WidgetTester tester) async {
         await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
           tester: tester,
@@ -4869,7 +4869,7 @@ void main() {
         );
 
         // Setting to this field the next selected playlist title
-        String playlistToSelectTitle = 'Prières du matin';
+        String playlistToSelectTitle = 'Prières du matin chap desc';
 
         // Setting to this variables the currently selected audio title of the
         // 'Prières du matin' playlist

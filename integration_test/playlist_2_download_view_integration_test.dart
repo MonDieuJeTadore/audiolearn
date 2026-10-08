@@ -37075,16 +37075,13 @@ void main() {
       );
     });
   });
-  group('Test current playlist and current audio correct display', () {
+  group(
+      '''Test current playlist and current audio correct display. 82 playlists are available and some
+         playlists have more than 150 audios.''', () {
     testWidgets(
-        '''82 playlists are available and some playlists have more than 150 audios.''',
+        '''Using 'Jésus-Christ' playlist which has 194 audios. First, verify the list of playlists and
+           the selected playlist. Then, verify the selected playlist current audio.''',
         (WidgetTester tester) async {
-      // Purge the test playlist directory if it exists so that the
-      // playlist list is empty
-      DirUtil.deleteFilesInDirAndSubDirs(
-        rootPath: kApplicationPathWindowsTest,
-      );
-
       const String selectedPlaylistTitle = 'Jésus-Christ';
 
       await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
@@ -37094,43 +37091,24 @@ void main() {
         tapOnPlaylistToggleButton: false,
       );
 
-      // Verify the list of playlists and ensure the selected playlist
-      // is displayed
-      List<String> playlistsTitles = [
-        "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
-        "Jésus-Christ",
-        "Maria Valtorta",
-        "Abondance",
-        "Vérité de la Foi Catholique",
-        "100 MIRACLES Catholiques",
-        "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
-      ];
-
-      IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+      // Verify the displayed list of playlists and ensure the selected playlist
+      // is displayed as well as its current audio
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
         tester: tester,
-        audioOrPlaylistTitlesOrderedLst: playlistsTitles,
-      );
-
-      // Verify that the selected playlist's checkbox is checked
-      await _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox(
-        tester: tester,
-        playlistToSelectTitle: selectedPlaylistTitle,
-        verifyIfCheckboxIsChecked: true,
-        tapOnCheckbox: false,
-      );
-
-      // Verify that the current audio is now selected
-      const String firstListenableAudioTitle =
-          "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !";
-      const String firstListenableAudioSubTitle =
-          "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42";
-
-      // Verify that the current audio is displayed with the correct
-      // title and subtitle color
-      await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
-        tester: tester,
-        currentAudioTitle: firstListenableAudioTitle,
-        currentAudioSubTitle: firstListenableAudioSubTitle,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+          "Jésus-Christ",
+          "Maria Valtorta",
+          "Abondance",
+          "Vérité de la Foi Catholique",
+          "100 MIRACLES Catholiques",
+          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+        ],
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        currentAudioTitle:
+            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+        currentAudioSubTitle:
+            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
       );
 
       // Purge the test playlist directory so that the created test
@@ -37139,7 +37117,107 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
     });
+    testWidgets(
+        '''Using 'EMI' playlist which has 232 audios. First, verify the list of playlists and
+           the selected playlist. Then, verify the selected playlist current audio.''',
+        (WidgetTester tester) async {
+      const String selectedPlaylistTitle = 'EMI';
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'current_playlist_and_current_audio_test',
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        tapOnPlaylistToggleButton: false,
+        pastePlaylistListUpOrDown: 2200.0,
+      );
+
+      // Defining the first selected current audio
+      const String firstListenableAudioTitle =
+          "120_Rabbi Dies, Meets Jesus, and Converts to Christianity! - Powerful NDE Testimony";
+      const String firstListenableAudioSubTitle =
+          "0:40:41.1 19.53 MB at 98.9 KB/sec on 12/05/2026 at 11:06";
+
+      // Verify the displayed list of playlists and ensure the selected playlist
+      // is displayed as well as its current audio
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+        "Transfert",
+        "EMI",
+        "Conversation avec Dieu - Un dialogue extraordinaire",
+        "Conversation avec Dieu",
+        "Prières à partager",
+        "Prières à partager MP3",
+        "121_I died and what Jesus revealed about the New Year will shock you - NDE Testimony",
+      ],
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        currentAudioTitle:
+            firstListenableAudioTitle,
+        currentAudioSubTitle:
+            firstListenableAudioSubTitle,
+      );
+
+      const String nextSelectedAudioTitle =
+          "119_NDE - EMI - 23 MINUTES IN HELL";
+
+      // First, get the next selected Audio ListTile Text widget
+      // finder and tap on it to open the audio play view
+      final Finder lastDownloadedAudioListTileTextWidgetFinder =
+          find.text(nextSelectedAudioTitle);
+
+      await tester.tap(lastDownloadedAudioListTileTextWidgetFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Now we go back to the PlayListDownloadView in order
+      // to select another playlist and then reselect this playlist
+      final appScreenNavigationButton =
+          find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+      await tester.tap(appScreenNavigationButton);
+      await tester.pumpAndSettle();
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
   });
+}
+
+Future<void> _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio({
+  required WidgetTester tester,
+  required List<String> playlistsTitlesAndAudioBeforeCurrentAudioTitle,
+  required String selectedPlaylistTitle,
+  required String currentAudioTitle,
+  required String currentAudioSubTitle,
+}) async {
+  // Verify the list of playlists and ensure the selected playlist
+  // is displayed
+  IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+    tester: tester,
+    audioOrPlaylistTitlesOrderedLst:
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle,
+  );
+
+  // Verify that the selected playlist's checkbox is checked
+  await _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox(
+    tester: tester,
+    playlistToSelectTitle: selectedPlaylistTitle,
+    verifyIfCheckboxIsChecked: true,
+    tapOnCheckbox: false,
+  );
+
+  // Verify that the current audio is now selected
+
+  // Verify that the current audio is displayed with the correct
+  // title and subtitle color
+  await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+    tester: tester,
+    currentAudioTitle: currentAudioTitle,
+    currentAudioSubTitle: currentAudioSubTitle,
+  );
 }
 
 Future<void> _selectExistingMp3File({

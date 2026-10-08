@@ -19,6 +19,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
@@ -19264,8 +19265,8 @@ void main() {
       });
     });
     group('App volume percent setting test', () {
-      testWidgets(
-          '''Set volume and click on Save button.''', (WidgetTester tester) async {
+      testWidgets('''Set volume and click on Save button.''',
+          (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -19294,6 +19295,10 @@ void main() {
         await app.main();
         await tester.pumpAndSettle();
 
+        // Store the initial volume to restore at the end of the test
+        final double? initialVolume =
+            await FlutterVolumeController.getVolume(); // 0.0 à 1.0
+
         // Tap the appbar leading popup menu button Then, the app settings
         // dialog is opened.
         await IntegrationTestUtil.typeOnAppbarMenuItem(
@@ -19301,7 +19306,7 @@ void main() {
           appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
         );
 
-        // And set the volume percentage to 55 
+        // And set the volume percentage to 55
 
         // Find the TextField using the Key
         final Finder textFieldFinder =
@@ -19317,6 +19322,86 @@ void main() {
         // And tap on save button
         await tester.tap(find.byKey(const Key('saveButton')));
         await tester.pumpAndSettle();
+
+        // Verify that the volume percentage is correctly set in the
+        // Windows environment
+        final double? volume =
+            await FlutterVolumeController.getVolume(); // 0.0 à 1.0
+        expect(volume, 0.55);
+
+        await FlutterVolumeController.setVolume(initialVolume!); // 0.0 à 1.0
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets('''Set volume and tap on Enter to save it.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Store the initial volume to restore at the end of the test
+        final double? initialVolume =
+            await FlutterVolumeController.getVolume(); // 0.0 à 1.0
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // And set the volume percentage to 55
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playVolumeInPercentage'));
+
+        await tester.enterText(
+          textFieldFinder,
+          '55',
+        );
+
+        await tester.pumpAndSettle();
+
+        // And tap on Enter to save the volume and close the dialog
+        await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+        await tester.pumpAndSettle();
+
+        // Verify that the volume percentage is correctly set in the
+        // Windows environment
+        final double? volume =
+            await FlutterVolumeController.getVolume(); // 0.0 à 1.0
+        expect(volume, 0.55);
+
+        await FlutterVolumeController.setVolume(initialVolume!); // 0.0 à 1.0
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
@@ -28604,7 +28689,7 @@ void main() {
               'startPosition': '3:00.0',
               'endPosition': '3:54.6',
               'playSpeed': 'Play speed: 1.0',
-                'volume': 'Volume: 1.00',
+              'volume': 'Volume: 1.00',
               'increaseDuration': 'Increase duration: 0:00.0',
               'reductionPosition': 'Reduction position: 0:00.0',
               'reductionDuration': 'Reduction duration: 0:00.0',
@@ -29341,7 +29426,7 @@ void main() {
               'startPosition': '0:10.0',
               'endPosition': '2:20.0',
               'playSpeed': 'Play speed: 0.7',
-                'volume': 'Volume: 1.00',
+              'volume': 'Volume: 1.00',
               'increaseDuration': 'Increase duration: 0:08.0',
               'reductionPosition': 'Reduction position: 2:10.1',
               'reductionDuration': 'Reduction duration: 0:09.9',

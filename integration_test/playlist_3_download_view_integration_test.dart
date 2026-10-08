@@ -19263,6 +19263,68 @@ void main() {
         );
       });
     });
+    group('App volume percent setting test', () {
+      testWidgets(
+          '''Set volume and click on Save button.''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}app_settings_set_play_speed",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Tap the appbar leading popup menu button Then, the app settings
+        // dialog is opened.
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuOpenSettingsDialog',
+        );
+
+        // And set the volume percentage to 55 
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playVolumeInPercentage'));
+
+        await tester.enterText(
+          textFieldFinder,
+          '55',
+        );
+
+        await tester.pumpAndSettle();
+
+        // And tap on save button
+        await tester.tap(find.byKey(const Key('saveButton')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
   });
   group('Save playlist, comments, pictures and settings to zip file menu test',
       () {

@@ -3253,7 +3253,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: [],
-          firstAudioListTileIndex: 3,
+          firstAudioListTileIndex: 4,
         );
 
         // Now tap on the search icon button to deactivate it
@@ -3422,9 +3422,9 @@ void main() {
 
         // And verify the displayd audio titles list
         playlistDisplayedAudioTitlesLst = [
-          "La surpopulation mondiale par Jancovici et Barrau",
-          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
-          "La résilience insulaire par Fiona Roche",
+          "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
+          "Le Secret de la RÉSILIENCE révélé par Boris Cyrulnik",
+          "Les besoins artificiels par R.Keucheyan",
         ];
 
         // Since the displayed playlist list is empty due to the applied search
@@ -3509,12 +3509,12 @@ void main() {
         // And verify the order of the default playlist audio titles
 
         playlistDisplayedAudioTitles = [
-          "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
-          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
-          "Really short video",
           "morning _ cinematic video",
+          "Really short video",
+          "Jancovici m'explique l’importance des ordres de grandeur face au changement climatique",
           "La résilience insulaire par Fiona Roche",
           "Les besoins artificiels par R.Keucheyan",
+          "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
         ];
 
         // Ensure that since the search icon button was un-pressed,
@@ -3666,7 +3666,7 @@ void main() {
         IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
           tester: tester,
           audioOrPlaylistTitlesOrderedLst: [],
-          firstAudioListTileIndex: 3,
+          firstAudioListTileIndex: 4,
         );
 
         // Now tap on the search icon button to deactivate it
@@ -11589,7 +11589,7 @@ void main() {
 
           // Find the audio list widget using its key
           Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
-          // Perform the scroll action
+          // Perform the scroll up action
           await tester.drag(
               listFinder,
               const Offset(
@@ -11601,7 +11601,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:38',
+              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:37',
             ],
             firstAudioListTileIndex: 1,
           );
@@ -11639,7 +11639,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:08.0 80.3 KB converted on 07/09/2025 at 07:38',
+              '0:00:08.0 80.3 KB converted on 07/09/2025 at 07:37',
             ],
             firstAudioListTileIndex: 1,
           );
@@ -12004,7 +12004,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:38',
+              '0:00:01.5 15.0 KB converted on 07/09/2025 at 07:37',
             ],
             firstAudioListTileIndex: 1,
           );
@@ -12043,7 +12043,7 @@ void main() {
           IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
             tester: tester,
             audioSubTitlesAcceptableLst: [
-              '0:00:08.0 80.3 KB converted on 07/09/2025 at 07:38',
+              '0:00:08.0 80.3 KB converted on 07/09/2025 at 07:37',
             ],
             firstAudioListTileIndex: 1,
           );
@@ -27615,7 +27615,7 @@ void main() {
 
       Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
       // Perform the scroll down action
-      await tester.drag(listFinder, const Offset(0, -100));
+      await tester.drag(listFinder, const Offset(0, -1200));
       await tester.pumpAndSettle();
 
       fileNameNoExt = fileName_3.replaceFirst('.mp4', '');

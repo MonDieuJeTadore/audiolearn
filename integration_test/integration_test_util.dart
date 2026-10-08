@@ -415,6 +415,7 @@ class IntegrationTestUtil {
     bool tapOnPlaylistToggleButton = true,
     bool setAppSizeToAndroidSize = false,
     bool doPurgeAppDir = true,
+    double pastePlaylistListUpOrDown = 0.0,
   }) async {
     if (doPurgeAppDir) {
       // Purge the test playlist directory if it exists so that the
@@ -486,6 +487,18 @@ class IntegrationTestUtil {
     if (selectedPlaylistTitle != null) {
       // Find the ListTile Playlist containing the playlist which
       // contains the audio to play
+
+      if (pastePlaylistListUpOrDown != 0.0) {
+        // Handle pasting up or down the list item if necessary
+
+        // Find the playlist list widget using its key
+        Finder playlistListFinder =
+            find.byKey(const Key('expandable_playlist_list'));
+
+        // Perform the scroll up or down action
+        await tester.drag(playlistListFinder, Offset(0, pastePlaylistListUpOrDown));
+        await tester.pumpAndSettle();
+      }
 
       // First, find the Playlist ListTile Text widget
       Finder audioPlayerSelectedPlaylistFinder =
@@ -3349,7 +3362,7 @@ class IntegrationTestUtil {
             expectedTitle: 'Converted Audio Info',
             expectedTitleTooltip: 'Audio created from text.',
           );
-          
+
           expect(find.text('Youtube channel'), findsNothing);
           expect(find.text('Audio title'), findsOneWidget);
           expect(find.text('Video upload date'), findsNothing);
@@ -3366,7 +3379,8 @@ class IntegrationTestUtil {
             audioInfoDialogTitleTextWidgetFinder:
                 audioInfoDialogTitleTextWidgetFinder,
             expectedTitle: 'Audio extracted through Comments Info',
-            expectedTitleTooltip: 'Audio extracted from one or several parts located in one or several audios.',
+            expectedTitleTooltip:
+                'Audio extracted from one or several parts located in one or several audios.',
           );
 
           expect(find.text('Youtube channel'), findsNothing);
@@ -3391,7 +3405,7 @@ class IntegrationTestUtil {
             expectedTitle: "Informations sur l'audio téléchargé",
             expectedTitleTooltip: 'Audio téléchargé de Youtube.',
           );
-          
+
           expect(find.text('Chaîne Youtube'), findsOneWidget);
           expect(find.text('Titre vidéo original'), findsOneWidget);
           expect(find.text('Date mise en ligne vidéo'), findsOneWidget);
@@ -3410,7 +3424,7 @@ class IntegrationTestUtil {
             expectedTitle: "Informations sur l'audio importé",
             expectedTitleTooltip: "Audio importé de l'appareil.",
           );
-          
+
           expect(find.text('Chaîne Youtube'), findsNothing);
           expect(find.text('Titre audio'), findsOneWidget);
           expect(find.text('Date mise en ligne'), findsNothing);
@@ -3429,7 +3443,7 @@ class IntegrationTestUtil {
             expectedTitle: "Informations sur l'audio converti",
             expectedTitleTooltip: "Texte converti en audio.",
           );
-          
+
           expect(find.text('Chaîne Youtube'), findsNothing);
           expect(find.text('Titre audio'), findsOneWidget);
           expect(find.text('Date mise en ligne'), findsNothing);
@@ -3449,10 +3463,12 @@ class IntegrationTestUtil {
             tester: tester,
             audioInfoDialogTitleTextWidgetFinder:
                 audioInfoDialogTitleTextWidgetFinder,
-            expectedTitle: "Informations sur l'audio extrait via des commentaires",
-            expectedTitleTooltip: "Audio extrait de une ou plusieurs parties contenues dans un ou plusieurs audios.",
+            expectedTitle:
+                "Informations sur l'audio extrait via des commentaires",
+            expectedTitleTooltip:
+                "Audio extrait de une ou plusieurs parties contenues dans un ou plusieurs audios.",
           );
-          
+
           expect(find.text('Chaîne Youtube'), findsNothing);
           expect(find.text('Titre audio'), findsOneWidget);
           expect(find.text('Date mise en ligne'), findsNothing);

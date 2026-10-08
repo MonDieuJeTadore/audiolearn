@@ -37075,6 +37075,71 @@ void main() {
       );
     });
   });
+  group('Test current playlist and current audio correct display', () {
+    testWidgets(
+        '''82 playlists are available and some playlists have more than 150 audios.''',
+        (WidgetTester tester) async {
+      // Purge the test playlist directory if it exists so that the
+      // playlist list is empty
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+
+      const String selectedPlaylistTitle = 'Jésus-Christ';
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'current_playlist_and_current_audio_test',
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        tapOnPlaylistToggleButton: false,
+      );
+
+      // Verify the list of playlists and ensure the selected playlist
+      // is displayed
+      List<String> playlistsTitles = [
+        "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+        "Jésus-Christ",
+        "Maria Valtorta",
+        "Abondance",
+        "Vérité de la Foi Catholique",
+        "100 MIRACLES Catholiques",
+        "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+      ];
+
+      IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+        tester: tester,
+        audioOrPlaylistTitlesOrderedLst: playlistsTitles,
+      );
+
+      // Verify that the selected playlist's checkbox is checked
+      await _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox(
+        tester: tester,
+        playlistToSelectTitle: selectedPlaylistTitle,
+        verifyIfCheckboxIsChecked: true,
+        tapOnCheckbox: false,
+      );
+
+      // Verify that the current audio is now selected
+      const String firstListenableAudioTitle =
+          "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !";
+      const String firstListenableAudioSubTitle =
+          "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42";
+
+      // Verify that the current audio is displayed with the correct
+      // title and subtitle color
+      await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+        tester: tester,
+        currentAudioTitle: firstListenableAudioTitle,
+        currentAudioSubTitle: firstListenableAudioSubTitle,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
 }
 
 Future<void> _selectExistingMp3File({

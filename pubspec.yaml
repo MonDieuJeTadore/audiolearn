@@ -87,6 +87,7 @@ dev_dependencies:
   mockito: ^5.4.4
   build_runner: ^2.3.3
   msix: ^3.16.13
+  flutter_volume_controller: ^2.0.2
 
 msix_config:
   display_name: AudioLearn

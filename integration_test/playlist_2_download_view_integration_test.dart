@@ -37119,14 +37119,18 @@ void main() {
     });
     testWidgets(
         '''Using 'EMI' playlist which has 232 audios. First, verify the list of playlists and
-           the selected playlist. Then, verify the selected playlist current audio.''',
+           the selected playlist. Then, verify the selected playlist current audio. Then, change
+           the current audio. Then, go back to 'Jésus-Christ' playlist, select it and change
+           its current audio. Then go back to 'EMI' playlist and verify its current audio. And
+           finally, return to the 'Jésus-Christ' playlist and verify its current audio.''',
         (WidgetTester tester) async {
-      const String selectedPlaylistTitle = 'EMI';
+      const String playlistEmiTitle = 'EMI';
+      const String playlistJesusTitle = 'Jésus-Christ';
 
       await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
         tester: tester,
         savedTestDataDirName: 'current_playlist_and_current_audio_test',
-        selectedPlaylistTitle: selectedPlaylistTitle,
+        selectedPlaylistTitle: playlistEmiTitle,
         tapOnPlaylistToggleButton: false,
         pastePlaylistListUpOrDown: 2200.0,
       );
@@ -37142,40 +37146,44 @@ void main() {
       await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
         tester: tester,
         playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-        "Transfert",
-        "EMI",
-        "Conversation avec Dieu - Un dialogue extraordinaire",
-        "Conversation avec Dieu",
-        "Prières à partager",
-        "Prières à partager MP3",
-        "121_I died and what Jesus revealed about the New Year will shock you - NDE Testimony",
-      ],
-        selectedPlaylistTitle: selectedPlaylistTitle,
-        currentAudioTitle:
-            firstListenableAudioTitle,
-        currentAudioSubTitle:
-            firstListenableAudioSubTitle,
+          "Transfert",
+          "EMI",
+          "Conversation avec Dieu - Un dialogue extraordinaire",
+          "Conversation avec Dieu",
+          "Prières à partager",
+          "Prières à partager MP3",
+          "121_I died and what Jesus revealed about the New Year will shock you - NDE Testimony",
+        ],
+        selectedPlaylistTitle: playlistEmiTitle,
+        currentAudioTitle: firstListenableAudioTitle,
+        currentAudioSubTitle: firstListenableAudioSubTitle,
       );
 
-      const String nextSelectedAudioTitle =
-          "119_NDE - EMI - 23 MINUTES IN HELL";
+      String nextAudioToSelectTitleinEMI = "119_NDE - EMI - 23 MINUTES IN HELL";
 
-      // First, get the next selected Audio ListTile Text widget
-      // finder and tap on it to open the audio play view
-      final Finder lastDownloadedAudioListTileTextWidgetFinder =
-          find.text(nextSelectedAudioTitle);
-
-      await tester.tap(lastDownloadedAudioListTileTextWidgetFinder);
-      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+      await _tapOnAudioThenGoBackToPlaylistDownloadView(
         tester: tester,
+        audioToSelectTitle: nextAudioToSelectTitleinEMI,
       );
 
-      // Now we go back to the PlayListDownloadView in order
-      // to select another playlist and then reselect this playlist
-      final appScreenNavigationButton =
-          find.byKey(const ValueKey('playlistDownloadViewIconButton'));
-      await tester.tap(appScreenNavigationButton);
-      await tester.pumpAndSettle();
+      // Now scroll down to the 'Jésus-Christ' playlist and select it
+      await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
+        tester: tester,
+        playlistToSelectTitle: playlistJesusTitle,
+        pastePlaylistListUpOrDown: -2100.0,
+      );
+
+      // Find the 'Jésus-Christ' playlist audio list widget using
+      // its key and change the 'Jésus-Christ' playlist current audio
+
+      String nextAudioToSelectTitleinJesusChrist = 
+          "124_COUNCIL OF NICAEA - A specialist reveals what goes on behind the scenes!";
+
+      await _tapOnAudioThenGoBackToPlaylistDownloadView(
+        tester: tester,
+        audioToSelectTitle: nextAudioToSelectTitleinJesusChrist,
+        pasteaudioListUpOrDown: -2000.0,
+      );
 
       // Purge the test playlist directory so that the created test
       // files are not uploaded to GitHub
@@ -37184,6 +37192,37 @@ void main() {
       );
     });
   });
+}
+
+Future<void> _tapOnAudioThenGoBackToPlaylistDownloadView({
+  required WidgetTester tester,
+  required String audioToSelectTitle,
+  double pasteaudioListUpOrDown = 0.0,
+}) async {
+  if (pasteaudioListUpOrDown != 0.0) {
+    final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+
+    // Perform the scroll down action
+    await tester.drag(listFinder, Offset(0, pasteaudioListUpOrDown));
+    await tester.pumpAndSettle();
+  }
+
+  // First, get the next selected Audio ListTile Text widget
+  // finder and tap on it to open the audio play view
+  final Finder lastDownloadedAudioListTileTextWidgetFinder =
+      find.text(audioToSelectTitle);
+
+  await tester.tap(lastDownloadedAudioListTileTextWidgetFinder);
+  await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+    tester: tester,
+  );
+
+  // Now we go back to the PlayListDownloadView in order
+  // to select another playlist and then reselect this playlist
+  final appScreenNavigationButton =
+      find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+  await tester.tap(appScreenNavigationButton);
+  await tester.pumpAndSettle();
 }
 
 Future<void> _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio({

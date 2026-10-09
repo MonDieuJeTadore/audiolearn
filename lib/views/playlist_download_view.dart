@@ -4,6 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:audiolearn/utils/duration_expansion.dart';
 import 'package:audiolearn/viewmodels/audio_player_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -43,7 +44,7 @@ class PlaylistDownloadView extends StatefulWidget {
       (ScreenMixin.isHardwarePc()) ? 1.38 : 1.55;
   final double playlistExpandedScrollAugmentation =
       (ScreenMixin.isHardwarePc()) ? 1 : 1.5;
-  final double playlistItemHeight = (ScreenMixin.isHardwarePc() ? 51 : 59);
+  final double playlistItemHeight = (ScreenMixin.isHardwarePc() ? 51 : 85);
   final bool isTest;
   late _PlaylistDownloadViewState _playlistDownloadViewState;
   _PlaylistDownloadViewState get playlistDownloadViewState =>
@@ -715,8 +716,12 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     required int playlistToScrollPosition,
     required int retryCount,
   }) {
-    final GlobalKey? key = _playlistItemKeys[playlistToScrollPosition];
-    final BuildContext? itemContext = key?.currentContext;
+    if (!mounted || !_playlistScrollController.hasClients) {
+      return;
+    }
+
+    final BuildContext? itemContext =
+        _playlistItemKeys[playlistToScrollPosition]?.currentContext;
 
     if (itemContext != null) {
       Scrollable.ensureVisible(
@@ -729,13 +734,53 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       return;
     }
 
-    const int maxRetryNumber = 5;
+    const int maxRetryNumber = 8;
 
     if (retryCount >= maxRetryNumber) {
-      // Giving up: this should not happen since the coarse jump performed
-      // by _scrollToSelectedPlaylist() should have caused the target item
-      // to be built by now.
       return;
+    }
+
+    // The target item is not built: the coarse jump landed too far from
+    // it. Measuring the items which ARE currently built gives their real
+    // height and the real scroll offset of the one nearest to the target,
+    // from which a much better jump is computed.
+    int? nearestBuiltIndex;
+    RenderBox? nearestBuiltBox;
+    double builtHeightSum = 0;
+    int builtCount = 0;
+
+    _playlistItemKeys.forEach((int index, GlobalKey key) {
+      final RenderObject? renderObject = key.currentContext?.findRenderObject();
+
+      if (renderObject is RenderBox && renderObject.hasSize) {
+        builtHeightSum += renderObject.size.height;
+        builtCount++;
+
+        if (nearestBuiltIndex == null ||
+            (index - playlistToScrollPosition).abs() <
+                (nearestBuiltIndex! - playlistToScrollPosition).abs()) {
+          nearestBuiltIndex = index;
+          nearestBuiltBox = renderObject;
+        }
+      }
+    });
+
+    if (builtCount > 0) {
+      final double averageItemHeight = builtHeightSum / builtCount;
+      final double nearestBuiltItemOffset =
+          RenderAbstractViewport.of(nearestBuiltBox!)
+              .getOffsetToReveal(nearestBuiltBox!, 0.0)
+              .offset;
+      final ScrollPosition position = _playlistScrollController.position;
+      final double correctedOffset = nearestBuiltItemOffset +
+          (playlistToScrollPosition - nearestBuiltIndex!) * averageItemHeight;
+
+      _playlistScrollController.jumpTo(
+        correctedOffset.clamp(
+          position.minScrollExtent,
+          position.maxScrollExtent,
+        ),
+      );
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -744,6 +789,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         retryCount: retryCount + 1,
       );
     });
+    WidgetsBinding.instance.ensureVisualUpdate();
   }
 
   /// If an audio is downloading, the download progression is displayed.

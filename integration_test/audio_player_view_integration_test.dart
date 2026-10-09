@@ -410,7 +410,9 @@ void main() {
           find.text(secondDownloadedAudioTitle);
 
       await tester.tap(secondDownloadedAudioListTileTextWidgetFinder);
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
 
       // Now we tap on the play button in order to finish
       // playing the audio downloaded after the first downloaded
@@ -4090,8 +4092,8 @@ void main() {
       // Avoids integration test failure due to the fact that the
       // position is 660 or 680 and not 0 !
       // Ensure that the audio position is updated
-      for (int i = 0; i < 6; i++) {
-        await Future.delayed(const Duration(milliseconds: 500));
+      for (int i = 0; i < 14; i++) {
+        await Future.delayed(const Duration(milliseconds: 250));
         await tester.pumpAndSettle();
       }
 

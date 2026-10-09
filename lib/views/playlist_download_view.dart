@@ -44,7 +44,6 @@ class PlaylistDownloadView extends StatefulWidget {
       (ScreenMixin.isHardwarePc()) ? 1.38 : 1.55;
   final double playlistExpandedScrollAugmentation =
       (ScreenMixin.isHardwarePc()) ? 1 : 1.5;
-  final double playlistItemHeight = (ScreenMixin.isHardwarePc() ? 51 : 85);
   final bool isTest;
   late _PlaylistDownloadViewState _playlistDownloadViewState;
   _PlaylistDownloadViewState get playlistDownloadViewState =>
@@ -684,19 +683,9 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       return;
     }
 
-    // Phase 1: coarse jump so that the target item (and its neighbours)
-    // get built by the lazy ListView.builder. The estimated offset does
-    // not need to be exact.
-    double estimatedOffset =
-        playlistToScrollPosition * widget.playlistItemHeight;
-    double maxScrollExtent = _playlistScrollController.position.maxScrollExtent;
-
-    _playlistScrollController.jumpTo(
-      estimatedOffset.clamp(0.0, maxScrollExtent),
-    );
-
-    // Phase 2: fine-tune the scroll position once the target item is
-    // built.
+    // The target item is located by measuring the really displayed
+    // items (see _ensureSelectedPlaylistItemIsVisible), so no estimated
+    // item height is needed anymore.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _ensureSelectedPlaylistItemIsVisible(
         playlistToScrollPosition: playlistToScrollPosition,

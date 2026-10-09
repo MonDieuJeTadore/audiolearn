@@ -37077,7 +37077,13 @@ void main() {
   });
   group(
       '''Test current playlist and current audio correct display. 82 playlists are available and some
-         playlists have more than 150 audios.''', () {
+         playlists have more than 150 audios.
+
+         Those tests ensure that the playlist and audio selection functionality works correctly even with
+         large playlists on Windows. But currently, these tests would fail on the Android emulator due
+         to the fact that the selected playlist display is not properly updated on the Android version
+         of the application.
+         ''', () {
     testWidgets(
         '''Using 'Jésus-Christ' playlist which has 194 audios. First, verify the list of playlists and
            the selected playlist. Then, verify the selected playlist current audio.''',

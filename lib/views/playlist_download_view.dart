@@ -39,11 +39,6 @@ class PlaylistDownloadView extends StatefulWidget {
   // This function is necessary since it is passed to the
   // constructor of AudioListItemWidget.
   final Function(int) onPageChangedFunction;
-  final double audioItemHeight = (ScreenMixin.isHardwarePc() ? 73 : 85);
-  final double playlistNotExpandedScrollAugmentation =
-      (ScreenMixin.isHardwarePc()) ? 1.38 : 1.55;
-  final double playlistExpandedScrollAugmentation =
-      (ScreenMixin.isHardwarePc()) ? 1 : 1.5;
   final bool isTest;
   late _PlaylistDownloadViewState _playlistDownloadViewState;
   _PlaylistDownloadViewState get playlistDownloadViewState =>
@@ -569,7 +564,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         return; // the previous jump worked
       }
 
-      debugPrint('audio scroll -> index $index, attempt $attempt');
       _audioItemScrollController.jumpTo(index: index, alignment: 0.1);
     }
 

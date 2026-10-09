@@ -487,69 +487,83 @@ class IntegrationTestUtil {
     if (selectedPlaylistTitle != null) {
       // Find the ListTile Playlist containing the playlist which
       // contains the audio to play
+      await selectPlaylistWithDropUpOrDown(
+        tester: tester,
+        playlistToSelectTitle: selectedPlaylistTitle,
+        pastePlaylistListUpOrDown: pastePlaylistListUpOrDown,
+      );
+    }
+  }
 
-      if (pastePlaylistListUpOrDown != 0.0) {
-        // Handle pasting up or down the list item if necessary
+  static Future<void> selectPlaylistWithDropUpOrDown({
+    required WidgetTester tester,
+    required String playlistToSelectTitle,
+    double pastePlaylistListUpOrDown = 0.0,
+  }) async {
+    // Find the ListTile Playlist containing the playlist which
+    // contains the audio to play
 
-        // Find the playlist list widget using its key
-        Finder playlistListFinder =
-            find.byKey(const Key('expandable_playlist_list'));
+    if (pastePlaylistListUpOrDown != 0.0) {
+      // Handle pasting up or down the list item if necessary
 
-        // Perform the scroll up or down action
-        await tester.drag(playlistListFinder, Offset(0, pastePlaylistListUpOrDown));
-        await tester.pumpAndSettle();
-      }
+      // Find the playlist list widget using its key
+      Finder playlistListFinder =
+          find.byKey(const Key('expandable_playlist_list'));
+
+      // Perform the scroll up or down action
+      await tester.drag(
+          playlistListFinder, Offset(0, pastePlaylistListUpOrDown));
+      await tester.pumpAndSettle();
+    }
+
+    // First, find the Playlist ListTile Text widget
+    Finder audioPlayerSelectedPlaylistFinder = find.text(playlistToSelectTitle);
+
+    // Then obtain the Playlist ListTile widget enclosing the Text
+    // widget by finding its ancestor
+    Finder selectedPlaylistListTileWidgetFinder = find.ancestor(
+      of: audioPlayerSelectedPlaylistFinder,
+      matching: find.byType(ListTile),
+    );
+
+    if (selectedPlaylistListTileWidgetFinder.evaluate().isEmpty) {
+      // In this case, the first tap on the 'Toggle List' button
+      // did close the list of playlists. Tap the 'Toggle List' button
+      // again to show the list. If the list selecting the playlist
+      // won't be possible.
+
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
 
       // First, find the Playlist ListTile Text widget
-      Finder audioPlayerSelectedPlaylistFinder =
-          find.text(selectedPlaylistTitle);
+      audioPlayerSelectedPlaylistFinder = find.text(playlistToSelectTitle);
 
       // Then obtain the Playlist ListTile widget enclosing the Text
       // widget by finding its ancestor
-      Finder selectedPlaylistListTileWidgetFinder = find.ancestor(
+      selectedPlaylistListTileWidgetFinder = find.ancestor(
         of: audioPlayerSelectedPlaylistFinder,
         matching: find.byType(ListTile),
       );
+    }
 
-      if (selectedPlaylistListTileWidgetFinder.evaluate().isEmpty) {
-        // In this case, the first tap on the 'Toggle List' button
-        // did close the list of playlists. Tap the 'Toggle List' button
-        // again to show the list. If the list selecting the playlist
-        // won't be possible.
+    // Now find the Checkbox widget located in the Playlist ListTile
+    // and tap on it to select the playlist
+    final Finder selectedPlaylistCheckboxWidgetFinder = find.descendant(
+      of: selectedPlaylistListTileWidgetFinder,
+      matching: find.byType(Checkbox),
+    );
 
-        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
-        await tester.pumpAndSettle();
+    // Retrieve the Checkbox widget
+    final Checkbox checkbox =
+        tester.widget<Checkbox>(selectedPlaylistCheckboxWidgetFinder);
 
-        // First, find the Playlist ListTile Text widget
-        audioPlayerSelectedPlaylistFinder = find.text(selectedPlaylistTitle);
-
-        // Then obtain the Playlist ListTile widget enclosing the Text
-        // widget by finding its ancestor
-        selectedPlaylistListTileWidgetFinder = find.ancestor(
-          of: audioPlayerSelectedPlaylistFinder,
-          matching: find.byType(ListTile),
-        );
-      }
-
-      // Now find the Checkbox widget located in the Playlist ListTile
-      // and tap on it to select the playlist
-      final Finder selectedPlaylistCheckboxWidgetFinder = find.descendant(
-        of: selectedPlaylistListTileWidgetFinder,
-        matching: find.byType(Checkbox),
-      );
-
-      // Retrieve the Checkbox widget
-      final Checkbox checkbox =
-          tester.widget<Checkbox>(selectedPlaylistCheckboxWidgetFinder);
-
-      // Tap on the playlist checkbox to select it if it is not
-      // already selected
-      if (checkbox.value == null || !checkbox.value!) {
-        // Tap the ListTile Playlist checkbox to select it
-        // so that the playlist audio are listed
-        await tester.tap(selectedPlaylistCheckboxWidgetFinder);
-        await tester.pumpAndSettle();
-      }
+    // Tap on the playlist checkbox to select it if is not
+    // already selected
+    if (checkbox.value == null || !checkbox.value!) {
+      // Tap the ListTile Playlist checkbox to select it
+      // so that the playlist audio are listed
+      await tester.tap(selectedPlaylistCheckboxWidgetFinder);
+      await tester.pumpAndSettle();
     }
   }
 

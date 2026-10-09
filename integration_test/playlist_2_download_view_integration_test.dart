@@ -37120,9 +37120,16 @@ void main() {
     testWidgets(
         '''Using 'EMI' playlist which has 232 audios. First, verify the list of playlists and
            the selected playlist. Then, verify the selected playlist current audio. Then, change
-           the current audio. Then, go back to 'Jésus-Christ' playlist, select it and change
-           its current audio. Then go back to 'EMI' playlist and verify its changed current audio.
-           And finally, return to the 'Jésus-Christ' playlist and verify its changed current audio.''',
+           the current audio and verify that after comming back from the audio player view to the
+           playlist download view the current playlist remains displayed as well as the new selected
+           audio.
+           
+           Then, go back to 'Jésus-Christ' playlist, select it and change its current audio. Then
+           verify that after comming back from the audio player view to the playlist download view
+           the current playlist remains displayed as well as the new selected audio.
+           
+           Then go back to 'EMI' playlist and verify its changed current audio. And finally, return
+           to the 'Jésus-Christ' playlist and verify its changed current audio.''',
         (WidgetTester tester) async {
       const String playlistEmiTitle = 'EMI';
       const String playlistJesusTitle = 'Jésus-Christ';
@@ -37161,11 +37168,32 @@ void main() {
 
       // Now change the current audio in the 'EMI' playlist
 
-      String nextAudioToSelectTitleinEMI = "119_NDE - EMI - 23 MINUTES IN HELL";
+      const String nextAudioToSelectTitleinEMI =
+          "119_NDE - EMI - 23 MINUTES IN HELL";
+      const String nextAudioToSelectTitleinEMISubTitle =
+          "0:14:30.7 6.97 MB at 103.8 KB/sec on 12/05/2026 at 11:03";
 
       await _tapOnAudioThenGoBackToPlaylistDownloadView(
         tester: tester,
         audioToSelectTitle: nextAudioToSelectTitleinEMI,
+      );
+
+      // Ensure that the selected playlist remains displayed as well
+      // as its new current audio
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "Transfert",
+          "EMI",
+          "Conversation avec Dieu - Un dialogue extraordinaire",
+          "Conversation avec Dieu",
+          "Prières à partager",
+          "Prières à partager MP3",
+          "120_Rabbi Dies, Meets Jesus, and Converts to Christianity! - Powerful NDE Testimony",
+        ],
+        selectedPlaylistTitle: playlistEmiTitle,
+        currentAudioTitle: nextAudioToSelectTitleinEMI,
+        currentAudioSubTitle: nextAudioToSelectTitleinEMISubTitle,
       );
 
       // Now scroll down to the 'Jésus-Christ' playlist and select it
@@ -37178,13 +37206,34 @@ void main() {
       // Find the 'Jésus-Christ' playlist audio list widget using
       // its key and change the 'Jésus-Christ' playlist current audio
 
-      String nextAudioToSelectTitleinJesusChrist =
+      const String nextAudioToSelectTitleinJesusChrist =
           "124_COUNCIL OF NICAEA - A specialist reveals what goes on behind the scenes!";
 
       await _tapOnAudioThenGoBackToPlaylistDownloadView(
         tester: tester,
         audioToSelectTitle: nextAudioToSelectTitleinJesusChrist,
         pasteaudioListUpOrDown: -2000.0,
+      );
+
+      const String nextAudioToSelectTitleinJesusChristSubTitle =
+          "0:25:01.4 9.01 MB at 299.9 KB/sec on 11/12/2025 at 21:33";
+
+      // Ensure that the selected playlist remains displayed as well
+      // as its new current audio
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+          "Jésus-Christ",
+          "Maria Valtorta",
+          "Abondance",
+          "Vérité de la Foi Catholique",
+          "100 MIRACLES Catholiques",
+          "125_THE POWER OF THE BLOOD OF JESUS _ PRAYER OF DELIVERANCE - SPIRITUAL WARFARE",
+        ],
+        selectedPlaylistTitle: playlistJesusTitle,
+        currentAudioTitle: nextAudioToSelectTitleinJesusChrist,
+        currentAudioSubTitle: nextAudioToSelectTitleinJesusChristSubTitle,
       );
 
       // Now scroll back to the 'EMI' playlist and select it
@@ -37196,9 +37245,6 @@ void main() {
 
       // Verify the displayed list of playlists and ensure the selected playlist
       // is displayed as well as its changed current audio
-
-      const String nextAudioToSelectTitleinEMISubTitle =
-          "0:14:30.7 6.97 MB at 103.8 KB/sec on 12/05/2026 at 11:03";
 
       await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
         tester: tester,
@@ -37225,9 +37271,6 @@ void main() {
 
       // Verify the displayed list of playlists and ensure the selected playlist
       // is displayed as well as its changed current audio
-
-      const String nextAudioToSelectTitleinJesusChristSubTitle =
-          "0:25:01.4 9.01 MB at 299.9 KB/sec on 11/12/2025 at 21:33";
 
       await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
         tester: tester,

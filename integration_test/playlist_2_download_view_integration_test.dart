@@ -37300,6 +37300,117 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
     });
+    testWidgets(
+        '''Using the search icon with the 'emi' word in order to filter playlists containing 'emi'
+           in their titles. Verify the filtered list of playlists and select the 'audio_learn_emi'
+           playlist. Then tap on the search icon again to clear the search and return to the full
+           list of playlists. Verify the selected playlist. Then, verify the selected playlist
+           current audio.''', (WidgetTester tester) async {
+      const String selectedPlaylistTitle = 'Jésus-Christ';
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'current_playlist_and_current_audio_test',
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        tapOnPlaylistToggleButton: false,
+      );
+
+      // Verify the displayed list of playlists and ensure the selected playlist
+      // is displayed as well as its current audio
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+          "Jésus-Christ",
+          "Maria Valtorta",
+          "Abondance",
+          "Vérité de la Foi Catholique",
+          "100 MIRACLES Catholiques",
+          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+        ],
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        currentAudioTitle:
+            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+        currentAudioSubTitle:
+            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+      );
+
+      await tester.tap(
+        find.byKey(
+          const Key('youtubeUrlOrSearchTextField'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Now add the 'emi' search word
+      await tester.enterText(
+        find.byKey(
+          const Key('youtubeUrlOrSearchTextField'),
+        ),
+        'emi',
+      );
+      await tester.pumpAndSettle(const Duration(milliseconds: 200));
+
+      // Tap on the search icon button
+      await tester.tap(find.byKey(const Key('search_icon_button')));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed list of playlists and ensure no playlist
+      // is selected since the selected 'Jésus-Christ' playlist does not
+      // match the search query. But in the displayed audio list, the
+      // 'Jésus-Christ' playlist current audio is still shown.
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "EMI",
+          "audio_learn_emi",
+          "EMI extraterrestres",
+          "Vincent Lafargue - EMI",
+          "Alicia EMI",
+          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+        ],
+        currentAudioTitle:
+            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+        currentAudioSubTitle:
+            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+      );
+
+      // Now select the 'audio_learn_emi' playlist
+      await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
+        tester: tester,
+        playlistToSelectTitle: 'audio_learn_emi',
+      );
+
+      // And tap on the search icon again to clear the search
+      await tester.tap(find.byKey(const Key('search_icon_button')));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed list of playlists and ensure the selected playlist
+      // is displayed as well as its current audio
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "La parole qui donne la Vie éternelle",
+          "audio_learn_emi",
+          "Martines Vives",
+          "EMI extraterrestres",
+          "Intervention des extraterrestres",
+          "listen_now",
+          "Maître Aïvanhov",
+        ],
+        selectedPlaylistTitle: 'audio_learn_emi',
+        currentAudioTitle:
+            "L'expérience de mort imminente de Vannina Schirinsky-Schikhmatoff",
+        currentAudioSubTitle:
+            "0:50:34.0 18.50 MB at 3.20 MB/sec on 10/11/2023 at 01:12 listened on 01/09/2026 at 05:10 playable every day",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
   });
 }
 
@@ -37337,7 +37448,7 @@ Future<void> _tapOnAudioThenGoBackToPlaylistDownloadView({
 Future<void> _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio({
   required WidgetTester tester,
   required List<String> playlistsTitlesAndAudioBeforeCurrentAudioTitle,
-  required String selectedPlaylistTitle,
+  String selectedPlaylistTitle = "",
   required String currentAudioTitle,
   required String currentAudioSubTitle,
 }) async {
@@ -37349,13 +37460,15 @@ Future<void> _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio({
         playlistsTitlesAndAudioBeforeCurrentAudioTitle,
   );
 
-  // Verify that the selected playlist's checkbox is checked
-  await _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox(
-    tester: tester,
-    playlistToSelectTitle: selectedPlaylistTitle,
-    verifyIfCheckboxIsChecked: true,
-    tapOnCheckbox: false,
-  );
+  if (selectedPlaylistTitle.isNotEmpty) {
+    // Verify that the selected playlist's checkbox is checked
+    await _onPlaylistDownloadViewCheckOrTapOnPlaylistCheckbox(
+      tester: tester,
+      playlistToSelectTitle: selectedPlaylistTitle,
+      verifyIfCheckboxIsChecked: true,
+      tapOnCheckbox: false,
+    );
+  }
 
   // Verify that the current audio is now selected
 

@@ -37472,6 +37472,148 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
     });
+    testWidgets(
+        '''Using the search icon with the 'Dieu' word in order to filter playlists containing 'Dieu'
+           in their titles. Scroll up the filtered list of playlists and select the 'Dieu je T'adore'
+           playlist. Verify that the selected "Dieu je T'adore" playlist is displayed. Then tap on the
+           search icon again to clear the search and return to the full list of playlists. Verify that
+           the selected "Dieu je T'adore" playlist is displayed.''',
+        (WidgetTester tester) async {
+      const String selectedPlaylistTitle = 'Jésus-Christ';
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'current_playlist_and_current_audio_test',
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        tapOnPlaylistToggleButton: false,
+      );
+
+      // Verify the displayed list of playlists and ensure the selected playlist
+      // is displayed as well as its current audio
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+          "Jésus-Christ",
+          "Maria Valtorta",
+          "Abondance",
+          "Vérité de la Foi Catholique",
+          "100 MIRACLES Catholiques",
+          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+        ],
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        currentAudioTitle:
+            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+        currentAudioSubTitle:
+            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+      );
+
+      await tester.tap(
+        find.byKey(
+          const Key('youtubeUrlOrSearchTextField'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Now add the 'emi' search word
+      await tester.enterText(
+        find.byKey(
+          const Key('youtubeUrlOrSearchTextField'),
+        ),
+        'Dieu',
+      );
+      await tester.pumpAndSettle(const Duration(milliseconds: 200));
+
+      // Tap on the search icon button
+      await tester.tap(find.byKey(const Key('search_icon_button')));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed list of playlists and ensure no playlist
+      // is selected since the selected 'Jésus-Christ' playlist does not
+      // match the search query. But in the displayed audio list, the
+      // 'Jésus-Christ' playlist current audio is still shown.
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "Position de Dieu ou de Jésus sur l'IA",
+          "Chants sur Dieu ou Jésus",
+          "Confiance en Dieu - MON EXPERIENCE DE DIEU",
+          "Chants sur Dieu",
+          "Chants puissants pour toucher le cœur de Dieu 2",
+          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+        ],
+        currentAudioTitle:
+            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+        currentAudioSubTitle:
+            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+      );
+
+      // Scroll up the filtered list of playlists
+
+      // Find the playlist list widget using its key
+      Finder playlistListFinder =
+          find.byKey(const Key('expandable_playlist_list'));
+
+      // Perform the scroll up action
+      await tester.drag(playlistListFinder, const Offset(0, 200));
+      await tester.pumpAndSettle();
+
+      const String playlistToSelectTitle = "Dieu je T'adore";
+
+      // Now select the "Dieu je T'adore" playlist
+      await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
+        tester: tester,
+        playlistToSelectTitle: playlistToSelectTitle,
+      );
+
+      const String selectedPlaylistCurrentAudioTitle = "Dieu a un PLAN PARFAIT pour Toi - Rien n'Arrive par Hasard !";
+      const String selectedPlaylistCurrentAudioSubTitle = "1:13:53.7 27.04 MB at 1.86 MB/sec on 26/12/2024 at 12:22 listened on 25/08/2026 at 11:21 playable every day";
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "Conversation avec Dieu",
+          playlistToSelectTitle,
+          "Position de Dieu ou de Jésus sur l'IA",
+          "Chants sur Dieu ou Jésus",
+          "Confiance en Dieu - MON EXPERIENCE DE DIEU",
+          "Chants sur Dieu",
+          "Chants puissants pour toucher le cœur de Dieu 2",
+        ],
+        selectedPlaylistTitle: playlistToSelectTitle,
+        currentAudioTitle:
+            selectedPlaylistCurrentAudioTitle,
+        currentAudioSubTitle:
+            selectedPlaylistCurrentAudioSubTitle,
+      );
+
+      // And tap on the search icon again to clear the search
+      await tester.tap(find.byKey(const Key('search_icon_button')));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed list of playlists and ensure the selected playlist
+      // is displayed as well as its current audio
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "Chants de Lumière de Grâce",
+          playlistToSelectTitle,
+          "Prières du matin",
+          "Prières et chants du matin",
+          "Prières et chants du matin 2",
+          "Prières du soir",
+          "Prières et chants du soir",
+        ],
+        selectedPlaylistTitle: playlistToSelectTitle,
+        currentAudioTitle: selectedPlaylistCurrentAudioTitle,
+        currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
   });
 }
 

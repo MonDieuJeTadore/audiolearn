@@ -104,11 +104,17 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   int _pendingAudioScrollIndex = -1;
   bool _isAudioScrollScheduled = false;
 
+  AudioPlayerVM? _audioPlayerVMforCurrentAudioListener;
+
   @override
   initState() {
     super.initState();
 
     _playlistUrlOrSearchController.addListener(_onTextChanged);
+    _audioPlayerVMforCurrentAudioListener =
+        Provider.of<AudioPlayerVM>(context, listen: false);
+    _audioPlayerVMforCurrentAudioListener!.currentAudioChangedNotifier
+        .addListener(_onCurrentAudioChanged);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -136,8 +142,20 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     _playlistUrlOrSearchController.removeListener(_onTextChanged);
     _playlistUrlOrSearchController.dispose();
     _playlistScrollController.dispose();
+    _audioPlayerVMforCurrentAudioListener?.currentAudioChangedNotifier
+        .removeListener(_onCurrentAudioChanged);
 
     super.dispose();
+  }
+
+  /// Called when the current audio changes, in particular when an audio
+  /// ends and the next one starts playing automatically. Rebuilding the
+  /// view moves the current audio highlight and scrolls the audio list
+  /// to the new current audio.
+  void _onCurrentAudioChanged() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   /// Deselects then reselects the currently selected playlist,

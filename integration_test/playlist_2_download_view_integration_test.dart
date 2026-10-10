@@ -37086,7 +37086,10 @@ void main() {
          ''', () {
     testWidgets(
         '''Using 'Jésus-Christ' playlist which has 194 audios. First, verify the list of playlists and
-           the selected playlist. Then, verify the selected playlist current audio.''',
+           the selected playlist. Then, verify the selected playlist current audio.
+
+           Type on the Playlists button to hide the playlist view. Then, retype on the Playlists button to
+           display again the playlists list and verify that the selected playlist remains checked and visible.''',
         (WidgetTester tester) async {
       const String selectedPlaylistTitle = 'Jésus-Christ';
 
@@ -37096,6 +37099,34 @@ void main() {
         selectedPlaylistTitle: selectedPlaylistTitle,
         tapOnPlaylistToggleButton: false,
       );
+
+      // Verify the displayed list of playlists and ensure the selected playlist
+      // is displayed as well as its current audio
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+          "Jésus-Christ",
+          "Maria Valtorta",
+          "Abondance",
+          "Vérité de la Foi Catholique",
+          "100 MIRACLES Catholiques",
+          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+        ],
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        currentAudioTitle:
+            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+        currentAudioSubTitle:
+            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+      );
+
+      // Type on the Playlists button to hide the playlist view
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Type on the Playlists button to display the playlists list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
 
       // Verify the displayed list of playlists and ensure the selected playlist
       // is displayed as well as its current audio
@@ -37134,8 +37165,11 @@ void main() {
            verify that after comming back from the audio player view to the playlist download view
            the current playlist remains displayed as well as the new selected audio.
            
-           Then go back to 'EMI' playlist and verify its changed current audio. And finally, return
-           to the 'Jésus-Christ' playlist and verify its changed current audio.''',
+           Then go back to 'EMI' playlist and verify its changed current audio. Then, type on the Playlists
+           button to hide the playlist view. Then, retype on the Playlists button to display again the
+           playlists list and verify that the selected playlist remains checked and visible.
+
+           Finally, return to the 'Jésus-Christ' playlist and verify its changed current audio.''',
         (WidgetTester tester) async {
       const String playlistEmiTitle = 'EMI';
       const String playlistJesusTitle = 'Jésus-Christ';
@@ -37248,6 +37282,33 @@ void main() {
         playlistToSelectTitle: playlistEmiTitle,
         pastePlaylistListUpOrDown: 2100.0,
       );
+
+      // Verify the displayed list of playlists and ensure the selected playlist
+      // is displayed as well as its changed current audio
+
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          "Transfert",
+          "EMI",
+          "Conversation avec Dieu - Un dialogue extraordinaire",
+          "Conversation avec Dieu",
+          "Prières à partager",
+          "Prières à partager MP3",
+          firstListenableAudioTitle,
+        ],
+        selectedPlaylistTitle: playlistEmiTitle,
+        currentAudioTitle: nextAudioToSelectTitleinEMI,
+        currentAudioSubTitle: nextAudioToSelectTitleinEMISubTitle,
+      );
+
+      // Type on the Playlists button to hide the playlist view
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Type on the Playlists button to display the playlists list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
 
       // Verify the displayed list of playlists and ensure the selected playlist
       // is displayed as well as its changed current audio

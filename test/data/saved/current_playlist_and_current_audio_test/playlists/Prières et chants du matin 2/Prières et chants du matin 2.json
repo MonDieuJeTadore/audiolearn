@@ -646,12 +646,12 @@
             "audioPlayVolume": 0.5,
             "isPlayingOrPausedWithPositionBetweenAudioStartAndEnd": false,
             "isPaused": true,
-            "audioPausedDateTime": "2026-10-01T00:00:00.000",
+            "audioPausedDateTime": "2026-10-10T16:06:34.971710",
             "audioPositionSeconds": 0,
             "audioFileName": "Ce n'est qu'en vivant sous l'orchestration, l'attention et la protection de Dieu.mp3",
             "audioFileSize": 199872,
             "audioType": "textToSpeech",
-            "playableEveryNDays": 3
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",
@@ -702,12 +702,12 @@
             "audioPlayVolume": 0.5,
             "isPlayingOrPausedWithPositionBetweenAudioStartAndEnd": false,
             "isPaused": true,
-            "audioPausedDateTime": "2026-10-01T00:00:00.000",
+            "audioPausedDateTime": "2026-10-10T16:06:51.079486",
             "audioPositionSeconds": 0,
             "audioFileName": "Donne- moi de la révélation à travers Ton amour.mp3",
             "audioFileSize": 168768,
             "audioType": "textToSpeech",
-            "playableEveryNDays": 3
+            "playableEveryNDays": 1
         },
         {
             "youtubeVideoChannel": "",

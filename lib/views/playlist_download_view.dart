@@ -618,8 +618,12 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
         ),
       );
 
+      // The index must be the one in the really displayed list, which
+      // is filtered when a search word is applied, and not the index
+      // in the full playlist list.
       _scrollToSelectedPlaylist(
-        playlistListVMlistenFalse: playlistListVMlistenFalse,
+        selectedPlaylistIndex: upToDateSelectablePlaylists
+            .indexWhere((Playlist playlist) => playlist.isSelected),
         audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
       );
 
@@ -632,21 +636,8 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
 
   /// Scrolls the playlist list so that the selected playlist becomes
   /// visible.
-  ///
-  /// This is done in two phases:
-  ///  1. A coarse jumpTo(), computed from the estimated item height. This
-  ///     doesn't need to be pixel accurate: its only purpose is to force
-  ///     the lazy ListView.builder to build the items located around the
-  ///     target position (otherwise, if the target playlist was never
-  ///     built - e.g. after the playlist list was hidden and shown again,
-  ///     after the playlist was moved far away in the list, or after
-  ///     navigating back to this screen - its GlobalKey has no
-  ///     BuildContext yet and Scrollable.ensureVisible() cannot do
-  ///     anything with it).
-  ///  2. Once the target playlist item is built, Scrollable.ensureVisible()
-  ///     performs the exact, pixel accurate scroll to it.
   void _scrollToSelectedPlaylist({
-    required PlaylistListVM playlistListVMlistenFalse,
+    required int selectedPlaylistIndex,
     required AudioDownloadVM audioDownloadVMlistenTrue,
   }) {
     if (audioDownloadVMlistenTrue.isAudioDownloading) {
@@ -656,20 +647,16 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       return;
     }
 
-    int playlistToScrollPosition =
-        playlistListVMlistenFalse.determinePlaylistToScrollPosition();
-
-    if (playlistToScrollPosition == -1) {
-      // No playlist is selected, so no scrolling is required.
+    if (selectedPlaylistIndex == -1) {
+      // No playlist is selected, or the selected playlist is not in
+      // the displayed (filtered) list: no scrolling is required.
       return;
     }
 
     if (!_playlistScrollController.hasClients) {
-      // The scroll controller isn't attached to any scroll view yet.
-      // Schedule a callback to try again after the next frame.
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => _scrollToSelectedPlaylist(
-          playlistListVMlistenFalse: playlistListVMlistenFalse,
+          selectedPlaylistIndex: selectedPlaylistIndex,
           audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
         ),
       );
@@ -677,12 +664,9 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
       return;
     }
 
-    // The target item is located by measuring the really displayed
-    // items (see _ensureSelectedPlaylistItemIsVisible), so no estimated
-    // item height is needed anymore.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _ensureSelectedPlaylistItemIsVisible(
-        playlistToScrollPosition: playlistToScrollPosition,
+        playlistToScrollPosition: selectedPlaylistIndex,
         retryCount: 0,
       );
     });

@@ -266,31 +266,10 @@ class YtDlpService {
       (String line) {
         completeOutput.writeln(line);
         if (line.startsWith('PROGRESS|')) {
-          final List<String> parts = line.split('|');
+          final YtDlpProgress? progress = _parseProgressLine(line);
 
-          if (parts.length >= 6) {
-            final double percent = double.tryParse(
-                  parts[1].replaceAll('%', '').trim(),
-                ) ??
-                0.0;
-
-            final int downloadedBytes = int.tryParse(parts[2].trim()) ?? 0;
-
-            final int? totalBytes = int.tryParse(parts[3].trim());
-
-            final int? totalBytesEstimate = int.tryParse(parts[4].trim());
-
-            final double speedBytesPerSecond =
-                double.tryParse(parts[5].trim()) ?? 0.0;
-
-            onProgress?.call(
-              YtDlpProgress(
-                percent: percent,
-                downloadedBytes: downloadedBytes,
-                totalBytes: totalBytes ?? totalBytesEstimate ?? 0,
-                speedBytesPerSecond: speedBytesPerSecond,
-              ),
-            );
+          if (progress != null) {
+            onProgress?.call(progress);
           }
         }
 
@@ -344,6 +323,18 @@ class YtDlpService {
     required String temporaryBaseFileName,
     void Function(YtDlpProgress progress)? onProgress,
   }) async {
+    // Receives the yt-dlp output lines forwarded by MainActivity.
+    _androidChannel.setMethodCallHandler((MethodCall call) async {
+      if (call.method == 'onProgress') {
+        final String line = (call.arguments as Map?)?['line']?.toString() ?? '';
+        final YtDlpProgress? progress = _parseProgressLine(line);
+
+        if (progress != null) {
+          onProgress?.call(progress);
+        }
+      }
+    });
+
     try {
       final Map<dynamic, dynamic>? response =
           await _androidChannel.invokeMethod<Map<dynamic, dynamic>>(
@@ -374,6 +365,8 @@ class YtDlpService {
         downloadedFilePath: null,
         output: '${e.code}: ${e.message}\n${e.details ?? ''}',
       );
+    } finally {
+      _androidChannel.setMethodCallHandler(null);
     }
   }
 
@@ -404,5 +397,31 @@ class YtDlpService {
     }
 
     return matchingFiles.first.path;
+  }
+
+  static YtDlpProgress? _parseProgressLine(String line) {
+    if (!line.startsWith('PROGRESS|')) {
+      return null;
+    }
+
+    final List<String> parts = line.split('|');
+
+    if (parts.length < 6) {
+      return null;
+    }
+
+    final double percent =
+        double.tryParse(parts[1].replaceAll('%', '').trim()) ?? 0.0;
+    final int downloadedBytes = int.tryParse(parts[2].trim()) ?? 0;
+    final int? totalBytes = int.tryParse(parts[3].trim());
+    final int? totalBytesEstimate = int.tryParse(parts[4].trim());
+    final double speedBytesPerSecond = double.tryParse(parts[5].trim()) ?? 0.0;
+
+    return YtDlpProgress(
+      percent: percent,
+      downloadedBytes: downloadedBytes,
+      totalBytes: totalBytes ?? totalBytesEstimate ?? 0,
+      speedBytesPerSecond: speedBytesPerSecond,
+    );
   }
 }

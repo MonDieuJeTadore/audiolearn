@@ -9,6 +9,10 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
 import kotlin.concurrent.thread
+import android.content.Intent
+import android.net.Uri
+import android.os.PowerManager
+import android.provider.Settings
 
 class MainActivity : FlutterActivity() {
     private val channelName = "audiolearn/yt_dlp"
@@ -79,6 +83,53 @@ class MainActivity : FlutterActivity() {
                 else -> result.notImplemented()
             }
         }
+
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            "com.audiolearn/battery_optimization"
+        ).setMethodCallHandler { call, result ->
+            try {
+                when (call.method) {
+                    "isIgnoringBatteryOptimizations" -> {
+                        val pm = getSystemService(POWER_SERVICE) as PowerManager
+                        result.success(
+                            pm.isIgnoringBatteryOptimizations(packageName)
+                        )
+                    }
+
+                    "requestIgnoreBatteryOptimizations" -> {
+                        startActivity(
+                            Intent(
+                                Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                                Uri.parse("package:$packageName")
+                            )
+                        )
+                        result.success(null)
+                    }
+
+                    "startForegroundService" -> {
+                        val intent = Intent(
+                            this,
+                            AudioForegroundService::class.java
+                        ).setAction(AudioForegroundService.ACTION_START)
+                        startForegroundService(intent)
+                        result.success(null)
+                    }
+
+                    "stopForegroundService" -> {
+                        stopService(
+                            Intent(this, AudioForegroundService::class.java)
+                        )
+                        result.success(null)
+                    }
+
+                    else -> result.notImplemented()
+                }
+            } catch (e: Exception) {
+                Log.e("AudioLearnBattery", "${call.method} failed.", e)
+                result.error("BATTERY_SERVICE_ERROR", e.message, null)
+            }
+        }        
     }
 
     private fun downloadAudio(

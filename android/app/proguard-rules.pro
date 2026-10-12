@@ -1,1 +1,8 @@
 -keep class com.antonkarpenko.ffmpegkit.** { *; }
+
+# youtubedl-android
+-keep class com.yausername.** { *; }
+-keep class org.apache.commons.compress.** { *; }
+-dontwarn org.apache.commons.compress.**
+-keep class com.fasterxml.jackson.** { *; }
+-dontwarn com.fasterxml.jackson.**

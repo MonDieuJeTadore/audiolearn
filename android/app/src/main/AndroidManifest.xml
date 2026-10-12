@@ -4,7 +4,8 @@
         android:label="AudioLearn"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true"> 
+        android:requestLegacyExternalStorage="true"
+        android:extractNativeLibs="true"> 
         <!-- Previous line enables giving storage access permission to the application 
          on Galaxy S8 and S20 -->
         <activity

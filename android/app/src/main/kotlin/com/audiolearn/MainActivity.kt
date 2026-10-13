@@ -1,5 +1,6 @@
 package com.audiolearn
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Handler
@@ -22,11 +23,27 @@ class MainActivity : FlutterActivity() {
     private val batteryChannelName = "com.audiolearn/battery_optimization"
     private val logTag = "AudioLearnYtDlp"
 
+    // SharedPreferences used to remember when yt-dlp was last updated.
+    private val ytDlpPrefsName = "audiolearn_yt_dlp"
+    private val lastUpdateCheckKey = "last_update_check_millis"
+    private val updateCheckIntervalMillis = 24L * 60L * 60L * 1000L // 1 day
+
     // Same template as the Windows implementation so that Dart parses
     // progress lines identically on both platforms.
     private val progressTemplate =
         "download:PROGRESS|%(progress._percent_str)s|%(progress.downloaded_bytes)s|" +
             "%(progress.total_bytes)s|%(progress.total_bytes_estimate)s|%(progress.speed)s"
+
+    // yt-dlp extractor arguments tried in sequence when a download fails.
+    // null = yt-dlp default YouTube clients. The following entries are
+    // fallbacks for videos where YouTube forces SABR streaming or returns
+    // HTTP 403 for the default clients. android_vr does not require a
+    // JavaScript runtime, which is not available inside the APK.
+    private val youtubeExtractorArgsAttempts = listOf(
+        null,
+        "youtube:player_client=android_vr",
+        "youtube:player_client=tv,ios",
+    )
 
     // Single thread: yt-dlp calls are executed sequentially, never on the UI thread.
     private val ytDlpExecutor = Executors.newSingleThreadExecutor()
@@ -36,6 +53,9 @@ class MainActivity : FlutterActivity() {
     @Volatile
     private var isYtDlpInitialized = false
 
+    @Volatile
+    private var wasYtDlpUpdateAttempted = false
+
     override fun configureFlutterEngine(
         flutterEngine: FlutterEngine,
     ) {
@@ -43,6 +63,17 @@ class MainActivity : FlutterActivity() {
 
         configureYtDlpChannel(flutterEngine)
         configureBatteryOptimizationChannel(flutterEngine)
+
+        // Initializing and updating yt-dlp in background at startup so that
+        // the first download uses an up to date yt-dlp version.
+        ytDlpExecutor.execute {
+            try {
+                ensureYtDlpInitialized()
+                updateYtDlpIfNeeded(force = false)
+            } catch (e: Exception) {
+                Log.e(logTag, "yt-dlp startup initialization failed.", e)
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -100,7 +131,7 @@ class MainActivity : FlutterActivity() {
                         )
                     } else {
                         runInBackground(result, "YT_DLP_ERROR") {
-                            downloadAudio(
+                            downloadAudioWithFallbacks(
                                 videoUrl = videoUrl,
                                 targetDirectory = targetDirectory,
                                 temporaryBaseFileName = temporaryBaseFileName,
@@ -124,12 +155,7 @@ class MainActivity : FlutterActivity() {
                 "updateYtDlp" -> {
                     runInBackground(result, "UPDATE_ERROR") {
                         ensureYtDlpInitialized()
-                        YoutubeDL.getInstance()
-                            .updateYoutubeDL(
-                                applicationContext,
-                                YoutubeDL.UpdateChannel._STABLE,
-                            )
-                            ?.name
+                        updateYtDlpIfNeeded(force = true)
                     }
                 }
 
@@ -152,6 +178,47 @@ class MainActivity : FlutterActivity() {
         if (!isYtDlpInitialized) {
             YoutubeDL.getInstance().init(applicationContext)
             isYtDlpInitialized = true
+        }
+    }
+
+    /// The yt-dlp version embedded in the library quickly becomes too old
+    /// for YouTube (HTTP 403, SABR streaming). This method downloads the
+    /// latest stable yt-dlp, at most once a day unless [force] is true.
+    ///
+    /// Returns the update status name, or null if no update was attempted.
+    /// An update failure (no network, GitHub unreachable) is logged and
+    /// never prevents a download attempt with the current version.
+    private fun updateYtDlpIfNeeded(force: Boolean): String? {
+        val prefs = applicationContext.getSharedPreferences(
+            ytDlpPrefsName,
+            Context.MODE_PRIVATE,
+        )
+        val now = System.currentTimeMillis()
+        val lastCheck = prefs.getLong(lastUpdateCheckKey, 0L)
+
+        if (!force && now - lastCheck < updateCheckIntervalMillis) {
+            return null
+        }
+
+        return try {
+            val status = YoutubeDL.getInstance().updateYoutubeDL(
+                applicationContext,
+                YoutubeDL.UpdateChannel._STABLE,
+            )
+
+            prefs.edit().putLong(lastUpdateCheckKey, now).apply()
+            wasYtDlpUpdateAttempted = true
+
+            Log.i(
+                logTag,
+                "yt-dlp update status: ${status?.name}, version: " +
+                    YoutubeDL.getInstance().versionName(applicationContext),
+            )
+
+            status?.name
+        } catch (e: Exception) {
+            Log.e(logTag, "yt-dlp update failed.", e)
+            null
         }
     }
 
@@ -213,6 +280,78 @@ class MainActivity : FlutterActivity() {
         return videos
     }
 
+    /// Tries the download with the default YouTube clients first, then with
+    /// the fallback clients of youtubeExtractorArgsAttempts. If every attempt
+    /// fails and yt-dlp was not yet updated during this app session, yt-dlp
+    /// is updated and the attempts are executed once more.
+    private fun downloadAudioWithFallbacks(
+        videoUrl: String,
+        targetDirectory: String,
+        temporaryBaseFileName: String,
+    ): Map<String, Any?> {
+        ensureYtDlpInitialized()
+
+        var result = tryAllExtractorArgs(
+            videoUrl = videoUrl,
+            targetDirectory = targetDirectory,
+            temporaryBaseFileName = temporaryBaseFileName,
+        )
+
+        if (result["success"] != true &&
+            result["cancelled"] != true &&
+            !wasYtDlpUpdateAttempted
+        ) {
+            Log.i(logTag, "All attempts failed: updating yt-dlp and retrying.")
+
+            updateYtDlpIfNeeded(force = true)
+
+            result = tryAllExtractorArgs(
+                videoUrl = videoUrl,
+                targetDirectory = targetDirectory,
+                temporaryBaseFileName = temporaryBaseFileName,
+            )
+        }
+
+        return result
+    }
+
+    private fun tryAllExtractorArgs(
+        videoUrl: String,
+        targetDirectory: String,
+        temporaryBaseFileName: String,
+    ): Map<String, Any?> {
+        val outputs = StringBuilder()
+        var lastResult: Map<String, Any?> = emptyMap()
+
+        for (extractorArgs in youtubeExtractorArgsAttempts) {
+            deletePartialFiles(targetDirectory, temporaryBaseFileName)
+
+            lastResult = downloadAudio(
+                videoUrl = videoUrl,
+                targetDirectory = targetDirectory,
+                temporaryBaseFileName = temporaryBaseFileName,
+                extractorArgs = extractorArgs,
+            )
+
+            if (lastResult["success"] == true || lastResult["cancelled"] == true) {
+                return lastResult
+            }
+
+            outputs
+                .append("--- Attempt with ")
+                .append(extractorArgs ?: "default clients")
+                .append(" ---\n")
+                .append(lastResult["output"] ?: "")
+                .append('\n')
+
+            Log.w(logTag, "Download attempt failed with ${extractorArgs ?: "default clients"}.")
+        }
+
+        deletePartialFiles(targetDirectory, temporaryBaseFileName)
+
+        return lastResult + mapOf("output" to outputs.toString())
+    }
+
     /// Downloads the best audio-only stream without converting it. The MP3
     /// conversion is done afterwards on the Dart side by FFmpegKit.
     ///
@@ -222,20 +361,24 @@ class MainActivity : FlutterActivity() {
         videoUrl: String,
         targetDirectory: String,
         temporaryBaseFileName: String,
+        extractorArgs: String?,
     ): Map<String, Any?> {
-        ensureYtDlpInitialized()
-
         val outputTemplate =
             "$targetDirectory${File.separator}$temporaryBaseFileName.%(ext)s"
 
         val request = YoutubeDLRequest(videoUrl).apply {
             addOption("--newline")
             addOption("--no-playlist")
+            addOption("--no-update")
             addOption("--progress-template", progressTemplate)
             // m4a first: single stream, no merge needed (no ffmpeg required
             // by yt-dlp itself)
             addOption("-f", "bestaudio[ext=m4a]/bestaudio/best")
             addOption("-o", outputTemplate)
+
+            if (extractorArgs != null) {
+                addOption("--extractor-args", extractorArgs)
+            }
         }
 
         return try {
@@ -268,6 +411,13 @@ class MainActivity : FlutterActivity() {
                     output
                 },
             )
+        } catch (e: YoutubeDL.CanceledException) {
+            mapOf(
+                "success" to false,
+                "cancelled" to true,
+                "downloadedFilePath" to null,
+                "output" to "Download cancelled.",
+            )
         } catch (e: YoutubeDLException) {
             Log.e(logTag, "Audio download failed.", e)
 
@@ -275,12 +425,6 @@ class MainActivity : FlutterActivity() {
                 "success" to false,
                 "downloadedFilePath" to null,
                 "output" to (e.message ?: e.toString()),
-            )
-        } catch (e: YoutubeDL.CanceledException) {
-            mapOf(
-                "success" to false,
-                "downloadedFilePath" to null,
-                "output" to "Download cancelled.",
             )
         }
     }
@@ -304,6 +448,22 @@ class MainActivity : FlutterActivity() {
                     !file.name.endsWith(".ytdl")
             }
             ?.absolutePath
+    }
+
+    /// Removes the .part / .ytdl files left by a failed attempt so that the
+    /// next attempt starts from a clean state.
+    private fun deletePartialFiles(
+        targetDirectory: String,
+        temporaryBaseFileName: String,
+    ) {
+        File(targetDirectory)
+            .listFiles()
+            ?.filter { file ->
+                file.isFile &&
+                    file.name.startsWith("$temporaryBaseFileName.") &&
+                    (file.name.endsWith(".part") || file.name.endsWith(".ytdl"))
+            }
+            ?.forEach { file -> file.delete() }
     }
 
     // ------------------------------------------------------------------

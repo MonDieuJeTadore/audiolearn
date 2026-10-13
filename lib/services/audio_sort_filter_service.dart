@@ -1334,6 +1334,12 @@ class AudioSortFilterService {
                       .toLowerCase()
                       .contains(filterSentenceInLowerCase)) {
                 isFilterSentenceInComments = true;
+                break; // no need to check other comments for this
+                //        filter sentence. This fix the bug if the
+                //        filter sentence was found only in the comment
+                //        before the last comment but not in the last
+                //        comment, the commented audio was not filtered
+                //        correctly.
               } else {
                 isFilterSentenceInComments = false;
               }
@@ -1341,6 +1347,12 @@ class AudioSortFilterService {
               if (comment.title.contains(filterSentence) ||
                   comment.content.contains(filterSentence)) {
                 isFilterSentenceInComments = true;
+                break; // no need to check other comments for this
+                //        filter sentence. This fix the bug if the
+                //        filter sentence was found only in the comment
+                //        before the last comment but not in the last
+                //        comment, the commented audio was not filtered
+                //        correctly.
               } else {
                 isFilterSentenceInComments = false;
               }

@@ -12,6 +12,7 @@ import 'package:window_manager/window_manager.dart';
 
 import 'constants.dart';
 import 'services/help_data_service.dart';
+import 'services/permission_requester_service.dart';
 import 'utils/ui_util.dart';
 import 'viewmodels/picture_vm.dart';
 import 'viewmodels/playlist_list_vm.dart';
@@ -49,10 +50,17 @@ Future<void> main() async {
     windowManager.waitUntilReadyToShow(windowOptions);
   }
 
-  String applicationPath = '';
+  // Sur Android, les permissions DOIVENT être accordées avant
+  // le premier accès au répertoire de l'application, sinon les
+  // fichiers laissés par une installation précédente sont
+  // inaccessibles (scoped storage).
+  if (Platform.isAndroid && !isTest) {
+    await PermissionRequesterService.requestMultiplePermissions();
+  }
 
   // Obtain or create the application directory (no permission request here)
-  applicationPath = DirUtil.getApplicationPath(
+  String applicationPath = '';
+   applicationPath = DirUtil.getApplicationPath(
     isTest: isTest,
   );
 

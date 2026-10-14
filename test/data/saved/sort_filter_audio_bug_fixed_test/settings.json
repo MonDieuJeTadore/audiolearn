@@ -588,49 +588,6 @@
             "durationStartRangeSec": 0,
             "durationEndRangeSec": 0
         },
-        "Comm desc": {
-            "selectedSortItemLst": [
-                {
-                    "sortingOption": "lastCommentDateTime",
-                    "isAscending": false
-                }
-            ],
-            "filterSentenceLst": [
-            ],
-            "sentencesCombination": 0,
-            "ignoreCase": true,
-            "searchAsWellInYoutubeChannelName": true,
-            "searchAsWellInVideoCompactDescription": true,
-            "filterAudios": true,
-            "filterComments": true,
-            "filterMusicQuality": true,
-            "filterSpokenQuality": true,
-            "filterFullyListened": true,
-            "filterPartiallyListened": true,
-            "filterNotListened": true,
-            "filterCommented": true,
-            "filterNotCommented": false,
-            "filterPictured": true,
-            "filterNotPictured": true,
-            "filterPlayable": true,
-            "filterNotPlayable": true,
-            "filterDownloaded": true,
-            "filterImported": true,
-            "filterConverted": true,
-            "filterExtracted": true,
-            "downloadDateStartRange": null,
-            "downloadDateEndRange": null,
-            "uploadDateStartRange": null,
-            "uploadDateEndRange": null,
-            "lastListenedDate": null,
-            "playableOnDate": null,
-            "startPlayableEveryNDayRange": 0,
-            "endPlayableEveryNDayRange": 0,
-            "fileSizeStartRangeMB": 0.0,
-            "fileSizeEndRangeMB": 0.0,
-            "durationStartRangeSec": 0,
-            "durationEndRangeSec": 0
-        },
         "Chap desc": {
             "selectedSortItemLst": [
                 {
@@ -1251,53 +1208,6 @@
             "durationStartRangeSec": 0,
             "durationEndRangeSec": 0
         },
-        "Jouable 2 jours": {
-            "selectedSortItemLst": [
-                {
-                    "sortingOption": "playableEveryNDays",
-                    "isAscending": false
-                },
-                {
-                    "sortingOption": "chapterAudioTitle",
-                    "isAscending": false
-                }
-            ],
-            "filterSentenceLst": [
-            ],
-            "sentencesCombination": 0,
-            "ignoreCase": true,
-            "searchAsWellInYoutubeChannelName": true,
-            "searchAsWellInVideoCompactDescription": true,
-            "filterAudios": true,
-            "filterComments": true,
-            "filterMusicQuality": true,
-            "filterSpokenQuality": true,
-            "filterFullyListened": true,
-            "filterPartiallyListened": true,
-            "filterNotListened": true,
-            "filterCommented": true,
-            "filterNotCommented": true,
-            "filterPictured": true,
-            "filterNotPictured": true,
-            "filterPlayable": true,
-            "filterNotPlayable": true,
-            "filterDownloaded": true,
-            "filterImported": true,
-            "filterConverted": true,
-            "filterExtracted": true,
-            "downloadDateStartRange": null,
-            "downloadDateEndRange": null,
-            "uploadDateStartRange": null,
-            "uploadDateEndRange": null,
-            "lastListenedDate": null,
-            "playableOnDate": null,
-            "startPlayableEveryNDayRange": 2,
-            "endPlayableEveryNDayRange": 2,
-            "fileSizeStartRangeMB": 0.0,
-            "fileSizeEndRangeMB": 0.0,
-            "durationStartRangeSec": 0,
-            "durationEndRangeSec": 0
-        },
         "Jouable 7 jours": {
             "selectedSortItemLst": [
                 {
@@ -1383,98 +1293,6 @@
             "playableOnDate": null,
             "startPlayableEveryNDayRange": 9,
             "endPlayableEveryNDayRange": 9,
-            "fileSizeStartRangeMB": 0.0,
-            "fileSizeEndRangeMB": 0.0,
-            "durationStartRangeSec": 0,
-            "durationEndRangeSec": 0
-        },
-        "Jouable 1 jour": {
-            "selectedSortItemLst": [
-                {
-                    "sortingOption": "playableEveryNDays",
-                    "isAscending": false
-                },
-                {
-                    "sortingOption": "chapterAudioTitle",
-                    "isAscending": false
-                }
-            ],
-            "filterSentenceLst": [
-            ],
-            "sentencesCombination": 0,
-            "ignoreCase": true,
-            "searchAsWellInYoutubeChannelName": true,
-            "searchAsWellInVideoCompactDescription": true,
-            "filterAudios": true,
-            "filterComments": true,
-            "filterMusicQuality": true,
-            "filterSpokenQuality": true,
-            "filterFullyListened": true,
-            "filterPartiallyListened": true,
-            "filterNotListened": true,
-            "filterCommented": true,
-            "filterNotCommented": true,
-            "filterPictured": true,
-            "filterNotPictured": true,
-            "filterPlayable": true,
-            "filterNotPlayable": true,
-            "filterDownloaded": true,
-            "filterImported": true,
-            "filterConverted": true,
-            "filterExtracted": true,
-            "downloadDateStartRange": null,
-            "downloadDateEndRange": null,
-            "uploadDateStartRange": null,
-            "uploadDateEndRange": null,
-            "lastListenedDate": null,
-            "playableOnDate": null,
-            "startPlayableEveryNDayRange": 1,
-            "endPlayableEveryNDayRange": 1,
-            "fileSizeStartRangeMB": 0.0,
-            "fileSizeEndRangeMB": 0.0,
-            "durationStartRangeSec": 0,
-            "durationEndRangeSec": 0
-        },
-        "Emi": {
-            "selectedSortItemLst": [
-                {
-                    "sortingOption": "audioDownloadDate",
-                    "isAscending": false
-                }
-            ],
-            "filterSentenceLst": [
-                "Emi ",
-                "Emi"
-            ],
-            "sentencesCombination": 1,
-            "ignoreCase": true,
-            "searchAsWellInYoutubeChannelName": false,
-            "searchAsWellInVideoCompactDescription": false,
-            "filterAudios": true,
-            "filterComments": false,
-            "filterMusicQuality": true,
-            "filterSpokenQuality": true,
-            "filterFullyListened": false,
-            "filterPartiallyListened": true,
-            "filterNotListened": true,
-            "filterCommented": true,
-            "filterNotCommented": true,
-            "filterPictured": true,
-            "filterNotPictured": true,
-            "filterPlayable": true,
-            "filterNotPlayable": false,
-            "filterDownloaded": true,
-            "filterImported": true,
-            "filterConverted": true,
-            "filterExtracted": true,
-            "downloadDateStartRange": null,
-            "downloadDateEndRange": null,
-            "uploadDateStartRange": null,
-            "uploadDateEndRange": null,
-            "lastListenedDate": null,
-            "playableOnDate": null,
-            "startPlayableEveryNDayRange": 0,
-            "endPlayableEveryNDayRange": 0,
             "fileSizeStartRangeMB": 0.0,
             "fileSizeEndRangeMB": 0.0,
             "durationStartRangeSec": 0,
@@ -1576,7 +1394,7 @@
                 }
             ],
             "filterSentenceLst": [
-                "neuf"
+                "nonono"
             ],
             "sentencesCombination": 0,
             "ignoreCase": true,
@@ -1590,7 +1408,7 @@
             "filterPartiallyListened": true,
             "filterNotListened": true,
             "filterCommented": true,
-            "filterNotCommented": false,
+            "filterNotCommented": true,
             "filterPictured": true,
             "filterNotPictured": true,
             "filterPlayable": true,
@@ -1612,7 +1430,51 @@
             "durationStartRangeSec": 0,
             "durationEndRangeSec": 0
         },
-        "app new": {
+        "app 1st com": {
+            "selectedSortItemLst": [
+                {
+                    "sortingOption": "audioDownloadDate",
+                    "isAscending": false
+                }
+            ],
+            "filterSentenceLst": [
+                "Après avoir lu ou écouté"
+            ],
+            "sentencesCombination": 0,
+            "ignoreCase": false,
+            "searchAsWellInYoutubeChannelName": false,
+            "searchAsWellInVideoCompactDescription": false,
+            "filterAudios": false,
+            "filterComments": true,
+            "filterMusicQuality": true,
+            "filterSpokenQuality": true,
+            "filterFullyListened": true,
+            "filterPartiallyListened": true,
+            "filterNotListened": true,
+            "filterCommented": true,
+            "filterNotCommented": true,
+            "filterPictured": true,
+            "filterNotPictured": true,
+            "filterPlayable": true,
+            "filterNotPlayable": true,
+            "filterDownloaded": true,
+            "filterImported": true,
+            "filterConverted": true,
+            "filterExtracted": true,
+            "downloadDateStartRange": null,
+            "downloadDateEndRange": null,
+            "uploadDateStartRange": null,
+            "uploadDateEndRange": null,
+            "lastListenedDate": null,
+            "playableOnDate": null,
+            "startPlayableEveryNDayRange": 0,
+            "endPlayableEveryNDayRange": 0,
+            "fileSizeStartRangeMB": 0.0,
+            "fileSizeEndRangeMB": 0.0,
+            "durationStartRangeSec": 0,
+            "durationEndRangeSec": 0
+        },
+        "app 2nd com": {
             "selectedSortItemLst": [
                 {
                     "sortingOption": "audioDownloadDate",
@@ -1634,50 +1496,7 @@
             "filterPartiallyListened": true,
             "filterNotListened": true,
             "filterCommented": true,
-            "filterNotCommented": false,
-            "filterPictured": true,
-            "filterNotPictured": true,
-            "filterPlayable": true,
-            "filterNotPlayable": true,
-            "filterDownloaded": true,
-            "filterImported": true,
-            "filterConverted": true,
-            "filterExtracted": true,
-            "downloadDateStartRange": null,
-            "downloadDateEndRange": null,
-            "uploadDateStartRange": null,
-            "uploadDateEndRange": null,
-            "lastListenedDate": null,
-            "playableOnDate": null,
-            "startPlayableEveryNDayRange": 0,
-            "endPlayableEveryNDayRange": 0,
-            "fileSizeStartRangeMB": 0.0,
-            "fileSizeEndRangeMB": 0.0,
-            "durationStartRangeSec": 0,
-            "durationEndRangeSec": 0
-        },
-        "appli": {
-            "selectedSortItemLst": [
-                {
-                    "sortingOption": "audioDownloadDate",
-                    "isAscending": false
-                }
-            ],
-            "filterSentenceLst": [
-            ],
-            "sentencesCombination": 0,
-            "ignoreCase": true,
-            "searchAsWellInYoutubeChannelName": false,
-            "searchAsWellInVideoCompactDescription": false,
-            "filterAudios": false,
-            "filterComments": true,
-            "filterMusicQuality": true,
-            "filterSpokenQuality": true,
-            "filterFullyListened": true,
-            "filterPartiallyListened": true,
-            "filterNotListened": true,
-            "filterCommented": true,
-            "filterNotCommented": false,
+            "filterNotCommented": true,
             "filterPictured": true,
             "filterNotPictured": true,
             "filterPlayable": true,
@@ -1700,5 +1519,5 @@
             "durationEndRangeSec": 0
         }
     },
-    "searchHistoryOfAudioSortFilterSettings": "[{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Naoniurse\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Oniseua\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Openai\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Openai\",\"ChatGPT\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Openai\",\"ChatGPT\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":false,\"searchAsWellInVideoCompactDescription\":false,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Reine\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Elisabeth\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Élisab\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Nicole Dron\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Comment vivre\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":\"2025-05-04T00:00:00.000\",\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Le mot de Dieu\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":false,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"chapterAudioTitle\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":false,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"pas\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":false,\"searchAsWellInVideoCompactDescription\":false,\"filterAudios\":false,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":false,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":false,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"nuit\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"glorious\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false},{\"sortingOption\":\"chapterAudioTitle\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":false,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"sauveur\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}]"
+    "searchHistoryOfAudioSortFilterSettings": "[{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Naoniurse\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Oniseua\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Openai\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Openai\",\"ChatGPT\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Openai\",\"ChatGPT\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":false,\"searchAsWellInVideoCompactDescription\":false,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Reine\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Elisabeth\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Élisab\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Nicole Dron\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Comment vivre\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":false,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":\"2025-05-04T00:00:00.000\",\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Le mot de Dieu\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":false,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"chapterAudioTitle\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":false,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"CETTE SOEUR GUÉRIT DES MILLIERS DE PERSONNES AU NOM DE JÉSUS\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"pas\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":false,\"searchAsWellInVideoCompactDescription\":false,\"filterAudios\":false,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":false,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":false,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"nuit\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"glorious\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false},{\"sortingOption\":\"chapterAudioTitle\",\"isAscending\":false}],\"filterSentenceLst\":[],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":true,\"searchAsWellInVideoCompactDescription\":true,\"filterAudios\":true,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":false,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0},{\"selectedSortItemLst\":[{\"sortingOption\":\"audioDownloadDate\",\"isAscending\":false}],\"filterSentenceLst\":[\"Tu dois être entreprenant en mangeant\"],\"sentencesCombination\":0,\"ignoreCase\":true,\"searchAsWellInYoutubeChannelName\":false,\"searchAsWellInVideoCompactDescription\":false,\"filterAudios\":false,\"filterComments\":true,\"filterMusicQuality\":true,\"filterSpokenQuality\":true,\"filterFullyListened\":true,\"filterPartiallyListened\":true,\"filterNotListened\":true,\"filterCommented\":true,\"filterNotCommented\":true,\"filterPictured\":true,\"filterNotPictured\":true,\"filterPlayable\":true,\"filterNotPlayable\":true,\"filterDownloaded\":true,\"filterImported\":true,\"filterConverted\":true,\"filterExtracted\":true,\"downloadDateStartRange\":null,\"downloadDateEndRange\":null,\"uploadDateStartRange\":null,\"uploadDateEndRange\":null,\"lastListenedDate\":null,\"playableOnDate\":null,\"startPlayableEveryNDayRange\":0,\"endPlayableEveryNDayRange\":0,\"fileSizeStartRangeMB\":0.0,\"fileSizeEndRangeMB\":0.0,\"durationStartRangeSec\":0,\"durationEndRangeSec\":0}]"
 }

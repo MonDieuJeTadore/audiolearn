@@ -5273,6 +5273,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date ({selectedAppDateFormat})'**
   String audioDownloadFromDateLabel(Object selectedAppDateFormat);
+
+  /// No description provided for @storageAccessRequiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission required'**
+  String get storageAccessRequiredTitle;
+
+  /// No description provided for @storageAccessRequiredExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'AudioLearn stores its playlists, audio files and settings in the Documents/audiolearn folder. To access it, the app needs the \"All files access\" permission.\n\nTap the button below, then turn on the \"Allow access to manage all files\" switch.'**
+  String get storageAccessRequiredExplanation;
+
+  /// No description provided for @storageAccessRequiredButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get storageAccessRequiredButton;
 }
 
 class _AppLocalizationsDelegate

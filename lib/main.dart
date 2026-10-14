@@ -26,12 +26,9 @@ import 'services/settings_data_service.dart';
 import 'utils/dir_util.dart';
 import 'views/my_home_page.dart';
 import 'views/screen_mixin.dart';
+import 'views/storage_access_required_view.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Ensure Flutter bindings are initialized.
-
-  bool isTest = true; // Must be set to false instead of true before
+const bool kIsTest = true; // Must be set to false instead of true before
   //                     generating the Android as well as the Windows
   //                     version of the app so that the app accesses the
   //                     correct application directory and not the test
@@ -39,34 +36,42 @@ Future<void> main() async {
   //                     debugging the application on the smartphone
   //                     but not when debugging on the emulator.
 
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    // Without this code, 'audiolearn' is displayed at the top left
-    // of the app window instead of 'AudioLearn'.
     await windowManager.ensureInitialized();
-    windowManager.setPreventClose(true); // intercept the close button
-    WindowOptions windowOptions = const WindowOptions(
-      title: 'AudioLearn',
+    windowManager.setPreventClose(true);
+    windowManager.waitUntilReadyToShow(
+      const WindowOptions(title: 'AudioLearn'),
     );
-    windowManager.waitUntilReadyToShow(windowOptions);
   }
 
-  // Sur Android, les permissions DOIVENT être accordées avant
-  // le premier accès au répertoire de l'application, sinon les
-  // fichiers laissés par une installation précédente sont
-  // inaccessibles (scoped storage).
-  if (Platform.isAndroid && !isTest) {
-    await PermissionRequesterService.requestMultiplePermissions();
+  if (Platform.isAndroid && !kIsTest) {
+    final bool storageGranted =
+        await PermissionRequesterService.requestMultiplePermissions();
+
+    if (!storageGranted) {
+      // L'app ne peut pas fonctionner : on affiche l'écran
+      // d'explication. startApp() sera appelé dès que
+      // l'autorisation aura été accordée.
+      runApp(const StorageAccessRequiredView(onGranted: startApp));
+      return;
+    }
   }
 
-  // Obtain or create the application directory (no permission request here)
-  String applicationPath = '';
-   applicationPath = DirUtil.getApplicationPath(
-    isTest: isTest,
+  await startApp();
+}
+
+/// Initialise les services et lance l'application. Peut être
+/// appelée depuis main() ou depuis StorageAccessRequiredView.
+Future<void> startApp() async {
+  final String applicationPath = DirUtil.getApplicationPath(
+    isTest: kIsTest,
   );
 
-  // Setup SettingsDataService
   final SettingsDataService settingsDataService = SettingsDataService(
-    isTest: isTest,
+    isTest: kIsTest,
   );
 
   await settingsDataService.loadSettingsFromFile(
@@ -74,21 +79,17 @@ Future<void> main() async {
         '$applicationPath${Platform.pathSeparator}$kSettingsFileName',
   );
 
-  // Now proceed with setting up the app window size and position if needed
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     await _setWindowsAppSizeAndPosition(
       settingsDataService: settingsDataService,
     );
   }
 
-  // Initialize HelpDataService. This must be done before using it.
   await HelpDataService().initialize();
   await HelpDataService().clearLastHelpPosition();
 
-  // Run the app
-  runApp(MainApp(
-    settingsDataService: settingsDataService,
-  ));
+  // Un second runApp() remplace simplement l'écran d'explication
+  runApp(MainApp(settingsDataService: settingsDataService));
 }
 
 /// If app runs on Windows, Linux or MacOS, set the app size
@@ -139,7 +140,7 @@ Future<void> _setWindowsAppSizeAndPosition({
     // Clamp posY so the window's bottom edge does not exceed the
     // screen's bottom edge.
     final double maxPosY = visibleFrame.bottom - windowHeight;
-    
+
     if (posY > maxPosY) {
       posY = maxPosY;
     }

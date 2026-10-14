@@ -1811,5 +1811,8 @@
   "enteredDayNumberEmptyMessage": "Definir un numéro du jour jouable vide n'est pas possible.",
   "textToSpeechApiError": "Échec de la conversion texte en audio : {errorMessage}.",
   "videoUploadDateNotExist": "pas de vidéo correspondante",
-  "audioDownloadFromDateLabel": "Date ({selectedAppDateFormat})"
+  "audioDownloadFromDateLabel": "Date ({selectedAppDateFormat})",
+  "storageAccessRequiredTitle": "Autorisation indispensable",
+  "storageAccessRequiredExplanation": "AudioLearn enregistre ses playlists, ses fichiers audio et ses paramètres dans le dossier Documents/audiolearn. Pour y accéder, l'application a besoin de l'autorisation « Accès à tous les fichiers ».\n\nAppuyez sur le bouton ci-dessous, puis activez l'interrupteur « Octroi d'autorisation ».",
+  "storageAccessRequiredButton": "Ouvrir les paramètres"
 }

@@ -3295,4 +3295,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String audioDownloadFromDateLabel(Object selectedAppDateFormat) {
     return 'Date ($selectedAppDateFormat)';
   }
+
+  @override
+  String get storageAccessRequiredTitle => 'Permission required';
+
+  @override
+  String get storageAccessRequiredExplanation =>
+      'AudioLearn stores its playlists, audio files and settings in the Documents/audiolearn folder. To access it, the app needs the \"All files access\" permission.\n\nTap the button below, then turn on the \"Allow access to manage all files\" switch.';
+
+  @override
+  String get storageAccessRequiredButton => 'Open settings';
 }

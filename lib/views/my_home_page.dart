@@ -108,9 +108,6 @@ class _MyHomePageState extends State<MyHomePage>
       windowManager.addListener(this);
     }
 
-    // Asking permissions if needed once the app was launched
-    _requestPermissionsIfNeeded();
-
     _appBarTitleWidgetLst
       ..add(
         AppBarTitleForPlaylistDownloadView(),
@@ -185,21 +182,6 @@ class _MyHomePageState extends State<MyHomePage>
     await windowManager.destroy(); // actually close the window
   }
 
-  Future<void> _requestPermissionsIfNeeded() async {
-    if (!Platform.isAndroid) {
-      // Les permissions gérées par permission_handler ne concernent
-      // que l’Android dans votre cas actuel.
-      return;
-    }
-
-    try {
-      await PermissionRequesterService.requestMultiplePermissions();
-    } catch (e) {
-      // Éviter un crash en cas de problème inattendu
-      debugPrint('Error while requesting permissions: $e');
-    }
-  }
-
   Future<void> _restoreOriginalVolume() async {
     if (_volumeRestored) return; // ← avoids double call
     _volumeRestored = true;
@@ -242,42 +224,47 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   @override
-  Widget build(BuildContext context) {
-    SettingsDataService settingsDataService = widget.settingsDataService;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _updateDefaultSortFilterParameters();
+  }
 
-    // Creating a default sort filter parameters which will be
-    // applied for sorting the playlists audio if no other
-    // sort filter parameters are defined and applied.
-    settingsDataService.addOrReplaceNamedAudioSortFilterParameters(
-      audioSortFilterParametersName:
-          AppLocalizations.of(context)!.sortFilterParametersDefaultName,
-      audioSortFilterParameters:
-          AudioSortFilterParameters.createDefaultAudioSortFilterParameters(),
-    );
+  void _updateDefaultSortFilterParameters() {
+    final SettingsDataService settingsDataService = widget.settingsDataService;
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
 
-    // If there is an applied audio sort filter parameters, replaced it
-    // with the updated one in case the language was changed.
-
-    AudioSortFilterParameters? appliedAudioSortFilterParameters;
-
-    appliedAudioSortFilterParameters =
-        settingsDataService.getNamedAudioSortFilterParameters(
-      audioSortFilterParametersName: 'applied',
-    );
-
-    appliedAudioSortFilterParameters ??=
-        settingsDataService.getNamedAudioSortFilterParameters(
-      audioSortFilterParametersName: 'appliqué',
-    );
-
-    if (appliedAudioSortFilterParameters != null) {
+    try {
+      // Creating a default sort filter parameters which will be
+      // applied for sorting the playlists audio if no other
+      // sort filter parameters are defined and applied.
       settingsDataService.addOrReplaceNamedAudioSortFilterParameters(
-        audioSortFilterParametersName:
-            AppLocalizations.of(context)!.sortFilterParametersAppliedName,
-        audioSortFilterParameters: appliedAudioSortFilterParameters,
+        audioSortFilterParametersName: l10n.sortFilterParametersDefaultName,
+        audioSortFilterParameters:
+            AudioSortFilterParameters.createDefaultAudioSortFilterParameters(),
       );
-    }
 
+      AudioSortFilterParameters? applied =
+          settingsDataService.getNamedAudioSortFilterParameters(
+                audioSortFilterParametersName: 'applied',
+              ) ??
+              settingsDataService.getNamedAudioSortFilterParameters(
+                audioSortFilterParametersName: 'appliqué',
+              );
+
+      if (applied != null) {
+        settingsDataService.addOrReplaceNamedAudioSortFilterParameters(
+          audioSortFilterParametersName: l10n.sortFilterParametersAppliedName,
+          audioSortFilterParameters: applied,
+        );
+      }
+    } on FileSystemException catch (e) {
+      // Ne jamais faire planter l'UI pour une écriture de settings
+      debugPrint('Unable to save settings: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final ThemeProviderVM themeProviderVMlistenTrue =
         Provider.of<ThemeProviderVM>(
       context,

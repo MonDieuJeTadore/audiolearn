@@ -1368,7 +1368,7 @@ class IntegrationTestUtil {
       await tester.pumpAndSettle(const Duration(milliseconds: 400));
     } else {
       await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 400));
     }
   }
 

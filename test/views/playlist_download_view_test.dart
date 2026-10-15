@@ -1313,13 +1313,8 @@ Future<void> findThenSelectAndTestListTileCheckbox({
   expect(tester.widget<Checkbox>(checkboxFinder).value, true);
 }
 
-void changePage(int index) {
+Future<void> changePage(int index) async {
   onPageChanged(index);
-  // _pageController.animateToPage(
-  //   index,
-  //   duration: pageTransitionDuration, // Use constant
-  //   curve: pageTransitionCurve, // Use constant
-  // );
 }
 
 void onPageChanged(int index) {

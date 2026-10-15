@@ -693,6 +693,16 @@ class MockAppLocalizations extends AppLocalizations {
   String get sortFilterParametersDownloadButtonHint => "Select sort/filter";
 
   @override
+  String get storageAccessRequiredTitle => 'Permission required';
+
+  @override
+  String get storageAccessRequiredExplanation =>
+      'AudioLearn needs the "All files access" permission.';
+
+  @override
+  String get storageAccessRequiredButton => 'Open settings';
+
+  @override
   String audioNotMovedFromLocalPlaylistToLocalPlaylist(
     Object audioTitle,
     Object fromPlaylistTitle,

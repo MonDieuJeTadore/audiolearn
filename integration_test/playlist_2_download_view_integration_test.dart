@@ -4170,6 +4170,7 @@ void main() {
             "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
         otherAudioTitleToTapOnBeforeRewindingDuration:
             "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)\n16:26",
+        tapTwiceOnWarningOkButton: true,
       );
 
       // Now play then pause "Ce qui va vraiment sauver notre espèce
@@ -38856,6 +38857,7 @@ Future<void> _rewindPlaylistAfterPlayThenPauseAnAudio({
   String? otherAudioTitleToTapOnBeforeRewinding,
   String? otherAudioTitleToTapOnBeforeRewindingDuration,
   int audioRewindedNumber = 1,
+  bool tapTwiceOnWarningOkButton = false,
 }) async {
   // Now play then pause audioToPlayTitle
 
@@ -38916,6 +38918,7 @@ Future<void> _rewindPlaylistAfterPlayThenPauseAnAudio({
     playlistToRewindTitle: playlistToRewindTitle,
     numberOfRewindedAudio: audioRewindedNumber,
     expectedTotalPlayableDuration: "1:09:58",
+    tapTwiceOnWarningOkButton: tapTwiceOnWarningOkButton,
   );
 
   // Return to audio player view to verify the playlist current

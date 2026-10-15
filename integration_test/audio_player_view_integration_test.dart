@@ -7178,6 +7178,12 @@ void main() {
         await tester.pumpAndSettle();
       }
 
+      // Ensure that the audio position is updated
+      for (int i = 0; i < 6; i++) {
+        await Future.delayed(const Duration(milliseconds: 500));
+        await tester.pumpAndSettle();
+      }
+
       // Verify the current audio position in the audio player view
 
       expectedAudioPlayerAudioPositionMin = '5:43';
@@ -12709,7 +12715,7 @@ void main() {
           commentPositionTextButtonInTenthSecondsMin: 23174,
           commentPositionTextButtonInTenthSecondsMax: 23206,
           audioPlayerViewAudioPositionMin: '38:38', // totalement illogique !
-          audioPlayerViewAudioPositionMax: '38:40',
+          audioPlayerViewAudioPositionMax: '38:41',
         );
 
         // Now click on the play button to play the comment

@@ -4664,6 +4664,7 @@ class IntegrationTestUtil {
     required String playlistToRewindTitle,
     required int numberOfRewindedAudio,
     required String expectedTotalPlayableDuration,
+    bool tapTwiceOnWarningOkButton = false,
   }) async {
     // Find the playlist to rewind audio ListTile
 
@@ -4703,6 +4704,7 @@ class IntegrationTestUtil {
       warningDialogMessage:
           "$numberOfRewindedAudio playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: $expectedTotalPlayableDuration.",
       isWarningConfirming: true,
+      tapTwiceOnOkButton: tapTwiceOnWarningOkButton,
     );
   }
 }

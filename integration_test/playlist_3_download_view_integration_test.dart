@@ -31958,6 +31958,7 @@ void main() {
         warningDialogMessage:
             "3 playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: 1:12.",
         isWarningConfirming: true,
+        tapTwiceOnOkButton: true,
       );
 
       // Then, get the first downloaded Audio ListTile Text

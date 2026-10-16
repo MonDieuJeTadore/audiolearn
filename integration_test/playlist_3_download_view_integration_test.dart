@@ -9038,6 +9038,110 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
     });
+    testWidgets('''Trying to rename the audio file in case the audio MP3 file does not exist. The new audio
+                   file name does not exist and the renaming audio has comments.''', (WidgetTester tester) async {
+      const String youtubePlaylistTitle =
+          'audio_player_view_2_shorts_test'; // Youtube playlist
+      const String audioTitle = "Really short video";
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: '2_youtube_2_local_playlists_integr_test_data',
+        selectedPlaylistTitle: youtubePlaylistTitle,
+      );
+
+      // Deletion of the audio MP3 file
+      final String audioMp3FilePath =
+          "$kPlaylistDownloadRootPathWindowsTest${path.separator}$youtubePlaylistTitle${path.separator}231117-002826-Really short video 23-07-01.mp3";
+      DirUtil.deleteFileIfExist(pathFileName: audioMp3FilePath);
+
+      // First, find the audio sublist ListTile Text widget
+
+      Finder audioListTileTextWidgetFinder = find.text(audioTitle);
+
+      // Then obtain the audio ListTile widget enclosing the Text widget
+      // by finding its ancestor
+      Finder audioListTileWidgetFinder = find.ancestor(
+        of: audioListTileTextWidgetFinder,
+        matching: find.byType(ListTile),
+      );
+
+      // Now we want to tap the popup menu of the audio ListTile
+      // "Really short video"
+
+      // Find the leading menu icon button of the audio ListTile
+      // and tap on it
+      final Finder audioListTileLeadingMenuIconButton = find.descendant(
+        of: audioListTileWidgetFinder,
+        matching: find.byIcon(Icons.menu),
+      );
+
+      // Tap the leading menu icon button to open the popup menu
+      await tester.tap(audioListTileLeadingMenuIconButton);
+      await tester.pumpAndSettle();
+
+      // Now find the rename audio file popup menu item and tap on it
+      final Finder popupCopyMenuItem =
+          find.byKey(const Key("popup_menu_rename_audio_file"));
+
+      await tester.tap(popupCopyMenuItem);
+      await tester.pumpAndSettle();
+
+      // Verify that the rename audio file dialog is displayed
+      expect(find.byType(AudioModificationDialog), findsOneWidget);
+
+      // Verify the button text
+      final Finder audioModificationButtonFinder =
+          find.byKey(const Key('audioModificationButton'));
+      TextButton audioModificationTextButton =
+          tester.widget<TextButton>(audioModificationButtonFinder);
+      expect((audioModificationTextButton.child! as Text).data, 'Rename');
+
+      // Verify the dialog title
+      expect(find.text('Rename Audio File'), findsOneWidget);
+
+      // Now enter the new file name
+
+      // Find the TextField using the Key
+      final Finder textFieldFinder =
+          find.byKey(const Key('audioModificationTextField'));
+
+      // Retrieve the TextField widget
+      final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+      // Verify the initial value of the TextField
+
+      const String oldFileName = '231117-002826-Really short video 23-07-01';
+
+      expect(textField.controller!.text, "$oldFileName.mp3");
+
+      // Enter new file name
+
+      const String newFileName = '231117-Really short video 23-07-01';
+
+      await tester.enterText(
+        textFieldFinder,
+        "$newFileName.mp3",
+      );
+      await tester.pumpAndSettle();
+
+      // Now tap the rename button
+      await tester.tap(find.byKey(const Key('audioModificationButton')));
+      await tester.pumpAndSettle();
+
+      // Ensure the warning dialog is displayed
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "The file \"$oldFileName.mp3\" does not exist and so can not be renamed.",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
     testWidgets('''Not existing new audio file name and not existing new comment
                    file name (the renamed audio has a comment file which will be
                    renamed as well).''', (WidgetTester tester) async {

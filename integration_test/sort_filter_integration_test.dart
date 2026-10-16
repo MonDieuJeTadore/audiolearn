@@ -13291,7 +13291,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
              word/sentence is present in the first comment and not in the second comment, the audio
              was not filtered. Now it is filtered, what this test verifies. The test also verifies that
              if the search word/sentence is present only in the second comment, the audio is also filtered.
-             ''', (WidgetTester tester) async {
+             Finally, it verifies that if the search word/sentence isn't present in any comment, no audio
+             is filtered at all.''', (WidgetTester tester) async {
           // Purge the test playlist directory if it exists so that the
           // playlist list is empty
           DirUtil.deleteFilesInDirAndSubDirs(
@@ -13328,6 +13329,14 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             audioTitlesFilteredBySFparms: [
               "6_Dix enseignements essentiels de Jésus",
             ],
+          );
+
+          // Apply the sort/filter parameters which contains the search
+          // word/sentence contained in no audio comments
+          await _selecSFparmsAndVerifyItsApplication(
+            tester: tester,
+            sortFilterOption: 'app not',
+            audioTitlesFilteredBySFparms: [],
           );
 
           // Purge the test playlist directory so that the created test

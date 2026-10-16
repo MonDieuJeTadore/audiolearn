@@ -13286,6 +13286,57 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           );
         });
         testWidgets(
+            '''Bug correction verification. Audios checkbox false and Comments checkbox true. Commented
+             checkbox true and Uncom. checkbox true. If an audio contains two comments, if the search
+             word/sentence is present in the first comment and not in the second comment, the audio
+             was not filtered. Now it is filtered, what this test verifies. The test also verifies that
+             if the search word/sentence is present only in the second comment, the audio is also filtered.
+             ''', (WidgetTester tester) async {
+          // Purge the test playlist directory if it exists so that the
+          // playlist list is empty
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+
+          await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+            tester: tester,
+            savedTestDataDirName: 'sort_filter_audio_bug_fixed_test',
+            tapOnPlaylistToggleButton: false,
+          );
+
+          // Tap the 'Toggle List' button to avoid displaying the list
+          // of playlists which may hide the audio title we want to
+          // tap on
+          await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+          await tester.pumpAndSettle();
+
+          // Apply the sort/filter parameters which contains the search
+          // word/sentence contained in the first audio comment
+          await _selecSFparmsAndVerifyItsApplication(
+            tester: tester,
+            sortFilterOption: 'app 1st com',
+            audioTitlesFilteredBySFparms: [
+              "6_Dix enseignements essentiels de Jésus",
+            ],
+          );
+
+          // Apply the sort/filter parameters which contains the search
+          // word/sentence contained in the second audio comment
+          await _selecSFparmsAndVerifyItsApplication(
+            tester: tester,
+            sortFilterOption: 'app 2nd com',
+            audioTitlesFilteredBySFparms: [
+              "6_Dix enseignements essentiels de Jésus",
+            ],
+          );
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets(
             '''Commented checkbox false and Not com. checkbox true in order to filter
              only the not commented audio. Create and then edit a named and saved
              'Uncomm' filter parms. Then verifying that the corresponding sort/filter
@@ -19792,6 +19843,45 @@ void playlistDownloadViewSortFilterIntegrationTest() {
       });
     });
   });
+}
+
+Future<void> _selecSFparmsAndVerifyItsApplication({
+  required WidgetTester tester,
+  required String sortFilterOption,
+  required List<String> audioTitlesFilteredBySFparms,
+}) async {
+  // Now tap on the current dropdown button item to open the dropdown
+  // button items list
+
+  final Finder dropDownButtonFinder =
+      find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+  final Finder dropDownButtonTextFinder = find.descendant(
+    of: dropDownButtonFinder,
+    matching: find.byType(Text),
+  );
+
+  await tester.tap(dropDownButtonTextFinder);
+  await tester.pumpAndSettle();
+
+  // Scroll up the dropdown list to reveal more items
+  await tester.drag(
+    find.byKey(const Key('sort_filter_parms_dropdown_button')),
+    const Offset(0, 300), // negative Y = scroll down
+  );
+  await tester.pumpAndSettle();
+
+  // And select the sort/filter item
+  final Finder titleDropDownTextFinder = find.text(sortFilterOption).last;
+  await tester.tap(titleDropDownTextFinder);
+  await tester.pumpAndSettle();
+
+  // And verify the selected playlist audio title
+
+  IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+    tester: tester,
+    audioOrPlaylistTitlesOrderedLst: audioTitlesFilteredBySFparms,
+  );
 }
 
 void _verifyYoutubeChannelAndDescriptionCheckbox({

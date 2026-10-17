@@ -17,7 +17,6 @@ import '../models/sort_filter_parameters.dart';
 import '../viewmodels/audio_player_vm.dart';
 import '../viewmodels/theme_provider_vm.dart';
 import '../services/settings_data_service.dart';
-import '../services/permission_requester_service.dart';
 import '../views/screen_mixin.dart';
 import '../views/playlist_download_view.dart';
 import '../views/audio_player_view.dart';

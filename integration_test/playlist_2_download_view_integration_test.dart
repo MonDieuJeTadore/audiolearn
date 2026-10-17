@@ -4252,6 +4252,7 @@ void main() {
             "Les besoins artificiels par R.Keucheyan",
         otherAudioTitleToTapOnBeforeRewindingDuration:
             "Les besoins artificiels par R.Keucheyan\n15:16",
+        tapTwiceOnWarningOkButton: true,
       );
 
       // Purge the test playlist directory so that the created test
@@ -38913,7 +38914,7 @@ Future<void> _rewindPlaylistAfterPlayThenPauseAnAudio({
     await tester.pumpAndSettle(const Duration(milliseconds: 200));
   }
 
-  // Rewind all playlist audio to start position
+  // Rewind all playlist audios to start position
   await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
     tester: tester,
     playlistToRewindTitle: playlistToRewindTitle,

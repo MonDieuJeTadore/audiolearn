@@ -113,8 +113,6 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     _playlistUrlOrSearchController.addListener(_onTextChanged);
     _audioPlayerVMforCurrentAudioListener =
         Provider.of<AudioPlayerVM>(context, listen: false);
-    _audioPlayerVMforCurrentAudioListener!.currentAudioChangedNotifier
-        .addListener(_onCurrentAudioChanged);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {

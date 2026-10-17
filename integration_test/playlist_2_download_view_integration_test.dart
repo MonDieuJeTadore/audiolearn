@@ -4226,6 +4226,7 @@ void main() {
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
         expectedTotalPlayableDuration: "1:09:58",
+        tapTwiceOnWarningOkButton: true,
       );
 
       // Tap the 'Toggle List' button to reduce the list of playlist's.

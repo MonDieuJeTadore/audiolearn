@@ -1360,14 +1360,13 @@ class IntegrationTestUtil {
 
     // Close the warning dialog by tapping on the Ok button
 
-    if (tapTwiceOnOkButton) {
-      await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-      await tester.pumpAndSettle(const Duration(milliseconds: 400));
+    final Finder okButtonFinder = find.byKey(const Key('warningDialogOkButton'));
 
-      await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-      await tester.pumpAndSettle(const Duration(milliseconds: 400));
-    } else {
-      await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
+    await tester.tap(okButtonFinder.last);
+    await tester.pumpAndSettle(const Duration(milliseconds: 400));
+
+    if (tapTwiceOnOkButton && tester.any(okButtonFinder)) {
+      await tester.tap(okButtonFinder.last);
       await tester.pumpAndSettle(const Duration(milliseconds: 400));
     }
   }

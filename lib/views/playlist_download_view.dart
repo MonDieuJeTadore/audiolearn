@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:audiolearn/utils/duration_expansion.dart';
@@ -113,6 +114,11 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     _playlistUrlOrSearchController.addListener(_onTextChanged);
     _audioPlayerVMforCurrentAudioListener =
         Provider.of<AudioPlayerVM>(context, listen: false);
+        
+    if (Platform.isAndroid) {
+      _audioPlayerVMforCurrentAudioListener!.currentAudioChangedNotifier
+          .addListener(_onCurrentAudioChanged);
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {

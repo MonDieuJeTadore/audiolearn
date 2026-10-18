@@ -105,20 +105,11 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
   int _pendingAudioScrollIndex = -1;
   bool _isAudioScrollScheduled = false;
 
-  AudioPlayerVM? _audioPlayerVMforCurrentAudioListener;
-
   @override
   initState() {
     super.initState();
 
     _playlistUrlOrSearchController.addListener(_onTextChanged);
-    _audioPlayerVMforCurrentAudioListener =
-        Provider.of<AudioPlayerVM>(context, listen: false);
-        
-    if (Platform.isAndroid) {
-      _audioPlayerVMforCurrentAudioListener!.currentAudioChangedNotifier
-          .addListener(_onCurrentAudioChanged);
-    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -146,20 +137,8 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     _playlistUrlOrSearchController.removeListener(_onTextChanged);
     _playlistUrlOrSearchController.dispose();
     _playlistScrollController.dispose();
-    _audioPlayerVMforCurrentAudioListener?.currentAudioChangedNotifier
-        .removeListener(_onCurrentAudioChanged);
 
     super.dispose();
-  }
-
-  /// Called when the current audio changes, in particular when an audio
-  /// ends and the next one starts playing automatically. Rebuilding the
-  /// view moves the current audio highlight and scrolls the audio list
-  /// to the new current audio.
-  void _onCurrentAudioChanged() {
-    if (mounted) {
-      setState(() {});
-    }
   }
 
   /// Deselects then reselects the currently selected playlist,
@@ -323,10 +302,22 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
                 thickness: 1.0, // Set the thickness of the divider
               )
             : const SizedBox.shrink(), // the list of playlists is collapsed
-        _buildExpandedAudioList(
-          playlistListVMlistenTrue: _playlistListVMlistenTrue,
-          audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
-          warningMessageVMlistenFalse: warningMessageVMlistenFalse,
+        // Rebuilds only the audio list when the current audio changes
+        // (e.g. the next audio starts playing automatically), without
+        // rebuilding the warning message consumer, which would otherwise
+        // display the same warning dialog a second time.
+        ValueListenableBuilder<Audio?>(
+          valueListenable: Provider.of<AudioPlayerVM>(
+            context,
+            listen: false,
+          ).currentAudioChangedNotifier,
+          builder: (context, currentAudio, child) {
+            return _buildExpandedAudioList(
+              playlistListVMlistenTrue: _playlistListVMlistenTrue,
+              audioDownloadVMlistenTrue: audioDownloadVMlistenTrue,
+              warningMessageVMlistenFalse: warningMessageVMlistenFalse,
+            );
+          },
         ),
       ],
     );

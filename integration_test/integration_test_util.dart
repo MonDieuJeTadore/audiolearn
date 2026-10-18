@@ -1317,7 +1317,6 @@ class IntegrationTestUtil {
     required String warningDialogMessage,
     String warningDialogMessageAlternative = '',
     bool isWarningConfirming = false,
-    bool tapTwiceOnOkButton = false,
     String warningTitle =
         'WARNING', // useful for AVERTISSEMENT title in french !
   }) async {
@@ -1364,11 +1363,6 @@ class IntegrationTestUtil {
 
     await tester.tap(okButtonFinder.last);
     await tester.pumpAndSettle(const Duration(milliseconds: 400));
-
-    if (tapTwiceOnOkButton && tester.any(okButtonFinder)) {
-      await tester.tap(okButtonFinder.last);
-      await tester.pumpAndSettle(const Duration(milliseconds: 400));
-    }
   }
 
   static Future<void> verifyAlertDisplayAndCloseIt({
@@ -4663,7 +4657,6 @@ class IntegrationTestUtil {
     required String playlistToRewindTitle,
     required int numberOfRewindedAudio,
     required String expectedTotalPlayableDuration,
-    bool tapTwiceOnWarningOkButton = false,
   }) async {
     // Find the playlist to rewind audio ListTile
 
@@ -4703,7 +4696,6 @@ class IntegrationTestUtil {
       warningDialogMessage:
           "$numberOfRewindedAudio playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: $expectedTotalPlayableDuration.",
       isWarningConfirming: true,
-      tapTwiceOnOkButton: tapTwiceOnWarningOkButton,
     );
   }
 }

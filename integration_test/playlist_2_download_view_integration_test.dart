@@ -4226,7 +4226,6 @@ void main() {
         playlistToRewindTitle: youtubePlaylistToRewindTitle,
         numberOfRewindedAudio: 4,
         expectedTotalPlayableDuration: "1:09:58",
-        tapTwiceOnWarningOkButton: true,
       );
 
       // Tap the 'Toggle List' button to reduce the list of playlist's.
@@ -28049,10 +28048,15 @@ void main() {
 
         // Verify the converted audio sub title in the selected Youtube
         // playlist audio list
+
+        final DateTime dateTimeNowMinusOneSecond =
+            dateTimeNow.subtract(const Duration(seconds: 1));
+
         IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
           tester: tester,
           audioSubTitlesAcceptableLst: [
             '0:00:05.6 56.4 Ko converti le ${frenchDateFormat.format(dateTimeNow)} à ${timeFormat.format(dateTimeNow)}',
+            '0:00:05.6 56.4 Ko converti le ${frenchDateFormat.format(dateTimeNowMinusOneSecond)} à ${timeFormat.format(dateTimeNowMinusOneSecond)}',
           ],
           firstAudioListTileIndex: 5,
         );
@@ -38920,7 +38924,6 @@ Future<void> _rewindPlaylistAfterPlayThenPauseAnAudio({
     playlistToRewindTitle: playlistToRewindTitle,
     numberOfRewindedAudio: audioRewindedNumber,
     expectedTotalPlayableDuration: "1:09:58",
-    tapTwiceOnWarningOkButton: tapTwiceOnWarningOkButton,
   );
 
   // Return to audio player view to verify the playlist current

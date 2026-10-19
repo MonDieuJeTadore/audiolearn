@@ -2937,7 +2937,7 @@ class PlaylistListVM extends ChangeNotifier {
       if (getAppliedSortingOption() == SortingOption.lastListenedDateTime) {
         return true;
       }
-      
+
       if (_audioSortFilterParameters!.lastListenedDate != null) {
         return true;
       }
@@ -3517,7 +3517,8 @@ class PlaylistListVM extends ChangeNotifier {
       _audioMp3SaveUniquePlaylistName = '';
     }
 
-    final stopwatch = Stopwatch()..start(); // Start the stopwatch to measure the duration
+    final stopwatch = Stopwatch()
+      ..start(); // Start the stopwatch to measure the duration
     //                                         of the saving operation
 
     // Start the timer and saving state before processing files
@@ -3644,7 +3645,6 @@ class PlaylistListVM extends ChangeNotifier {
       if (currentBatchSize + audioInfo.audio.audioFileSize >
               zipFileSizeLimitInBytes &&
           currentBatch.isNotEmpty) {
-
         // FIXED: Increment BEFORE calling _saveArchiveBatchToFile
         _numberOfCreatedZipFiles++;
 
@@ -3812,8 +3812,8 @@ class PlaylistListVM extends ChangeNotifier {
               "${audioInfo.playlist.title}${path.separator}${audioInfo.audio.audioFileName}, ${(audioFileSize / 1000000).toStringAsFixed(2)}");
           excludedTooLargeAudioFilesValueLst[0] +=
               audioFileSize; // Convert to MB and accumulate
-          excludedTooLargeAudioFilesValueLst[1] +=
-              audioInfo.audio.durationImpactedByPlaySpeed(); // Accumulate duration
+          excludedTooLargeAudioFilesValueLst[1] += audioInfo.audio
+              .durationImpactedByPlaySpeed(); // Accumulate duration
           continue; // Skip files that are larger than the limit
         }
 
@@ -4023,9 +4023,9 @@ class PlaylistListVM extends ChangeNotifier {
 
     if (audioFile.existsSync()) {
       // Start timing the zip creation process
-      final stopwatch = Stopwatch()..start(); // Start the stopwatch to measure the duration
+      final stopwatch = Stopwatch()
+        ..start(); // Start the stopwatch to measure the duration
       //                                         of the saving operation
-
 
       // Read the file and add it to the archive
       List<int> audioBytes = await audioFile.readAsBytes();
@@ -6332,7 +6332,10 @@ class PlaylistListVM extends ChangeNotifier {
           audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd) {
         audio.audioPositionSeconds = 0;
         audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd = false;
-        rewindedAudioNumber++;
+
+        if (File(audio.filePathName).existsSync()) {
+          rewindedAudioNumber++;
+        }
       }
     }
 
@@ -6355,6 +6358,14 @@ class PlaylistListVM extends ChangeNotifier {
     required Playlist playlist,
     required List<Audio> audioToRewindLst,
   }) {
+    // Must be positioned before rewinding the audios to start so
+    // that the audios count does not include audios which will not
+    // be rewinded.
+    List<dynamic> numberAndTotalDurationLst =
+        _getFilteredAudioPlayableTodayNumberAndTotalDuration(
+      filteredAudioLst: audioToRewindLst,
+    );
+
     for (Audio audio in audioToRewindLst) {
       if (audio.audioPositionSeconds > 0 ||
           audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd) {
@@ -6362,11 +6373,6 @@ class PlaylistListVM extends ChangeNotifier {
         audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd = false;
       }
     }
-
-    List<dynamic> numberAndTotalDurationLst =
-        _getFilteredAudioPlayableTodayNumberAndTotalDuration(
-      filteredAudioLst: audioToRewindLst,
-    );
 
     return [
       numberAndTotalDurationLst[0] as int,
@@ -6385,9 +6391,10 @@ class PlaylistListVM extends ChangeNotifier {
     Duration totalDuration = Duration.zero;
 
     for (Audio audio in playlist.playableAudioLst) {
-      if (_isAudioPlayableToday(
-        audio: audio,
-      )) {
+      if (File(audio.filePathName).existsSync() &&
+          _isAudioPlayableToday(
+            audio: audio,
+          )) {
         totalDuration += audio.durationImpactedByPlaySpeed();
       } else {
         continue;
@@ -6406,10 +6413,13 @@ class PlaylistListVM extends ChangeNotifier {
     Duration totalDuration = Duration.zero;
 
     for (Audio audio in filteredAudioLst) {
-      if (_isAudioPlayableToday(
-        audio: audio,
-      )) {
-        filteredPlayableAudioCount++;
+      if (File(audio.filePathName).existsSync() &&
+          _isAudioPlayableToday(
+            audio: audio,
+          )) {
+        if (audio.audioPositionSeconds > 0) {
+          filteredPlayableAudioCount++;
+        }
         totalDuration += audio.durationImpactedByPlaySpeed();
       } else {
         continue;

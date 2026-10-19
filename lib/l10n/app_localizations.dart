@@ -2961,6 +2961,18 @@ abstract class AppLocalizations {
   /// **'Not playable'**
   String get notPlayable;
 
+  /// No description provided for @playableTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Select audios whose MP3 exist'**
+  String get playableTooltip;
+
+  /// No description provided for @notPlayableTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Select audios whose MP3 does not exist'**
+  String get notPlayableTooltip;
+
   /// Warning title for not redownloading audio
   ///
   /// In en, this message translates to:

@@ -900,6 +900,8 @@
   },
   "playable": "Playable",
   "notPlayable": "Not playable",
+  "playableTooltip": "Select audios whose MP3 exist",
+  "notPlayableTooltip": "Select audios whose MP3 does not exist",
   "redownloadDeletedAudio": "Redownload deleted Audio",
   "audioNotRedownloadedWarning": "The audio \"{redownloadedAudioTitle}\" was NOT redownloaded in the playlist \"{playlistTitle}\" because it already exists in the playlist directory.",
   "@audioNotRedownloadedWarning": {

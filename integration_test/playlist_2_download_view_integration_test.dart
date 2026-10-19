@@ -4170,7 +4170,6 @@ void main() {
             "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
         otherAudioTitleToTapOnBeforeRewindingDuration:
             "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)\n16:26",
-        tapTwiceOnWarningOkButton: true,
       );
 
       // Now play then pause "Ce qui va vraiment sauver notre espèce
@@ -4251,7 +4250,6 @@ void main() {
             "Les besoins artificiels par R.Keucheyan",
         otherAudioTitleToTapOnBeforeRewindingDuration:
             "Les besoins artificiels par R.Keucheyan\n15:16",
-        tapTwiceOnWarningOkButton: true,
       );
 
       // Purge the test playlist directory so that the created test
@@ -4464,7 +4462,6 @@ void main() {
       );
     });
   });
-  group('Audio or playlists position scrolling test', () {
     group('Scrolling audio test', () {
       testWidgets('''Automatic scrolling audio to display current audio.''',
           (WidgetTester tester) async {
@@ -38863,7 +38860,6 @@ Future<void> _rewindPlaylistAfterPlayThenPauseAnAudio({
   String? otherAudioTitleToTapOnBeforeRewinding,
   String? otherAudioTitleToTapOnBeforeRewindingDuration,
   int audioRewindedNumber = 1,
-  bool tapTwiceOnWarningOkButton = false,
 }) async {
   // Now play then pause audioToPlayTitle
 

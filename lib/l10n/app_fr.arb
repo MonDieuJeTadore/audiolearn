@@ -1212,6 +1212,8 @@
   },
   "playable": "Jouable",
   "notPlayable": "Non jouable",
+  "playableTooltip": "Selectionne les audios dont le MP3 existe",
+  "notPlayableTooltip": "Selectionne les audios dont le MP3 n'existe pas",
   "audioNotRedownloadedWarning": "L'audio \"{redownloadedAudioTitle}\" N'A PAS été retéléchargé dans la playlist \"{playlistTitle}\" du fait que le fichier audio est déjà présent dans le répertoire de la playlist.",
   "@audioNotRedownloadedWarning": {
     "description": "Warning title for not redownloading audio",

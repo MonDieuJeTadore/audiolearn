@@ -1825,6 +1825,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notPlayable => 'Not playable';
 
   @override
+  String get playableTooltip => 'Select audios whose MP3 exist';
+
+  @override
+  String get notPlayableTooltip => 'Select audios whose MP3 does not exist';
+
+  @override
   String audioNotRedownloadedWarning(
       Object playlistTitle, Object redownloadedAudioTitle) {
     return 'The audio \"$redownloadedAudioTitle\" was NOT redownloaded in the playlist \"$playlistTitle\" because it already exists in the playlist directory.';

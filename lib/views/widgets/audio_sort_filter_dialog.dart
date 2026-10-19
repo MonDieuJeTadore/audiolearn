@@ -1724,7 +1724,9 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
   }) {
     return Row(
       children: [
-        Text(AppLocalizations.of(context)!.playable),
+        Tooltip(
+          message: AppLocalizations.of(context)!.playableTooltip,
+          child: Text(AppLocalizations.of(context)!.playable)),
         Checkbox(
           key: const Key('filterPlayableCheckbox'),
           value: _filterPlayable,
@@ -1741,7 +1743,9 @@ class _AudioSortFilterDialogState extends State<AudioSortFilterDialog>
             });
           },
         ),
-        Text(AppLocalizations.of(context)!.notPlayable),
+        Tooltip(
+          message: AppLocalizations.of(context)!.notPlayableTooltip,
+          child: Text(AppLocalizations.of(context)!.notPlayable)),
         Checkbox(
           key: const Key('filterNotPlayableCheckbox'),
           value: _filterNotPlayable,

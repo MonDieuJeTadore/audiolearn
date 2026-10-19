@@ -3453,4 +3453,10 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get audioExtractedInfoDialogTitleTooltip =>
       "Audio extracted from one or several audios part(s)";
+
+  @override
+  String get playableTooltip => "Select audios whose MP3 exist";
+
+  @override
+  String get notPlayableTooltip => "Select audios whose MP3 does not exist";
 }

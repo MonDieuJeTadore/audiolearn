@@ -4376,7 +4376,7 @@ void main() {
         playlistToSelectTitle: localPlaylistToSelectTitle,
       );
 
-      // Rewind all unselected playlist audio to start position
+      // Rewind all selected playlist audio to start position
       await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: localPlaylistToSelectTitle,
@@ -4447,6 +4447,49 @@ void main() {
       _verifyAllNowUnplayedAudioPlayPauseIconColor(
         tester: tester,
         audioTitles: audioTitles,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''After deleting an MP3, rewind local selected playlist audio to start position''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'sort_and_filter_audio_dialog_widget_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String localPlaylistToSelectTitle = 'local';
+
+      // Tap the 'Toggle List' button to show the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Select another playlist than the one whose audio will be
+      // rewinded to start position
+
+      await IntegrationTestUtil.selectPlaylist(
+        tester: tester,
+        playlistToSelectTitle: localPlaylistToSelectTitle,
+      );
+
+      // Delete an MP3 from the local playlist before rewinding the audio
+      DirUtil.deleteFileIfExist(
+        pathFileName:
+            '$kPlaylistDownloadRootPathWindowsTest${path.separator}$localPlaylistToSelectTitle${path.separator}231226-094526-Ce qui va vraiment sauver notre espèce par Jancovici et Barrau 23-09-23.mp3',
+      );
+
+      // Rewind all selected playlist audio to start position
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
+        tester: tester,
+        playlistToRewindTitle: localPlaylistToSelectTitle,
+        numberOfRewindedAudio: 3,
+        expectedTotalPlayableDuration: "16:58",
       );
 
       // Purge the test playlist directory so that the created test

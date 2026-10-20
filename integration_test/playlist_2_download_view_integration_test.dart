@@ -4141,8 +4141,9 @@ void main() {
         audioTitles: audioTitles,
       );
 
-      // Now play then pause "Les besoins artificiels par R.Keucheyan"
-      // before rewinding the playlist audio to start position
+      // Now play then pause "Ce qui va vraiment sauver notre
+      // espèce par Jancovici et Barrau" before rewinding the
+      // playlist audio to start position
       await _rewindPlaylistAfterPlayThenPauseAnAudio(
         tester: tester,
         appScreenNavigationButton: appScreenNavigationButton,
@@ -4529,9 +4530,6 @@ void main() {
       await tester.tap(listenedNoComDropDownTextFinder);
       await tester.pumpAndSettle();
 
-      // Verify the audioTitles selected by applying the 'listenedNoCom'
-      // sort/filter parms
-
       // Now play then pause "Ce qui va vraiment sauver notre espèce
       // par Jancovici et Barrau" before rewinding the playlist audio
       // to start position after having clicked on another audio item.
@@ -4548,6 +4546,66 @@ void main() {
             "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
         audioToPlayTitleAndDuration:
             "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau\n5:11",
+        audioRewindedDurationString: "16:29",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''After deleting an MP3, rewind 'janco' filteredaudio for selected playlist''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'sort_and_filter_audio_dialog_widget_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String youtubePlaylistToRewindTitle = 'S8 audio';
+
+      // Now tap on the current dropdown button item to open the dropdown
+      // button items list
+
+      Finder dropDownButtonFinder =
+          find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+      Finder dropDownButtonTextFinder = find.descendant(
+        of: dropDownButtonFinder,
+        matching: find.byType(Text),
+      );
+
+      await tester.tap(dropDownButtonTextFinder);
+      await tester.pumpAndSettle();
+
+      // Select 'janco' filtered audio for the playlist
+      Finder listenedNoComDropDownTextFinder = find.text('janco').last;
+      await tester.tap(listenedNoComDropDownTextFinder);
+      await tester.pumpAndSettle();
+
+      // Delete an MP3 from the local playlist before rewinding the audio
+      DirUtil.deleteFileIfExist(
+        pathFileName:
+            '$kPlaylistDownloadRootPathWindowsTest${path.separator}$youtubePlaylistToRewindTitle${path.separator}231226-094526-Ce qui va vraiment sauver notre espèce par Jancovici et Barrau 23-09-23.mp3',
+      );
+
+      Finder appScreenNavigationButton =
+          find.byKey(const ValueKey('audioPlayerViewIconButton'));
+
+      // Now play then pause "La surpopulation mondiale par Jancovici
+      // et Barrau" before rewinding the playlist audio to start position
+      await _rewindFilteredPlaylistAfterPlayThenPauseAnAudio(
+        tester: tester,
+        appScreenNavigationButton: appScreenNavigationButton,
+        doExpandPlaylistList: true,
+        playlistToRewindTitle: youtubePlaylistToRewindTitle,
+        audioToPlayTitle: "La surpopulation mondiale par Jancovici et Barrau",
+        audioToPlayTitleAndDuration:
+            "La surpopulation mondiale par Jancovici et Barrau\n6:06",
+        audioRewindedDurationString: "11:18",
+        doReturnToAudioPlayerViewAfterRewind: false,
       );
 
       // Purge the test playlist directory so that the created test
@@ -39054,6 +39112,8 @@ Future<void> _rewindFilteredPlaylistAfterPlayThenPauseAnAudio({
   required String audioToPlayTitleAndDuration,
   String? otherAudioTitleToTapOnBeforeRewinding,
   int audioRewindedNumber = 1,
+  required String audioRewindedDurationString,
+  bool doReturnToAudioPlayerViewAfterRewind = true,
 }) async {
   // Now play then pause audioToPlayTitle
 
@@ -39124,36 +39184,38 @@ Future<void> _rewindFilteredPlaylistAfterPlayThenPauseAnAudio({
   await IntegrationTestUtil.verifyAndCloseWarningDialog(
     tester: tester,
     warningDialogMessage:
-        "$audioRewindedNumber playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: 16:29.",
+        "$audioRewindedNumber playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: $audioRewindedDurationString.",
     isWarningConfirming: true,
   );
 
-  // Return to audio player view to verify the playlist current
-  // audio title audio position set to start
-  appScreenNavigationButton =
-      find.byKey(const ValueKey('audioPlayerViewIconButton'));
-  await tester.tap(appScreenNavigationButton);
-  await tester.pumpAndSettle(const Duration(milliseconds: 200));
+  if (doReturnToAudioPlayerViewAfterRewind) {
+    // Return to audio player view to verify the playlist current
+    // audio title audio position set to start
+    appScreenNavigationButton =
+        find.byKey(const ValueKey('audioPlayerViewIconButton'));
+    await tester.tap(appScreenNavigationButton);
+    await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
-  Finder currentAudioTitleFinder;
+    Finder currentAudioTitleFinder;
 
-  currentAudioTitleFinder = find.text(audioToPlayTitleAndDuration);
+    currentAudioTitleFinder = find.text(audioToPlayTitleAndDuration);
 
-  expect(
-    currentAudioTitleFinder,
-    findsOneWidget,
-  );
+    expect(
+      currentAudioTitleFinder,
+      findsOneWidget,
+    );
 
-  // Verify the current audio position
-  Text audioPositionText = tester
-      .widget<Text>(find.byKey(const Key('audioPlayerViewAudioPosition')));
-  expect(audioPositionText.data, '0:00');
+    // Verify the current audio position
+    Text audioPositionText = tester
+        .widget<Text>(find.byKey(const Key('audioPlayerViewAudioPosition')));
+    expect(audioPositionText.data, '0:00');
 
-  // Go back to playlist download view
-  appScreenNavigationButton =
-      find.byKey(const ValueKey('playlistDownloadViewIconButton'));
-  await tester.tap(appScreenNavigationButton);
-  await tester.pumpAndSettle();
+    // Go back to playlist download view
+    appScreenNavigationButton =
+        find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+    await tester.tap(appScreenNavigationButton);
+    await tester.pumpAndSettle();
+  }
 }
 
 void _verifyAllNowUnplayedAudioPlayPauseIconColor({

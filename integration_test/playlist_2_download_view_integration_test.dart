@@ -4462,6 +4462,65 @@ void main() {
       );
     });
   });
+  group('Rewind playlist filtered audio to start position test', () {
+    testWidgets('''Rewind 'janco' filteredaudio for selected playlist''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'sort_and_filter_audio_dialog_widget_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String youtubePlaylistToRewindTitle = 'S8 audio';
+
+      // Now tap on the current dropdown button item to open the dropdown
+      // button items list
+
+      Finder dropDownButtonFinder =
+          find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+      Finder dropDownButtonTextFinder = find.descendant(
+        of: dropDownButtonFinder,
+        matching: find.byType(Text),
+      );
+
+      await tester.tap(dropDownButtonTextFinder);
+      await tester.pumpAndSettle();
+
+      // Select 'janco' filtered audio for the playlist
+      Finder listenedNoComDropDownTextFinder = find.text('janco').last;
+      await tester.tap(listenedNoComDropDownTextFinder);
+      await tester.pumpAndSettle();
+
+      // Verify the audioTitles selected by applying the 'listenedNoCom'
+      // sort/filter parms
+
+      // Now play then pause "Ce qui va vraiment sauver notre espèce
+      // par Jancovici et Barrau" before rewinding the playlist audio
+      // to start position after having clicked on another audio item.
+
+      Finder appScreenNavigationButton =
+          find.byKey(const ValueKey('audioPlayerViewIconButton'));
+
+      await _rewindFilteredPlaylistAfterPlayThenPauseAnAudio(
+        tester: tester,
+        appScreenNavigationButton: appScreenNavigationButton,
+        doExpandPlaylistList: true,
+        playlistToRewindTitle: youtubePlaylistToRewindTitle,
+        audioToPlayTitle:
+            "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
+        audioToPlayTitleAndDuration:
+            "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau\n5:11",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group('Audio or playlists position scrolling test', () {
     group('Scrolling audio test', () {
       testWidgets('''Automatic scrolling audio to display current audio.''',
           (WidgetTester tester) async {
@@ -38920,6 +38979,118 @@ Future<void> _rewindPlaylistAfterPlayThenPauseAnAudio({
     playlistToRewindTitle: playlistToRewindTitle,
     numberOfRewindedAudio: audioRewindedNumber,
     expectedTotalPlayableDuration: "1:09:58",
+  );
+
+  // Return to audio player view to verify the playlist current
+  // audio title audio position set to start
+  appScreenNavigationButton =
+      find.byKey(const ValueKey('audioPlayerViewIconButton'));
+  await tester.tap(appScreenNavigationButton);
+  await tester.pumpAndSettle(const Duration(milliseconds: 200));
+
+  Finder currentAudioTitleFinder;
+
+  currentAudioTitleFinder = find.text(audioToPlayTitleAndDuration);
+
+  expect(
+    currentAudioTitleFinder,
+    findsOneWidget,
+  );
+
+  // Verify the current audio position
+  Text audioPositionText = tester
+      .widget<Text>(find.byKey(const Key('audioPlayerViewAudioPosition')));
+  expect(audioPositionText.data, '0:00');
+
+  // Go back to playlist download view
+  appScreenNavigationButton =
+      find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+  await tester.tap(appScreenNavigationButton);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _rewindFilteredPlaylistAfterPlayThenPauseAnAudio({
+  required WidgetTester tester,
+  required Finder appScreenNavigationButton,
+  required bool doExpandPlaylistList,
+  required String playlistToRewindTitle,
+  required String audioToPlayTitle,
+  required String audioToPlayTitleAndDuration,
+  String? otherAudioTitleToTapOnBeforeRewinding,
+  int audioRewindedNumber = 1,
+}) async {
+  // Now play then pause audioToPlayTitle
+
+  Finder audioToPlayTitleFinder = find.text(audioToPlayTitle);
+
+  // This opens the play audio view
+  await tester.tap(audioToPlayTitleFinder);
+  await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+    tester: tester,
+  );
+
+  // Now play the audio and wait 5 seconds
+  await tester.tap(find.byIcon(Icons.play_arrow));
+  await tester.pumpAndSettle();
+
+  await Future.delayed(const Duration(seconds: 5));
+  await tester.pumpAndSettle();
+
+  // Now pause the audio
+  final Finder pauseIconFinder = find.byIcon(Icons.pause);
+  await tester.tap(pauseIconFinder);
+  await tester.pumpAndSettle();
+
+  // Go back to playlist download view
+  appScreenNavigationButton =
+      find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+  await tester.tap(appScreenNavigationButton);
+  await tester.pumpAndSettle(const Duration(milliseconds: 200));
+
+  if (doExpandPlaylistList) {
+    // Tap the 'Toggle List' button to display the list of playlist's.
+    await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+    await tester.pumpAndSettle();
+  }
+
+  if (otherAudioTitleToTapOnBeforeRewinding != null) {
+    // Simply click on another audio so that the playlist current
+    // audio is no longer the last played and paused audio. This verify
+    // the correction of a rewind playlist audio to start position bug
+    Finder audioToPlayTitleFinder =
+        find.text(otherAudioTitleToTapOnBeforeRewinding);
+
+    await tester.tap(audioToPlayTitleFinder);
+    await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+      tester: tester,
+    );
+
+    // Go back to playlist download view
+    appScreenNavigationButton =
+        find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+    await tester.tap(appScreenNavigationButton);
+    await tester.pumpAndSettle(const Duration(milliseconds: 200));
+  }
+
+  // Now test rewinding the filtered audio
+
+  // Open the rewind filtered audio dialog by clicking first on
+  // the 'Filtered Audio Actions ...' playlist menu item and then
+  // on the 'Delete Filtered Audio ...' sub-menu item
+  await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+    tester: tester,
+    playlistTitle: playlistToRewindTitle,
+    playlistSubMenuKeyStr: 'popup_menu_rewind_filtered_audio_to_start',
+  );
+
+  // Verifying and closing the confirm dialog
+
+  await IntegrationTestUtil.verifyAndCloseConfirmActionDialog(
+    tester: tester,
+    confirmDialogTitleOne: '',
+    confirmDialogMessage:
+        "$audioRewindedNumber playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: 16:29.",
+    confirmOrCancelAction: true, // Confirm button is tapped
   );
 
   // Return to audio player view to verify the playlist current

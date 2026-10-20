@@ -39085,12 +39085,11 @@ Future<void> _rewindFilteredPlaylistAfterPlayThenPauseAnAudio({
 
   // Verifying and closing the confirm dialog
 
-  await IntegrationTestUtil.verifyAndCloseConfirmActionDialog(
+  await IntegrationTestUtil.verifyAndCloseWarningDialog(
     tester: tester,
-    confirmDialogTitleOne: '',
-    confirmDialogMessage:
+    warningDialogMessage:
         "$audioRewindedNumber playlist audios were repositioned to start and the first listenable audio was selected.\n\nTotal duration of the today playable audios: 16:29.",
-    confirmOrCancelAction: true, // Confirm button is tapped
+    isWarningConfirming: true,
   );
 
   // Return to audio player view to verify the playlist current

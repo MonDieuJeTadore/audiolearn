@@ -4168,8 +4168,6 @@ void main() {
             "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau\n5:11",
         otherAudioTitleToTapOnBeforeRewinding:
             "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)",
-        otherAudioTitleToTapOnBeforeRewindingDuration:
-            "3 fois où un économiste m'a ouvert les yeux (Giraud, Lefournier, Porcher)\n16:26",
       );
 
       // Now play then pause "Ce qui va vraiment sauver notre espèce
@@ -4188,8 +4186,6 @@ void main() {
             "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau\n5:11",
         otherAudioTitleToTapOnBeforeRewinding:
             "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau",
-        otherAudioTitleToTapOnBeforeRewindingDuration:
-            "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau\n5:11",
       );
 
       // Rewind again all playlist audio to start position. Since
@@ -4248,8 +4244,6 @@ void main() {
             "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau\n5:11",
         otherAudioTitleToTapOnBeforeRewinding:
             "Les besoins artificiels par R.Keucheyan",
-        otherAudioTitleToTapOnBeforeRewindingDuration:
-            "Les besoins artificiels par R.Keucheyan\n15:16",
       );
 
       // Purge the test playlist directory so that the created test
@@ -38917,7 +38911,6 @@ Future<void> _rewindPlaylistAfterPlayThenPauseAnAudio({
   required String audioToPlayTitle,
   required String audioToPlayTitleAndDuration,
   String? otherAudioTitleToTapOnBeforeRewinding,
-  String? otherAudioTitleToTapOnBeforeRewindingDuration,
   int audioRewindedNumber = 1,
 }) async {
   // Now play then pause audioToPlayTitle

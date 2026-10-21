@@ -6332,10 +6332,7 @@ class PlaylistListVM extends ChangeNotifier {
           audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd) {
         audio.audioPositionSeconds = 0;
         audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd = false;
-
-        if (File(audio.filePathName).existsSync()) {
-          rewindedAudioNumber++;
-        }
+        rewindedAudioNumber++;
       }
     }
 
@@ -6358,14 +6355,6 @@ class PlaylistListVM extends ChangeNotifier {
     required Playlist playlist,
     required List<Audio> audioToRewindLst,
   }) {
-    // Must be positioned before rewinding the audios to start so
-    // that the audios count does not include audios which will not
-    // be rewinded.
-    List<dynamic> numberAndTotalDurationLst =
-        _getFilteredAudioPlayableTodayNumberAndTotalDuration(
-      filteredAudioLst: audioToRewindLst,
-    );
-
     for (Audio audio in audioToRewindLst) {
       if (audio.audioPositionSeconds > 0 ||
           audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd) {
@@ -6373,6 +6362,11 @@ class PlaylistListVM extends ChangeNotifier {
         audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd = false;
       }
     }
+
+    List<dynamic> numberAndTotalDurationLst =
+        _getFilteredAudioPlayableTodayNumberAndTotalDuration(
+      filteredAudioLst: audioToRewindLst,
+    );
 
     return [
       numberAndTotalDurationLst[0] as int,
@@ -6391,10 +6385,9 @@ class PlaylistListVM extends ChangeNotifier {
     Duration totalDuration = Duration.zero;
 
     for (Audio audio in playlist.playableAudioLst) {
-      if (File(audio.filePathName).existsSync() &&
-          _isAudioPlayableToday(
-            audio: audio,
-          )) {
+      if (_isAudioPlayableToday(
+        audio: audio,
+      )) {
         totalDuration += audio.durationImpactedByPlaySpeed();
       } else {
         continue;
@@ -6413,13 +6406,10 @@ class PlaylistListVM extends ChangeNotifier {
     Duration totalDuration = Duration.zero;
 
     for (Audio audio in filteredAudioLst) {
-      if (File(audio.filePathName).existsSync() &&
-          _isAudioPlayableToday(
-            audio: audio,
-          )) {
-        if (audio.audioPositionSeconds > 0) {
-          filteredPlayableAudioCount++;
-        }
+      if (_isAudioPlayableToday(
+        audio: audio,
+      )) {
+        filteredPlayableAudioCount++;
         totalDuration += audio.durationImpactedByPlaySpeed();
       } else {
         continue;

@@ -6355,6 +6355,14 @@ class PlaylistListVM extends ChangeNotifier {
     required Playlist playlist,
     required List<Audio> audioToRewindLst,
   }) {
+    // Must be positioned before rewinding the audios to start so
+    // that the audios count does include audios which will be
+    // rewinded.
+    List<dynamic> numberAndTotalDurationLst =
+        _getFilteredAudioPlayableTodayNumberAndTotalDuration(
+      filteredAudioLst: audioToRewindLst,
+    );
+
     for (Audio audio in audioToRewindLst) {
       if (audio.audioPositionSeconds > 0 ||
           audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd) {
@@ -6362,11 +6370,6 @@ class PlaylistListVM extends ChangeNotifier {
         audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd = false;
       }
     }
-
-    List<dynamic> numberAndTotalDurationLst =
-        _getFilteredAudioPlayableTodayNumberAndTotalDuration(
-      filteredAudioLst: audioToRewindLst,
-    );
 
     return [
       numberAndTotalDurationLst[0] as int,

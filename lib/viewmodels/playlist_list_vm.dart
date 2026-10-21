@@ -6652,6 +6652,14 @@ class PlaylistListVM extends ChangeNotifier {
     return getSelectedPlaylists()[0].playableAudioLst.length;
   }
 
+  String getSelectedPlaylistPlayableAudioLstTotalRemainingDuration() {
+    return getSelectedPlaylists()[0]
+        .getPlayableAudioLstTotalRemainingDuration()
+        .HHmmss(
+          addRemainingOneDigitTenthOfSecond: true,
+        );
+  }
+
   void setPlaylistAudioQuality({
     required Playlist playlist,
     required PlaylistQuality playlistQuality,

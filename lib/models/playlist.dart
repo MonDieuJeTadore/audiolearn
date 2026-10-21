@@ -556,14 +556,22 @@ class Playlist {
     return totalDuration;
   }
 
-  Duration getPlayableAudioLstTotalRemainingDuration() {
+  /// If [filteredPlayableAudioLst] is provided and not empty, it will be used
+  /// to calculate the total remaining duration. Otherwise, the full
+  /// [playableAudioLst] will be used.
+  Duration getPlayableAudioLstTotalRemainingDuration({
+    List<Audio> filteredPlayableAudioLst = const [],
+  }) {
     Duration totalRemainingDuration = Duration.zero;
 
-    for (Audio audio in playableAudioLst) {
+    List<Audio> audioLstToUse = filteredPlayableAudioLst.isNotEmpty
+        ? filteredPlayableAudioLst
+        : playableAudioLst;
+
+    for (Audio audio in audioLstToUse) {
       if (!audio.isPlayingOrPausedWithPositionBetweenAudioStartAndEnd) {
         if (audio.audioPositionSeconds == 0) {
           totalRemainingDuration += audio.durationImpactedByPlaySpeed();
-          // print('${audio.validVideoTitle}} ${audio.durationImpactedByPlaySpeed()}} $totalRemainingDuration');
         } else {
           continue;
         }
@@ -572,7 +580,6 @@ class Playlist {
             Duration(
                 seconds: (audio.audioPositionSeconds / audio.audioPlaySpeed)
                     .round()));
-        // print('${audio.validVideoTitle}} $totalRemainingDuration');
       }
     }
 

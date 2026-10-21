@@ -1574,8 +1574,8 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
           );
 
     final String dropdownTooltipMessage = (dropdownValue == null)
-        ? '$sortFilterDefaultMenuItemNameCorrespondingToLanguage (${playlistListVMlistenFalse.getSelectedPlaylistPlayableAudioNumber()})'
-        : '$dropdownValue ($_selectedSortFilterAudioNumber)';
+        ? '$sortFilterDefaultMenuItemNameCorrespondingToLanguage (${playlistListVMlistenFalse.getSelectedPlaylistPlayableAudioNumber()}, ${playlistListVMlistenFalse.getSelectedPlaylistPlayableAudioLstTotalRemainingDuration()})'
+        : '$dropdownValue ($_selectedSortFilterAudioNumber, ${_getSelectedPlaylistPlayableAudioLstTotalRemainingDuration(playlistListVMlistenFalse: playlistListVMlistenFalse)})';
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -1735,6 +1735,33 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
     _wasSortFilterAudioSettingsApplied = true;
 
     return selectedPlaylistPlayableAudioApplyingSortFilterParameters.length;
+  }
+
+  String _getSelectedPlaylistPlayableAudioLstTotalRemainingDuration({
+    required PlaylistListVM playlistListVMlistenFalse,
+  }) {
+    AudioSortFilterParameters audioSortFilterParameters =
+        playlistListVMlistenFalse.getAudioSortFilterParameters(
+      audioSortFilterParametersName: _selectedSortFilterParametersName!,
+    );
+
+    List<Audio> selectedPlaylistPlayableAudioApplyingSortFilterParameters =
+        playlistListVMlistenFalse
+            .getSelectedPlaylistPlayableAudioApplyingSortFilterParameters(
+      audioLearnAppViewType: AudioLearnAppViewType.playlistDownloadView,
+      passedAudioSortFilterParameters: audioSortFilterParameters,
+      passedAudioSortFilterParametersName: _selectedSortFilterParametersName!,
+    );
+
+    return playlistListVMlistenFalse
+        .getSelectedPlaylists()[0]
+        .getPlayableAudioLstTotalRemainingDuration(
+          filteredPlayableAudioLst:
+              selectedPlaylistPlayableAudioApplyingSortFilterParameters,
+        )
+        .HHmmss(
+          addRemainingOneDigitTenthOfSecond: true,
+        );
   }
 
   List<DropdownMenuItem<String>> _buildSortFilterParmsDropdownMenuItemsLst({

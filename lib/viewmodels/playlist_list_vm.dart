@@ -6409,7 +6409,9 @@ class PlaylistListVM extends ChangeNotifier {
       if (_isAudioPlayableToday(
         audio: audio,
       )) {
-        filteredPlayableAudioCount++;
+        if (audio.audioPositionSeconds > 0) {
+          filteredPlayableAudioCount++;
+        }
         totalDuration += audio.durationImpactedByPlaySpeed();
       } else {
         continue;

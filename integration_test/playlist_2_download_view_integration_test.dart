@@ -4456,49 +4456,6 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
     });
-    testWidgets(
-        '''After deleting an MP3, rewind local selected playlist audio to start position''',
-        (WidgetTester tester) async {
-      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
-        tester: tester,
-        savedTestDataDirName: 'sort_and_filter_audio_dialog_widget_test',
-        tapOnPlaylistToggleButton: false,
-      );
-
-      const String localPlaylistToSelectTitle = 'local';
-
-      // Tap the 'Toggle List' button to show the list of playlist's.
-      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
-      await tester.pumpAndSettle();
-
-      // Select another playlist than the one whose audio will be
-      // rewinded to start position
-
-      await IntegrationTestUtil.selectPlaylist(
-        tester: tester,
-        playlistToSelectTitle: localPlaylistToSelectTitle,
-      );
-
-      // Delete an MP3 from the local playlist before rewinding the audio
-      DirUtil.deleteFileIfExist(
-        pathFileName:
-            '$kPlaylistDownloadRootPathWindowsTest${path.separator}$localPlaylistToSelectTitle${path.separator}231226-094526-Ce qui va vraiment sauver notre espèce par Jancovici et Barrau 23-09-23.mp3',
-      );
-
-      // Rewind all selected playlist audio to start position
-      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
-        tester: tester,
-        playlistToRewindTitle: localPlaylistToSelectTitle,
-        numberOfRewindedAudio: 3,
-        expectedTotalPlayableDuration: "16:58",
-      );
-
-      // Purge the test playlist directory so that the created test
-      // files are not uploaded to GitHub
-      DirUtil.deleteFilesInDirAndSubDirs(
-        rootPath: kApplicationPathWindowsTest,
-      );
-    });
   });
   group('Rewind playlist filtered audio to start position test', () {
     testWidgets('''Rewind 'janco' filteredaudio for selected playlist''',
@@ -4547,65 +4504,6 @@ void main() {
         audioToPlayTitleAndDuration:
             "Ce qui va vraiment sauver notre espèce par Jancovici et Barrau\n5:11",
         audioRewindedDurationString: "16:29",
-      );
-
-      // Purge the test playlist directory so that the created test
-      // files are not uploaded to GitHub
-      DirUtil.deleteFilesInDirAndSubDirs(
-        rootPath: kApplicationPathWindowsTest,
-      );
-    });
-    testWidgets(
-        '''After deleting an MP3, rewind 'janco' filteredaudio for selected playlist''',
-        (WidgetTester tester) async {
-      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
-        tester: tester,
-        savedTestDataDirName: 'sort_and_filter_audio_dialog_widget_test',
-        tapOnPlaylistToggleButton: false,
-      );
-
-      const String youtubePlaylistToRewindTitle = 'S8 audio';
-
-      // Now tap on the current dropdown button item to open the dropdown
-      // button items list
-
-      Finder dropDownButtonFinder =
-          find.byKey(const Key('sort_filter_parms_dropdown_button'));
-
-      Finder dropDownButtonTextFinder = find.descendant(
-        of: dropDownButtonFinder,
-        matching: find.byType(Text),
-      );
-
-      await tester.tap(dropDownButtonTextFinder);
-      await tester.pumpAndSettle();
-
-      // Select 'janco' filtered audio for the playlist
-      Finder listenedNoComDropDownTextFinder = find.text('janco').last;
-      await tester.tap(listenedNoComDropDownTextFinder);
-      await tester.pumpAndSettle();
-
-      // Delete an MP3 from the local playlist before rewinding the audio
-      DirUtil.deleteFileIfExist(
-        pathFileName:
-            '$kPlaylistDownloadRootPathWindowsTest${path.separator}$youtubePlaylistToRewindTitle${path.separator}231226-094526-Ce qui va vraiment sauver notre espèce par Jancovici et Barrau 23-09-23.mp3',
-      );
-
-      Finder appScreenNavigationButton =
-          find.byKey(const ValueKey('audioPlayerViewIconButton'));
-
-      // Now play then pause "La surpopulation mondiale par Jancovici
-      // et Barrau" before rewinding the playlist audio to start position
-      await _rewindFilteredPlaylistAfterPlayThenPauseAnAudio(
-        tester: tester,
-        appScreenNavigationButton: appScreenNavigationButton,
-        doExpandPlaylistList: true,
-        playlistToRewindTitle: youtubePlaylistToRewindTitle,
-        audioToPlayTitle: "La surpopulation mondiale par Jancovici et Barrau",
-        audioToPlayTitleAndDuration:
-            "La surpopulation mondiale par Jancovici et Barrau\n6:06",
-        audioRewindedDurationString: "11:18",
-        doReturnToAudioPlayerViewAfterRewind: false,
       );
 
       // Purge the test playlist directory so that the created test
@@ -39172,7 +39070,7 @@ Future<void> _rewindFilteredPlaylistAfterPlayThenPauseAnAudio({
 
   // Open the rewind filtered audio dialog by clicking first on
   // the 'Filtered Audio Actions ...' playlist menu item and then
-  // on the 'Delete Filtered Audio ...' sub-menu item
+  // on the 'Rewind filtered Audio to start' sub-menu item
   await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
     tester: tester,
     playlistTitle: playlistToRewindTitle,

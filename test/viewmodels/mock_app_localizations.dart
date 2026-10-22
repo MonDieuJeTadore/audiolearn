@@ -3459,4 +3459,10 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get notPlayableTooltip => "Select audios whose MP3 does not exist";
+
+  @override
+  String get audiosNumber => "audios number";
+
+  @override
+  String get totalRemainingDuration => "total remaining duration";
 }

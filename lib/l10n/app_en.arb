@@ -1383,5 +1383,7 @@
   "audioDownloadFromDateLabel": "Date ({selectedAppDateFormat})",
   "storageAccessRequiredTitle": "Permission required",
   "storageAccessRequiredExplanation": "AudioLearn stores its playlists, audio files and settings in the Documents/audiolearn folder. To access it, the app needs the \"All files access\" permission.\n\nTap the button below, then turn on the \"Allow access to manage all files\" switch.",
-  "storageAccessRequiredButton": "Open settings"
+  "storageAccessRequiredButton": "Open settings",
+  "audiosNumber": "audios number",
+  "totalRemainingDuration": "total remaining duration"
 }

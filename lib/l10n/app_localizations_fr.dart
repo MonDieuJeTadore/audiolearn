@@ -3349,4 +3349,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get storageAccessRequiredButton => 'Ouvrir les paramètres';
+
+  @override
+  String get audiosNumber => 'nombre audios';
+
+  @override
+  String get totalRemainingDuration => 'durée restante totale';
 }

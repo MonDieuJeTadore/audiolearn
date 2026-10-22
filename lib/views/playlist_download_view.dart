@@ -1573,9 +1573,12 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
             playlistListVMlistenFalseOrTrue: playlistListVMlistenFalse,
           );
 
+    final String audiosNumber = AppLocalizations.of(context)!.audiosNumber;
+    final String totalRemainingDuration = AppLocalizations.of(context)!.totalRemainingDuration;
+
     final String dropdownTooltipMessage = (dropdownValue == null)
-        ? '$sortFilterDefaultMenuItemNameCorrespondingToLanguage (${playlistListVMlistenFalse.getSelectedPlaylistPlayableAudioNumber()}, ${playlistListVMlistenFalse.getSelectedPlaylistPlayableAudioLstTotalRemainingDuration()})'
-        : '$dropdownValue ($_selectedSortFilterAudioNumber, ${_getSelectedPlaylistPlayableAudioLstTotalRemainingDuration(playlistListVMlistenFalse: playlistListVMlistenFalse)})';
+        ? '$sortFilterDefaultMenuItemNameCorrespondingToLanguage\n$audiosNumber ${playlistListVMlistenFalse.getSelectedPlaylistPlayableAudioNumber()}, $totalRemainingDuration ${playlistListVMlistenFalse.getSelectedPlaylistPlayableAudioLstTotalRemainingDuration()}'
+        : '$dropdownValue\n$audiosNumber $_selectedSortFilterAudioNumber, $totalRemainingDuration ${_getSelectedPlaylistPlayableAudioLstTotalRemainingDuration(playlistListVMlistenFalse: playlistListVMlistenFalse)}';
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -1584,6 +1587,7 @@ class _PlaylistDownloadViewState extends State<PlaylistDownloadView>
           constraints: BoxConstraints(maxWidth: kDropdownButtonMaxWidth),
           child: Tooltip(
             message: dropdownTooltipMessage,
+            textAlign: TextAlign.center,
             child: DropdownButton<String>(
               key: const Key('sort_filter_parms_dropdown_button'),
               value: dropdownValue,

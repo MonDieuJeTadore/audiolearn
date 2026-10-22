@@ -5303,6 +5303,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open settings'**
   String get storageAccessRequiredButton;
+
+  /// No description provided for @audiosNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'audios number'**
+  String get audiosNumber;
+
+  /// No description provided for @totalRemainingDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'total remaining duration'**
+  String get totalRemainingDuration;
 }
 
 class _AppLocalizationsDelegate

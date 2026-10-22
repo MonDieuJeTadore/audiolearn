@@ -6803,20 +6803,9 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
-            tooltipAudioNumvber: 7,
+            tooltipAudioNumber: 7,
+            tooltipAudiosTotalRemainingDuration: '0:31:32.0',
           );
-
-          // Find the dropdown button with 'applied' text
-          final dropdownButtonFinder = find.text(appliedEnglishTitle);
-          expect(dropdownButtonFinder, findsOneWidget);
-
-          // Verify the Tooltip widget exists with the expected message
-          final Tooltip tooltipWidget = tester.widget<Tooltip>(
-            find.byWidgetPredicate(
-              (widget) => widget is Tooltip && widget.message == 'applied (7)',
-            ),
-          );
-          expect(tooltipWidget, isNotNull);
 
           // And verify the order of the playlist audio titles
 
@@ -6867,7 +6856,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
-            tooltipAudioNumvber: 7,
+            tooltipAudioNumber: 7,
+            tooltipAudiosTotalRemainingDuration: '0:31:32.0',
           );
 
           // And verify the order of the playlist audio titles
@@ -6973,7 +6963,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
-            tooltipAudioNumvber: 7,
+            tooltipAudioNumber: 7,
+            tooltipAudiosTotalRemainingDuration: '0:31:32.0',
           );
 
           // And verify the order of the playlist audio titles
@@ -6998,11 +6989,12 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           await tester.pumpAndSettle();
 
           // Verify that the dropdown button has been updated with the
-          // 'default' sort/filter parms selected
+          // 'applied' sort/filter parms selected
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
-            tooltipAudioNumvber: 7,
+            tooltipAudioNumber: 7,
+            tooltipAudiosTotalRemainingDuration: '0:31:32.0',
           );
 
           // And verify the order of the playlist audio titles
@@ -7072,7 +7064,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           await tester.longPress(dropdownButtonFinder);
 
           // Verify the the dropdown button with 'applied' text tooltip
-          expect(find.text('default (7)'), findsOneWidget);
+          expect(find.text('default (7, 0:31:32.0)'), findsOneWidget);
 
           // Tap on the 'default' drop down button to re-open the
           // dropdown items list
@@ -7199,7 +7191,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
-            tooltipAudioNumvber: 7,
+            tooltipAudioNumber: 7,
+            tooltipAudiosTotalRemainingDuration: '0:31:32.0',
           );
 
           // And verify the order of the playlist audio titles
@@ -7238,7 +7231,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
-            tooltipAudioNumvber: 7,
+            tooltipAudioNumber: 7,
+            tooltipAudiosTotalRemainingDuration: '0:31:32.0',
           );
 
           // And verify the order of the playlist audio titles
@@ -7500,7 +7494,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
-            tooltipAudioNumvber: 5,
+            tooltipAudioNumber: 5,
+            tooltipAudiosTotalRemainingDuration: '0:14:45.4',
           );
 
           // And verify the order of the playlist audio titles
@@ -7529,7 +7524,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedEnglishTitle,
-            tooltipAudioNumvber: 5,
+            tooltipAudioNumber: 5,
+            tooltipAudiosTotalRemainingDuration: '0:14:45.4',
           );
 
           // Then reselect the 'S8 audio' playlist
@@ -7616,7 +7612,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: defaultTitle,
-            tooltipAudioNumvber: 7,
+            tooltipAudioNumber: 7,
+            tooltipAudiosTotalRemainingDuration: '0:31:32.0',
           );
 
           // And verify the order of the playlist audio titles
@@ -8389,7 +8386,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
               tester: tester,
               dropdownButtonSelectedTitle: 'default',
-              tooltipAudioNumvber: 7,
+              tooltipAudioNumber: 7,
+              tooltipAudiosTotalRemainingDuration: '0:31:32.0',
             );
 
             // And verify the order of the playlist audio titles
@@ -8549,7 +8547,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedFrenchTitle,
-            tooltipAudioNumvber: 7,
+            tooltipAudioNumber: 7,
+            tooltipAudiosTotalRemainingDuration: '0:31:32.0',
           );
 
           // And verify the order of the playlist audio titles
@@ -9307,7 +9306,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: appliedFrenchTitle,
-            tooltipAudioNumvber: 7,
+            tooltipAudioNumber: 7,
+            tooltipAudiosTotalRemainingDuration: '0:31:32.0',
           );
 
           // And verifyagain the order of the playlist audio titles
@@ -9388,7 +9388,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
           tester: tester,
           dropdownButtonSelectedTitle: ascFilListenedSortFilterName,
-          tooltipAudioNumvber: 4,
+          tooltipAudioNumber: 4,
+          tooltipAudiosTotalRemainingDuration: '0:11:20.8',
         );
 
         // Now retap on the current dropdown button item to open the
@@ -9409,7 +9410,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
           tester: tester,
           dropdownButtonSelectedTitle: titleAscendingSFparmsName,
-          tooltipAudioNumvber: 7,
+          tooltipAudioNumber: 7,
+          tooltipAudiosTotalRemainingDuration: '0:21:46.8',
         );
 
         // And verify the order of the playlist audio titles
@@ -9476,7 +9478,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
           tester: tester,
           dropdownButtonSelectedTitle: titleAscendingSFparmsName,
-          tooltipAudioNumvber: 7,
+          tooltipAudioNumber: 7,
+          tooltipAudiosTotalRemainingDuration: '0:21:46.8',
         );
 
         // Find the audio list widget using its key
@@ -9513,7 +9516,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
           tester: tester,
           dropdownButtonSelectedTitle: titleAscendingSFparmsName,
-          tooltipAudioNumvber: 7,
+          tooltipAudioNumber: 7,
+          tooltipAudiosTotalRemainingDuration: '0:21:46.8',
         );
 
         // Purge the test playlist directory so that the created test
@@ -9589,7 +9593,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
           tester: tester,
           dropdownButtonSelectedTitle: jouable9joursSortFilterName,
-          tooltipAudioNumvber: 0,
+          tooltipAudioNumber: 0,
+          tooltipAudiosTotalRemainingDuration: '0:00:00.0',
         );
 
         // Click on playlist toggle button to display the playlist list
@@ -9627,7 +9632,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
         IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
           tester: tester,
           dropdownButtonSelectedTitle: 'default',
-          tooltipAudioNumvber: 6,
+          tooltipAudioNumber: 6,
+          tooltipAudiosTotalRemainingDuration: '1:16:19.7',
         );
 
         // Purge the test playlist directory so that the created test
@@ -9826,7 +9832,8 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           IntegrationTestUtil.checkDropdopwnButtonSelectedTitle(
             tester: tester,
             dropdownButtonSelectedTitle: descListenedSortFilterName,
-            tooltipAudioNumvber: 7,
+            tooltipAudioNumber: 7,
+            tooltipAudiosTotalRemainingDuration: '0:21:46.8',
           );
 
           // Now open the Remove dialog, check the 'Download Audio' screen

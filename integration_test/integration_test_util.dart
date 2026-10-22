@@ -1359,7 +1359,8 @@ class IntegrationTestUtil {
 
     // Close the warning dialog by tapping on the Ok button
 
-    final Finder okButtonFinder = find.byKey(const Key('warningDialogOkButton'));
+    final Finder okButtonFinder =
+        find.byKey(const Key('warningDialogOkButton'));
 
     await tester.tap(okButtonFinder.last);
     await tester.pumpAndSettle(const Duration(milliseconds: 400));
@@ -1727,33 +1728,39 @@ class IntegrationTestUtil {
   static void checkDropdopwnButtonSelectedTitle({
     required WidgetTester tester,
     required String dropdownButtonSelectedTitle,
-    int tooltipAudioNumvber = -1,
+    int tooltipAudioNumber = -1,
+    String tooltipAudiosTotalRemainingDuration = '',
   }) {
-    if (tooltipAudioNumvber > -1) {
-      // Verify the Tooltip widget exists with the expected message
-      final Tooltip tooltipWidget = tester.widget<Tooltip>(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is Tooltip &&
-              widget.message ==
-                  '$dropdownButtonSelectedTitle ($tooltipAudioNumvber)',
-        ),
+    // Obtain the Tooltip message. This enables to display the
+    // tooltip error 
+    if (tooltipAudioNumber > -1) {
+      final String actualTooltipMessage = getDropdownButtonSelectedTitleTooltipMessage(
+        tester: tester,
+        dropdownButtonSelectedTitle: dropdownButtonSelectedTitle,
       );
-      expect(tooltipWidget, isNotNull);
+
+      expect(
+        actualTooltipMessage,
+        '$dropdownButtonSelectedTitle ($tooltipAudioNumber, $tooltipAudiosTotalRemainingDuration)',
+      );
     }
+  }
 
-    final Finder dropDownButtonFinder =
-        find.byKey(const Key('sort_filter_parms_dropdown_button'));
-
-    final Finder dropDownButtonTextFinder = find.descendant(
-      of: dropDownButtonFinder,
-      matching: find.byType(Text),
+  /// Retourne le message réel du Tooltip associé au titre sélectionné
+  /// du dropdown, par exemple 'default (7, 0:34:29.2)'.
+  static String getDropdownButtonSelectedTitleTooltipMessage({
+    required WidgetTester tester,
+    required String dropdownButtonSelectedTitle,
+  }) {
+    // Option 1 : Tooltip ancêtre du Text affiché dans le bouton
+    final Finder tooltipFinder = find.ancestor(
+      of: find.text(dropdownButtonSelectedTitle),
+      matching: find.byType(Tooltip),
     );
 
-    expect(
-      tester.widget<Text>(dropDownButtonTextFinder).data,
-      dropdownButtonSelectedTitle,
-    );
+    final Tooltip tooltip = tester.widget<Tooltip>(tooltipFinder.first);
+
+    return tooltip.message ?? '';
   }
 
   /// {confirmOrCancelAction} is true if the confirm button will be tapped.

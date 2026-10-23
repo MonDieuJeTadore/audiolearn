@@ -7064,7 +7064,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
           await tester.longPress(dropdownButtonFinder);
 
           // Verify the the dropdown button with 'applied' text tooltip
-          expect(find.text('default (7, 0:31:32.0)'), findsOneWidget);
+          expect(find.text('default\naudios number 7, total remaining duration 0:31:32.0'), findsOneWidget);
 
           // Tap on the 'default' drop down button to re-open the
           // dropdown items list

@@ -1317,6 +1317,7 @@ class IntegrationTestUtil {
     required String warningDialogMessage,
     String warningDialogMessageAlternative = '',
     bool isWarningConfirming = false,
+    bool tapTwiceOnOkButton = false,
     String warningTitle =
         'WARNING', // useful for AVERTISSEMENT title in french !
   }) async {
@@ -1364,6 +1365,11 @@ class IntegrationTestUtil {
 
     await tester.tap(okButtonFinder.last);
     await tester.pumpAndSettle(const Duration(milliseconds: 400));
+
+    if (tapTwiceOnOkButton && tester.any(okButtonFinder)) {
+      await tester.tap(okButtonFinder.last);
+      await tester.pumpAndSettle(const Duration(milliseconds: 400));
+    }
   }
 
   static Future<void> verifyAlertDisplayAndCloseIt({

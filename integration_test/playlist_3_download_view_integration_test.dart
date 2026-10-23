@@ -31136,6 +31136,7 @@ void main() {
           tester: tester,
           warningDialogMessage:
               "JSON format error in $targetDirectoryPath\\$targetFileName at line 64 or 65, column 9, unexpected character \"}\".\n\nException message: Unexpected character.\n\nTry finding the problem in order to correct it before executing again the operation.\n\nThen execute the \"Update Playlist JSON Files ...\" menu in order to restore the playlist \"$playlistTitle\".",
+          tapTwiceOnOkButton: true,
           isWarningConfirming: false,
         );
 
@@ -31475,6 +31476,7 @@ void main() {
           warningDialogMessage:
               "Erreur de format JSON dans $targetDirectoryPath\\$targetFileName à la ligne 64 ou 65, colonne 9, caractère inattendu \"}\".\n\nMessage de l'exception: Unexpected character.\n\nEssayez de trouver le probléme afin de le corriger avant de réexéuter l'opération.\n\nEnsuite, exécutez le menu \"Mettre à jour les fichiers playlist JSON ...\" afin de restaurer la playlist \"$playlistTitle\".",
           isWarningConfirming: false,
+          tapTwiceOnOkButton: true,
           warningTitle: 'AVERTISSEMENT',
         );
 

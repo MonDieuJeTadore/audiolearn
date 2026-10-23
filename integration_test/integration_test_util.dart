@@ -1732,16 +1732,28 @@ class IntegrationTestUtil {
     String tooltipAudiosTotalRemainingDuration = '',
   }) {
     // Obtain the Tooltip message. This enables to display the
-    // tooltip error 
+    // tooltip error
     if (tooltipAudioNumber > -1) {
-      final String actualTooltipMessage = getDropdownButtonSelectedTitleTooltipMessage(
+      final String actualTooltipMessage =
+          getDropdownButtonSelectedTitleTooltipMessage(
         tester: tester,
         dropdownButtonSelectedTitle: dropdownButtonSelectedTitle,
       );
 
+      // Obtain a BuildContext from a widget located under MaterialApp
+      final BuildContext context = tester.element(
+        find.byKey(const Key('sort_filter_parms_dropdown_button')),
+      );
+
+      final AppLocalizations localizations = AppLocalizations.of(context)!;
+
+      final String audiosNumber = localizations.audiosNumber;
+      final String totalRemainingDuration =
+          localizations.totalRemainingDuration;
+
       expect(
         actualTooltipMessage,
-        '$dropdownButtonSelectedTitle ($tooltipAudioNumber, $tooltipAudiosTotalRemainingDuration)',
+        '$dropdownButtonSelectedTitle\n$audiosNumber $tooltipAudioNumber, $totalRemainingDuration $tooltipAudiosTotalRemainingDuration',
       );
     }
   }

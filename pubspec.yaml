@@ -83,7 +83,6 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
-  intl_utils: ^2.0.0
   mockito: ^5.4.4
   build_runner: ^2.3.3
   msix: ^3.16.13

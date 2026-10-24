@@ -3187,7 +3187,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get startAudioPlayableEveryNDaysSortFilterTooltip =>
-      'Lists all audios which are playable every n days equal to or greater than the specified minimum number if set. If not set, the audios are payable every day !';
+      'Lists all audios which are playable every n days equal to or greater than the specified minimum number if set. If not set, the audios are playable every day !';
 
   @override
   String get endAudioPlayableEveryNDaysSortFilterTooltip =>

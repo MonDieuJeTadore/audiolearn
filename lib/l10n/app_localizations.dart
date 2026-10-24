@@ -5114,7 +5114,7 @@ abstract class AppLocalizations {
   /// No description provided for @startAudioPlayableEveryNDaysSortFilterTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Lists all audios which are playable every n days equal to or greater than the specified minimum number if set. If not set, the audios are payable every day !'**
+  /// **'Lists all audios which are playable every n days equal to or greater than the specified minimum number if set. If not set, the audios are playable every day !'**
   String get startAudioPlayableEveryNDaysSortFilterTooltip;
 
   /// No description provided for @endAudioPlayableEveryNDaysSortFilterTooltip.

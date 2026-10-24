@@ -13,4 +13,8 @@ adb shell "mkdir -p %DEST_PATH%"
 echo Copying files...
 powershell -ExecutionPolicy Bypass -Command "Get-ChildItem -Path '%SOURCE_PATH%' -Recurse -File | ForEach-Object { $relativePath = ($_.FullName.Substring($_.FullName.IndexOf('%BASE_DIR%') + '%BASE_DIR%'.Length + 1)).Replace('\', '/'); $parentDir = Split-Path -Parent $relativePath; if ($parentDir) { adb shell \"mkdir -p '%DEST_PATH%/$parentDir'\" }; Write-Host \"Pushing $($_.Name)\"; adb push $_.FullName \"%DEST_PATH%/$relativePath\" }"
 
+echo Granting all files access...
+adb shell appops set --uid com.audiolearn MANAGE_EXTERNAL_STORAGE allow
+adb shell appops get com.audiolearn MANAGE_EXTERNAL_STORAGE
+
 echo ===== Setup completed =====

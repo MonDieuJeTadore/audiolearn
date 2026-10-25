@@ -5060,7 +5060,7 @@ abstract class AppLocalizations {
   /// No description provided for @modifyFilteredAudioLastListenedDateTime.
   ///
   /// In en, this message translates to:
-  /// **'Modify filtered Audios last listen Date ...'**
+  /// **'Modify filtered Audios last listened Date ...'**
   String get modifyFilteredAudioLastListenedDateTime;
 
   /// No description provided for @setAudioLastListenedDateTitle.

@@ -4514,9 +4514,9 @@ void main() {
     });
   });
   group(
-      'Rewind playlist audios playable on different days to start position test',
+      '''Rewind playable filtered dplaylist audios playable on different days to start position test''',
       () {
-    testWidgets('''Rewind playlist audio for selected playlist''',
+    testWidgets('''Rewind 'Playable 3 days' and 'Playable 6 days' filtered playlist audio for selected playlist''',
         (WidgetTester tester) async {
       await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
         tester: tester,
@@ -4627,6 +4627,126 @@ void main() {
         playlistToRewindTitle: playlistToRewindTitle,
         numberOfRewindedAudio: 4,
         expectedTotalPlayableDuration: "16:52",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets('''Rewind all playable filtered playlist audio for selected playlist''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'rewind_playable_on_different_days',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String playlistToRewindTitle = 'Prières du soir 3';
+
+      // Tap the 'Toggle List' button to hide the playlist list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Verify the play/pause icon button format and color of
+      // all audio of the selected playlist
+
+      List<String> audioTitles = [
+        "5_Plus tu pries, plus tu seras rendu parfait par Dieu",
+        "4_Adoration Pendant Le Temps De - Chant De Louange Pour Jésus (dernières 3 Chansons) ｜ Louange Chrétienne 2025",
+        "3_Adoration Pendant Le Temps De - Chant De Louange Pour Jésus (3 Chansons) ｜ Louange Chrétienne 2025",
+        "2_Plus les hommes acceptent les paroles de Dieu, plus ils sont éclairés",
+        "1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'",
+      ];
+
+      IntegrationTestUtil.validateInkWellButton(
+        tester: tester,
+        audioTitle: audioTitles[0],
+        expectedIcon: Icons.play_arrow,
+        expectedIconColor:
+            kSliderThumbColorInDarkMode, // Fully played audio item play icon color
+        expectedIconBackgroundColor: Colors.black,
+      );
+
+      IntegrationTestUtil.validateInkWellButton(
+        tester: tester,
+        audioTitle: audioTitles[1],
+        expectedIcon: Icons.play_arrow,
+        expectedIconColor:
+            kSliderThumbColorInDarkMode, // Fully played audio item play icon color
+        expectedIconBackgroundColor: Colors.black,
+      );
+
+      IntegrationTestUtil.validateInkWellButton(
+        tester: tester,
+        audioTitle: audioTitles[2],
+        expectedIcon: Icons.play_arrow,
+        expectedIconColor:
+            kDarkAndLightEnabledIconColor, // not played icon color
+        expectedIconBackgroundColor: Colors.black,
+      );
+
+      IntegrationTestUtil.validateInkWellButton(
+        tester: tester,
+        audioTitle: audioTitles[3],
+        expectedIcon: Icons.play_arrow,
+        expectedIconColor:
+            kSliderThumbColorInDarkMode, // Fully played audio item play icon color
+        expectedIconBackgroundColor: Colors.black,
+      );
+
+      IntegrationTestUtil.validateInkWellButton(
+        tester: tester,
+        audioTitle: audioTitles[4],
+        expectedIcon: Icons.play_arrow,
+        expectedIconColor:
+            kSliderThumbColorInDarkMode, // Fully played audio item play icon color
+        expectedIconBackgroundColor: Colors.black,
+      );
+
+      // Now, select 'Playable 3 days' sort/filter parms and apply
+      // to the filtered audios the correct last listened date
+      await _modifyFilteredAudiosLastListenedDate(
+        tester: tester,
+        playlistToRewindTitle: playlistToRewindTitle,
+        sortFilterParmsName: 'Playable 3 days',
+        minusDayNumber: 3,
+      );
+
+      // Tap the 'Toggle List' button to hide the playlist list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Now, select 'Playable 3 days' sort/filter parms and apply
+      // to the filtered audios the correct last listened date
+      await _modifyFilteredAudiosLastListenedDate(
+        tester: tester,
+        playlistToRewindTitle: playlistToRewindTitle,
+        sortFilterParmsName: 'Playable 6 days',
+        minusDayNumber: 6,
+      );
+
+      // Tap the 'Toggle List' button to hide the playlist list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Now, select 'Playable 3 days' sort/filter parms and apply
+      // to the filtered audios the correct last listened date
+      await _modifyFilteredAudiosLastListenedDate(
+        tester: tester,
+        playlistToRewindTitle: playlistToRewindTitle,
+        sortFilterParmsName: 'Playable 9 days',
+        minusDayNumber: 9,
+      );
+
+      // Rewind all 'S8 audio" playlist audios to start position
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
+        tester: tester,
+        playlistToRewindTitle: playlistToRewindTitle,
+        numberOfRewindedAudio: 4,
+        expectedTotalPlayableDuration: "27:54", // like the total
+        // playable duration displayed in the playlist info dialog
       );
 
       // Purge the test playlist directory so that the created test

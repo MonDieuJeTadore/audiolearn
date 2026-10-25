@@ -4586,80 +4586,47 @@ void main() {
         expectedIconBackgroundColor: Colors.black,
       );
 
-      // Now, selecting 'Playable 3 days' dropdown button item to
-      // apply the 'Playable 3 days' sort/filter parms
-      final Finder dropDownButtonFinder =
-          find.byKey(const Key('sort_filter_parms_dropdown_button'));
-
-      final Finder dropDownButtonTextFinder = find.descendant(
-        of: dropDownButtonFinder,
-        matching: find.byType(Text),
+      // Now, select 'Playable 3 days' sort/filter parms and apply
+      // to the filtered audios the correct last listened date
+      await _modifyFilteredAudiosLastListenedDate(
+        tester: tester,
+        playlistToRewindTitle: playlistToRewindTitle,
+        sortFilterParmsName: 'Playable 3 days',
+        minusDayNumber: 3,
       );
 
-      // Tap on the current dropdown button item to open the dropdown
-      // button items list
-      await tester.tap(dropDownButtonTextFinder);
-      await tester.pumpAndSettle();
-
-      // And select the sort/filter item
-      String sortFilterTitle = 'Playable 3 days';
-      final Finder defaultDropDownTextFinder = find.text(sortFilterTitle);
-      await tester.tap(defaultDropDownTextFinder);
-      await tester.pumpAndSettle();
-
-      // Tap the 'Toggle List' button to display the playlist list
+      // Tap the 'Toggle List' button to hide the playlist list
       await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
-      // Apply the 'Modify filtered Audios last listened Date' by clicking first on
-      // the 'Filtered Audio Actions ...' playlist menu item and then on the
-      // 'Modify filtered Audios last listened Date' sub-menu item
-      await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+      // Now, select 'Playable 3 days' sort/filter parms and apply
+      // to the filtered audios the correct last listened date
+      await _modifyFilteredAudiosLastListenedDate(
         tester: tester,
-        playlistTitle: playlistToRewindTitle,
-        playlistSubMenuKeyStr:
-            'popup_menu_modify_filtered_audio_last_listened_date_time',
+        playlistToRewindTitle: playlistToRewindTitle,
+        sortFilterParmsName: 'Playable 6 days',
+        minusDayNumber: 6,
       );
 
-      await IntegrationTestUtil.verifySetValueToTargetDialog(
-        tester: tester,
-        dialogTitle: 'Define the last listened Date',
-        dialogMessage:
-            "The defined date will be set as last listen date in every filtered audio.",
-      );
-
-      final String oldestAudioDownloadDateTime = DateFormat('dd/MM/yyyy').format(DateTime.now());
-
-      expect(find.text(oldestAudioDownloadDateTime), findsOneWidget);
-
-      Finder setValueToTargetDialogFinder = find.byType(SetValueToTargetDialog);
-
-      // This finder obtained as descendant of its enclosing dialog does
-      // enable to change the value of the TextField
-      Finder setValueToTargetDialogEditTextFinder = find.descendant(
-        of: setValueToTargetDialogFinder,
-        matching: find.byType(TextField),
-      );
-
-      // Now change the download date in the dialog
-      final String audioOldestDownloadDateToday =
-          DateFormat('dd/MM/yyyy').format(DateTime.now().subtract(const Duration(days: 3)));
-      TextField textField =
-          tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
-
-      textField.controller!.text = audioOldestDownloadDateToday;
+      // Tap the 'Toggle List' button to hide the playlist list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
       await tester.pumpAndSettle();
 
-      // Tap on the Ok button to set download date time.
-      await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
-      await tester.pumpAndSettle();
+      // Now, select 'Playable 3 days' sort/filter parms and apply
+      // to the filtered audios the correct last listened date
+      await _modifyFilteredAudiosLastListenedDate(
+        tester: tester,
+        playlistToRewindTitle: playlistToRewindTitle,
+        sortFilterParmsName: 'Playable 9 days',
+        minusDayNumber: 8,
+      );
 
       // Rewind all 'S8 audio" playlist audios to start position
       await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
         tester: tester,
         playlistToRewindTitle: playlistToRewindTitle,
         numberOfRewindedAudio: 4,
-        expectedTotalPlayableDuration: "1:09:58",
+        expectedTotalPlayableDuration: "16:52",
       );
 
       // Purge the test playlist directory so that the created test
@@ -38169,6 +38136,82 @@ void main() {
       );
     });
   });
+}
+
+Future<void> _modifyFilteredAudiosLastListenedDate({
+  required WidgetTester tester,
+  required String playlistToRewindTitle,
+  required String sortFilterParmsName,
+  required int minusDayNumber,
+}) async {
+  // Now, selecting the dropdown button item to apply the
+  // sortFilterParmsName sort/filter parms
+  final Finder dropDownButtonFinder =
+      find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+  final Finder dropDownButtonTextFinder = find.descendant(
+    of: dropDownButtonFinder,
+    matching: find.byType(Text),
+  );
+
+  // Tap on the current dropdown button item to open the dropdown
+  // button items list
+  await tester.tap(dropDownButtonTextFinder);
+  await tester.pumpAndSettle();
+
+  // And select the sort/filter item
+  String sortFilterTitle = sortFilterParmsName;
+  final Finder sfDropDownTextFinder = find.text(sortFilterTitle);
+  await tester.tap(sfDropDownTextFinder);
+  await tester.pumpAndSettle();
+
+  // Tap the 'Toggle List' button to display the playlist list
+  await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+  await tester.pumpAndSettle();
+
+  // Apply the 'Modify filtered Audios last listened Date' by clicking first on
+  // the 'Filtered Audio Actions ...' playlist menu item and then on the
+  // 'Modify filtered Audios last listened Date' sub-menu item
+  await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+    tester: tester,
+    playlistTitle: playlistToRewindTitle,
+    playlistSubMenuKeyStr:
+        'popup_menu_modify_filtered_audio_last_listened_date_time',
+  );
+
+  await IntegrationTestUtil.verifySetValueToTargetDialog(
+    tester: tester,
+    dialogTitle: 'Define the last listened Date',
+    dialogMessage:
+        "The defined date will be set as last listen date in every filtered audio.",
+  );
+
+  final String todayListenedDateTime =
+      DateFormat('dd/MM/yyyy').format(DateTime.now());
+
+  expect(find.text(todayListenedDateTime), findsOneWidget);
+
+  Finder setValueToTargetDialogFinder = find.byType(SetValueToTargetDialog);
+
+  // This finder obtained as descendant of its enclosing dialog does
+  // enable to change the value of the TextField
+  Finder setValueToTargetDialogEditTextFinder = find.descendant(
+    of: setValueToTargetDialogFinder,
+    matching: find.byType(TextField),
+  );
+
+  // Now change the last listened date in the dialog
+  final String audioOldestDownloadDateToday = DateFormat('dd/MM/yyyy')
+      .format(DateTime.now().subtract(Duration(days: minusDayNumber)));
+  TextField textField =
+      tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+  textField.controller!.text = audioOldestDownloadDateToday;
+  await tester.pumpAndSettle();
+
+  // Tap on the Ok button to set download date time.
+  await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+  await tester.pumpAndSettle();
 }
 
 Future<void> _tapOnAudioThenGoBackToPlaylistDownloadView({

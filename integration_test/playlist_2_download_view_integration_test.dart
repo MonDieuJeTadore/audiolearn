@@ -4513,6 +4513,163 @@ void main() {
       );
     });
   });
+  group(
+      'Rewind playlist audios playable on different days to start position test',
+      () {
+    testWidgets('''Rewind playlist audio for selected playlist''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'rewind_playable_on_different_days',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String playlistToRewindTitle = 'Prières du soir 3';
+
+      // Tap the 'Toggle List' button to hide the playlist list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Verify the play/pause icon button format and color of
+      // all audio of the selected playlist
+
+      List<String> audioTitles = [
+        "5_Plus tu pries, plus tu seras rendu parfait par Dieu",
+        "4_Adoration Pendant Le Temps De - Chant De Louange Pour Jésus (dernières 3 Chansons) ｜ Louange Chrétienne 2025",
+        "3_Adoration Pendant Le Temps De - Chant De Louange Pour Jésus (3 Chansons) ｜ Louange Chrétienne 2025",
+        "2_Plus les hommes acceptent les paroles de Dieu, plus ils sont éclairés",
+        "1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'",
+      ];
+
+      IntegrationTestUtil.validateInkWellButton(
+        tester: tester,
+        audioTitle: audioTitles[0],
+        expectedIcon: Icons.play_arrow,
+        expectedIconColor:
+            kSliderThumbColorInDarkMode, // Fully played audio item play icon color
+        expectedIconBackgroundColor: Colors.black,
+      );
+
+      IntegrationTestUtil.validateInkWellButton(
+        tester: tester,
+        audioTitle: audioTitles[1],
+        expectedIcon: Icons.play_arrow,
+        expectedIconColor:
+            kSliderThumbColorInDarkMode, // Fully played audio item play icon color
+        expectedIconBackgroundColor: Colors.black,
+      );
+
+      IntegrationTestUtil.validateInkWellButton(
+        tester: tester,
+        audioTitle: audioTitles[2],
+        expectedIcon: Icons.play_arrow,
+        expectedIconColor:
+            kDarkAndLightEnabledIconColor, // not played icon color
+        expectedIconBackgroundColor: Colors.black,
+      );
+
+      IntegrationTestUtil.validateInkWellButton(
+        tester: tester,
+        audioTitle: audioTitles[3],
+        expectedIcon: Icons.play_arrow,
+        expectedIconColor:
+            kSliderThumbColorInDarkMode, // Fully played audio item play icon color
+        expectedIconBackgroundColor: Colors.black,
+      );
+
+      IntegrationTestUtil.validateInkWellButton(
+        tester: tester,
+        audioTitle: audioTitles[4],
+        expectedIcon: Icons.play_arrow,
+        expectedIconColor:
+            kSliderThumbColorInDarkMode, // Fully played audio item play icon color
+        expectedIconBackgroundColor: Colors.black,
+      );
+
+      // Now, selecting 'Playable 3 days' dropdown button item to
+      // apply the 'Playable 3 days' sort/filter parms
+      final Finder dropDownButtonFinder =
+          find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+      final Finder dropDownButtonTextFinder = find.descendant(
+        of: dropDownButtonFinder,
+        matching: find.byType(Text),
+      );
+
+      // Tap on the current dropdown button item to open the dropdown
+      // button items list
+      await tester.tap(dropDownButtonTextFinder);
+      await tester.pumpAndSettle();
+
+      // And select the sort/filter item
+      String sortFilterTitle = 'Playable 3 days';
+      final Finder defaultDropDownTextFinder = find.text(sortFilterTitle);
+      await tester.tap(defaultDropDownTextFinder);
+      await tester.pumpAndSettle();
+
+      // Tap the 'Toggle List' button to display the playlist list
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Apply the 'Modify filtered Audios last listened Date' by clicking first on
+      // the 'Filtered Audio Actions ...' playlist menu item and then on the
+      // 'Modify filtered Audios last listened Date' sub-menu item
+      await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+        tester: tester,
+        playlistTitle: playlistToRewindTitle,
+        playlistSubMenuKeyStr:
+            'popup_menu_modify_filtered_audio_last_listened_date_time',
+      );
+
+      await IntegrationTestUtil.verifySetValueToTargetDialog(
+        tester: tester,
+        dialogTitle: 'Define the last listened Date',
+        dialogMessage:
+            "The defined date will be set as last listen date in every filtered audio.",
+      );
+
+      final String oldestAudioDownloadDateTime = DateFormat('dd/MM/yyyy').format(DateTime.now());
+
+      expect(find.text(oldestAudioDownloadDateTime), findsOneWidget);
+
+      Finder setValueToTargetDialogFinder = find.byType(SetValueToTargetDialog);
+
+      // This finder obtained as descendant of its enclosing dialog does
+      // enable to change the value of the TextField
+      Finder setValueToTargetDialogEditTextFinder = find.descendant(
+        of: setValueToTargetDialogFinder,
+        matching: find.byType(TextField),
+      );
+
+      // Now change the download date in the dialog
+      final String audioOldestDownloadDateToday =
+          DateFormat('dd/MM/yyyy').format(DateTime.now().subtract(const Duration(days: 3)));
+      TextField textField =
+          tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+      textField.controller!.text = audioOldestDownloadDateToday;
+      await tester.pumpAndSettle();
+
+      // Tap on the Ok button to set download date time.
+      await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+      await tester.pumpAndSettle();
+
+      // Rewind all 'S8 audio" playlist audios to start position
+      await IntegrationTestUtil.tapOnRewindPlaylistAudioToStartPositionMenu(
+        tester: tester,
+        playlistToRewindTitle: playlistToRewindTitle,
+        numberOfRewindedAudio: 4,
+        expectedTotalPlayableDuration: "1:09:58",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+
   group('Audio or playlists position scrolling test', () {
     group('Scrolling audio test', () {
       testWidgets('''Automatic scrolling audio to display current audio.''',

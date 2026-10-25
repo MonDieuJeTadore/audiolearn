@@ -1,0 +1,260 @@
+{
+    "SettingType.appTheme": {
+        "SettingType.appTheme": "AppTheme.dark"
+    },
+    "SettingType.appPosition": {
+        "AppPosition.topX": "996.0",
+        "AppPosition.topY": "25.0",
+        "AppPosition.width": "450.0",
+        "AppPosition.height": "850.0"
+    },
+    "SettingType.language": {
+        "SettingType.language": "Language.english"
+    },
+    "SettingType.playlists": {
+        "Playlists.orderedTitleLst": "[Prières du soir 3]",
+        "Playlists.isMusicQualityByDefault": "false",
+        "Playlists.playSpeed": "1.0",
+        "Playlists.arePlaylistsDisplayedInPlaylistDownloadView": "true",
+        "Playlists.maxSavableAudioMp3FileSizeInMb": "525.0",
+        "Playlists.onWindowsPlayVolumeInPercentage": "2",
+        "Playlists.latestGlobalRestoredAudioDate": "2000-01-01T00:00:00.000"
+    },
+    "SettingType.dataLocation": {
+        "DataLocation.appSettingsPath": "C:\\development\\flutter\\audiolearn\\test\\data\\audio",
+        "DataLocation.playlistRootPath": "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\playlists"
+    },
+    "SettingType.formatOfDate": {
+        "FormatOfDate.formatOfDate": "dd/MM/yyyy"
+    },
+    "namedAudioSortFilterSettings": {
+        "default": {
+            "selectedSortItemLst": [
+                {
+                    "sortingOption": "audioDownloadDate",
+                    "isAscending": false
+                }
+            ],
+            "filterSentenceLst": [
+            ],
+            "sentencesCombination": 0,
+            "ignoreCase": true,
+            "searchAsWellInYoutubeChannelName": true,
+            "searchAsWellInVideoCompactDescription": true,
+            "filterAudios": true,
+            "filterComments": true,
+            "filterMusicQuality": true,
+            "filterSpokenQuality": true,
+            "filterFullyListened": true,
+            "filterPartiallyListened": true,
+            "filterNotListened": true,
+            "filterCommented": true,
+            "filterNotCommented": true,
+            "filterPictured": true,
+            "filterNotPictured": true,
+            "filterPlayable": true,
+            "filterNotPlayable": true,
+            "filterDownloaded": true,
+            "filterImported": true,
+            "filterConverted": true,
+            "filterExtracted": true,
+            "downloadDateStartRange": null,
+            "downloadDateEndRange": null,
+            "uploadDateStartRange": null,
+            "uploadDateEndRange": null,
+            "lastListenedDate": null,
+            "playableOnDate": null,
+            "startPlayableEveryNDayRange": 0,
+            "endPlayableEveryNDayRange": 0,
+            "fileSizeStartRangeMB": 0.0,
+            "fileSizeEndRangeMB": 0.0,
+            "durationStartRangeSec": 0,
+            "durationEndRangeSec": 0
+        },
+        "Chap desc": {
+            "selectedSortItemLst": [
+                {
+                    "sortingOption": "chapterAudioTitle",
+                    "isAscending": false
+                }
+            ],
+            "filterSentenceLst": [
+            ],
+            "sentencesCombination": 0,
+            "ignoreCase": true,
+            "searchAsWellInYoutubeChannelName": true,
+            "searchAsWellInVideoCompactDescription": true,
+            "filterAudios": true,
+            "filterComments": true,
+            "filterMusicQuality": true,
+            "filterSpokenQuality": true,
+            "filterFullyListened": true,
+            "filterPartiallyListened": true,
+            "filterNotListened": true,
+            "filterCommented": true,
+            "filterNotCommented": true,
+            "filterPictured": true,
+            "filterNotPictured": true,
+            "filterPlayable": true,
+            "filterNotPlayable": true,
+            "filterDownloaded": true,
+            "filterImported": true,
+            "filterConverted": true,
+            "filterExtracted": true,
+            "downloadDateStartRange": null,
+            "downloadDateEndRange": null,
+            "uploadDateStartRange": null,
+            "uploadDateEndRange": null,
+            "lastListenedDate": null,
+            "playableOnDate": null,
+            "startPlayableEveryNDayRange": 1,
+            "endPlayableEveryNDayRange": 0,
+            "fileSizeStartRangeMB": 0.0,
+            "fileSizeEndRangeMB": 0.0,
+            "durationStartRangeSec": 0,
+            "durationEndRangeSec": 0
+        },
+        "Playable 3 days": {
+            "selectedSortItemLst": [
+                {
+                    "sortingOption": "playableEveryNDays",
+                    "isAscending": false
+                },
+                {
+                    "sortingOption": "chapterAudioTitle",
+                    "isAscending": false
+                }
+            ],
+            "filterSentenceLst": [
+            ],
+            "sentencesCombination": 0,
+            "ignoreCase": true,
+            "searchAsWellInYoutubeChannelName": true,
+            "searchAsWellInVideoCompactDescription": true,
+            "filterAudios": true,
+            "filterComments": true,
+            "filterMusicQuality": true,
+            "filterSpokenQuality": true,
+            "filterFullyListened": true,
+            "filterPartiallyListened": true,
+            "filterNotListened": true,
+            "filterCommented": true,
+            "filterNotCommented": true,
+            "filterPictured": true,
+            "filterNotPictured": true,
+            "filterPlayable": true,
+            "filterNotPlayable": true,
+            "filterDownloaded": true,
+            "filterImported": true,
+            "filterConverted": true,
+            "filterExtracted": true,
+            "downloadDateStartRange": null,
+            "downloadDateEndRange": null,
+            "uploadDateStartRange": null,
+            "uploadDateEndRange": null,
+            "lastListenedDate": null,
+            "playableOnDate": null,
+            "startPlayableEveryNDayRange": 3,
+            "endPlayableEveryNDayRange": 3,
+            "fileSizeStartRangeMB": 0.0,
+            "fileSizeEndRangeMB": 0.0,
+            "durationStartRangeSec": 0,
+            "durationEndRangeSec": 0
+        },
+        "Playable 6 days": {
+            "selectedSortItemLst": [
+                {
+                    "sortingOption": "playableEveryNDays",
+                    "isAscending": false
+                },
+                {
+                    "sortingOption": "chapterAudioTitle",
+                    "isAscending": false
+                }
+            ],
+            "filterSentenceLst": [
+            ],
+            "sentencesCombination": 0,
+            "ignoreCase": true,
+            "searchAsWellInYoutubeChannelName": true,
+            "searchAsWellInVideoCompactDescription": true,
+            "filterAudios": true,
+            "filterComments": true,
+            "filterMusicQuality": true,
+            "filterSpokenQuality": true,
+            "filterFullyListened": true,
+            "filterPartiallyListened": true,
+            "filterNotListened": true,
+            "filterCommented": true,
+            "filterNotCommented": true,
+            "filterPictured": true,
+            "filterNotPictured": true,
+            "filterPlayable": true,
+            "filterNotPlayable": true,
+            "filterDownloaded": true,
+            "filterImported": true,
+            "filterConverted": true,
+            "filterExtracted": true,
+            "downloadDateStartRange": null,
+            "downloadDateEndRange": null,
+            "uploadDateStartRange": null,
+            "uploadDateEndRange": null,
+            "lastListenedDate": null,
+            "playableOnDate": null,
+            "startPlayableEveryNDayRange": 6,
+            "endPlayableEveryNDayRange": 6,
+            "fileSizeStartRangeMB": 0.0,
+            "fileSizeEndRangeMB": 0.0,
+            "durationStartRangeSec": 0,
+            "durationEndRangeSec": 0
+        },
+        "Playable 9 days": {
+            "selectedSortItemLst": [
+                {
+                    "sortingOption": "playableEveryNDays",
+                    "isAscending": false
+                },
+                {
+                    "sortingOption": "chapterAudioTitle",
+                    "isAscending": false
+                }
+            ],
+            "filterSentenceLst": [
+            ],
+            "sentencesCombination": 0,
+            "ignoreCase": true,
+            "searchAsWellInYoutubeChannelName": true,
+            "searchAsWellInVideoCompactDescription": true,
+            "filterAudios": true,
+            "filterComments": true,
+            "filterMusicQuality": true,
+            "filterSpokenQuality": true,
+            "filterFullyListened": true,
+            "filterPartiallyListened": true,
+            "filterNotListened": true,
+            "filterCommented": true,
+            "filterNotCommented": true,
+            "filterPictured": true,
+            "filterNotPictured": true,
+            "filterPlayable": true,
+            "filterNotPlayable": true,
+            "filterDownloaded": true,
+            "filterImported": true,
+            "filterConverted": true,
+            "filterExtracted": true,
+            "downloadDateStartRange": null,
+            "downloadDateEndRange": null,
+            "uploadDateStartRange": null,
+            "uploadDateEndRange": null,
+            "lastListenedDate": null,
+            "playableOnDate": null,
+            "startPlayableEveryNDayRange": 9,
+            "endPlayableEveryNDayRange": 9,
+            "fileSizeStartRangeMB": 0.0,
+            "fileSizeEndRangeMB": 0.0,
+            "durationStartRangeSec": 0,
+            "durationEndRangeSec": 0
+        }
+    },
+    "searchHistoryOfAudioSortFilterSettings": "[]"
+}

@@ -1343,7 +1343,7 @@
   "modifyPlayableEveryNDaysButton": "Modify",
   "playableEveryNDaysLabel": "Playable every n day(s)",
   "notYetPlayed": "not yet listened",
-  "modifyFilteredAudioLastListenedDateTime": "Modify filtered Audios last listen Date ...",
+  "modifyFilteredAudioLastListenedDateTime": "Modify filtered Audios last listened Date ...",
   "setAudioLastListenedDateTitle": "Define the last listened Date",
   "setAudioLastListenedDateTitleExplanation": "The defined date will be set as last listen date in every filtered audio.",
   "setAudioLastListenedDateTitleTooltip": "This is usefull if the concerned audios were not listened before the defined date.",

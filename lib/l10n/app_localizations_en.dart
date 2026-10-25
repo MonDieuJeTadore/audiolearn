@@ -3153,7 +3153,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modifyFilteredAudioLastListenedDateTime =>
-      'Modify filtered Audios last listen Date ...';
+      'Modify filtered Audios last listened Date ...';
 
   @override
   String get setAudioLastListenedDateTitle => 'Define the last listened Date';

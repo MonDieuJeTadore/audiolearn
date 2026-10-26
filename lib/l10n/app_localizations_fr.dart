@@ -1938,11 +1938,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get replaceExistingPlaylists =>
-      'Remplacer la/les playlist(s)\nexistante(s)';
+      'Remplacer la/les\nplaylist(s) existante(s)';
 
   @override
   String get deleteExistingPlaylists =>
       'Supprimer les playlists\nexistantes non présentes\ndans le fichier ZIP';
+
+  @override
+  String get doNotRestoreSortFilterParameters =>
+      'Ne pas restaurer les\nparamètres nommés de\ntri et filtre nouveaux';
 
   @override
   String get playlistRestorationDialogTitle => 'Restauration des playlists';
@@ -1965,7 +1969,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playlistRestorationSecondHelpTitle =>
-      'Une fois les playlists affectées supprimées, restaurez-les à nouveau à partir du fichier ZIP. Ensuite, vous pouvez appliquer le menu \"Restaurer les audios MP3 des playlists depuis un ou plusieurs fichier(s) ZIP ...\" ou \"Restaurer les audios MP3 de la playlist depuis un ou plusieurs fichier(s) ZIP ...\" pour la playlist individuelle afin de restaurer les fichiers audio ou alors retélécharger les fichiers audio non lisibles via le menu de la playlist \"Traiter audios filtrés\" puis le sous-menu \"Retélécharger les audios filtrés\". Si le paramètre de filtre de tri \"défaut\" est sélectionné, tous les fichiers audio non lisibles seront retéléchargés. Pour limiter les fichiers retéléchargés, sélectionnez ou définissez un paramètre de filtre de tri spécifique.';
+      'Une fois les playlists affectées supprimées, restaurez-les à nouveau à partir du fichier ZIP. Ensuite, vous pouvez appliquer le menu \"Restaurer les audios MP3 des playlists depuis un ou plusieurs fichier(s) ZIP ...\" ou \"Restaurer les audios MP3 de la playlist depuis un ou plusieurs fichier(s) ZIP ...\" pour la playlist individuelle afin de restaurer les fichiers audio ou alors retélécharger les fichiers audio non lisibles via le menu de la playlist \"Traiter audios filtrés\" puis le sous-menu \"Retélécharger les audios filtrés\". Si le paramètre de filtre de tri \"défaut\" est sélectionné, tous les fichiers audio non lisibles seront retéléchargés. Pour limiter les fichiers retéléchargés, sélectionnez ou définissez un paramètre de tri et filtre spécifique.';
 
   @override
   String get playlistJsonFilesUpdateDialogTitle =>

@@ -854,6 +854,7 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                   checkboxLabelLst: [
                     AppLocalizations.of(context)!.replaceExistingPlaylists,
                     AppLocalizations.of(context)!.deleteExistingPlaylists,
+                    AppLocalizations.of(context)!.doNotRestoreSortFilterParameters,
                   ],
                   validationFunctionArgs: [],
                   isCheckboxExclusive: false,
@@ -868,27 +869,23 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                 return;
               }
 
-              bool doReplaceExistingPlaylists = false;
-              bool doDeleteExistingPlaylists = false;
-
-              if (resultStringLst.length == 2) {
-                // The case when 'Replace existing playlist(s)' and
-                // 'Delete existing playlists' are set to true.
-                doReplaceExistingPlaylists = true;
-                doDeleteExistingPlaylists = true;
-              } else if (resultStringLst.length == 1) {
-                // The case when only one of the two checkboxes is checked
-                if (resultStringLst[0] == '0') {
-                  doReplaceExistingPlaylists = true;
-                } else if (resultStringLst[0] == '1') {
-                  doDeleteExistingPlaylists = true;
-                }
-              }
+              // resultStringLst contains the indexes of the checked
+              // checkboxes:
+              //   '0' -> 'Replace existing playlist(s)'
+              //   '1' -> 'Delete existing playlists not contained in ZIP'
+              //   '2' -> 'Do not restore the named new sort filter parameters'
+              final bool doReplaceExistingPlaylists =
+                  resultStringLst.contains('0');
+              final bool doDeleteExistingPlaylists =
+                  resultStringLst.contains('1');
+              final bool doRestoreNewSortFilterParms =
+                  !resultStringLst.contains('2');
 
               await UiUtil.restorePlaylistsCommentsAndAppSettingsFromZip(
                 context: context,
                 doReplaceExistingPlaylists: doReplaceExistingPlaylists,
                 doDeleteExistingPlaylists: doDeleteExistingPlaylists,
+                doRestoreNewSortFilterParms: doRestoreNewSortFilterParms,
               );
             });
             break;

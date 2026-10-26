@@ -4067,6 +4067,7 @@ class PlaylistListVM extends ChangeNotifier {
     required String zipFilePathName,
     required bool doReplaceExistingPlaylists,
     required bool doDeleteExistingPlaylists,
+    required bool doRestoreNewSortFilterParms,
   }) async {
     String selectedPlaylistBeforeRestoreTitle = '';
 
@@ -4103,7 +4104,9 @@ class PlaylistListVM extends ChangeNotifier {
 
     // Combining the restored app settings with the current app
     // settings
-    await _mergeRestoredFromZipSettingsWithCurrentAppSettings();
+    await _mergeRestoredFromZipSettingsWithCurrentAppSettings(
+      doRestoreNewSortFilterParms: doRestoreNewSortFilterParms,
+    );
 
     updateSettingsAndPlaylistJsonFiles(
       unselectAddedPlaylist:
@@ -4204,7 +4207,9 @@ class PlaylistListVM extends ChangeNotifier {
   /// the restoration from the zip file was already loaded and is in the private
   /// variable _settingsDataService. Now, the app settings file is the settings
   /// file restored from the zip file.
-  Future<void> _mergeRestoredFromZipSettingsWithCurrentAppSettings() async {
+  Future<void> _mergeRestoredFromZipSettingsWithCurrentAppSettings({
+    required bool doRestoreNewSortFilterParms,
+  }) async {
     final SettingsDataService settingsDataServiceZipVersion =
         SettingsDataService();
 
@@ -4258,12 +4263,14 @@ class PlaylistListVM extends ChangeNotifier {
       );
     }
 
-    // Merge the named audio sort/filter parameters map
-    settingsDataServiceZipVersion.namedAudioSortFilterParametersMap
-        .forEach((key, value) {
-      _settingsDataService.namedAudioSortFilterParametersMap
-          .putIfAbsent(key, () => value);
-    });
+    if (doRestoreNewSortFilterParms) {
+      // Merge the not presentnamed audio sort/filter parameters map
+      settingsDataServiceZipVersion.namedAudioSortFilterParametersMap
+          .forEach((key, value) {
+        _settingsDataService.namedAudioSortFilterParametersMap
+            .putIfAbsent(key, () => value);
+      });
+    }
 
     // Merge the unnamed sort/filter history list
     List<AudioSortFilterParameters> restoredHistory =

@@ -3127,6 +3127,12 @@ abstract class AppLocalizations {
   /// **'Delete existing playlists not\ncontained in ZIP'**
   String get deleteExistingPlaylists;
 
+  /// No description provided for @doNotRestoreSortFilterParameters.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not restore the named\nnew sort filter parameters'**
+  String get doNotRestoreSortFilterParameters;
+
   /// No description provided for @playlistRestorationDialogTitle.
   ///
   /// In en, this message translates to:

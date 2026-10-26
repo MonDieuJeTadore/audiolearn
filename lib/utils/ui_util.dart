@@ -142,6 +142,7 @@ class UiUtil {
     required BuildContext context,
     required bool doReplaceExistingPlaylists,
     required bool doDeleteExistingPlaylists,
+    required bool doRestoreNewSortFilterParms,
   }) async {
     String selectedZipFilePathName = await filePickerSelectZipFilePathName();
 
@@ -156,6 +157,7 @@ class UiUtil {
       zipFilePathName: selectedZipFilePathName,
       doReplaceExistingPlaylists: doReplaceExistingPlaylists,
       doDeleteExistingPlaylists: doDeleteExistingPlaylists,
+      doRestoreNewSortFilterParms: doRestoreNewSortFilterParms,
     );
   }
 

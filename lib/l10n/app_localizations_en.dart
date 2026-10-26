@@ -1930,6 +1930,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Delete existing playlists not\ncontained in ZIP';
 
   @override
+  String get doNotRestoreSortFilterParameters =>
+      'Do not restore the named\nnew sort filter parameters';
+
+  @override
   String get playlistRestorationDialogTitle => 'Playlists Restoration';
 
   @override

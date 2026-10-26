@@ -287,6 +287,7 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
           autofocus: true,
           child: AlertDialog(
             title: Text(
+              key: const Key('segmentDialogTitleKey'),
               existingSegment != null
                   ? dialogTitle
                   : AppLocalizations.of(context)!.addCommentDialogTitle,

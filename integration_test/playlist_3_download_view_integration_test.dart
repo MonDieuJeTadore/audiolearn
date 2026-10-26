@@ -30541,6 +30541,14 @@ void main() {
         await tester.tap(editCommentIconButtonFinder);
         await tester.pumpAndSettle();
 
+        // Verify the edit dialog title
+        expect(
+          tester.widget<Text>(
+            find.byKey(const Key('segmentDialogTitleKey')),
+          ).data,
+          "Edit Comment", // an Comment segment is edited
+        );
+
         // Modify the end position to 0:28.0
         Finder commentEndPositionTextFieldFinder =
             find.byKey(const Key('endPositionTextField'));
@@ -30569,7 +30577,7 @@ void main() {
             commentReductionPositionTextFieldFinder, '0:20.0');
         await tester.pumpAndSettle();
 
-        // Necessary to drag down vertically the add s4egment dialog
+        // Necessary to drag down vertically the add segment dialog
         await tester.drag(
           find.byType(AddSegmentDialog),
           const Offset(
@@ -30741,6 +30749,14 @@ void main() {
         await _correctPlaySpeedEnterCode(
           tester: tester,
           playSpeedValue: '1.7',
+        );
+
+        // Verify the edit dialog title
+        expect(
+          tester.widget<Text>(
+            find.byKey(const Key('segmentDialogTitleKey')),
+          ).data,
+          "Edit Audio", // an Audio segment is edited
         );
 
         // Modify the fade-in duration to 0:05.5

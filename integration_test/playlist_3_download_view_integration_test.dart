@@ -9038,8 +9038,10 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
     });
-    testWidgets('''Trying to rename the audio file in case the audio MP3 file does not exist. The new audio
-                   file name does not exist and the renaming audio has comments.''', (WidgetTester tester) async {
+    testWidgets(
+        '''Trying to rename the audio file in case the audio MP3 file does not exist. The new audio
+                   file name does not exist and the renaming audio has comments.''',
+        (WidgetTester tester) async {
       const String youtubePlaylistTitle =
           'audio_player_view_2_shorts_test'; // Youtube playlist
       const String audioTitle = "Really short video";
@@ -30529,13 +30531,21 @@ void main() {
           ],
         );
 
-        // Now edit the 'Seigneur' comment to modify its play speed, its increase
-        // duration and reduction position and duration
+        // Now edit the 'Seigneur' comment to modify its end position,
+        // its play speed, its increase duration and reduction position
+        // and duration
 
         // This opens the edit comment dialog
         Finder editCommentIconButtonFinder =
             find.byKey(const Key('editSegmentButtonKey_4.1'));
         await tester.tap(editCommentIconButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Modify the end position to 0:28.0
+        Finder commentEndPositionTextFieldFinder =
+            find.byKey(const Key('endPositionTextField'));
+        await tester.tap(commentEndPositionTextFieldFinder);
+        await tester.enterText(commentEndPositionTextFieldFinder, '0:28.0');
         await tester.pumpAndSettle();
 
         // Modify the play speed to 0.7
@@ -30551,12 +30561,12 @@ void main() {
         await tester.enterText(commentFadeInDurationTextFieldFinder, '0:05.0');
         await tester.pumpAndSettle();
 
-        // Modify the reduction position to 0:20.6
+        // Modify the reduction position to 0:20.0
         Finder commentReductionPositionTextFieldFinder =
             find.byKey(const Key('soundReductionPositionTextField'));
         await tester.tap(commentReductionPositionTextFieldFinder);
         await tester.enterText(
-            commentReductionPositionTextFieldFinder, '0:20.6');
+            commentReductionPositionTextFieldFinder, '0:20.0');
         await tester.pumpAndSettle();
 
         // Necessary to drag down vertically the add s4egment dialog
@@ -30586,7 +30596,7 @@ void main() {
             find.byKey(const Key('segmentNumberAndDurationKey_3'));
         expect(
           tester.widget<Text>(segmentsDurationTextFinder).data,
-          '1 segment(s) - 0:40.9',
+          '1 segment(s) - 0:40.0',
         );
 
         // Verify the displayed comment details in the comment card
@@ -30598,13 +30608,13 @@ void main() {
               'number': 4.1,
               'commentTitle': "Seigneur",
               'startPosition': '0:00.0',
-              'endPosition': '0:28.6',
+              'endPosition': '0:28.0',
               'playSpeed': 'Play speed: 0.7',
               'volume': 'Volume: 1.00',
               'increaseDuration': 'Increase duration: 0:05.0',
-              'reductionPosition': 'Reduction position: 0:20.6',
+              'reductionPosition': 'Reduction position: 0:20.0',
               'reductionDuration': 'Reduction duration: 0:08.0',
-              'duration': 'Duration: 0:40.9',
+              'duration': 'Duration: 0:40.0',
             },
           ],
         );
@@ -30622,7 +30632,7 @@ void main() {
 
         Text audioDurationText = tester.widget<Text>(
             find.byKey(const Key('extractedAudioDurationTextKey')));
-        expect(audioDurationText.data, '0:40.9',
+        expect(audioDurationText.data, '0:40.0',
             reason:
                 'The played audio duration is not correct after the comment play speed modification.');
 
@@ -30654,11 +30664,11 @@ void main() {
         expect(firstComment['title'], 'Seigneur');
         expect(firstComment['content'], '');
         expect(firstComment['commentStartPositionInTenthOfSeconds'], 0);
-        expect(firstComment['commentEndPositionInTenthOfSeconds'], 286);
+        expect(firstComment['commentEndPositionInTenthOfSeconds'], 280);
         expect(firstComment['silenceDuration'], 0.0);
         expect(firstComment['playSpeed'], 0.7);
         expect(firstComment['fadeInDuration'], 5.0);
-        expect(firstComment['soundReductionPosition'], 20.6);
+        expect(firstComment['soundReductionPosition'], 20.0);
         expect(firstComment['soundReductionDuration'], 8.0);
         expect(firstComment['deleted'], false);
         expect(firstComment['creationDateTime'], '2026-02-09T20:02:16.000');
@@ -30679,7 +30689,7 @@ void main() {
                     "$yearStr-$monthStr-${dayStr}T$hourStr:${(now.minute - 1).toString()}"),
             true);
 
-        String totalDurationStr = '2:30.5';
+        String totalDurationStr = '2:29.6';
 
         // Verify the total duration text
         Finder totalDurationTextFinder =
@@ -30808,7 +30818,7 @@ void main() {
           ],
         );
 
-        totalDurationStr = '2:18.7';
+        totalDurationStr = '2:17.8';
 
         // Verify the total duration text
         totalDurationTextFinder =
@@ -33692,7 +33702,7 @@ Future<void> _correctPlaySpeedEnterCode({
   required WidgetTester tester,
   required String playSpeedValue,
 }) async {
-  // Modify the play speed to 0.7
+  // Modify the play speed to the specified value
   Finder commentPlaySpeedTextFieldFinder =
       find.byKey(const Key('playSpeedTextField'));
   await tester.tap(commentPlaySpeedTextFieldFinder);

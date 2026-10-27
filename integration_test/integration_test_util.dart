@@ -743,6 +743,7 @@ class IntegrationTestUtil {
     required WidgetTester tester,
     required bool doReplaceExistingPlaylists,
     required bool doDeleteExistingPlaylistsNotContainedInZip,
+    bool doNotRestoreTheNamedSFparmsContainedInZip = false,
     List<String> playlistTitlesToDelete = const [],
     bool verifySetValueToTargetDialog = false,
     bool onAndroid = false,
@@ -819,9 +820,16 @@ class IntegrationTestUtil {
     }
 
     if (doDeleteExistingPlaylistsNotContainedInZip) {
-      // Find the 'Remove deleted audio files' checkbox and tap
-      // on it
+      // Find the 'Delete existing playlists not contained in ZIP'
+      // checkbox and tap on it
       await tester.tap(find.byKey(const Key('checkbox_1_key')));
+      await tester.pumpAndSettle();
+    }
+
+    if (doNotRestoreTheNamedSFparmsContainedInZip) {
+      // Find the 'Do not restore the named new sort filter
+      // parameters' checkbox and tap on it
+      await tester.tap(find.byKey(const Key('checkbox_2_key')));
       await tester.pumpAndSettle();
     }
 

@@ -1320,6 +1320,8 @@ class IntegrationTestUtil {
     }
   }
 
+  /// The [warningTitle] can have a value different from 'WARNING' or 'CONFIRMATION', for example
+  /// 'Latest download Date of restored Audios' or 'AVERTISSEMENT' in French.
   static Future<void> verifyAndCloseWarningDialog({
     required WidgetTester tester,
     required String warningDialogMessage,
@@ -4612,6 +4614,7 @@ class IntegrationTestUtil {
             .toList()),
       );
     }
+    
     if (closeDialogWithConfirmButton) {
       // Tap on the confirm button of the confirm action dialog
       await tester.tap(find.byKey(const Key('confirmButton')));

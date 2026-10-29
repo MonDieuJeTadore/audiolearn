@@ -2046,7 +2046,7 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
   }) {
     // The focus node must be created here, otherwise displaying
     // the dialog will cause an error.
-    final focusNodeDialog = FocusNode();
+    final FocusNode focusNodeDialog = FocusNode();
     String alertDialogTitle = '';
 
     if (warningDialogTitle.isNotEmpty) {

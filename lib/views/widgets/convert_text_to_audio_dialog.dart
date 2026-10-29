@@ -718,6 +718,7 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
                     TextField(
                       key: const Key('mp3FileNameTextFieldKey'),
                       controller: fileNameController,
+                      focusNode: fileNameFocusNode, // ← missing
                       decoration: InputDecoration(
                         hintText: AppLocalizations.of(context)!.myMp3FileName,
                         border: OutlineInputBorder(),

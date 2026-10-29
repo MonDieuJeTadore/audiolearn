@@ -583,6 +583,11 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
       playlist: targetPlaylist,
     );
 
+    // Used to give the focus back to the file name TextField after
+    // the Select existing file dialog was closed, so that pressing
+    // Enter twice (Confirm, then Create MP3) works.
+    final FocusNode fileNameFocusNode = FocusNode();
+
     final fileName = await showDialog<String>(
       context: context,
       barrierDismissible: false,
@@ -690,6 +695,12 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
                                           ),
                                         );
                                       }
+
+                                      // Make the file name TextField the
+                                      // current field (also after Cancel),
+                                      // so that the next Enter key press
+                                      // executes Create MP3.
+                                      fileNameFocusNode.requestFocus();
                                     },
                                     child: Text(
                                       AppLocalizations.of(context)!

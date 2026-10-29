@@ -578,15 +578,16 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
       listen: false,
     );
     final TextEditingController fileNameController = TextEditingController();
-    final List<String> existingMp3FileNames =
-        playlistListVMlistenFalse.getConvertedAudioFileNamesInPlaylist(
-      playlist: targetPlaylist,
-    );
 
     // Used to give the focus back to the file name TextField after
     // the Select existing file dialog was closed, so that pressing
     // Enter twice (Confirm, then Create MP3) works.
     final FocusNode fileNameFocusNode = FocusNode();
+
+    final List<String> existingMp3FileNames =
+        playlistListVMlistenFalse.getConvertedAudioFileNamesInPlaylist(
+      playlist: targetPlaylist,
+    );
 
     final fileName = await showDialog<String>(
       context: context,
@@ -689,9 +690,10 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
                                         fileNameController.value =
                                             TextEditingValue(
                                           text: selectedFileName,
-                                          // Place the cursor at the end
-                                          selection: TextSelection.collapsed(
-                                            offset: selectedFileName.length,
+                                          // Place the cursor at the start
+                                          selection:
+                                              const TextSelection.collapsed(
+                                            offset: 0,
                                           ),
                                         );
                                       }
@@ -699,8 +701,29 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
                                       // Make the file name TextField the
                                       // current field (also after Cancel),
                                       // so that the next Enter key press
-                                      // executes Create MP3.
-                                      fileNameFocusNode.requestFocus();
+                                      // executes Create MP3. The request
+                                      // is done after the next frame,
+                                      // otherwise the Navigator focus
+                                      // restoration, which gives the focus
+                                      // back to the Select existing file
+                                      // button, overrides it.
+                                      WidgetsBinding.instance
+                                          .addPostFrameCallback((_) {
+                                        fileNameFocusNode.requestFocus();
+
+                                        // On desktop, a TextField gaining
+                                        // the focus selects its whole
+                                        // content. Once this is done, the
+                                        // selection is replaced by a cursor
+                                        // at the start position.
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) {
+                                          fileNameController.selection =
+                                              const TextSelection.collapsed(
+                                            offset: 0,
+                                          );
+                                        });
+                                      });
                                     },
                                     child: Text(
                                       AppLocalizations.of(context)!
@@ -718,7 +741,7 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
                     TextField(
                       key: const Key('mp3FileNameTextFieldKey'),
                       controller: fileNameController,
-                      focusNode: fileNameFocusNode, // ← missing
+                      focusNode: fileNameFocusNode,
                       decoration: InputDecoration(
                         hintText: AppLocalizations.of(context)!.myMp3FileName,
                         border: OutlineInputBorder(),

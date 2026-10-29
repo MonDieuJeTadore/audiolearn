@@ -5473,6 +5473,7 @@ class PlaylistListVM extends ChangeNotifier {
     int restoredAudioCount = 0;
     List<String> playlistTitlesPresentInMp3ZipFileLst = [];
     List<String> restoredPlaylistTitlesLst = [];
+    DateTime mostRecentDownloadDate = DateTime.fromMillisecondsSinceEpoch(0);
 
     if (uniquePlaylistIsRestored) {
       // Used to show the restored unique playlist name in the audio download view
@@ -5526,11 +5527,12 @@ class PlaylistListVM extends ChangeNotifier {
 
             // Find the corresponding playlist
             Playlist? playlist = playlistMap[playlistTitle];
+            Audio? audio;
 
             if (playlist != null) {
               // Check if this audio file corresponds to an Audio in playableAudioLst
               bool shouldRestore = false;
-              for (Audio audio in playlist.playableAudioLst) {
+              for (audio in playlist.playableAudioLst) {
                 if (audio.audioFileName == audioFileName) {
                   shouldRestore = true;
                   break;
@@ -5552,6 +5554,16 @@ class PlaylistListVM extends ChangeNotifier {
                     restoredPlaylistTitlesLst: restoredPlaylistTitlesLst,
                     restoredAudioCount: restoredAudioCount,
                   );
+
+                  if (!uniquePlaylistIsRestored) {
+                    // Only if the restored playlists is not individual
+                    // must the latest global restored audio date be 
+                    // updated
+                    if (mostRecentDownloadDate
+                        .isBefore(audio!.audioDownloadDateTime)) {
+                      mostRecentDownloadDate = audio.audioDownloadDateTime;
+                    }
+                  }
                 } else {
                   // File already exists
                   Audio existingAudio = playlist.playableAudioLst.firstWhere(
@@ -5648,6 +5660,18 @@ class PlaylistListVM extends ChangeNotifier {
     } catch (e) {
       _logger.i(
           'In restorePlaylistsAudioMp3FilesFromUniqueZip(), error processing ZIP file $zipFilePathName: $e');
+    }
+
+    if (!uniquePlaylistIsRestored) {
+      // Only if the restored playlists is not individual is the latest global
+      // restored audio date updated in settings
+      _settingsDataService.set(
+        settingType: SettingType.playlists,
+        settingSubType: Playlists.latestGlobalRestoredAudioDate,
+        value: mostRecentDownloadDate.toIso8601String(),
+      );
+
+      _settingsDataService.saveSettings();
     }
 
     return [
@@ -5749,6 +5773,7 @@ class PlaylistListVM extends ChangeNotifier {
 
       // Create a map of playlist titles to playlists for efficient lookup
       Map<String, Playlist> playlistMap = {};
+
       for (Playlist playlist in listOfPlaylists) {
         playlistMap[playlist.title] = playlist;
       }
@@ -6033,6 +6058,8 @@ class PlaylistListVM extends ChangeNotifier {
         settingSubType: Playlists.latestGlobalRestoredAudioDate,
         value: mostRecentDownloadDate.toIso8601String(),
       );
+
+      _settingsDataService.saveSettings();
     }
 
     // Display confirmation message via WarningMessageVM

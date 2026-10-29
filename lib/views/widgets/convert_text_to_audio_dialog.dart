@@ -3,6 +3,7 @@ import 'package:audiolearn/viewmodels/audio_download_vm.dart';
 import 'package:audiolearn/viewmodels/date_format_vm.dart';
 import 'package:audiolearn/viewmodels/playlist_list_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -585,132 +586,161 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
     final fileName = await showDialog<String>(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-              child: Text(
-                AppLocalizations.of(context)!.mp3FileName,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-              ),
-            ),
-            IconButton(
-              icon: IconTheme(
-                data: (themeProviderVM.currentTheme == AppTheme.dark
-                        ? ScreenMixin.themeDataDark
-                        : ScreenMixin.themeDataLight)
-                    .iconTheme,
-                child: const Icon(
-                  Icons.help_outline,
-                  size: 40.0,
-                ),
-              ),
-              onPressed: () {
-                UiUtil.displayHelp(
-                    context: context,
-                    categoryId: "text_to_speech_conversion",
-                    categoryIdTitle: "Conversion de texte en audio",
-                    categoryIdDescription:
-                        "Convertir un texte en audio. Par exemple, transformer une prière écrite en prière écoutable.");
-              },
-            ),
-          ],
-        ),
-        // ✅ Envelopper le contenu dans SingleChildScrollView
-        content: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                (existingMp3FileNames.isEmpty)
-                    // if no converted files exist in the playlist, the select
-                    // file to replace button is not displayed and the user can
-                    // directly enter the new file name
-                    ? const SizedBox.shrink()
-                    : Center(
-                        child: Column(
-                          children: [
-                            Tooltip(
-                              message: AppLocalizations.of(context)!
-                                  .selectMp3FileToReplaceTooltip,
-                              child: ElevatedButton(
-                                key: const Key(
-                                    'select_mp3_file_to_replace_button_key'),
-                                onPressed: () async {
-                                  final selectedFileName =
-                                      await showDialog<String>(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (dialogContext) =>
-                                        _Mp3FileSelectionDialog(
-                                      themeProviderVM: themeProviderVM,
-                                      mp3FileNames: existingMp3FileNames,
-                                      textToSpeechVM: textToSpeechVMlistenTrue,
-                                      targetPlaylist: targetPlaylist,
-                                    ),
-                                  );
+      builder: (context) {
+        // Same action as the 'Create MP3' button. Used by the button,
+        // by the Enter key (Windows) and by the soft keyboard 'done'
+        // action (Android).
+        void submitFileName() {
+          final name = fileNameController.text.trim();
+          if (name.isNotEmpty) {
+            Navigator.of(context).pop(name);
+          }
+        }
 
-                                  if (selectedFileName != null &&
-                                      selectedFileName.isNotEmpty) {
-                                    fileNameController.text = selectedFileName;
-                                  }
-                                },
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .selectMp3FileToReplace,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                SizedBox(height: 16),
-                Text(AppLocalizations.of(context)!.enterMp3FileName),
-                SizedBox(height: 16),
-                TextField(
-                  key: const Key('mp3FileNameTextFieldKey'),
-                  controller: fileNameController,
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.myMp3FileName,
-                    border: OutlineInputBorder(),
-                    suffixText: '.mp3',
+        // The TextField is autofocused, so the CallbackShortcuts
+        // subtree has the focus and receives the Enter key. Since the
+        // Enter key event is handled here, it is not forwarded to the
+        // TextField, so submitFileName() is not executed twice.
+        return CallbackShortcuts(
+          bindings: <ShortcutActivator, VoidCallback>{
+            const SingleActivator(LogicalKeyboardKey.enter): submitFileName,
+            const SingleActivator(LogicalKeyboardKey.numpadEnter):
+                submitFileName,
+          },
+          child: AlertDialog(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Text(
+                    AppLocalizations.of(context)!.mp3FileName,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
                   ),
-                  autofocus: true,
+                ),
+                IconButton(
+                  icon: IconTheme(
+                    data: (themeProviderVM.currentTheme == AppTheme.dark
+                            ? ScreenMixin.themeDataDark
+                            : ScreenMixin.themeDataLight)
+                        .iconTheme,
+                    child: const Icon(
+                      Icons.help_outline,
+                      size: 40.0,
+                    ),
+                  ),
+                  onPressed: () {
+                    UiUtil.displayHelp(
+                        context: context,
+                        categoryId: "text_to_speech_conversion",
+                        categoryIdTitle: "Conversion de texte en audio",
+                        categoryIdDescription:
+                            "Convertir un texte en audio. Par exemple, transformer une prière écrite en prière écoutable.");
+                  },
                 ),
               ],
             ),
-          ),
-        ),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                key: const Key('create_mp3_button_key'),
-                onPressed: () {
-                  final name = fileNameController.text.trim();
-                  if (name.isNotEmpty) {
-                    Navigator.of(context).pop(name);
-                  }
-                },
-                child: Text(AppLocalizations.of(context)!.createMP3),
+            // ✅ Envelopper le contenu dans SingleChildScrollView
+            content: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    (existingMp3FileNames.isEmpty)
+                        // if no converted files exist in the playlist, the
+                        // select file to replace button is not displayed and
+                        // the user can directly enter the new file name
+                        ? const SizedBox.shrink()
+                        : Center(
+                            child: Column(
+                              children: [
+                                Tooltip(
+                                  message: AppLocalizations.of(context)!
+                                      .selectMp3FileToReplaceTooltip,
+                                  child: ElevatedButton(
+                                    key: const Key(
+                                        'select_mp3_file_to_replace_button_key'),
+                                    onPressed: () async {
+                                      final selectedFileName =
+                                          await showDialog<String>(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (dialogContext) =>
+                                            _Mp3FileSelectionDialog(
+                                          themeProviderVM: themeProviderVM,
+                                          mp3FileNames: existingMp3FileNames,
+                                          textToSpeechVM:
+                                              textToSpeechVMlistenTrue,
+                                          targetPlaylist: targetPlaylist,
+                                        ),
+                                      );
+
+                                      if (selectedFileName != null &&
+                                          selectedFileName.isNotEmpty) {
+                                        fileNameController.value =
+                                            TextEditingValue(
+                                          text: selectedFileName,
+                                          // Place the cursor at the end
+                                          selection: TextSelection.collapsed(
+                                            offset: selectedFileName.length,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: Text(
+                                      AppLocalizations.of(context)!
+                                          .selectMp3FileToReplace,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                    SizedBox(height: 16),
+                    Text(AppLocalizations.of(context)!.enterMp3FileName),
+                    SizedBox(height: 16),
+                    TextField(
+                      key: const Key('mp3FileNameTextFieldKey'),
+                      controller: fileNameController,
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!.myMp3FileName,
+                        border: OutlineInputBorder(),
+                        suffixText: '.mp3',
+                      ),
+                      autofocus: true,
+                      textInputAction: TextInputAction.done,
+                      // Android soft keyboard 'done' action
+                      onSubmitted: (_) => submitFileName(),
+                    ),
+                  ],
+                ),
               ),
-              TextButton(
-                key: const Key('cancel_mp3_creation_button_key'),
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(AppLocalizations.of(context)!.cancelButton),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    key: const Key('create_mp3_button_key'),
+                    onPressed: submitFileName,
+                    child: Text(AppLocalizations.of(context)!.createMP3),
+                  ),
+                  TextButton(
+                    key: const Key('cancel_mp3_creation_button_key'),
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(AppLocalizations.of(context)!.cancelButton),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
 
     bool cancelTextToAudioCreation = false;
@@ -948,91 +978,114 @@ class _Mp3FileSelectionDialogState extends State<_Mp3FileSelectionDialog> {
     super.dispose();
   }
 
+  /// Same action as the 'Confirm' button. Used by the button and by
+  /// the Enter key (Windows). Does nothing if no file is selected,
+  /// like the disabled Confirm button.
+  void _confirmSelection() {
+    if (_selectedFileName == null) {
+      return;
+    }
+
+    // Remove .mp3 extension if present
+    final String nameWithoutExtension = _selectedFileName!.endsWith('.mp3')
+        ? _selectedFileName!.substring(0, _selectedFileName!.length - 4)
+        : _selectedFileName!;
+
+    Navigator.of(context).pop(nameWithoutExtension);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(
-            child: Text(
-              AppLocalizations.of(context)!.selectMp3FileToReplace,
-              textAlign: TextAlign.center, // Centered multi lines text
-              maxLines: 2,
-            ),
-          ),
-          IconButton(
-            icon: IconTheme(
-              data: (widget.themeProviderVM.currentTheme == AppTheme.dark
-                      ? ScreenMixin.themeDataDark
-                      : ScreenMixin.themeDataLight)
-                  .iconTheme,
-              child: const Icon(
-                Icons.help_outline,
-                size: 40.0,
+    // The CallbackShortcuts is placed nearer to the focused widget than
+    // the app level Shortcuts, so Enter confirms the selection instead
+    // of toggling a focused CheckboxListTile.
+    return CallbackShortcuts(
+      bindings: <ShortcutActivator, VoidCallback>{
+        const SingleActivator(LogicalKeyboardKey.enter): _confirmSelection,
+        const SingleActivator(LogicalKeyboardKey.numpadEnter):
+            _confirmSelection,
+      },
+      // Autofocus is required so that the dialog subtree has the focus
+      // and receives the Enter key without the user clicking first.
+      child: Focus(
+        autofocus: true,
+        child: AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Text(
+                  AppLocalizations.of(context)!.selectMp3FileToReplace,
+                  textAlign: TextAlign.center, // Centered multi lines text
+                  maxLines: 2,
+                ),
               ),
-            ),
-            onPressed: () {
-              UiUtil.displayHelp(
-                  context: context,
-                  categoryId: "text_to_speech_conversion",
-                  categoryIdTitle: "Conversion de texte en audio",
-                  categoryIdDescription:
-                      "Convertir un texte en audio. Par exemple, transformer une prière écrite en prière écoutable.");
-            },
+              IconButton(
+                icon: IconTheme(
+                  data: (widget.themeProviderVM.currentTheme == AppTheme.dark
+                          ? ScreenMixin.themeDataDark
+                          : ScreenMixin.themeDataLight)
+                      .iconTheme,
+                  child: const Icon(
+                    Icons.help_outline,
+                    size: 40.0,
+                  ),
+                ),
+                onPressed: () {
+                  UiUtil.displayHelp(
+                      context: context,
+                      categoryId: "text_to_speech_conversion",
+                      categoryIdTitle: "Conversion de texte en audio",
+                      categoryIdDescription:
+                          "Convertir un texte en audio. Par exemple, transformer une prière écrite en prière écoutable.");
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-      content: SizedBox(
-        width: double.maxFinite,
-        child: ListView.builder(
-          shrinkWrap: true,
-          controller: _scrollController,
-          itemCount: widget.mp3FileNames.length,
-          itemBuilder: (context, index) {
-            final fileName = widget.mp3FileNames[index];
-            final isSelected = _selectedFileName == fileName;
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              controller: _scrollController,
+              itemCount: widget.mp3FileNames.length,
+              itemBuilder: (context, index) {
+                final fileName = widget.mp3FileNames[index];
+                final isSelected = _selectedFileName == fileName;
 
-            return CheckboxListTile(
-              key: Key('mp3_file_checkbox_$index'),
-              title: Text(fileName),
-              value: isSelected,
-              onChanged: (bool? value) {
-                setState(() {
-                  if (value == true) {
-                    _selectedFileName = fileName;
-                  } else {
-                    _selectedFileName = null;
-                  }
-                });
+                return CheckboxListTile(
+                  key: Key('mp3_file_checkbox_$index'),
+                  title: Text(fileName),
+                  value: isSelected,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      if (value == true) {
+                        _selectedFileName = fileName;
+                      } else {
+                        _selectedFileName = null;
+                      }
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
+                );
               },
-              controlAffinity: ListTileControlAffinity.leading,
-            );
-          },
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              key: const Key('confirm_selection_button_key'),
+              onPressed: _selectedFileName != null
+                  ? _confirmSelection
+                  : null, // Button disabled when nothing selected
+              child: Text(AppLocalizations.of(context)!.confirmButton),
+            ),
+            TextButton(
+              key: const Key('cancel_selection_button_key'),
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(AppLocalizations.of(context)!.cancelButton),
+            ),
+          ],
         ),
       ),
-      actions: [
-        ElevatedButton(
-          key: const Key('confirm_selection_button_key'),
-          onPressed: _selectedFileName != null
-              ? () {
-                  // Remove .mp3 extension if present
-                  final nameWithoutExtension =
-                      _selectedFileName!.endsWith('.mp3')
-                          ? _selectedFileName!
-                              .substring(0, _selectedFileName!.length - 4)
-                          : _selectedFileName;
-                  Navigator.of(context).pop(nameWithoutExtension);
-                }
-              : null, // Button disabled when nothing selected
-          child: Text(AppLocalizations.of(context)!.confirmButton),
-        ),
-        TextButton(
-          key: const Key('cancel_selection_button_key'),
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(AppLocalizations.of(context)!.cancelButton),
-        ),
-      ],
     );
   }
 }

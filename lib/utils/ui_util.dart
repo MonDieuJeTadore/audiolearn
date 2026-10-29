@@ -213,15 +213,16 @@ class UiUtil {
     );
 
     if (uniquePlaylistIsRestored && playlistsLst.length == 1) {
-      // 'Restore Playlist Audio's MP3 from one or several ZIP File(s) ...'
-      // playlist item menu
+      // The 'Restore Playlist Audio's MP3 from one or several ZIP
+      // File(s) ...' playlist item menu was used to trigger this
+      // restoration
       if (mp3ZipDirectoryPath != null) {
         // Restore from multiple ZIP files contained in a directory
         await playlistListVMlistenFalse
             .restoreAndConfirmPlaylistsAudioMp3FilesFromMultipleZips(
           zipDirectoryPath: mp3ZipDirectoryPath,
           listOfPlaylists: playlistsLst,
-          uniquePlaylistIsRestored: uniquePlaylistIsRestored,
+          uniquePlaylistIsRestored: uniquePlaylistIsRestored, // is true
         );
         return;
       }
@@ -235,7 +236,7 @@ class UiUtil {
           .restorePlaylistsAudioMp3FilesFromUniqueZip(
         zipFilePathName: selectedZipFilePathName,
         listOfPlaylists: playlistsLst,
-        uniquePlaylistIsRestored: uniquePlaylistIsRestored,
+        uniquePlaylistIsRestored: uniquePlaylistIsRestored, // is true
       );
 
       int restoredAudioCount = resultLst[0];
@@ -249,8 +250,9 @@ class UiUtil {
         wasIndividualPlaylistMp3ZipUsed: uniquePlaylistMp3ZipFileWasRestored,
       );
     } else {
-      // 'Restore Playlist Audio's MP3 from one or several ZIP File(s) ...'
-      // left appbar menu
+      // The 'Restore Playlists Audios MP3 from one or several ZIP
+      // File(s) ...' left appbar menu was used to trigger this
+      // restoration
 
       // Restoring mp3 files for unique or multiple playlists from a single
       // ZIP file or from multiple mp3 zip files located in a directory.
@@ -259,7 +261,7 @@ class UiUtil {
             .restoreAndConfirmPlaylistsAudioMp3FilesFromMultipleZips(
           zipDirectoryPath: mp3ZipDirectoryPath,
           listOfPlaylists: playlistsLst,
-          uniquePlaylistIsRestored: uniquePlaylistIsRestored,
+          uniquePlaylistIsRestored: uniquePlaylistIsRestored, // is false
         );
         return;
       }

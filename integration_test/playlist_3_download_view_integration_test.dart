@@ -22878,10 +22878,18 @@ void main() {
 
   group('Restore audio MP3 files from MP3 zip file', () {
     testWidgets(
-        '''Restore Playlist Audio's MP3 from Zip File ... playlist item menu selecting a unique playlist
-           MP3 zip file. First, on empty app dir, restore unique playlist Windows zip containing 
-           urgent_actus_17-12-2023 playlist and then restore unique playlist MP3 zip file containing the
-           audios of this playlist. The restored audios are playable.''',
+        '''Using playlist item menu 'Restore Playlist Audio's MP3 from one or several ZIP File(s) ...'
+           with choosing 'A single ZIP File' element in the 'Restore MP3 Files' dialog.
+           
+           First, use the 'Restore Playlists, Comments and Settings from ZIP File ...' appbar menu to
+           restore the unique playlist Windows zip containing the urgent_actus_17-12-2023 playlist and
+           verify that the Latest download Date of restored Audios was not updated.
+
+           Then tap on the 'Restore Playlist Audio MP3 from one or several ZIP File(s) ...' playlist^
+           menu item to restore the unique urgent_actus_17-12-2023 playlist MP3 zip file containing
+           the audios of this playlist. The restored audios are playable. Verify that the Latest
+           download Date of restored Audios was not updated since it is only updated when using the
+           'Restore Playlists Audios MP3 from one or several ZIP File(s) ...' appbar menu.''',
         (WidgetTester tester) async {
       // Purge the test playlist directory if it exists so that the
       // playlist list is empty
@@ -22915,8 +22923,8 @@ void main() {
             size: 2632),
       ]);
 
-      // Execute the 'Restore Playlists, Comments and Settings from Zip
-      // File ...' menu
+      // Execute the 'Restore Playlists, Comments and Settings from ZIP
+      // File ...' appbar menu
       await IntegrationTestUtil.executeRestorePlaylists(
         tester: tester,
         doReplaceExistingPlaylists: true,
@@ -22931,6 +22939,13 @@ void main() {
             'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\urgent_actus_17-12-2023.zip".',
         isWarningConfirming: true,
         warningTitle: 'CONFIRMATION',
+      );
+
+      // Verify that the latest download Date of the multiple
+      // Playlists restored Audios ... was not updated
+      await _verifyLatestMP3RestoredDownloadDateTime(
+        tester: tester,
+        latestMMP3RestoredDownloadDateTimeStr: '01/01/2000 00:00',
       );
 
       // Now creating a 'Playable' sort filter parmeter
@@ -22974,6 +22989,8 @@ void main() {
             size: 15368672),
       ]);
 
+      // Tap on the 'Restore Playlist Audio MP3 from one or several ZIP File(s) ...'
+      // playlist menu item
       await IntegrationTestUtil.typeOnPlaylistMenuItem(
         tester: tester,
         playlistTitle: playlistTitle,
@@ -23031,6 +23048,13 @@ void main() {
         3,
       );
 
+      // Verify that the latest download Date of the multiple
+      // Playlists restored Audios ... was not updated
+      await _verifyLatestMP3RestoredDownloadDateTime(
+        tester: tester,
+        latestMMP3RestoredDownloadDateTimeStr: '01/01/2000 00:00',
+      );
+
       // Purge the test playlist directory so that the created test
       // files are not uploaded to GitHub
       DirUtil.deleteFilesInDirAndSubDirs(
@@ -23042,7 +23066,13 @@ void main() {
            playlists MP3 zip file. First, on empty app dir, restore unique playlist Windows zip
            containing urgent_actus_17-12-2023 playlist and then restore multiple playlist MP3 zip
            file containing the audios of this playlist and of another playlist. The restored audios
-           are playable.''', (WidgetTester tester) async {
+           only concern the unique playlist and are playable.
+           
+           Afterwards, re-execute the restoration of MP3 files by tapping on the 'Restore Playlists
+           Audios MP3 from one or several ZIP File(s) ...' appbar menu item and then selecting a 'A
+           Directory with ZIP's' item in order to restore playlists audio MP3 files from multiple
+           ZIPs in the selected directory containing multiple MP3 zip files''',
+        (WidgetTester tester) async {
       // Purge the test playlist directory if it exists so that the
       // playlist list is empty
       DirUtil.deleteFilesInDirAndSubDirs(
@@ -23091,8 +23121,8 @@ void main() {
             size: 2632),
       ]);
 
-      // Execute the 'Restore Playlists, Comments and Settings from Zip
-      // File ...' menu
+      // Execute the 'Restore Playlists, Comments and Settings from ZIP
+      // File ...' appbar menu
       await IntegrationTestUtil.executeRestorePlaylists(
         tester: tester,
         doReplaceExistingPlaylists: true,
@@ -23109,21 +23139,12 @@ void main() {
         warningTitle: 'CONFIRMATION',
       );
 
-      // Tap the appbar leading popup menu button Then, the 'Get the latest
-      // download Date of the multiple Playlists restored Audios ...' menu
-      // is selected.
-      await IntegrationTestUtil.typeOnAppbarMenuItem(
+      // Verify that the latest download Date of the multiple
+      // Playlists restored Audios ... was not updated
+      await _verifyLatestMP3RestoredDownloadDateTime(
         tester: tester,
-        appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+        latestMMP3RestoredDownloadDateTimeStr: '01/01/2000 00:00',
       );
-
-      expect(
-          find.text(
-              'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
-          findsOneWidget);
-
-      await tester.tap(find.byKey(const Key('warningDialogOkButton')));
-      await tester.pumpAndSettle();
 
       // Now creating a 'Playable' sort filter parmeter
       // in order to hide the not playable audios. After
@@ -23211,21 +23232,64 @@ void main() {
         4,
       );
 
-      // Tap the appbar leading popup menu button Then, the 'Get the latest
-      // download Date of the multiple Playlists restored Audios ...' menu
-      // is selected.
-      await IntegrationTestUtil.typeOnAppbarMenuItem(
+      // Verify that the latest download Date of the multiple
+      // Playlists restored Audios ... was not updated
+      await _verifyLatestMP3RestoredDownloadDateTime(
         tester: tester,
-        appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+        latestMMP3RestoredDownloadDateTimeStr: '01/01/2000 00:00',
       );
 
-      expect(
-          find.text(
-              'This is the latest download date/time of the multiple playlists restored audios: 01/01/2000 00:00.'),
-          findsOneWidget);
+      // Now re-execute the restoration of MP3 files by tapping on
+      // the 'Restore Playlists Audios MP3 from one or several ZIP
+      // File(s) ...' appbar menu item and then selecting a 'A
+      // Directory with ZIP's' item in order to restore playlists
+      // audio MP3 files from multiple ZIPs in the selected directory
+      // containing multiple MP3 zip files
+      String mp3RestorableZipDirectory = kApplicationPathWindowsTest;
 
-      await tester.tap(find.byKey(const Key('warningDialogOkButton')));
+      // Setting the directory to select in the mock file
+      // picker. This directory contains multiple playlists
+      // MP3 zip files
+      mockFilePicker.setPathToSelect(
+        pathToSelectStr: mp3RestorableZipDirectory,
+      );
+
+      await IntegrationTestUtil.typeOnAppbarMenuItem(
+        tester: tester,
+        appbarMenuKeyStr: 'appBarMenuRestorePlaylistsAudioMp3FilesFromZip',
+      );
+
+      // Verify the displayed confirmation dialog
+      await IntegrationTestUtil.verifySetValueToTargetDialog(
+        tester: tester,
+        dialogTitle: 'MP3 Restoration',
+        dialogMessage:
+            "Only the MP3 relative to the audios listed in the playlists which are not already present in the playlists are restorable.",
+        closeDialog: true,
+      );
+
+      // Now tap on the 'A Directory with ZIPs' button
+      await tester.tap(find.byKey(const Key('selectDirectoryButton')));
       await tester.pumpAndSettle();
+
+      // Tap on the confirm button of the confirm action dialog
+      await tester.tap(find.byKey(const Key('confirmButton')));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed warning confirmation dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "Restored 0 audio(s) MP3 in 0 playlist(s) from the multiple MP3 zip files contained in dir \"$mp3RestorableZipDirectory\".",
+        isWarningConfirming: true,
+      );
+
+      // Verify that the latest download Date of the multiple
+      // Playlists restored Audios ... was updated
+      await _verifyLatestMP3RestoredDownloadDateTime(
+        tester: tester,
+        latestMMP3RestoredDownloadDateTimeStr: '07/09/2025 07:37',
+      );
 
       // Purge the test playlist directory so that the created test
       // files are not uploaded to GitHub
@@ -23237,8 +23301,10 @@ void main() {
         '''Restore Playlists Audio's MP3 from Zip File ... appbar item menu selecting a directory
            containing multiple MP3 zip files. First, on empty app dir, restore unique playlist
            Windows zip containing urgent_actus_17-12-2023 playlist and then restore MP3 zip files
-           containing the audios of this playlist and of other playlists. The restored audios are
-           playable.''', (WidgetTester tester) async {
+           containing the audios of this playlist and of other playlists. The restored audios only
+           concern the unique playlist and are playable. Then, Verify that the latest download Date
+           of the multiple Playlists restored Audios ... was updated.''',
+        (WidgetTester tester) async {
       // Purge the test playlist directory if it exists so that the
       // playlist list is empty
       DirUtil.deleteFilesInDirAndSubDirs(
@@ -23271,8 +23337,8 @@ void main() {
             size: 2632),
       ]);
 
-      // Execute the 'Restore Playlists, Comments and Settings from Zip
-      // File ...' menu
+      // Execute the 'Restore Playlists, Comments and Settings from ZIP
+      // File ...' appbar menu
       await IntegrationTestUtil.executeRestorePlaylists(
         tester: tester,
         doReplaceExistingPlaylists: true,
@@ -23287,6 +23353,13 @@ void main() {
             'Restored 1 playlist saved individually, 4 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 4 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) from "C:\\development\\flutter\\audiolearn\\test\\data\\audio\\urgent_actus_17-12-2023.zip".',
         isWarningConfirming: true,
         warningTitle: 'CONFIRMATION',
+      );
+
+      // Verify that the latest download Date of the multiple
+      // Playlists restored Audios ... was not updated
+      await _verifyLatestMP3RestoredDownloadDateTime(
+        tester: tester,
+        latestMMP3RestoredDownloadDateTimeStr: '01/01/2000 00:00',
       );
 
       // Now creating a 'Playable' sort filter parmeter
@@ -23384,6 +23457,13 @@ void main() {
         4,
       );
 
+      // Verify that the latest download Date of the multiple
+      // Playlists restored Audios ... was updated
+      await _verifyLatestMP3RestoredDownloadDateTime(
+        tester: tester,
+        latestMMP3RestoredDownloadDateTimeStr: '07/09/2025 07:37',
+      );
+
       // Purge the test playlist directory so that the created test
       // files are not uploaded to GitHub
       DirUtil.deleteFilesInDirAndSubDirs(
@@ -23392,7 +23472,7 @@ void main() {
     });
     testWidgets(
         '''Restore Playlists Audio's MP3 from Zip File ... appbar item menu selecting a directory containing
-           multiple MP3 zip files. First, on empty app dir, restore unique playlist Windows zip ontaining
+           multiple MP3 zip files. First, on empty app dir, restore unique playlist Windows zip containing
            urgent_actus_17-12-2023 playlist and then restore multiple playlists MP3 zip files containing the
            audios of this playlist as well as other playlists. The restored audios are playable.''',
         (WidgetTester tester) async {
@@ -23428,8 +23508,8 @@ void main() {
             size: 2632),
       ]);
 
-      // Execute the 'Restore Playlists, Comments and Settings from Zip
-      // File ...' menu
+      // Execute the 'Restore Playlists, Comments and Settings from ZIP
+      // File ...' appbar menu
       await IntegrationTestUtil.executeRestorePlaylists(
         tester: tester,
         doReplaceExistingPlaylists: true,
@@ -23583,8 +23663,8 @@ void main() {
             size: 2632),
       ]);
 
-      // Execute the 'Restore Playlists, Comments and Settings from Zip
-      // File ...' menu
+      // Execute the 'Restore Playlists, Comments and Settings from ZIP
+      // File ...' appbar menu
       await IntegrationTestUtil.executeRestorePlaylists(
         tester: tester,
         doReplaceExistingPlaylists: true,
@@ -30543,9 +30623,11 @@ void main() {
 
         // Verify the edit dialog title
         expect(
-          tester.widget<Text>(
-            find.byKey(const Key('segmentDialogTitleKey')),
-          ).data,
+          tester
+              .widget<Text>(
+                find.byKey(const Key('segmentDialogTitleKey')),
+              )
+              .data,
           "Edit Comment", // an Comment segment is edited
         );
 
@@ -30753,9 +30835,11 @@ void main() {
 
         // Verify the edit dialog title
         expect(
-          tester.widget<Text>(
-            find.byKey(const Key('segmentDialogTitleKey')),
-          ).data,
+          tester
+              .widget<Text>(
+                find.byKey(const Key('segmentDialogTitleKey')),
+              )
+              .data,
           "Edit Audio", // an Audio segment is edited
         );
 
@@ -32142,6 +32226,23 @@ void main() {
   });
 }
 
+Future<void> _verifyLatestMP3RestoredDownloadDateTime({
+  required WidgetTester tester,
+  required String latestMMP3RestoredDownloadDateTimeStr,
+}) async {
+  await IntegrationTestUtil.typeOnAppbarMenuItem(
+    tester: tester,
+    appbarMenuKeyStr: 'appBarMenuObtainMostRecentAudioDownloadDateTime',
+  );
+
+  await IntegrationTestUtil.verifyAndCloseWarningDialog(
+    tester: tester,
+    warningTitle: 'Latest download Date of restored Audios',
+    warningDialogMessage:
+        'This is the latest download date/time of the multiple playlists restored audios: $latestMMP3RestoredDownloadDateTimeStr.',
+  );
+}
+
 Future<void> _tapPlaylistCheckboxIfNotAlreadyChecked({
   required Finder playlistListTileWidgetFinder,
   required WidgetTester widgetTester,
@@ -33446,8 +33547,8 @@ Future<void> _restoreMultipleOrIndividualPlaylist({
         size: savedZipSize),
   ]);
 
-  // Execute the 'Restore Playlists, Comments and Settings from Zip
-  // File ...' menu without replacing the existing playlists and
+  // Execute the 'Restore Playlists, Comments and Settings from ZIP
+  // File ...' appbar menu without replacing the existing playlists and
   // without deleting playlist not contained in zip.
   await IntegrationTestUtil.executeRestorePlaylists(
     tester: tester,

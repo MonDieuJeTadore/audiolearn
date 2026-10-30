@@ -36049,7 +36049,6 @@ void main() {
           );
         });
       });
-      group('''chap asc tests'.''', () {
       group('''Chap asc tests'.''', () {
         testWidgets(
             '''chap asc, to 4. For not yet positioned audio Audio item menu "Move Audio to Position" test.
@@ -37626,120 +37625,11 @@ void main() {
             rootPath: kApplicationPathWindowsTest,
           );
         });
-        testWidgets('''From Chap desc to Chap asc test.''',
-            (WidgetTester tester) async {
-          // Purge the test playlist directory if it exists so that the
-          // playlist list is empty
-          DirUtil.deleteFilesInDirAndSubDirs(
-            rootPath: kApplicationPathWindowsTest,
-          );
-
-          // Copy the test initial audio data to the app dir
-          DirUtil.copyFilesFromDirAndSubDirsToDirectory(
-            sourceRootPath:
-                "$kDownloadAppTestSavedDataDir${path.separator}sort_filter_audio_bug_fixed_test",
-            destinationRootPath: kApplicationPathWindowsTest,
-          );
-
-          _loadSettingsMap();
-
-          final SettingsDataService settingsDataService = SettingsDataService(
-            isTest: true,
-          );
-
-          // Load the settings from the json file. This is necessary
-          // otherwise the ordered playlist titles will remain empty
-          // and the playlist list will not be filled with the
-          // playlists available in the app test dir
-          await settingsDataService.loadSettingsFromFile(
-              settingsJsonPathFileName:
-                  "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
-
-          await app.main();
-          await tester.pumpAndSettle();
-
-          const String playlistToPositionAudioTitles =
-              'Prières et chants du matin 2';
-
-          // Type on the Playlists button to hide the playlist view
-          await tester.tap(find.byKey(const Key('playlist_toggle_button')));
-          await tester.pumpAndSettle();
-
-          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
-
-          // Perform the scroll down action
-          await tester.drag(listFinder, const Offset(0, -200));
-          await tester.pumpAndSettle();
-
-          // Tap on the audio titled "1_Omraam Mikhaël Aïvanhov
-          // 'Je vivrai d’après l'amour!'" to select it
-
-          const String audioToSelectTitle =
-              "1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'";
-          const String audioToSelectSubTitle =
-              "0:02:39.6 2.59 MB at 502.3 KB/sec on 11/02/2025 at 09:00 listened on 13/10/2026 at 09:50 playable every 3 days";
-          final Finder audioToSelectTitleTextWidgetFinder =
-              find.text(audioToSelectTitle);
-
-          await tester.tap(audioToSelectTitleTextWidgetFinder);
-          await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
-            tester: tester,
-          );
-
-          // Return to the playlist download view
-          Finder applicationViewNavButton =
-              find.byKey(const ValueKey('playlistDownloadViewIconButton'));
-          await tester.tap(applicationViewNavButton);
-          await tester.pumpAndSettle();
-
-          // Verify the presence of the positioned audio in the in the
-          // playlist audio list sorted by 'Chap desc'
-
-          List<String> audioPositionedTitles = [
-            "6_Dix enseignements essentiels de Jésus",
-            "5_Que ton coeur espère en Moi et ton esprit deviendra immédiatement fort",
-            "4_Quelle est la signification du fait que Dieu exige des gens qu'ils soient honnêtes",
-            "3_Seigneur, merci pour Ta Parole vivante",
-            "2_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
-            audioToSelectTitle,
-          ];
-
-          IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
-            tester: tester,
-            audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-            firstAudioListTileIndex: 0,
-          );
-
-          // Verify the currently selected audio title/subTitle of the
-          // 'S8 audio' playlist
-
-          // Verify that the current audio is displayed with the correct
-          // title and subtitle color
-          await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
-            tester: tester,
-            currentAudioTitle: audioToSelectTitle,
-            currentAudioSubTitle: audioToSelectSubTitle,
-          );
-
-          // Select 'Chap asc' sort filter parameter
-
-          await IntegrationTestUtil.selectSortFilterParmsInDropDownButton(
-            tester: tester,
-            sortFilterParmsName: 'Chap asc',
-          );
-
-          // Purge the test playlist directory so that the created test
-          // files are not uploaded to GitHub
-          DirUtil.deleteFilesInDirAndSubDirs(
-            rootPath: kApplicationPathWindowsTest,
-          );
-        });
       });
     });
-  });
 
-  group(
-      '''Test current playlist and current audio correct display. 82 playlists are available and some
+    group(
+        '''Test current playlist and current audio correct display. 82 playlists are available and some
          playlists have more than 150 audios.
 
          Those tests ensure that the playlist and audio selection functionality works correctly even with
@@ -37747,78 +37637,78 @@ void main() {
          to the fact that the selected playlist display is not properly updated on the Android version
          of the application.
          ''', () {
-    testWidgets(
-        '''Using 'Jésus-Christ' playlist which has 194 audios. First, verify the list of playlists and
+      testWidgets(
+          '''Using 'Jésus-Christ' playlist which has 194 audios. First, verify the list of playlists and
            the selected playlist. Then, verify the selected playlist current audio.
 
            Type on the Playlists button to hide the playlist view. Then, retype on the Playlists button to
            display again the playlists list and verify that the selected playlist remains checked and visible.''',
-        (WidgetTester tester) async {
-      const String selectedPlaylistTitle = 'Jésus-Christ';
+          (WidgetTester tester) async {
+        const String selectedPlaylistTitle = 'Jésus-Christ';
 
-      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
-        tester: tester,
-        savedTestDataDirName: 'current_playlist_and_current_audio_test',
-        selectedPlaylistTitle: selectedPlaylistTitle,
-        tapOnPlaylistToggleButton: false,
-      );
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'current_playlist_and_current_audio_test',
+          selectedPlaylistTitle: selectedPlaylistTitle,
+          tapOnPlaylistToggleButton: false,
+        );
 
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its current audio
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
-          "Jésus-Christ",
-          "Maria Valtorta",
-          "Abondance",
-          "Vérité de la Foi Catholique",
-          "100 MIRACLES Catholiques",
-          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
-        ],
-        selectedPlaylistTitle: selectedPlaylistTitle,
-        currentAudioTitle:
-            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
-        currentAudioSubTitle:
-            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
-      );
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its current audio
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+            "Jésus-Christ",
+            "Maria Valtorta",
+            "Abondance",
+            "Vérité de la Foi Catholique",
+            "100 MIRACLES Catholiques",
+            "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+          ],
+          selectedPlaylistTitle: selectedPlaylistTitle,
+          currentAudioTitle:
+              "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+          currentAudioSubTitle:
+              "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+        );
 
-      // Type on the Playlists button to hide the playlist view
-      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
-      await tester.pumpAndSettle();
+        // Type on the Playlists button to hide the playlist view
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
 
-      // Type on the Playlists button to display the playlists list
-      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
-      await tester.pumpAndSettle();
+        // Type on the Playlists button to display the playlists list
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
 
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its current audio
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
-          "Jésus-Christ",
-          "Maria Valtorta",
-          "Abondance",
-          "Vérité de la Foi Catholique",
-          "100 MIRACLES Catholiques",
-          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
-        ],
-        selectedPlaylistTitle: selectedPlaylistTitle,
-        currentAudioTitle:
-            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
-        currentAudioSubTitle:
-            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
-      );
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its current audio
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+            "Jésus-Christ",
+            "Maria Valtorta",
+            "Abondance",
+            "Vérité de la Foi Catholique",
+            "100 MIRACLES Catholiques",
+            "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+          ],
+          selectedPlaylistTitle: selectedPlaylistTitle,
+          currentAudioTitle:
+              "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+          currentAudioSubTitle:
+              "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+        );
 
-      // Purge the test playlist directory so that the created test
-      // files are not uploaded to GitHub
-      DirUtil.deleteFilesInDirAndSubDirs(
-        rootPath: kApplicationPathWindowsTest,
-      );
-    });
-    testWidgets(
-        '''Using 'EMI' playlist which has 232 audios. First, verify the list of playlists and
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Using 'EMI' playlist which has 232 audios. First, verify the list of playlists and
            the selected playlist. Then, verify the selected playlist current audio. Then, change
            the current audio and verify that after comming back from the audio player view to the
            playlist download view the current playlist remains displayed as well as the new selected
@@ -37833,452 +37723,452 @@ void main() {
            playlists list and verify that the selected playlist remains checked and visible.
 
            Finally, return to the 'Jésus-Christ' playlist and verify its changed current audio.''',
-        (WidgetTester tester) async {
-      const String playlistEmiTitle = 'EMI';
-      const String playlistJesusTitle = 'Jésus-Christ';
+          (WidgetTester tester) async {
+        const String playlistEmiTitle = 'EMI';
+        const String playlistJesusTitle = 'Jésus-Christ';
 
-      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
-        tester: tester,
-        savedTestDataDirName: 'current_playlist_and_current_audio_test',
-        selectedPlaylistTitle: playlistEmiTitle,
-        tapOnPlaylistToggleButton: false,
-        pastePlaylistListUpOrDown: 2200.0,
-      );
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'current_playlist_and_current_audio_test',
+          selectedPlaylistTitle: playlistEmiTitle,
+          tapOnPlaylistToggleButton: false,
+          pastePlaylistListUpOrDown: 2200.0,
+        );
 
-      // Defining the first selected current audio
-      const String firstListenableAudioTitle =
-          "120_Rabbi Dies, Meets Jesus, and Converts to Christianity! - Powerful NDE Testimony";
-      const String firstListenableAudioSubTitle =
-          "0:40:41.1 19.53 MB at 98.9 KB/sec on 12/05/2026 at 11:06";
+        // Defining the first selected current audio
+        const String firstListenableAudioTitle =
+            "120_Rabbi Dies, Meets Jesus, and Converts to Christianity! - Powerful NDE Testimony";
+        const String firstListenableAudioSubTitle =
+            "0:40:41.1 19.53 MB at 98.9 KB/sec on 12/05/2026 at 11:06";
 
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its current audio
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Transfert",
-          "EMI",
-          "Conversation avec Dieu - Un dialogue extraordinaire",
-          "Conversation avec Dieu",
-          "Prières à partager",
-          "Prières à partager MP3",
-          "121_I died and what Jesus revealed about the New Year will shock you - NDE Testimony",
-        ],
-        selectedPlaylistTitle: playlistEmiTitle,
-        currentAudioTitle: firstListenableAudioTitle,
-        currentAudioSubTitle: firstListenableAudioSubTitle,
-      );
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its current audio
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Transfert",
+            "EMI",
+            "Conversation avec Dieu - Un dialogue extraordinaire",
+            "Conversation avec Dieu",
+            "Prières à partager",
+            "Prières à partager MP3",
+            "121_I died and what Jesus revealed about the New Year will shock you - NDE Testimony",
+          ],
+          selectedPlaylistTitle: playlistEmiTitle,
+          currentAudioTitle: firstListenableAudioTitle,
+          currentAudioSubTitle: firstListenableAudioSubTitle,
+        );
 
-      // Now change the current audio in the 'EMI' playlist
+        // Now change the current audio in the 'EMI' playlist
 
-      const String nextAudioToSelectTitleinEMI =
-          "119_NDE - EMI - 23 MINUTES IN HELL";
-      const String nextAudioToSelectTitleinEMISubTitle =
-          "0:14:30.7 6.97 MB at 103.8 KB/sec on 12/05/2026 at 11:03";
+        const String nextAudioToSelectTitleinEMI =
+            "119_NDE - EMI - 23 MINUTES IN HELL";
+        const String nextAudioToSelectTitleinEMISubTitle =
+            "0:14:30.7 6.97 MB at 103.8 KB/sec on 12/05/2026 at 11:03";
 
-      await _tapOnAudioThenGoBackToPlaylistDownloadView(
-        tester: tester,
-        audioToSelectTitle: nextAudioToSelectTitleinEMI,
-      );
+        await _tapOnAudioThenGoBackToPlaylistDownloadView(
+          tester: tester,
+          audioToSelectTitle: nextAudioToSelectTitleinEMI,
+        );
 
-      // Ensure that the selected playlist remains displayed as well
-      // as its new current audio
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Transfert",
-          "EMI",
-          "Conversation avec Dieu - Un dialogue extraordinaire",
-          "Conversation avec Dieu",
-          "Prières à partager",
-          "Prières à partager MP3",
-          "120_Rabbi Dies, Meets Jesus, and Converts to Christianity! - Powerful NDE Testimony",
-        ],
-        selectedPlaylistTitle: playlistEmiTitle,
-        currentAudioTitle: nextAudioToSelectTitleinEMI,
-        currentAudioSubTitle: nextAudioToSelectTitleinEMISubTitle,
-      );
+        // Ensure that the selected playlist remains displayed as well
+        // as its new current audio
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Transfert",
+            "EMI",
+            "Conversation avec Dieu - Un dialogue extraordinaire",
+            "Conversation avec Dieu",
+            "Prières à partager",
+            "Prières à partager MP3",
+            "120_Rabbi Dies, Meets Jesus, and Converts to Christianity! - Powerful NDE Testimony",
+          ],
+          selectedPlaylistTitle: playlistEmiTitle,
+          currentAudioTitle: nextAudioToSelectTitleinEMI,
+          currentAudioSubTitle: nextAudioToSelectTitleinEMISubTitle,
+        );
 
-      // Now scroll down to the 'Jésus-Christ' playlist and select it
-      await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
-        tester: tester,
-        playlistToSelectTitle: playlistJesusTitle,
-        pastePlaylistListUpOrDown: -2100.0,
-      );
+        // Now scroll down to the 'Jésus-Christ' playlist and select it
+        await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
+          tester: tester,
+          playlistToSelectTitle: playlistJesusTitle,
+          pastePlaylistListUpOrDown: -2100.0,
+        );
 
-      // Find the 'Jésus-Christ' playlist audio list widget using
-      // its key and change the 'Jésus-Christ' playlist current audio
+        // Find the 'Jésus-Christ' playlist audio list widget using
+        // its key and change the 'Jésus-Christ' playlist current audio
 
-      const String nextAudioToSelectTitleinJesusChrist =
-          "124_COUNCIL OF NICAEA - A specialist reveals what goes on behind the scenes!";
+        const String nextAudioToSelectTitleinJesusChrist =
+            "124_COUNCIL OF NICAEA - A specialist reveals what goes on behind the scenes!";
 
-      await _tapOnAudioThenGoBackToPlaylistDownloadView(
-        tester: tester,
-        audioToSelectTitle: nextAudioToSelectTitleinJesusChrist,
-        pasteaudioListUpOrDown: -2000.0,
-      );
+        await _tapOnAudioThenGoBackToPlaylistDownloadView(
+          tester: tester,
+          audioToSelectTitle: nextAudioToSelectTitleinJesusChrist,
+          pasteaudioListUpOrDown: -2000.0,
+        );
 
-      const String nextAudioToSelectTitleinJesusChristSubTitle =
-          "0:25:01.4 9.01 MB at 299.9 KB/sec on 11/12/2025 at 21:33";
+        const String nextAudioToSelectTitleinJesusChristSubTitle =
+            "0:25:01.4 9.01 MB at 299.9 KB/sec on 11/12/2025 at 21:33";
 
-      // Ensure that the selected playlist remains displayed as well
-      // as its new current audio
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
-          "Jésus-Christ",
-          "Maria Valtorta",
-          "Abondance",
-          "Vérité de la Foi Catholique",
-          "100 MIRACLES Catholiques",
-          "125_THE POWER OF THE BLOOD OF JESUS _ PRAYER OF DELIVERANCE - SPIRITUAL WARFARE",
-        ],
-        selectedPlaylistTitle: playlistJesusTitle,
-        currentAudioTitle: nextAudioToSelectTitleinJesusChrist,
-        currentAudioSubTitle: nextAudioToSelectTitleinJesusChristSubTitle,
-      );
+        // Ensure that the selected playlist remains displayed as well
+        // as its new current audio
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+            "Jésus-Christ",
+            "Maria Valtorta",
+            "Abondance",
+            "Vérité de la Foi Catholique",
+            "100 MIRACLES Catholiques",
+            "125_THE POWER OF THE BLOOD OF JESUS _ PRAYER OF DELIVERANCE - SPIRITUAL WARFARE",
+          ],
+          selectedPlaylistTitle: playlistJesusTitle,
+          currentAudioTitle: nextAudioToSelectTitleinJesusChrist,
+          currentAudioSubTitle: nextAudioToSelectTitleinJesusChristSubTitle,
+        );
 
-      // Now scroll back to the 'EMI' playlist and select it
-      await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
-        tester: tester,
-        playlistToSelectTitle: playlistEmiTitle,
-        pastePlaylistListUpOrDown: 2100.0,
-      );
+        // Now scroll back to the 'EMI' playlist and select it
+        await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
+          tester: tester,
+          playlistToSelectTitle: playlistEmiTitle,
+          pastePlaylistListUpOrDown: 2100.0,
+        );
 
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its changed current audio
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its changed current audio
 
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Transfert",
-          "EMI",
-          "Conversation avec Dieu - Un dialogue extraordinaire",
-          "Conversation avec Dieu",
-          "Prières à partager",
-          "Prières à partager MP3",
-          firstListenableAudioTitle,
-        ],
-        selectedPlaylistTitle: playlistEmiTitle,
-        currentAudioTitle: nextAudioToSelectTitleinEMI,
-        currentAudioSubTitle: nextAudioToSelectTitleinEMISubTitle,
-      );
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Transfert",
+            "EMI",
+            "Conversation avec Dieu - Un dialogue extraordinaire",
+            "Conversation avec Dieu",
+            "Prières à partager",
+            "Prières à partager MP3",
+            firstListenableAudioTitle,
+          ],
+          selectedPlaylistTitle: playlistEmiTitle,
+          currentAudioTitle: nextAudioToSelectTitleinEMI,
+          currentAudioSubTitle: nextAudioToSelectTitleinEMISubTitle,
+        );
 
-      // Type on the Playlists button to hide the playlist view
-      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
-      await tester.pumpAndSettle();
+        // Type on the Playlists button to hide the playlist view
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
 
-      // Type on the Playlists button to display the playlists list
-      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
-      await tester.pumpAndSettle();
+        // Type on the Playlists button to display the playlists list
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
 
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its changed current audio
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its changed current audio
 
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Transfert",
-          "EMI",
-          "Conversation avec Dieu - Un dialogue extraordinaire",
-          "Conversation avec Dieu",
-          "Prières à partager",
-          "Prières à partager MP3",
-          firstListenableAudioTitle,
-        ],
-        selectedPlaylistTitle: playlistEmiTitle,
-        currentAudioTitle: nextAudioToSelectTitleinEMI,
-        currentAudioSubTitle: nextAudioToSelectTitleinEMISubTitle,
-      );
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Transfert",
+            "EMI",
+            "Conversation avec Dieu - Un dialogue extraordinaire",
+            "Conversation avec Dieu",
+            "Prières à partager",
+            "Prières à partager MP3",
+            firstListenableAudioTitle,
+          ],
+          selectedPlaylistTitle: playlistEmiTitle,
+          currentAudioTitle: nextAudioToSelectTitleinEMI,
+          currentAudioSubTitle: nextAudioToSelectTitleinEMISubTitle,
+        );
 
-      // Finally scroll back to the 'Jésus-Christ' playlist and select it
-      await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
-        tester: tester,
-        playlistToSelectTitle: playlistJesusTitle,
-        pastePlaylistListUpOrDown: -2100.0,
-      );
+        // Finally scroll back to the 'Jésus-Christ' playlist and select it
+        await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
+          tester: tester,
+          playlistToSelectTitle: playlistJesusTitle,
+          pastePlaylistListUpOrDown: -2100.0,
+        );
 
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its changed current audio
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its changed current audio
 
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
-          "Jésus-Christ",
-          "Maria Valtorta",
-          "Abondance",
-          "Vérité de la Foi Catholique",
-          "100 MIRACLES Catholiques",
-          "125_THE POWER OF THE BLOOD OF JESUS _ PRAYER OF DELIVERANCE - SPIRITUAL WARFARE",
-        ],
-        selectedPlaylistTitle: playlistJesusTitle,
-        currentAudioTitle: nextAudioToSelectTitleinJesusChrist,
-        currentAudioSubTitle: nextAudioToSelectTitleinJesusChristSubTitle,
-      );
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+            "Jésus-Christ",
+            "Maria Valtorta",
+            "Abondance",
+            "Vérité de la Foi Catholique",
+            "100 MIRACLES Catholiques",
+            "125_THE POWER OF THE BLOOD OF JESUS _ PRAYER OF DELIVERANCE - SPIRITUAL WARFARE",
+          ],
+          selectedPlaylistTitle: playlistJesusTitle,
+          currentAudioTitle: nextAudioToSelectTitleinJesusChrist,
+          currentAudioSubTitle: nextAudioToSelectTitleinJesusChristSubTitle,
+        );
 
-      // Purge the test playlist directory so that the created test
-      // files are not uploaded to GitHub
-      DirUtil.deleteFilesInDirAndSubDirs(
-        rootPath: kApplicationPathWindowsTest,
-      );
-    });
-    testWidgets(
-        '''Using the search icon with the 'emi' word in order to filter playlists containing 'emi'
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Using the search icon with the 'emi' word in order to filter playlists containing 'emi'
            in their titles. Verify the filtered list of playlists and select the 'audio_learn_emi'
            playlist. Then tap on the search icon again to clear the search and return to the full
            list of playlists. Verify the selected playlist. Then, verify the selected playlist
            current audio.''', (WidgetTester tester) async {
-      const String selectedPlaylistTitle = 'Jésus-Christ';
+        const String selectedPlaylistTitle = 'Jésus-Christ';
 
-      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
-        tester: tester,
-        savedTestDataDirName: 'current_playlist_and_current_audio_test',
-        selectedPlaylistTitle: selectedPlaylistTitle,
-        tapOnPlaylistToggleButton: false,
-      );
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'current_playlist_and_current_audio_test',
+          selectedPlaylistTitle: selectedPlaylistTitle,
+          tapOnPlaylistToggleButton: false,
+        );
 
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its current audio
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
-          "Jésus-Christ",
-          "Maria Valtorta",
-          "Abondance",
-          "Vérité de la Foi Catholique",
-          "100 MIRACLES Catholiques",
-          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
-        ],
-        selectedPlaylistTitle: selectedPlaylistTitle,
-        currentAudioTitle:
-            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
-        currentAudioSubTitle:
-            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
-      );
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its current audio
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+            "Jésus-Christ",
+            "Maria Valtorta",
+            "Abondance",
+            "Vérité de la Foi Catholique",
+            "100 MIRACLES Catholiques",
+            "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+          ],
+          selectedPlaylistTitle: selectedPlaylistTitle,
+          currentAudioTitle:
+              "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+          currentAudioSubTitle:
+              "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+        );
 
-      await tester.tap(
-        find.byKey(
-          const Key('youtubeUrlOrSearchTextField'),
-        ),
-      );
-      await tester.pumpAndSettle();
+        await tester.tap(
+          find.byKey(
+            const Key('youtubeUrlOrSearchTextField'),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Now add the 'emi' search word
-      await tester.enterText(
-        find.byKey(
-          const Key('youtubeUrlOrSearchTextField'),
-        ),
-        'emi',
-      );
-      await tester.pumpAndSettle(const Duration(milliseconds: 200));
+        // Now add the 'emi' search word
+        await tester.enterText(
+          find.byKey(
+            const Key('youtubeUrlOrSearchTextField'),
+          ),
+          'emi',
+        );
+        await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
-      // Tap on the search icon button
-      await tester.tap(find.byKey(const Key('search_icon_button')));
-      await tester.pumpAndSettle();
+        // Tap on the search icon button
+        await tester.tap(find.byKey(const Key('search_icon_button')));
+        await tester.pumpAndSettle();
 
-      // Verify the displayed list of playlists and ensure no playlist
-      // is selected since the selected 'Jésus-Christ' playlist does not
-      // match the search query. But in the displayed audio list, the
-      // 'Jésus-Christ' playlist current audio is still shown.
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "EMI",
-          "audio_learn_emi",
-          "EMI extraterrestres",
-          "Vincent Lafargue - EMI",
-          "Alicia EMI",
-          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
-        ],
-        currentAudioTitle:
-            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
-        currentAudioSubTitle:
-            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
-      );
+        // Verify the displayed list of playlists and ensure no playlist
+        // is selected since the selected 'Jésus-Christ' playlist does not
+        // match the search query. But in the displayed audio list, the
+        // 'Jésus-Christ' playlist current audio is still shown.
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "EMI",
+            "audio_learn_emi",
+            "EMI extraterrestres",
+            "Vincent Lafargue - EMI",
+            "Alicia EMI",
+            "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+          ],
+          currentAudioTitle:
+              "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+          currentAudioSubTitle:
+              "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+        );
 
-      // Now select the 'audio_learn_emi' playlist
-      await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
-        tester: tester,
-        playlistToSelectTitle: 'audio_learn_emi',
-      );
+        // Now select the 'audio_learn_emi' playlist
+        await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
+          tester: tester,
+          playlistToSelectTitle: 'audio_learn_emi',
+        );
 
-      // And tap on the search icon again to clear the search
-      await tester.tap(find.byKey(const Key('search_icon_button')));
-      await tester.pumpAndSettle();
+        // And tap on the search icon again to clear the search
+        await tester.tap(find.byKey(const Key('search_icon_button')));
+        await tester.pumpAndSettle();
 
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its current audio
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "La parole qui donne la Vie éternelle",
-          "audio_learn_emi",
-          "Martines Vives",
-          "EMI extraterrestres",
-          "Intervention des extraterrestres",
-          "listen_now",
-          "Maître Aïvanhov",
-        ],
-        selectedPlaylistTitle: 'audio_learn_emi',
-        currentAudioTitle:
-            "L'expérience de mort imminente de Vannina Schirinsky-Schikhmatoff",
-        currentAudioSubTitle:
-            "0:50:34.0 18.50 MB at 3.20 MB/sec on 10/11/2023 at 01:12 listened on 01/09/2026 at 05:10 playable every day",
-      );
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its current audio
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "La parole qui donne la Vie éternelle",
+            "audio_learn_emi",
+            "Martines Vives",
+            "EMI extraterrestres",
+            "Intervention des extraterrestres",
+            "listen_now",
+            "Maître Aïvanhov",
+          ],
+          selectedPlaylistTitle: 'audio_learn_emi',
+          currentAudioTitle:
+              "L'expérience de mort imminente de Vannina Schirinsky-Schikhmatoff",
+          currentAudioSubTitle:
+              "0:50:34.0 18.50 MB at 3.20 MB/sec on 10/11/2023 at 01:12 listened on 01/09/2026 at 05:10 playable every day",
+        );
 
-      // Purge the test playlist directory so that the created test
-      // files are not uploaded to GitHub
-      DirUtil.deleteFilesInDirAndSubDirs(
-        rootPath: kApplicationPathWindowsTest,
-      );
-    });
-    testWidgets(
-        '''Using the search icon with the 'Dieu' word in order to filter playlists containing 'Dieu'
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Using the search icon with the 'Dieu' word in order to filter playlists containing 'Dieu'
            in their titles. Scroll up the filtered list of playlists and select the 'Dieu je T'adore'
            playlist. Verify that the selected "Dieu je T'adore" playlist is displayed. Then tap on the
            search icon again to clear the search and return to the full list of playlists. Verify that
            the selected "Dieu je T'adore" playlist is displayed.''',
-        (WidgetTester tester) async {
-      const String selectedPlaylistTitle = 'Jésus-Christ';
+          (WidgetTester tester) async {
+        const String selectedPlaylistTitle = 'Jésus-Christ';
 
-      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
-        tester: tester,
-        savedTestDataDirName: 'current_playlist_and_current_audio_test',
-        selectedPlaylistTitle: selectedPlaylistTitle,
-        tapOnPlaylistToggleButton: false,
-      );
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'current_playlist_and_current_audio_test',
+          selectedPlaylistTitle: selectedPlaylistTitle,
+          tapOnPlaylistToggleButton: false,
+        );
 
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its current audio
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
-          "Jésus-Christ",
-          "Maria Valtorta",
-          "Abondance",
-          "Vérité de la Foi Catholique",
-          "100 MIRACLES Catholiques",
-          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
-        ],
-        selectedPlaylistTitle: selectedPlaylistTitle,
-        currentAudioTitle:
-            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
-        currentAudioSubTitle:
-            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
-      );
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its current audio
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Livre Audio l'Imitation de Jésus Christ par Thomas A.Kempis",
+            "Jésus-Christ",
+            "Maria Valtorta",
+            "Abondance",
+            "Vérité de la Foi Catholique",
+            "100 MIRACLES Catholiques",
+            "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+          ],
+          selectedPlaylistTitle: selectedPlaylistTitle,
+          currentAudioTitle:
+              "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+          currentAudioSubTitle:
+              "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+        );
 
-      await tester.tap(
-        find.byKey(
-          const Key('youtubeUrlOrSearchTextField'),
-        ),
-      );
-      await tester.pumpAndSettle();
+        await tester.tap(
+          find.byKey(
+            const Key('youtubeUrlOrSearchTextField'),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Now add the 'Dieu' search word
-      await tester.enterText(
-        find.byKey(
-          const Key('youtubeUrlOrSearchTextField'),
-        ),
-        'Dieu',
-      );
-      await tester.pumpAndSettle(const Duration(milliseconds: 200));
+        // Now add the 'Dieu' search word
+        await tester.enterText(
+          find.byKey(
+            const Key('youtubeUrlOrSearchTextField'),
+          ),
+          'Dieu',
+        );
+        await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
-      // Tap on the search icon button
-      await tester.tap(find.byKey(const Key('search_icon_button')));
-      await tester.pumpAndSettle();
+        // Tap on the search icon button
+        await tester.tap(find.byKey(const Key('search_icon_button')));
+        await tester.pumpAndSettle();
 
-      // Verify the displayed list of playlists and ensure no playlist
-      // is selected since the selected 'Jésus-Christ' playlist does not
-      // match the search query. But in the displayed audio list, the
-      // 'Jésus-Christ' playlist current audio is still shown.
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Position de Dieu ou de Jésus sur l'IA",
-          "Chants sur Dieu ou Jésus",
-          "Confiance en Dieu - MON EXPERIENCE DE DIEU",
-          "Chants sur Dieu",
-          "Chants puissants pour toucher le cœur de Dieu 2",
-          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
-        ],
-        currentAudioTitle:
-            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
-        currentAudioSubTitle:
-            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
-      );
+        // Verify the displayed list of playlists and ensure no playlist
+        // is selected since the selected 'Jésus-Christ' playlist does not
+        // match the search query. But in the displayed audio list, the
+        // 'Jésus-Christ' playlist current audio is still shown.
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Position de Dieu ou de Jésus sur l'IA",
+            "Chants sur Dieu ou Jésus",
+            "Confiance en Dieu - MON EXPERIENCE DE DIEU",
+            "Chants sur Dieu",
+            "Chants puissants pour toucher le cœur de Dieu 2",
+            "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+          ],
+          currentAudioTitle:
+              "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+          currentAudioSubTitle:
+              "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+        );
 
-      // Scroll up the filtered list of playlists
+        // Scroll up the filtered list of playlists
 
-      // Find the playlist list widget using its key
-      Finder playlistListFinder =
-          find.byKey(const Key('expandable_playlist_list'));
+        // Find the playlist list widget using its key
+        Finder playlistListFinder =
+            find.byKey(const Key('expandable_playlist_list'));
 
-      // Perform the scroll up action
-      await tester.drag(playlistListFinder, const Offset(0, 200));
-      await tester.pumpAndSettle();
+        // Perform the scroll up action
+        await tester.drag(playlistListFinder, const Offset(0, 200));
+        await tester.pumpAndSettle();
 
-      const String playlistToSelectTitle = "Dieu je T'adore";
+        const String playlistToSelectTitle = "Dieu je T'adore";
 
-      // Now select the "Dieu je T'adore" playlist
-      await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
-        tester: tester,
-        playlistToSelectTitle: playlistToSelectTitle,
-      );
+        // Now select the "Dieu je T'adore" playlist
+        await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
+          tester: tester,
+          playlistToSelectTitle: playlistToSelectTitle,
+        );
 
-      const String selectedPlaylistCurrentAudioTitle =
-          "Dieu a un PLAN PARFAIT pour Toi - Rien n'Arrive par Hasard !";
-      const String selectedPlaylistCurrentAudioSubTitle =
-          "1:13:53.7 27.04 MB at 1.86 MB/sec on 26/12/2024 at 12:22 listened on 25/08/2026 at 11:21 playable every day";
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Conversation avec Dieu",
-          playlistToSelectTitle,
-          "Position de Dieu ou de Jésus sur l'IA",
-          "Chants sur Dieu ou Jésus",
-          "Confiance en Dieu - MON EXPERIENCE DE DIEU",
-          "Chants sur Dieu",
-          "Chants puissants pour toucher le cœur de Dieu 2",
-        ],
-        selectedPlaylistTitle: playlistToSelectTitle,
-        currentAudioTitle: selectedPlaylistCurrentAudioTitle,
-        currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
-      );
+        const String selectedPlaylistCurrentAudioTitle =
+            "Dieu a un PLAN PARFAIT pour Toi - Rien n'Arrive par Hasard !";
+        const String selectedPlaylistCurrentAudioSubTitle =
+            "1:13:53.7 27.04 MB at 1.86 MB/sec on 26/12/2024 at 12:22 listened on 25/08/2026 at 11:21 playable every day";
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Conversation avec Dieu",
+            playlistToSelectTitle,
+            "Position de Dieu ou de Jésus sur l'IA",
+            "Chants sur Dieu ou Jésus",
+            "Confiance en Dieu - MON EXPERIENCE DE DIEU",
+            "Chants sur Dieu",
+            "Chants puissants pour toucher le cœur de Dieu 2",
+          ],
+          selectedPlaylistTitle: playlistToSelectTitle,
+          currentAudioTitle: selectedPlaylistCurrentAudioTitle,
+          currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
+        );
 
-      // And tap on the search icon again to clear the search
-      await tester.tap(find.byKey(const Key('search_icon_button')));
-      await tester.pumpAndSettle();
+        // And tap on the search icon again to clear the search
+        await tester.tap(find.byKey(const Key('search_icon_button')));
+        await tester.pumpAndSettle();
 
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its current audio
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Chants de Lumière de Grâce",
-          playlistToSelectTitle,
-          "Prières du matin",
-          "Prières et chants du matin",
-          "Prières et chants du matin 2",
-          "Prières du soir",
-          "Prières et chants du soir",
-        ],
-        selectedPlaylistTitle: playlistToSelectTitle,
-        currentAudioTitle: selectedPlaylistCurrentAudioTitle,
-        currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
-      );
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its current audio
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Chants de Lumière de Grâce",
+            playlistToSelectTitle,
+            "Prières du matin",
+            "Prières et chants du matin",
+            "Prières et chants du matin 2",
+            "Prières du soir",
+            "Prières et chants du soir",
+          ],
+          selectedPlaylistTitle: playlistToSelectTitle,
+          currentAudioTitle: selectedPlaylistCurrentAudioTitle,
+          currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
+        );
 
-      // Purge the test playlist directory so that the created test
-      // files are not uploaded to GitHub
-      DirUtil.deleteFilesInDirAndSubDirs(
-        rootPath: kApplicationPathWindowsTest,
-      );
-    });
-    testWidgets(
-        '''Testing the correct display of the audio playing on the PlaylistDownloadView. The test
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Testing the correct display of the audio playing on the PlaylistDownloadView. The test
            verifies that the next playing audio is correctly displayed in this view.
 
            First, the search icon button with the 'prières' word is used in order to filter playlists
@@ -38291,167 +38181,167 @@ void main() {
            then tap on the play button. Then tap on the go to PlaylistDownloadView button in order to
            verify that the currently playing audio is correctly displayed in the PlaylistDownloadView
            and that when the next audio starts playing, it is also correctly displayed.''',
-        (WidgetTester tester) async {
-      const String selectedPlaylistTitle = 'Jésus-Christ';
+          (WidgetTester tester) async {
+        const String selectedPlaylistTitle = 'Jésus-Christ';
 
-      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
-        tester: tester,
-        savedTestDataDirName: 'current_playlist_and_current_audio_test',
-        selectedPlaylistTitle: selectedPlaylistTitle,
-        tapOnPlaylistToggleButton: false,
-      );
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'current_playlist_and_current_audio_test',
+          selectedPlaylistTitle: selectedPlaylistTitle,
+          tapOnPlaylistToggleButton: false,
+        );
 
-      await tester.tap(
-        find.byKey(
-          const Key('youtubeUrlOrSearchTextField'),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Now add the 'prières' search word
-      await tester.enterText(
-        find.byKey(
-          const Key('youtubeUrlOrSearchTextField'),
-        ),
-        'prières',
-      );
-      await tester.pumpAndSettle(const Duration(milliseconds: 200));
-
-      // Tap on the search icon button
-      await tester.tap(find.byKey(const Key('search_icon_button')));
-      await tester.pumpAndSettle();
-
-      const String playlistToSelectTitle = "Prières et chants du matin 2";
-
-      // Verify the displayed list of playlists and ensure no playlist
-      // is selected since the selected 'Jésus-Christ' playlist does not
-      // match the search query. But in the displayed audio list, the
-      // 'Jésus-Christ' playlist current audio is still shown.
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Prières et chants du matin",
-          playlistToSelectTitle,
-          "Prières du soir",
-          "Prières et chants du soir",
-          "Prières du soir 3",
-          "Prières du soir ancien",
-          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
-        ],
-        currentAudioTitle:
-            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
-        currentAudioSubTitle:
-            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
-      );
-
-      // Now select the "Prières et chants du matin 2" playlist
-      await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
-        tester: tester,
-        playlistToSelectTitle: playlistToSelectTitle,
-      );
-
-      const String selectedPlaylistCurrentAudioTitle =
-          "8_Ce n'est qu'en vivant sous l'orchestration, l'attention et la protection de Dieu";
-      const String selectedPlaylistCurrentAudioSubTitle =
-          "0:00:35.7 199.9 KB converted on 06/08/2026 at 00:00 listened on 10/10/2026 at 16:06 playable every day";
-
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Prières et chants du matin",
-          playlistToSelectTitle,
-          "Prières du soir",
-          "Prières et chants du soir",
-          "Prières du soir 3",
-          "Prières du soir ancien",
-          "9_Donne- moi de la révélation à travers Ton amour",
-        ],
-        selectedPlaylistTitle: playlistToSelectTitle,
-        currentAudioTitle: selectedPlaylistCurrentAudioTitle,
-        currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
-      );
-
-      // And tap on the search icon again to clear the search
-      await tester.tap(find.byKey(const Key('search_icon_button')));
-      await tester.pumpAndSettle();
-
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its current audio
-      var selectedPlaylistNextAudioTitle =
-          "9_Donne- moi de la révélation à travers Ton amour";
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Prières et chants du matin",
-          playlistToSelectTitle,
-          "Prières du soir",
-          "Prières et chants du soir",
-          "Prières du soir 3",
-          "Prières du soir ancien",
-          selectedPlaylistNextAudioTitle,
-        ],
-        selectedPlaylistTitle: playlistToSelectTitle,
-        currentAudioTitle: selectedPlaylistCurrentAudioTitle,
-        currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
-      );
-
-      final Finder selectedPlaylistCurrentAudioListTileTextWidgetFinder =
-          find.text(selectedPlaylistCurrentAudioTitle);
-
-      await tester.tap(selectedPlaylistCurrentAudioListTileTextWidgetFinder);
-      await tester.pumpAndSettle();
-
-      // Tapping two times on the 10 seconds forward icon button
-      // and go back to the playlist download view screen.
-
-      Finder forward10sButtonFinder =
-          find.byKey(const Key('audioPlayerViewForward10sButton'));
-      await tester.tap(forward10sButtonFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(forward10sButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Now play the audio
-      await tester.tap(find.byIcon(Icons.play_arrow));
-      await tester.pumpAndSettle();
-
-      // Go back to the playlist download view.
-      Finder appScreenNavigationButton =
-          find.byKey(const ValueKey('playlistDownloadViewIconButton'));
-      await tester.tap(appScreenNavigationButton);
-      await tester.pumpAndSettle();
-
-      IntegrationTestUtil.validateInkWellButton(
-        tester: tester,
-        audioTitle: selectedPlaylistCurrentAudioTitle,
-        expectedIcon: Icons.pause,
-        expectedIconColor: Colors.white,
-        expectedIconBackgroundColor: kDarkAndLightEnabledIconColor,
-      );
-
-      // Add a delay to allow the audio to reach its end and the next audio
-      // to start playing.
-      for (int i = 0; i < 16; i++) {
-        await Future.delayed(const Duration(seconds: 1));
+        await tester.tap(
+          find.byKey(
+            const Key('youtubeUrlOrSearchTextField'),
+          ),
+        );
         await tester.pumpAndSettle();
-      }
 
-      IntegrationTestUtil.validateInkWellButton(
-        tester: tester,
-        audioTitle: selectedPlaylistNextAudioTitle,
-        expectedIcon: Icons.pause,
-        expectedIconColor: Colors.white,
-        expectedIconBackgroundColor: kDarkAndLightEnabledIconColor,
-      );
+        // Now add the 'prières' search word
+        await tester.enterText(
+          find.byKey(
+            const Key('youtubeUrlOrSearchTextField'),
+          ),
+          'prières',
+        );
+        await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
-      // Purge the test playlist directory so that the created test
-      // files are not uploaded to GitHub
-      DirUtil.deleteFilesInDirAndSubDirs(
-        rootPath: kApplicationPathWindowsTest,
-      );
-    });
-    testWidgets(
-        '''Testing the correct display of the audio playing on the PlaylistDownloadView. The test
+        // Tap on the search icon button
+        await tester.tap(find.byKey(const Key('search_icon_button')));
+        await tester.pumpAndSettle();
+
+        const String playlistToSelectTitle = "Prières et chants du matin 2";
+
+        // Verify the displayed list of playlists and ensure no playlist
+        // is selected since the selected 'Jésus-Christ' playlist does not
+        // match the search query. But in the displayed audio list, the
+        // 'Jésus-Christ' playlist current audio is still shown.
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Prières et chants du matin",
+            playlistToSelectTitle,
+            "Prières du soir",
+            "Prières et chants du soir",
+            "Prières du soir 3",
+            "Prières du soir ancien",
+            "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+          ],
+          currentAudioTitle:
+              "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+          currentAudioSubTitle:
+              "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+        );
+
+        // Now select the "Prières et chants du matin 2" playlist
+        await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
+          tester: tester,
+          playlistToSelectTitle: playlistToSelectTitle,
+        );
+
+        const String selectedPlaylistCurrentAudioTitle =
+            "8_Ce n'est qu'en vivant sous l'orchestration, l'attention et la protection de Dieu";
+        const String selectedPlaylistCurrentAudioSubTitle =
+            "0:00:35.7 199.9 KB converted on 06/08/2026 at 00:00 listened on 10/10/2026 at 16:06 playable every day";
+
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Prières et chants du matin",
+            playlistToSelectTitle,
+            "Prières du soir",
+            "Prières et chants du soir",
+            "Prières du soir 3",
+            "Prières du soir ancien",
+            "9_Donne- moi de la révélation à travers Ton amour",
+          ],
+          selectedPlaylistTitle: playlistToSelectTitle,
+          currentAudioTitle: selectedPlaylistCurrentAudioTitle,
+          currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
+        );
+
+        // And tap on the search icon again to clear the search
+        await tester.tap(find.byKey(const Key('search_icon_button')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its current audio
+        var selectedPlaylistNextAudioTitle =
+            "9_Donne- moi de la révélation à travers Ton amour";
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Prières et chants du matin",
+            playlistToSelectTitle,
+            "Prières du soir",
+            "Prières et chants du soir",
+            "Prières du soir 3",
+            "Prières du soir ancien",
+            selectedPlaylistNextAudioTitle,
+          ],
+          selectedPlaylistTitle: playlistToSelectTitle,
+          currentAudioTitle: selectedPlaylistCurrentAudioTitle,
+          currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
+        );
+
+        final Finder selectedPlaylistCurrentAudioListTileTextWidgetFinder =
+            find.text(selectedPlaylistCurrentAudioTitle);
+
+        await tester.tap(selectedPlaylistCurrentAudioListTileTextWidgetFinder);
+        await tester.pumpAndSettle();
+
+        // Tapping two times on the 10 seconds forward icon button
+        // and go back to the playlist download view screen.
+
+        Finder forward10sButtonFinder =
+            find.byKey(const Key('audioPlayerViewForward10sButton'));
+        await tester.tap(forward10sButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(forward10sButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Now play the audio
+        await tester.tap(find.byIcon(Icons.play_arrow));
+        await tester.pumpAndSettle();
+
+        // Go back to the playlist download view.
+        Finder appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        IntegrationTestUtil.validateInkWellButton(
+          tester: tester,
+          audioTitle: selectedPlaylistCurrentAudioTitle,
+          expectedIcon: Icons.pause,
+          expectedIconColor: Colors.white,
+          expectedIconBackgroundColor: kDarkAndLightEnabledIconColor,
+        );
+
+        // Add a delay to allow the audio to reach its end and the next audio
+        // to start playing.
+        for (int i = 0; i < 16; i++) {
+          await Future.delayed(const Duration(seconds: 1));
+          await tester.pumpAndSettle();
+        }
+
+        IntegrationTestUtil.validateInkWellButton(
+          tester: tester,
+          audioTitle: selectedPlaylistNextAudioTitle,
+          expectedIcon: Icons.pause,
+          expectedIconColor: Colors.white,
+          expectedIconBackgroundColor: kDarkAndLightEnabledIconColor,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Testing the correct display of the audio playing on the PlaylistDownloadView. The test
            verifies that the next playing audio is correctly displayed in this view.
 
            First, the search icon button with the 'prières' word is used in order to filter playlists
@@ -38463,160 +38353,304 @@ void main() {
            then tap on the play button. Then tap on the go to PlaylistDownloadView button in order to
            verify that the currently playing audio is correctly displayed in the PlaylistDownloadView
            and that when the next audio starts playing, it is also correctly displayed.''',
-        (WidgetTester tester) async {
-      const String selectedPlaylistTitle = 'Jésus-Christ';
+          (WidgetTester tester) async {
+        const String selectedPlaylistTitle = 'Jésus-Christ';
 
-      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
-        tester: tester,
-        savedTestDataDirName: 'current_playlist_and_current_audio_test',
-        selectedPlaylistTitle: selectedPlaylistTitle,
-        tapOnPlaylistToggleButton: false,
-      );
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'current_playlist_and_current_audio_test',
+          selectedPlaylistTitle: selectedPlaylistTitle,
+          tapOnPlaylistToggleButton: false,
+        );
 
-      await tester.tap(
-        find.byKey(
-          const Key('youtubeUrlOrSearchTextField'),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Now add the 'prières' search word
-      await tester.enterText(
-        find.byKey(
-          const Key('youtubeUrlOrSearchTextField'),
-        ),
-        'prières',
-      );
-      await tester.pumpAndSettle(const Duration(milliseconds: 200));
-
-      // Tap on the search icon button
-      await tester.tap(find.byKey(const Key('search_icon_button')));
-      await tester.pumpAndSettle();
-
-      const String playlistToSelectTitle = "Prières et chants du matin 2";
-
-      // Verify the displayed list of playlists and ensure no playlist
-      // is selected since the selected 'Jésus-Christ' playlist does not
-      // match the search query. But in the displayed audio list, the
-      // 'Jésus-Christ' playlist current audio is still shown.
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Prières et chants du matin",
-          playlistToSelectTitle,
-          "Prières du soir",
-          "Prières et chants du soir",
-          "Prières du soir 3",
-          "Prières du soir ancien",
-          "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
-        ],
-        currentAudioTitle:
-            "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
-        currentAudioSubTitle:
-            "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
-      );
-
-      // Now select the "Prières et chants du matin 2" playlist
-      await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
-        tester: tester,
-        playlistToSelectTitle: playlistToSelectTitle,
-      );
-
-      const String selectedPlaylistCurrentAudioTitle =
-          "8_Ce n'est qu'en vivant sous l'orchestration, l'attention et la protection de Dieu";
-      const String selectedPlaylistCurrentAudioSubTitle =
-          "0:00:35.7 199.9 KB converted on 06/08/2026 at 00:00 listened on 10/10/2026 at 16:06 playable every day";
-
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Prières et chants du matin",
-          playlistToSelectTitle,
-          "Prières du soir",
-          "Prières et chants du soir",
-          "Prières du soir 3",
-          "Prières du soir ancien",
-          "9_Donne- moi de la révélation à travers Ton amour",
-        ],
-        selectedPlaylistTitle: playlistToSelectTitle,
-        currentAudioTitle: selectedPlaylistCurrentAudioTitle,
-        currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
-      );
-
-      // Verify the displayed list of playlists and ensure the selected playlist
-      // is displayed as well as its current audio
-      var selectedPlaylistNextAudioTitle =
-          "9_Donne- moi de la révélation à travers Ton amour";
-      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
-        tester: tester,
-        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
-          "Prières et chants du matin",
-          playlistToSelectTitle,
-          "Prières du soir",
-          "Prières et chants du soir",
-          "Prières du soir 3",
-          "Prières du soir ancien",
-          selectedPlaylistNextAudioTitle,
-        ],
-        selectedPlaylistTitle: playlistToSelectTitle,
-        currentAudioTitle: selectedPlaylistCurrentAudioTitle,
-        currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
-      );
-
-      final Finder selectedPlaylistCurrentAudioListTileTextWidgetFinder =
-          find.text(selectedPlaylistCurrentAudioTitle);
-
-      await tester.tap(selectedPlaylistCurrentAudioListTileTextWidgetFinder);
-      await tester.pumpAndSettle();
-
-      // Tapping two times on the 10 seconds forward icon button
-      // and go back to the playlist download view screen.
-
-      Finder forward10sButtonFinder =
-          find.byKey(const Key('audioPlayerViewForward10sButton'));
-      await tester.tap(forward10sButtonFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(forward10sButtonFinder);
-      await tester.pumpAndSettle();
-
-      // Now play the audio
-      await tester.tap(find.byIcon(Icons.play_arrow));
-      await tester.pumpAndSettle();
-
-      // Go back to the playlist download view.
-      Finder appScreenNavigationButton =
-          find.byKey(const ValueKey('playlistDownloadViewIconButton'));
-      await tester.tap(appScreenNavigationButton);
-      await tester.pumpAndSettle();
-
-      IntegrationTestUtil.validateInkWellButton(
-        tester: tester,
-        audioTitle: selectedPlaylistCurrentAudioTitle,
-        expectedIcon: Icons.pause,
-        expectedIconColor: Colors.white,
-        expectedIconBackgroundColor: kDarkAndLightEnabledIconColor,
-      );
-
-      // Add a delay to allow the audio to reach its end and the next audio
-      // to start playing.
-      for (int i = 0; i < 16; i++) {
-        await Future.delayed(const Duration(seconds: 1));
+        await tester.tap(
+          find.byKey(
+            const Key('youtubeUrlOrSearchTextField'),
+          ),
+        );
         await tester.pumpAndSettle();
-      }
 
-      IntegrationTestUtil.validateInkWellButton(
-        tester: tester,
-        audioTitle: selectedPlaylistNextAudioTitle,
-        expectedIcon: Icons.pause,
-        expectedIconColor: Colors.white,
-        expectedIconBackgroundColor: kDarkAndLightEnabledIconColor,
-      );
+        // Now add the 'prières' search word
+        await tester.enterText(
+          find.byKey(
+            const Key('youtubeUrlOrSearchTextField'),
+          ),
+          'prières',
+        );
+        await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
-      // Purge the test playlist directory so that the created test
-      // files are not uploaded to GitHub
-      DirUtil.deleteFilesInDirAndSubDirs(
-        rootPath: kApplicationPathWindowsTest,
-      );
+        // Tap on the search icon button
+        await tester.tap(find.byKey(const Key('search_icon_button')));
+        await tester.pumpAndSettle();
+
+        const String playlistToSelectTitle = "Prières et chants du matin 2";
+
+        // Verify the displayed list of playlists and ensure no playlist
+        // is selected since the selected 'Jésus-Christ' playlist does not
+        // match the search query. But in the displayed audio list, the
+        // 'Jésus-Christ' playlist current audio is still shown.
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Prières et chants du matin",
+            playlistToSelectTitle,
+            "Prières du soir",
+            "Prières et chants du soir",
+            "Prières du soir 3",
+            "Prières du soir ancien",
+            "145_What Jesus reveals about our loved ones in Purgatory... _ Dictated to Maria Valtorta",
+          ],
+          currentAudioTitle:
+              "144_CONCILE DE NICÉE  - un spécialiste nous dévoile les coulisses !",
+          currentAudioSubTitle:
+              "0:25:01.2 36.03 MB at 430.2 KB/sec on 30/01/2026 at 18:42",
+        );
+
+        // Now select the "Prières et chants du matin 2" playlist
+        await IntegrationTestUtil.selectPlaylistWithDropUpOrDown(
+          tester: tester,
+          playlistToSelectTitle: playlistToSelectTitle,
+        );
+
+        const String selectedPlaylistCurrentAudioTitle =
+            "8_Ce n'est qu'en vivant sous l'orchestration, l'attention et la protection de Dieu";
+        const String selectedPlaylistCurrentAudioSubTitle =
+            "0:00:35.7 199.9 KB converted on 06/08/2026 at 00:00 listened on 10/10/2026 at 16:06 playable every day";
+
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Prières et chants du matin",
+            playlistToSelectTitle,
+            "Prières du soir",
+            "Prières et chants du soir",
+            "Prières du soir 3",
+            "Prières du soir ancien",
+            "9_Donne- moi de la révélation à travers Ton amour",
+          ],
+          selectedPlaylistTitle: playlistToSelectTitle,
+          currentAudioTitle: selectedPlaylistCurrentAudioTitle,
+          currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
+        );
+
+        // Verify the displayed list of playlists and ensure the selected playlist
+        // is displayed as well as its current audio
+        var selectedPlaylistNextAudioTitle =
+            "9_Donne- moi de la révélation à travers Ton amour";
+        await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+          tester: tester,
+          playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+            "Prières et chants du matin",
+            playlistToSelectTitle,
+            "Prières du soir",
+            "Prières et chants du soir",
+            "Prières du soir 3",
+            "Prières du soir ancien",
+            selectedPlaylistNextAudioTitle,
+          ],
+          selectedPlaylistTitle: playlistToSelectTitle,
+          currentAudioTitle: selectedPlaylistCurrentAudioTitle,
+          currentAudioSubTitle: selectedPlaylistCurrentAudioSubTitle,
+        );
+
+        final Finder selectedPlaylistCurrentAudioListTileTextWidgetFinder =
+            find.text(selectedPlaylistCurrentAudioTitle);
+
+        await tester.tap(selectedPlaylistCurrentAudioListTileTextWidgetFinder);
+        await tester.pumpAndSettle();
+
+        // Tapping two times on the 10 seconds forward icon button
+        // and go back to the playlist download view screen.
+
+        Finder forward10sButtonFinder =
+            find.byKey(const Key('audioPlayerViewForward10sButton'));
+        await tester.tap(forward10sButtonFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(forward10sButtonFinder);
+        await tester.pumpAndSettle();
+
+        // Now play the audio
+        await tester.tap(find.byIcon(Icons.play_arrow));
+        await tester.pumpAndSettle();
+
+        // Go back to the playlist download view.
+        Finder appScreenNavigationButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(appScreenNavigationButton);
+        await tester.pumpAndSettle();
+
+        IntegrationTestUtil.validateInkWellButton(
+          tester: tester,
+          audioTitle: selectedPlaylistCurrentAudioTitle,
+          expectedIcon: Icons.pause,
+          expectedIconColor: Colors.white,
+          expectedIconBackgroundColor: kDarkAndLightEnabledIconColor,
+        );
+
+        // Add a delay to allow the audio to reach its end and the next audio
+        // to start playing.
+        for (int i = 0; i < 16; i++) {
+          await Future.delayed(const Duration(seconds: 1));
+          await tester.pumpAndSettle();
+        }
+
+        IntegrationTestUtil.validateInkWellButton(
+          tester: tester,
+          audioTitle: selectedPlaylistNextAudioTitle,
+          expectedIcon: Icons.pause,
+          expectedIconColor: Colors.white,
+          expectedIconBackgroundColor: kDarkAndLightEnabledIconColor,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
+    group('''Test current audio correct display.''', () {
+      testWidgets('''Verify current audio display after switching from Chap desc to Chap asc test.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}sort_filter_audio_bug_fixed_test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        const String playlistToPositionAudioTitles =
+            'Prières et chants du matin 2';
+
+        // Type on the Playlists button to hide the playlist view
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+
+        // Perform the scroll down action
+        await tester.drag(listFinder, const Offset(0, -200));
+        await tester.pumpAndSettle();
+
+        // Tap on the audio titled "1_Omraam Mikhaël Aïvanhov
+        // 'Je vivrai d’après l'amour!'" to select it
+
+        const String audioToSelectTitle =
+            "1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'";
+        const String audioToSelectSubTitle =
+            "0:02:39.6 2.59 MB at 502.3 KB/sec on 11/02/2025 at 09:00 listened on 13/10/2026 at 09:50 playable every 3 days";
+        final Finder audioToSelectTitleTextWidgetFinder =
+            find.text(audioToSelectTitle);
+
+        await tester.tap(audioToSelectTitleTextWidgetFinder);
+        await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+          tester: tester,
+        );
+
+        // Return to the playlist download view
+        Finder applicationViewNavButton =
+            find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+        await tester.tap(applicationViewNavButton);
+        await tester.pumpAndSettle();
+
+        // Verify the presence of the positioned audio in the in the
+        // playlist audio list sorted by 'Chap desc'
+
+        List<String> audioPositionedTitles = [
+          "6_Dix enseignements essentiels de Jésus",
+          "5_Que ton coeur espère en Moi et ton esprit deviendra immédiatement fort",
+          "4_Quelle est la signification du fait que Dieu exige des gens qu'ils soient honnêtes",
+          "3_Seigneur, merci pour Ta Parole vivante",
+          "2_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
+          audioToSelectTitle,
+        ];
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
+          firstAudioListTileIndex: 0,
+        );
+
+        // Verify the currently selected audio title/subTitle of the
+        // 'S8 audio' playlist
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: audioToSelectTitle,
+          currentAudioSubTitle: audioToSelectSubTitle,
+        );
+
+        // Select 'Chap asc' sort filter parameter
+
+        await IntegrationTestUtil.selectSortFilterParmsInDropDownButton(
+          tester: tester,
+          sortFilterParmsName: 'Chap asc',
+        );
+
+        // Verify the presence of the positioned audio in the in the
+        // playlist audio list sorted by 'Chap desc'
+
+        audioPositionedTitles = [
+          audioToSelectTitle,
+          "2_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
+          "3_Seigneur, merci pour Ta Parole vivante",
+          "4_Quelle est la signification du fait que Dieu exige des gens qu'ils soient honnêtes",
+          "5_Que ton coeur espère en Moi et ton esprit deviendra immédiatement fort",
+          "6_Dix enseignements essentiels de Jésus",
+          "7_Les épreuves transmies par Dieu",
+        ];
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
+          firstAudioListTileIndex: 0,
+        );
+
+        // Verify the currently selected audio title/subTitle of the
+        // 'S8 audio' playlist
+
+        const String audioToSelectSubTitleOnCChapAsc =
+            "0:02:39.6 2.59 MB at 502.3 KB/sec on 11/02/2025 at 09:00";
+
+        // Verify that the current audio is displayed with the correct
+        // title and subtitle color
+        await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+          tester: tester,
+          currentAudioTitle: audioToSelectTitle,
+          currentAudioSubTitle: audioToSelectSubTitleOnCChapAsc,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
     });
   });
 }

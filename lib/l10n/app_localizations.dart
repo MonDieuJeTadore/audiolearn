@@ -5277,7 +5277,7 @@ abstract class AppLocalizations {
   /// No description provided for @textToSpeechApiError.
   ///
   /// In en, this message translates to:
-  /// **'Text to audio conversion failed: {errorMessage}.'**
+  /// **'Text to audio conversion failed: {errorMessage}.\n\nThe reason is probably due to the fact that Internet is not accessible. Please connect your device and retry the text to audio conversion which is only possible if Internet is available.'**
   String textToSpeechApiError(Object errorMessage);
 
   /// No description provided for @videoUploadDateNotExist.

@@ -3295,7 +3295,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String textToSpeechApiError(Object errorMessage) {
-    return 'Text to audio conversion failed: $errorMessage.';
+    return 'Text to audio conversion failed: $errorMessage.\n\nThe reason is probably due to the fact that Internet is not accessible. Please connect your device and retry the text to audio conversion which is only possible if Internet is available.';
   }
 
   @override

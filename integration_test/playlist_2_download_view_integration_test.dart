@@ -4514,7 +4514,7 @@ void main() {
     });
   });
   group(
-      '''Rewind playable filtered dplaylist audios playable on different days to start position test''',
+      '''Rewind playable filtered playlist audios playable on different days to start position test''',
       () {
     testWidgets(
         '''Rewind 'Playable 3 days' and 'Playable 6 days' filtered playlist audio for selected playlist''',

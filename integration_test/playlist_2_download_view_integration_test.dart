@@ -32801,7 +32801,7 @@ void main() {
       });
     });
     group('''Audio item menu "Move Audio to Position" tests'.''', () {
-      group('''chap desc tests'.''', () {
+      group('''Chap desc tests'.''', () {
         testWidgets(
             '''chap desc, to 4. For not yet positioned audio Audio item menu "Move Audio to Position" test.
            The not yet positioned audio is "Laissez tomber les 'pourquoi'...  #mariavaltorta #jesus".
@@ -36050,6 +36050,7 @@ void main() {
         });
       });
       group('''chap asc tests'.''', () {
+      group('''Chap asc tests'.''', () {
         testWidgets(
             '''chap asc, to 4. For not yet positioned audio Audio item menu "Move Audio to Position" test.
            The not yet positioned audio is "Laissez tomber les 'pourquoi'...  #mariavaltorta #jesus".
@@ -37617,6 +37618,114 @@ void main() {
             tester: tester,
             audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
             firstAudioListTileIndex: 0,
+          );
+
+          // Purge the test playlist directory so that the created test
+          // files are not uploaded to GitHub
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+        });
+        testWidgets('''From Chap desc to Chap asc test.''',
+            (WidgetTester tester) async {
+          // Purge the test playlist directory if it exists so that the
+          // playlist list is empty
+          DirUtil.deleteFilesInDirAndSubDirs(
+            rootPath: kApplicationPathWindowsTest,
+          );
+
+          // Copy the test initial audio data to the app dir
+          DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+            sourceRootPath:
+                "$kDownloadAppTestSavedDataDir${path.separator}sort_filter_audio_bug_fixed_test",
+            destinationRootPath: kApplicationPathWindowsTest,
+          );
+
+          _loadSettingsMap();
+
+          final SettingsDataService settingsDataService = SettingsDataService(
+            isTest: true,
+          );
+
+          // Load the settings from the json file. This is necessary
+          // otherwise the ordered playlist titles will remain empty
+          // and the playlist list will not be filled with the
+          // playlists available in the app test dir
+          await settingsDataService.loadSettingsFromFile(
+              settingsJsonPathFileName:
+                  "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+          await app.main();
+          await tester.pumpAndSettle();
+
+          const String playlistToPositionAudioTitles =
+              'Prières et chants du matin 2';
+
+          // Type on the Playlists button to hide the playlist view
+          await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+          await tester.pumpAndSettle();
+
+          Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
+
+          // Perform the scroll down action
+          await tester.drag(listFinder, const Offset(0, -200));
+          await tester.pumpAndSettle();
+
+          // Tap on the audio titled "1_Omraam Mikhaël Aïvanhov
+          // 'Je vivrai d’après l'amour!'" to select it
+
+          const String audioToSelectTitle =
+              "1_Omraam Mikhaël Aïvanhov  'Je vivrai d’après l'amour!'";
+          const String audioToSelectSubTitle =
+              "0:02:39.6 2.59 MB at 502.3 KB/sec on 11/02/2025 at 09:00 listened on 13/10/2026 at 09:50 playable every 3 days";
+          final Finder audioToSelectTitleTextWidgetFinder =
+              find.text(audioToSelectTitle);
+
+          await tester.tap(audioToSelectTitleTextWidgetFinder);
+          await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+            tester: tester,
+          );
+
+          // Return to the playlist download view
+          Finder applicationViewNavButton =
+              find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+          await tester.tap(applicationViewNavButton);
+          await tester.pumpAndSettle();
+
+          // Verify the presence of the positioned audio in the in the
+          // playlist audio list sorted by 'Chap desc'
+
+          List<String> audioPositionedTitles = [
+            "6_Dix enseignements essentiels de Jésus",
+            "5_Que ton coeur espère en Moi et ton esprit deviendra immédiatement fort",
+            "4_Quelle est la signification du fait que Dieu exige des gens qu'ils soient honnêtes",
+            "3_Seigneur, merci pour Ta Parole vivante",
+            "2_Omraam Mikhaël Aïvanhov - Prière - MonDieu je Te donne mon coeur!",
+            audioToSelectTitle,
+          ];
+
+          IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+            tester: tester,
+            audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
+            firstAudioListTileIndex: 0,
+          );
+
+          // Verify the currently selected audio title/subTitle of the
+          // 'S8 audio' playlist
+
+          // Verify that the current audio is displayed with the correct
+          // title and subtitle color
+          await IntegrationTestUtil.verifyCurrentAudioTitleAndSubTitleColor(
+            tester: tester,
+            currentAudioTitle: audioToSelectTitle,
+            currentAudioSubTitle: audioToSelectSubTitle,
+          );
+
+          // Select 'Chap asc' sort filter parameter
+
+          await IntegrationTestUtil.selectSortFilterParmsInDropDownButton(
+            tester: tester,
+            sortFilterParmsName: 'Chap asc',
           );
 
           // Purge the test playlist directory so that the created test

@@ -1812,7 +1812,7 @@
   "setAudioPlayableNDaysNumberTitleExplanation": "Le numéro du jour jouable défini sera appliqué à chaque audio filtré.",
   "invaliddayNumberErrortMessage": "{dayNumber} ne respecte pas le format du nombre entier positif.",
   "enteredDayNumberEmptyMessage": "Definir un numéro du jour jouable vide n'est pas possible.",
-  "textToSpeechApiError": "Échec de la conversion texte en audio : {errorMessage}.",
+  "textToSpeechApiError": "Échec de la conversion texte en audio : {errorMessage}.\n\nLa raison est probablement qu'il n'y a pas d'accès à Internet. Connectez votre appareil et retentez la conversion de texte en audio, laquelle est seulement possible si Internet est disponible.",
   "videoUploadDateNotExist": "pas de vidéo correspondante",
   "audioDownloadFromDateLabel": "Date ({selectedAppDateFormat})",
   "storageAccessRequiredTitle": "Autorisation indispensable",

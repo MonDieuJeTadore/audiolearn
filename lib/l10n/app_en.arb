@@ -1379,7 +1379,7 @@
   "setAudioPlayableNDaysNumberTitleExplanation": "The defined playable every n days number will be set in every filtered audio.",
   "invaliddayNumberErrortMessage": "{dayNumber} does not respect the positive integer format.",
   "enteredDayNumberEmptyMessage": "Defining an empty playable day number is not possible.",
-  "textToSpeechApiError": "Text to audio conversion failed: {errorMessage}.",
+  "textToSpeechApiError": "Text to audio conversion failed: {errorMessage}.\n\nThe reason is probably due to the fact that Internet is not accessible. Please connect your device and retry the text to audio conversion which is only possible if Internet is available.",
   "videoUploadDateNotExist": "no related video",
   "audioDownloadFromDateLabel": "Date ({selectedAppDateFormat})",
   "storageAccessRequiredTitle": "Permission required",

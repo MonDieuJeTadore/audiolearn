@@ -832,11 +832,10 @@ class DirUtil {
     bool targetExists = File(newFilePathName).existsSync();
 
     // Determine if the "existing" target file is actually the same file as
-    // the source, just with a different case (happens on case-insensitive
-    // file systems like Windows or default macOS APFS).
+    // the source, just with a different case.
     bool isCaseOnlyRename = targetExists &&
-        path.equals(fileToRenameFilePathName, newFilePathName) &&
-        fileToRenameFilePathName != newFilePathName;
+        fileToRenameFilePathName != newFilePathName &&
+        fileToRenameFilePathName.toLowerCase() == newFilePathName.toLowerCase();
 
     if (targetExists && !isCaseOnlyRename) {
       // A genuinely different file already exists with that name.
@@ -886,11 +885,10 @@ class DirUtil {
     bool targetExists = newDir.existsSync();
 
     // Determine if the "existing" target directory is actually the same
-    // directory as the source, just with a different case (happens on
-    // case-insensitive file systems like Windows or default macOS APFS).
+    // directory as the source, just with a different case.
     bool isCaseOnlyRename = targetExists &&
-        path.equals(directoryToRenamePath, newPath) &&
-        directoryToRenamePath != newPath;
+        directoryToRenamePath != newPath &&
+        directoryToRenamePath.toLowerCase() == newPath.toLowerCase();
 
     if (targetExists && !isCaseOnlyRename) {
       // A genuinely different directory already exists with that name.

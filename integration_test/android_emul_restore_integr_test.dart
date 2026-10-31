@@ -6601,6 +6601,94 @@ void main() {
         );
       });
     });
+    group('''Rename playlist test.''', () {
+      testWidgets('''Rename playlist with only case changed.''',
+          (WidgetTester tester) async {
+        await IntegrationTestUtil.initializeAndroidApplicationAndSelectPlaylist(
+          tester: tester,
+          tapOnPlaylistToggleButton: false,
+        );
+
+        // Now initializing the application on the Android emulator using
+        // zip restoration.
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        const String restorableZipFileName =
+            'audioLearn_move audio to position.zip';
+
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: restorableZipFileName,
+              path:
+                  '$kApplicationPathAndroidTest$androidPathSeparator$restorableZipFileName',
+              size: 6529),
+        ]);
+
+        // In order to create the Android emulator application, execute the
+        // 'Restore Playlists, Comments and Settings from Zip File ...' menu
+        // without replacing the existing playlists.
+        const String priereOnePlaylistTitle = 'Prières 1';
+        await IntegrationTestUtil.executeRestorePlaylists(
+          tester: tester,
+          doReplaceExistingPlaylists: false,
+          doDeleteExistingPlaylistsNotContainedInZip: false,
+          playlistTitlesToDelete: [
+            'Les plus belles chansons chrétiennes',
+            'S8 audio',
+            'local',
+            priereOnePlaylistTitle,
+          ],
+          onAndroid: true,
+        );
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: priereOnePlaylistTitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Enter the new playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, priereOnePlaylistTitle);
+
+        // Enter the new playlist title
+
+        const String modifiedPlaylistTitle = 'prières 1';
+
+        await tester.enterText(
+          textFieldFinder,
+          modifiedPlaylistTitle,
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the presence of the renamed playlist in the playlist list
+
+        final List<String> playlistsTitles = [
+          modifiedPlaylistTitle,
+        ];
+
+        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+          tester: tester,
+          audioOrPlaylistTitlesOrderedLst: playlistsTitles,
+        );
+      });
+    });
   });
 }
 

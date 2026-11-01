@@ -10984,10 +10984,10 @@ void main() {
           );
 
           // Now close the convert text to audio dialog by tapping
-          // the close button
-          Finder convertTextToAudioCloseButtonFinder =
+          // the Ok button
+          Finder cancelButtonFinder =
               find.byKey(const Key('convertTextToAudioCloseButton'));
-          await tester.tap(convertTextToAudioCloseButtonFinder);
+          await tester.tap(cancelButtonFinder);
           await tester.pumpAndSettle();
 
           // Now save the playlists ...
@@ -11404,10 +11404,10 @@ void main() {
           );
 
           // Now close the convert text to audio dialog by tapping
-          // the close button
-          Finder convertTextToAudioCloseButtonFinder =
+          // the Ok button
+          Finder cancelButtonFinder =
               find.byKey(const Key('convertTextToAudioCloseButton'));
-          await tester.tap(convertTextToAudioCloseButtonFinder);
+          await tester.tap(cancelButtonFinder);
           await tester.pumpAndSettle();
 
           // Now save the playlists ...
@@ -11825,10 +11825,10 @@ void main() {
           );
 
           // Now close the convert text to audio dialog by tapping
-          // the close button
-          Finder convertTextToAudioCloseButtonFinder =
+          // the Ok button
+          Finder cancelButtonFinder =
               find.byKey(const Key('convertTextToAudioCloseButton'));
-          await tester.tap(convertTextToAudioCloseButtonFinder);
+          await tester.tap(cancelButtonFinder);
           await tester.pumpAndSettle();
 
           // Now save the playlist ...
@@ -12221,10 +12221,10 @@ void main() {
           );
 
           // Now close the convert text to audio dialog by tapping
-          // the close button
-          Finder convertTextToAudioCloseButtonFinder =
+          // the Ok button
+          Finder cancelButtonFinder =
               find.byKey(const Key('convertTextToAudioCloseButton'));
-          await tester.tap(convertTextToAudioCloseButtonFinder);
+          await tester.tap(cancelButtonFinder);
           await tester.pumpAndSettle();
 
           // Now save the playlist ...
@@ -28695,10 +28695,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        Finder cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
@@ -28908,10 +28908,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
@@ -29214,10 +29214,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinderconvertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        Finder cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinderconvertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Now, reopen the convert text to audio dialog
@@ -29286,10 +29286,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        convertTextToAudioCloseButtonFinderconvertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinderconvertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Purge the test playlist directory so that the created test
@@ -29428,10 +29428,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinderconvertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        Finder cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinderconvertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Now select the 'local' playlist
@@ -29627,10 +29627,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        convertTextToAudioCloseButtonFinderconvertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinderconvertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Now select the 'local' playlist
@@ -29850,10 +29850,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        Finder cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
@@ -29880,8 +29880,13 @@ void main() {
         );
       });
       testWidgets(
-          '''Verifying converted audio position in the playlist audio list by taping on the
-             convert text to audio dialog close button.''', (WidgetTester tester) async {
+          '''Converting text containing line breaks with checking the 'Remove line breaks'
+           ckeckbox.
+           
+           This test verify the bug corrected by 'now tapping on back button work like tapping
+           on close button. The created audio is visible in the playlist, but is not current'
+           in convert_text_to_audio_dialog.dart.
+          ''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -29909,7 +29914,15 @@ void main() {
           playlistMenuKeyStr: 'popup_menu_convert_text_to_audio_in_playlist',
         );
 
-        // Enter a short text to convert
+        // Verify the convert text to audio dialog title
+        final Text convertTextToAudioDialogTitle = tester.widget<Text>(
+            find.byKey(const Key('convertTextToAudioDialogTitleKey')));
+        expect(
+          convertTextToAudioDialogTitle.data,
+          'Convertir le texte en audio',
+        );
+
+        // Enter a text to convert containing line breaks
 
         // Find the text field and delete button
         final Finder textFieldFinder =
@@ -29917,9 +29930,15 @@ void main() {
 
         // Enter text in the TextField
         const testText =
-            "Ô mon cher Ange gardien ! Je T’adresse cette prière.";
+            "Ô mon cher Ange gardien ! Je t’adresse cette prièrep\nour te demanderdern\nde rester toujours à mes côtés\net de ne jamais cesser\nd’être mon protecteur, jusqu’à ce que je sois appelé\ndans la Maison du Père, où ensemble nous louerons Dieu\nnotre Seigneur pour toute l’Éternité. Amen.";
         await tester.enterText(textFieldFinder, testText);
         await tester.pump();
+
+        // Check the 'Remove line breaks' checkbox
+        Finder removeLineBreaksCheckbox =
+            find.byKey(const Key('clearEndLineCheckbox'));
+        await tester.tap(removeLineBreaksCheckbox);
+        await tester.pumpAndSettle();
 
         // Now click on 'Create MP3' button to create the audio
         Finder createMP3ButtonFinder =
@@ -29927,7 +29946,7 @@ void main() {
         await tester.tap(createMP3ButtonFinder);
         await tester.pumpAndSettle();
 
-        const String enteredFileNameNoExt = 'aa';
+        const String enteredFileNameNoExt = 'convertedAudio';
         Finder mp3FileNameTextFieldFinder =
             find.byKey(const Key('mp3FileNameTextFieldKey'));
 
@@ -29942,144 +29961,36 @@ void main() {
         await Future.delayed(const Duration(seconds: 2));
         await tester.pumpAndSettle();
 
+        DateTime dateTimeNow = DateTime.now();
+
         // Close the warning dialog
         await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
         await tester.pumpAndSettle();
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        Finder cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
         final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
 
-        // Perform the scroll up action
+        // Perform the scroll action
         await tester.drag(listFinder, const Offset(0, 300));
         await tester.pumpAndSettle();
 
-        // VVerify that the converted audio is present at the top of the
-        // audio list
-
-        List<String> audioPositionedTitles = [
-          "aa",
-          "aaa",
-          "bbb",
-          "DETTE PUBLIQUE - LA RÉALITÉ DERRIÈRE LES DISCOURS CATASTROPHISTES",
-        ];
-
-        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
+        // Verify the converted audio sub title in the selected Youtube
+        // playlist audio list. The duration should be shorter than the
+        // previous conversion since the line break characters were removed.
+        IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
           tester: tester,
-          audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 3,
+          audioSubTitlesAcceptableLst: [
+            '0:00:10.4 104.1 Ko converti le ${frenchDateFormat.format(dateTimeNow)} à ${timeFormat.format(dateTimeNow)}',
+          ],
+          firstAudioListTileIndex: 5,
         );
-
-
-        // Purge the test playlist directory so that the created test
-        // files are not uploaded to GitHub
-        DirUtil.deleteFilesInDirAndSubDirs(
-          rootPath: kApplicationPathWindowsTest,
-        );
-      });
-      testWidgets(
-          '''Verifying converted audio position in the playlist audio list by taping on the
-             convert text to audio dialog back button.''', (WidgetTester tester) async {
-        // Purge the test playlist directory if it exists so that the
-        // playlist list is empty
-        DirUtil.deleteFilesInDirAndSubDirs(
-          rootPath: kApplicationPathWindowsTest,
-        );
-
-        const String selectedYoutubePlaylistTitle = 'urgent_actus_17-12-2023';
-
-        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
-          tester: tester,
-          savedTestDataDirName: 'import_audios_integr_test',
-          tapOnPlaylistToggleButton: false,
-        );
-
-        // First, set the application language to french
-        await IntegrationTestUtil.setApplicationLanguage(
-          tester: tester,
-          language: Language.french,
-        );
-
-        // Open the convert text to audio dialog
-        await IntegrationTestUtil.typeOnPlaylistMenuItem(
-          tester: tester,
-          playlistTitle: selectedYoutubePlaylistTitle,
-          playlistMenuKeyStr: 'popup_menu_convert_text_to_audio_in_playlist',
-        );
-
-        // Enter a short text to convert
-
-        // Find the text field and delete button
-        final Finder textFieldFinder =
-            find.byKey(const Key('textToConvertTextField'));
-
-        // Enter text in the TextField
-        const testText =
-            "Ô mon cher Ange gardien ! Je T’adresse cette prière.";
-        await tester.enterText(textFieldFinder, testText);
-        await tester.pump();
-
-        // Now click on 'Create MP3' button to create the audio
-        Finder createMP3ButtonFinder =
-            find.byKey(const Key('create_audio_file_button'));
-        await tester.tap(createMP3ButtonFinder);
-        await tester.pumpAndSettle();
-
-        const String enteredFileNameNoExt = 'aa';
-        Finder mp3FileNameTextFieldFinder =
-            find.byKey(const Key('mp3FileNameTextFieldKey'));
-
-        await tester.enterText(
-            mp3FileNameTextFieldFinder, enteredFileNameNoExt);
-        await tester.pump();
-
-        // Tap on the 'Create MP3' button
-        Finder saveMP3FileButton =
-            find.byKey(const Key('create_mp3_button_key'));
-        await tester.tap(saveMP3FileButton);
-        await Future.delayed(const Duration(seconds: 2));
-        await tester.pumpAndSettle();
-
-        // Close the warning dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
-
-        // Now close the convert text to audio dialog by tapping
-        // the back button
-        Finder convertTextToAudioCloseButtonFinder =
-            find.byKey(const Key('convertTextToAudioBackButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
-        await tester.pumpAndSettle();
-
-        // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
-
-        // Perform the scroll up action
-        await tester.drag(listFinder, const Offset(0, 300));
-        await tester.pumpAndSettle();
-
-        // VVerify that the converted audio is present at the top of the
-        // audio list
-
-        List<String> audioPositionedTitles = [
-          "aa",
-          "aaa",
-          "bbb",
-          "DETTE PUBLIQUE - LA RÉALITÉ DERRIÈRE LES DISCOURS CATASTROPHISTES",
-        ];
-
-        IntegrationTestUtil.checkAudioOrPlaylistTitlesOrderInListTile(
-          tester: tester,
-          audioOrPlaylistTitlesOrderedLst: audioPositionedTitles,
-          firstAudioListTileIndex: 3,
-        );
-
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
@@ -30200,10 +30111,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinder =
+        // the Close button
+        Finder closeButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(closeButtonFinder);
         await tester.pumpAndSettle();
 
         // Now, reopen the convert text to audio dialog
@@ -30291,124 +30202,10 @@ void main() {
 
         // Now close the convert text to audio dialog by tapping
         // the Close button
-        convertTextToAudioCloseButtonFinder =
+        closeButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(closeButtonFinder);
         await tester.pumpAndSettle();
-
-        // Purge the test playlist directory so that the created test
-        // files are not uploaded to GitHub
-        DirUtil.deleteFilesInDirAndSubDirs(
-          rootPath: kApplicationPathWindowsTest,
-        );
-      });
-      testWidgets(
-          '''Converting text containing line breaks with checking the 'Remove line breaks'
-           ckeckbox.''', (WidgetTester tester) async {
-        // Purge the test playlist directory if it exists so that the
-        // playlist list is empty
-        DirUtil.deleteFilesInDirAndSubDirs(
-          rootPath: kApplicationPathWindowsTest,
-        );
-
-        const String selectedYoutubePlaylistTitle = 'urgent_actus_17-12-2023';
-
-        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
-          tester: tester,
-          savedTestDataDirName: 'import_audios_integr_test',
-          tapOnPlaylistToggleButton: false,
-        );
-
-        // First, set the application language to french
-        await IntegrationTestUtil.setApplicationLanguage(
-          tester: tester,
-          language: Language.french,
-        );
-
-        // Open the convert text to audio dialog
-        await IntegrationTestUtil.typeOnPlaylistMenuItem(
-          tester: tester,
-          playlistTitle: selectedYoutubePlaylistTitle,
-          playlistMenuKeyStr: 'popup_menu_convert_text_to_audio_in_playlist',
-        );
-
-        // Verify the convert text to audio dialog title
-        final Text convertTextToAudioDialogTitle = tester.widget<Text>(
-            find.byKey(const Key('convertTextToAudioDialogTitleKey')));
-        expect(
-          convertTextToAudioDialogTitle.data,
-          'Convertir le texte en audio',
-        );
-
-        // Enter a text to convert containing line breaks
-
-        // Find the text field and delete button
-        final Finder textFieldFinder =
-            find.byKey(const Key('textToConvertTextField'));
-
-        // Enter text in the TextField
-        const testText =
-            "Ô mon cher Ange gardien ! Je t’adresse cette prièrep\nour te demanderdern\nde rester toujours à mes côtés\net de ne jamais cesser\nd’être mon protecteur, jusqu’à ce que je sois appelé\ndans la Maison du Père, où ensemble nous louerons Dieu\nnotre Seigneur pour toute l’Éternité. Amen.";
-        await tester.enterText(textFieldFinder, testText);
-        await tester.pump();
-
-        // Check the 'Remove line breaks' checkbox
-        Finder removeLineBreaksCheckbox =
-            find.byKey(const Key('clearEndLineCheckbox'));
-        await tester.tap(removeLineBreaksCheckbox);
-        await tester.pumpAndSettle();
-
-        // Now click on 'Create MP3' button to create the audio
-        Finder createMP3ButtonFinder =
-            find.byKey(const Key('create_audio_file_button'));
-        await tester.tap(createMP3ButtonFinder);
-        await tester.pumpAndSettle();
-
-        const String enteredFileNameNoExt = 'convertedAudio';
-        Finder mp3FileNameTextFieldFinder =
-            find.byKey(const Key('mp3FileNameTextFieldKey'));
-
-        await tester.enterText(
-            mp3FileNameTextFieldFinder, enteredFileNameNoExt);
-        await tester.pump();
-
-        // Tap on the 'Create MP3' button
-        Finder saveMP3FileButton =
-            find.byKey(const Key('create_mp3_button_key'));
-        await tester.tap(saveMP3FileButton);
-        await Future.delayed(const Duration(seconds: 2));
-        await tester.pumpAndSettle();
-
-        DateTime dateTimeNow = DateTime.now();
-
-        // Close the warning dialog
-        await tester.tap(find.byKey(const Key('warningDialogOkButton')).last);
-        await tester.pumpAndSettle();
-
-        // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinder =
-            find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
-        await tester.pumpAndSettle();
-
-        // Find the audio list widget using its key
-        final Finder listFinder = find.byKey(const Key('audio_list_non_empty'));
-
-        // Perform the scroll action
-        await tester.drag(listFinder, const Offset(0, 300));
-        await tester.pumpAndSettle();
-
-        // Verify the converted audio sub title in the selected Youtube
-        // playlist audio list. The duration should be shorter than the
-        // previous conversion since the line break characters were removed.
-        IntegrationTestUtil.checkAudioSubTitlesOrderInListTile(
-          tester: tester,
-          audioSubTitlesAcceptableLst: [
-            '0:00:10.4 104.1 Ko converti le ${frenchDateFormat.format(dateTimeNow)} à ${timeFormat.format(dateTimeNow)}',
-          ],
-          firstAudioListTileIndex: 5,
-        );
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
@@ -30676,10 +30473,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        Finder cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
@@ -30885,10 +30682,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
@@ -31184,10 +30981,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        Finder cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Now, reopen the convert text to audio dialog
@@ -31256,10 +31053,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Purge the test playlist directory so that the created test
@@ -31392,10 +31189,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        Finder cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Now select the 'local' playlist
@@ -31592,10 +31389,10 @@ void main() {
         );
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Now select the 'local' playlist
@@ -31808,10 +31605,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        Finder cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
@@ -31915,10 +31712,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // Now close the convert text to audio dialog by tapping
-        // the close button
-        Finder convertTextToAudioCloseButtonFinder =
+        // the Cancel button
+        Finder cancelButtonFinder =
             find.byKey(const Key('convertTextToAudioCloseButton'));
-        await tester.tap(convertTextToAudioCloseButtonFinder);
+        await tester.tap(cancelButtonFinder);
         await tester.pumpAndSettle();
 
         // Find the audio list widget using its key
@@ -38718,7 +38515,8 @@ void main() {
       });
     });
     group('''Test current audio correct display.''', () {
-      testWidgets('''Verify current audio display after switching from Chap desc to Chap asc test.''',
+      testWidgets(
+          '''Verify current audio display after switching from Chap desc to Chap asc test.''',
           (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty

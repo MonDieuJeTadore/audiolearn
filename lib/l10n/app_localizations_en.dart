@@ -3321,4 +3321,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get totalRemainingDuration => 'total remaining duration';
+
+  @override
+  String get backButtonTooltip => 'Back';
 }

@@ -29885,7 +29885,7 @@ void main() {
            
            This test verify the bug corrected by 'now tapping on back button work like tapping
            on close button. The created audio is visible in the playlist, but is not current'
-           in convert_text_to_audio_dialog.dart.
+           in convert_text_to_audio_dialog.dart. 'not current' is not a problem.
           ''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty

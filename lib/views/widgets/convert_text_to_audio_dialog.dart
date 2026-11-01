@@ -131,8 +131,11 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
           leading: IconButton(
             key: const Key('convertTextToAudioBackButton'),
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-            tooltip: 'Back',
+            onPressed: () => onCloseOrBackButton(
+              context: context,
+              textToSpeechVMlistenTrue: textToSpeechVMlistenTrue,
+            ),
+            tooltip: AppLocalizations.of(context)!.backButtonTooltip,
           ),
           title: Text(
             key: const Key('convertTextToAudioDialogTitleKey'),
@@ -388,27 +391,10 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
                   overlayColor: textButtonTapModification, // Tap feedback color
                 ),
                 onPressed: () {
-                  _stopAllAudio(
+                  onCloseOrBackButton(
+                    context: context,
                     textToSpeechVMlistenTrue: textToSpeechVMlistenTrue,
                   );
-
-                  // Calling this method ensures that if the user re-converts
-                  // an existing converted audio file, the audio player will
-                  // play the new version of the audio file with the right
-                  // duration and not the old one, which would uncorrectly
-                  // position the audio player view audio slider and set the
-                  // audio end position field incorrectly.
-                  Provider.of<AudioPlayerVM>(
-                    context,
-                    listen: false,
-                  ).clearCurrentAudio();
-
-                  Provider.of<AudioDownloadVM>(
-                    context,
-                    listen: false,
-                  ).doNotifyListeners();
-
-                  Navigator.of(context).pop();
                 },
                 child: Text(
                   AppLocalizations.of(context)!.closeTextButton,
@@ -425,6 +411,33 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
         ),
       ],
     );
+  }
+
+  void onCloseOrBackButton({
+    required BuildContext context,
+    required TextToSpeechVM textToSpeechVMlistenTrue,
+  }) {
+    _stopAllAudio(
+      textToSpeechVMlistenTrue: textToSpeechVMlistenTrue,
+    );
+
+    // Calling this method ensures that if the user re-converts
+    // an existing converted audio file, the audio player will
+    // play the new version of the audio file with the right
+    // duration and not the old one, which would uncorrectly
+    // position the audio player view audio slider and set the
+    // audio end position field incorrectly.
+    Provider.of<AudioPlayerVM>(
+      context,
+      listen: false,
+    ).clearCurrentAudio();
+
+    Provider.of<AudioDownloadVM>(
+      context,
+      listen: false,
+    ).doNotifyListeners();
+
+    Navigator.of(context).pop();
   }
 
   Widget _buildListenTextButton({

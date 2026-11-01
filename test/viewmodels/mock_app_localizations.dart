@@ -3469,4 +3469,7 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get doNotRestoreSortFilterParameters =>
       "Do not restore the named sort filter parameters";
+
+  @override
+  String get backButtonTooltip => "Back";
 }

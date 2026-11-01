@@ -5321,6 +5321,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'total remaining duration'**
   String get totalRemainingDuration;
+
+  /// No description provided for @backButtonTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get backButtonTooltip;
 }
 
 class _AppLocalizationsDelegate

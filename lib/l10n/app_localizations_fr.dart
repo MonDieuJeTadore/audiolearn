@@ -3359,4 +3359,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get totalRemainingDuration => 'durée restante totale';
+
+  @override
+  String get backButtonTooltip => 'Retour';
 }

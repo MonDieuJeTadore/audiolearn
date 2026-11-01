@@ -131,7 +131,7 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
           leading: IconButton(
             key: const Key('convertTextToAudioBackButton'),
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => onCloseOrBackButton(
+            onPressed: () => _onCloseOrBackButton(
               context: context,
               textToSpeechVMlistenTrue: textToSpeechVMlistenTrue,
             ),
@@ -391,7 +391,7 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
                   overlayColor: textButtonTapModification, // Tap feedback color
                 ),
                 onPressed: () {
-                  onCloseOrBackButton(
+                  _onCloseOrBackButton(
                     context: context,
                     textToSpeechVMlistenTrue: textToSpeechVMlistenTrue,
                   );
@@ -413,7 +413,7 @@ class _ConvertTextToAudioDialogState extends State<ConvertTextToAudioDialog>
     );
   }
 
-  void onCloseOrBackButton({
+  void _onCloseOrBackButton({
     required BuildContext context,
     required TextToSpeechVM textToSpeechVMlistenTrue,
   }) {

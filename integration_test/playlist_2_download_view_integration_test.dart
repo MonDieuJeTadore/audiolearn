@@ -38440,7 +38440,7 @@ void main() {
 
         // Verify the displayed list of playlists and ensure the selected playlist
         // is displayed as well as its current audio
-        var selectedPlaylistNextAudioTitle =
+        const String selectedPlaylistNextAudioTitle =
             "9_Donne- moi de la révélation à travers Ton amour";
         await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
           tester: tester,
@@ -38657,6 +38657,124 @@ void main() {
           rootPath: kApplicationPathWindowsTest,
         );
       });
+    });
+  });
+  group('''Test current playlist and current audio display.''', () {
+    testWidgets(
+        '''First, go to the audio player view. In it, select an other playlist and return to the playlist download view.
+           Verify that the current playlist and current audio display is updated correctly. Then, close the application.
+           On the next test, the application will be reopened and the current playlist and audio display will reflect the
+           last playlist and audio selection state.''',
+        (WidgetTester tester) async {
+      // Purge the test playlist directory if it exists so that the
+      // playlist list is empty
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+
+      // Copy the test initial audio data to the app dir
+      DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+        sourceRootPath:
+            "$kDownloadAppTestSavedDataDir${path.separator}current_playlist_current_audio_display_test",
+        destinationRootPath: kApplicationPathWindowsTest,
+      );
+
+      _loadSettingsMap();
+
+      final SettingsDataService settingsDataService = SettingsDataService(
+        isTest: true,
+      );
+
+      // Load the settings from the json file. This is necessary
+      // otherwise the ordered playlist titles will remain empty
+      // and the playlist list will not be filled with the
+      // playlists available in the app test dir
+      await settingsDataService.loadSettingsFromFile(
+          settingsJsonPathFileName:
+              "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+      await app.main();
+      await tester.pumpAndSettle();
+
+      // Now we want to tap on the first downloaded audio of the
+      // playlist in order to open the AudioPlayerView displaying
+      // the currently played audio
+
+      // First, get the first downloaded Audio ListTile Text
+      // widget finder and tap on it
+      final Finder firstDownloadedAudioListTileTextWidgetFinder = find.text(
+          "Anne Sila - L'adieu 'Jésus, de Nazareth à Jérusalem' (Session acoustique)");
+
+      await tester.tap(firstDownloadedAudioListTileTextWidgetFinder);
+      await IntegrationTestUtil.pumpAndSettleDueToAudioPlayers(
+        tester: tester,
+      );
+
+      // Now tap on audio player view playlist button to display the playlists
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Find the playlist to select ListTile Text widget
+      const String selectedPlaylistTitle = '100 MIRACLES Catholiques';
+
+      Finder selectedPlaylistListTileTextWidgetFinder =
+          find.text(selectedPlaylistTitle);
+
+      // Then obtain the playlist ListTile widget enclosing the Text widget
+      // by finding its ancestor
+      Finder playlistDownloadViewCurrentlySelectedPlaylistListTileWidgetFinder =
+          find.ancestor(
+        of: selectedPlaylistListTileTextWidgetFinder,
+        matching: find.byType(ListTile),
+      );
+
+      // Now find the Checkbox widget located in the playlist ListTile
+      // and verify that it is checked
+
+      Finder
+          playlistDownloadViewCurrentlySelectedPlaylistListTileCheckboxWidgetFinder =
+          find.descendant(
+        of: playlistDownloadViewCurrentlySelectedPlaylistListTileWidgetFinder,
+        matching: find.byType(Checkbox),
+      );
+
+      // Set the checkbox value to true to indicate that the playlist
+      // is selected
+      await tester.tap(
+          playlistDownloadViewCurrentlySelectedPlaylistListTileCheckboxWidgetFinder);
+      await tester.pumpAndSettle();
+
+      // Then return to playlist download view in order to verify
+      // the playlist and audio selection
+      Finder applicationViewNavButton =
+          find.byKey(const ValueKey('playlistDownloadViewIconButton'));
+      await tester.tap(applicationViewNavButton);
+      await tester.pumpAndSettle();
+
+      // Verify the displayed list of playlists and ensure the selected playlist
+      // is displayed as well as its current audio
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          selectedPlaylistTitle,
+          "Dieu je T'adore",
+          "IA",
+          "EMI",
+          "Jean-Marc Jancovici",
+          "50 000 apparitions en 45 ans  - que se passe-t-il à Medjugorje  (documentaire)", // audio before current audio
+        ],
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        currentAudioTitle:
+            "Cette icône pleure de l’huile  - un miracle à Soufanieh   100 Miracles Catholiques (Ép. 11)",
+        currentAudioSubTitle:
+            "0:27:15.0 13.08 MB at 593.0 KB/sec on 22/10/2026 at 08:17 video upload date 03/04/2025 listened on 22/10/2026 at 08:20 playable every day",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
     });
   });
 }

@@ -38650,12 +38650,6 @@ void main() {
           currentAudioTitle: audioToSelectTitle,
           currentAudioSubTitle: audioToSelectSubTitleOnCChapAsc,
         );
-
-        // Purge the test playlist directory so that the created test
-        // files are not uploaded to GitHub
-        DirUtil.deleteFilesInDirAndSubDirs(
-          rootPath: kApplicationPathWindowsTest,
-        );
       });
     });
   });
@@ -38750,6 +38744,46 @@ void main() {
           find.byKey(const ValueKey('playlistDownloadViewIconButton'));
       await tester.tap(applicationViewNavButton);
       await tester.pumpAndSettle();
+
+      // Verify the displayed list of playlists and ensure the selected playlist
+      // is displayed as well as its current audio
+      await _verifyPlaylistsAndSelectedPlaylistAndItsCurrentAudio(
+        tester: tester,
+        playlistsTitlesAndAudioBeforeCurrentAudioTitle: [
+          selectedPlaylistTitle,
+          "Dieu je T'adore",
+          "IA",
+          "EMI",
+          "Jean-Marc Jancovici",
+          "50 000 apparitions en 45 ans  - que se passe-t-il à Medjugorje  (documentaire)", // audio before current audio
+        ],
+        selectedPlaylistTitle: selectedPlaylistTitle,
+        currentAudioTitle:
+            "Cette icône pleure de l’huile  - un miracle à Soufanieh   100 Miracles Catholiques (Ép. 11)",
+        currentAudioSubTitle:
+            "0:27:15.0 13.08 MB at 593.0 KB/sec on 22/10/2026 at 08:17 video upload date 03/04/2025 listened on 22/10/2026 at 08:20 playable every day",
+      );
+    });
+    testWidgets(
+        '''Reopen the application and verify that the current playlist and audio display reflects the
+           last playlist and audio selection state done in the previous test.''',
+        (WidgetTester tester) async {
+      final SettingsDataService settingsDataService = SettingsDataService(
+        isTest: true,
+      );
+
+      // Load the settings from the json file. This is necessary
+      // otherwise the ordered playlist titles will remain empty
+      // and the playlist list will not be filled with the
+      // playlists available in the app test dir
+      await settingsDataService.loadSettingsFromFile(
+          settingsJsonPathFileName:
+              "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+      await app.main();
+      await tester.pumpAndSettle();
+
+      const String selectedPlaylistTitle = '100 MIRACLES Catholiques';
 
       // Verify the displayed list of playlists and ensure the selected playlist
       // is displayed as well as its current audio

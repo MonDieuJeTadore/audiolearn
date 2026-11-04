@@ -5557,7 +5557,7 @@ class PlaylistListVM extends ChangeNotifier {
 
                   if (!uniquePlaylistIsRestored) {
                     // Only if the restored playlists is not individual
-                    // must the latest global restored audio date be 
+                    // must the latest global restored audio date be
                     // updated
                     if (mostRecentDownloadDate
                         .isBefore(audio!.audioDownloadDateTime)) {

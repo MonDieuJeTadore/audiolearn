@@ -4095,7 +4095,9 @@ class PlaylistListVM extends ChangeNotifier {
     //  8 deleted audio titles list,
     //  9 were new playlists added at end of non empty playlist list,
     //  10 deleted existing playlist title list,
-    //  11 deleted comment number.
+    //  11 deleted comment number,
+    //  12 number of added sort/filter parameters,
+    //  13 removed sort/filter parameters number.
     List<dynamic> restoredInfoLst = await _restoreFilesFromZip(
       zipFilePathName: zipFilePathName,
       doReplaceExistingPlaylists: doReplaceExistingPlaylists,
@@ -4104,7 +4106,7 @@ class PlaylistListVM extends ChangeNotifier {
 
     // Combining the restored app settings with the current app
     // settings
-    await _mergeRestoredFromZipSettingsWithCurrentAppSettings(
+    List<int> sortFilterAddedAndRRemovedNumber = await _mergeRestoredFromZipSettingsWithCurrentAppSettings(
       doRestoreNewSortFilterParms: doRestoreNewSortFilterParms,
     );
 
@@ -4155,6 +4157,8 @@ class PlaylistListVM extends ChangeNotifier {
       newPlaylistsAddedAtEndOfPlaylistLst: restoredInfoLst[9],
       deletedExistingPlaylistTitlesLst: restoredInfoLst[10],
       deletedCommentNumber: restoredInfoLst[11],
+      addedSortFilterNumber: sortFilterAddedAndRRemovedNumber[0],
+      removedSortFilterNumber: sortFilterAddedAndRRemovedNumber[1],
       playlistsStartPosition: playlistRestoreStartPosition,
     );
 
@@ -4207,7 +4211,7 @@ class PlaylistListVM extends ChangeNotifier {
   /// the restoration from the zip file was already loaded and is in the private
   /// variable _settingsDataService. Now, the app settings file is the settings
   /// file restored from the zip file.
-  Future<void> _mergeRestoredFromZipSettingsWithCurrentAppSettings({
+  Future<List<int>> _mergeRestoredFromZipSettingsWithCurrentAppSettings({
     required bool doRestoreNewSortFilterParms,
   }) async {
     final SettingsDataService settingsDataServiceZipVersion =
@@ -4263,14 +4267,20 @@ class PlaylistListVM extends ChangeNotifier {
       );
     }
 
-    int addedCount = 0;
+    int sortFilterAddedCount = 0;
+    int sortFilterRemovedCount = 0;
 
     if (doRestoreNewSortFilterParms) {
       // Merge the not present named audio sort/filter parameters map
+      final Map<String, AudioSortFilterParameters> currentMap =
+          _settingsDataService.namedAudioSortFilterParametersMap;
+
       settingsDataServiceZipVersion.namedAudioSortFilterParametersMap
           .forEach((key, value) {
-        _settingsDataService.namedAudioSortFilterParametersMap
-            .putIfAbsent(key, () => value);
+        if (!currentMap.containsKey(key)) {
+          currentMap[key] = value;
+          sortFilterAddedCount++;
+        }
       });
 
       List<String> keysToRemove = [];
@@ -4286,6 +4296,8 @@ class PlaylistListVM extends ChangeNotifier {
       for (String key in keysToRemove) {
         _settingsDataService.namedAudioSortFilterParametersMap.remove(key);
       }
+
+      sortFilterRemovedCount = keysToRemove.length;
     }
 
     // Merge the unnamed sort/filter history list
@@ -4299,6 +4311,11 @@ class PlaylistListVM extends ChangeNotifier {
 
     // Save the updated settings
     _settingsDataService.saveSettings();
+
+    return [
+      sortFilterAddedCount,
+      sortFilterRemovedCount,
+    ];
   }
 
   /// Method called when the user clicks on the 'Restore Playlist, Comments and Settings

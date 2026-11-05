@@ -1174,6 +1174,10 @@ class WarningMessageVM extends ChangeNotifier {
   int get deletedCommentNumber => _deletedCommentNumber;
   int _playlistsStartPosition = 0;
   int get playlistsStartPosition => _playlistsStartPosition;
+  int _addedSortFilterNumber = 0;
+  int get addedSortFilterNumber => _addedSortFilterNumber;
+  int _removedSortFilterNumber = 0;
+  int get removedSortFilterNumber => _removedSortFilterNumber;
   void confirmRestorationFromZip({
     required String zipFilePathName,
     required List<String> playlistTitlesLst,
@@ -1189,6 +1193,8 @@ class WarningMessageVM extends ChangeNotifier {
     required List<String> deletedExistingPlaylistTitlesLst,
     required int deletedCommentNumber,
     required int playlistsStartPosition,
+    required int addedSortFilterNumber,
+    required int removedSortFilterNumber,
   }) {
     _zipFilePathName = zipFilePathName;
     _playlistTitlesLst = playlistTitlesLst;
@@ -1204,6 +1210,8 @@ class WarningMessageVM extends ChangeNotifier {
     _deletedExistingPlaylistTitlesLst = deletedExistingPlaylistTitlesLst;
     _deletedCommentNumber = deletedCommentNumber;
     _playlistsStartPosition = playlistsStartPosition;
+    _addedSortFilterNumber = addedSortFilterNumber;
+    _removedSortFilterNumber = removedSortFilterNumber;
 
     warningMessageType = WarningMessageType.restoreAppDataFromZip;
 

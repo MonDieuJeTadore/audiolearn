@@ -15933,6 +15933,7 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
+            doNotRestoreTheNamedSFparmsContainedInZip: false,
             closeRestoreConfirmDialog: false,
           );
 

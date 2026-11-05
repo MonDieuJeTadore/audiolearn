@@ -4263,13 +4263,29 @@ class PlaylistListVM extends ChangeNotifier {
       );
     }
 
+    int addedCount = 0;
+
     if (doRestoreNewSortFilterParms) {
-      // Merge the not presentnamed audio sort/filter parameters map
+      // Merge the not present named audio sort/filter parameters map
       settingsDataServiceZipVersion.namedAudioSortFilterParametersMap
           .forEach((key, value) {
         _settingsDataService.namedAudioSortFilterParametersMap
             .putIfAbsent(key, () => value);
       });
+
+      List<String> keysToRemove = [];
+
+      _settingsDataService.namedAudioSortFilterParametersMap
+          .forEach((key, value) {
+        if (!settingsDataServiceZipVersion.namedAudioSortFilterParametersMap
+            .containsKey(key)) {
+          keysToRemove.add(key);
+        }
+      });
+
+      for (String key in keysToRemove) {
+        _settingsDataService.namedAudioSortFilterParametersMap.remove(key);
+      }
     }
 
     // Merge the unnamed sort/filter history list

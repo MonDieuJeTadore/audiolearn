@@ -23871,9 +23871,13 @@ void main() {
         '''Restore multiple playlists with playlists deletion. Restoring playlists, comments, pictures
          and settings from zip file menu test.''', () {
       testWidgets(
-          '''Multiple playlists restore, not replace existing playlist, delete existing playlist. Restore
-           multiple playlists Windows zip containing 'audio_learn_emi'. The two playlists 'textToSpeech'
-           and 'new_updated_copy' are deleted.''', (WidgetTester tester) async {
+          '''Multiple playlists restore with SF restore, not replace existing playlist, delete existing
+           playlist. Restore multiple playlists Windows zip containing 'audio_learn_emi'. The two playlists
+           'textToSpeech' and 'new_updated_copy' are deleted.
+           
+           Since in the restored zip file 2 Sort Filter parameters are deleted and 2 Sort Filter parameters are
+           added, we verify that the Sort Filter parameters are correctly restored.''',
+          (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -23925,6 +23929,9 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: true,
+          doNotRestoreTheNamedSFparmsContainedInZip: false, // Ensure
+          // that named Sort Filter parameters are restored from the zip
+          // file
           closeRestoreConfirmDialog: false,
         );
 
@@ -23936,6 +23943,174 @@ void main() {
           isWarningConfirming: true,
           warningTitle: 'CONFIRMATION',
         );
+
+        // Verify that the restored sort/filter dropdown button
+        // list no longer contains the 2 suppressed Sort Filter items
+        // and contains the 2 added sort/filter items
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        final Finder dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        final Finder dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        // Tap on the current dropdown button item to open the dropdown
+        // button items list
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Scroll down the dropdown list to ensure all the checked items
+        // are visible for verification
+        await tester.drag(
+          dropDownButtonFinder,
+          const Offset(0, -800), // negative Y = scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Verify that the 'Suicide' sort/filter item was deleted
+        expect(find.text('Suicide'), findsNothing);
+
+        // Verify that the 'Livre 1' sort/filter item was deleted
+        expect(find.text('Livre 1'), findsNothing);
+
+        // Verify that the 'Title desc' sort/filter item was added
+        expect(find.text('Titre desc'), findsOneWidget);
+
+        // Verify that the 'Sort new' sort/filter item was added
+        expect(find.text('Sort new'), findsOneWidget);
+
+        // Verify that the 'Not pictured' sort/filter item was added
+        expect(find.text('Not pictured'), findsOneWidget);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Multiple playlists restore with SF restore, not replace existing playlist. Restore multiple
+            playlists Windows zip containing 'audio_learn_emi'. The two playlists 'textToSpeech' and
+            'new_updated_copy' are not deleted.
+           
+           Since in the restored zip file 2 Sort Filter parameters are deleted and 3 Sort Filter parameters are
+           added, we verify that the Sort Filter parameters are correctly restored.
+           ''', (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'restoring_playlists_with_deletion',
+          tapOnPlaylistToggleButton: false,
+        );
+
+        // Ensuring that the 'textToSpeech' playlist json file has
+        // an older modification date than the zip file to be restored.
+        // In this situation, even if we do not replace existing playlists,
+        // the 'textToSpeech' playlist will be deleted because its
+        // modification date is older than the zip file to be restored
+        // which does not contain it.
+
+        String textToSpeechJsonFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}appCopy${path.separator}playlists${path.separator}textToSpeech${path.separator}textToSpeech.json';
+
+        DateTime textToSpeechJsonDateTime = DateTime(2025, 10, 20, 12, 40, 16);
+
+        await DirUtil.setAllFileTimes(
+          filePathName: textToSpeechJsonFilePathName,
+          creationTime: textToSpeechJsonDateTime,
+          modificationTime: textToSpeechJsonDateTime,
+          accessTime: textToSpeechJsonDateTime,
+        );
+
+        String restorableZipFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}audioLearn_2025-10-20_13_41_28.zip';
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: restorableZipFilePathName,
+              path: restorableZipFilePathName,
+              size: 7460),
+        ]);
+
+        // Execute the 'Restore Playlists, Comments and Settings from Zip
+        // File ...' menu
+        await IntegrationTestUtil.executeRestorePlaylists(
+          tester: tester,
+          doReplaceExistingPlaylists: false,
+          doDeleteExistingPlaylistsNotContainedInZip: false,
+          doNotRestoreTheNamedSFparmsContainedInZip: false, // Ensure
+          // that named Sort Filter parameters are restored from the zip
+          // file
+          closeRestoreConfirmDialog: false,
+        );
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 0 playlist, 46 comment and 0 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 0 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from \"$restorableZipFilePathName\".",
+          isWarningConfirming: true,
+          warningTitle: 'CONFIRMATION',
+        );
+
+        // Verify that the restored sort/filter dropdown button
+        // list no longer contains the 2 suppressed Sort Filter items
+        // and contains the 2 added sort/filter items
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        final Finder dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        final Finder dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        // Tap on the current dropdown button item to open the dropdown
+        // button items list
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Scroll down the dropdown list to ensure all the checked items
+        // are visible for verification
+        await tester.drag(
+          dropDownButtonFinder,
+          const Offset(0, -800), // negative Y = scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Verify that the 'Suicide' sort/filter item was deleted
+        expect(find.text('Suicide'), findsNothing);
+
+        // Verify that the 'Livre 1' sort/filter item was deleted
+        expect(find.text('Livre 1'), findsNothing);
+
+        // Verify that the 'Title desc' sort/filter item was added
+        expect(find.text('Titre desc'), findsOneWidget);
+
+        // Verify that the 'Sort new' sort/filter item was added
+        expect(find.text('Sort new'), findsOneWidget);
+
+        // Verify that the 'Not pictured' sort/filter item was added
+        expect(find.text('Not pictured'), findsOneWidget);
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
@@ -24155,6 +24330,127 @@ void main() {
           isWarningConfirming: true,
           warningTitle: 'CONFIRMATION',
         );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Multiple playlists restore, replace existing playlist. Restore multiple playlists Windows
+           zip containing 'audio_learn_emi'. The two playlists 'textToSpeech' and 'new_updated_copy' are
+           not deleted.
+           
+           Since in the restored zip file 2 Sort Filter parameters are deleted and 3 Sort Filter parameters are
+           added, we verify that the Sort Filter parameters are correctly restored.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'restoring_playlists_with_deletion',
+          tapOnPlaylistToggleButton: false,
+        );
+
+        // Ensuring that the 'textToSpeech' playlist json file has
+        // an older modification date than the zip file to be restored.
+        // In this situation, even if we do not replace existing playlists,
+        // the 'textToSpeech' playlist will be deleted because its
+        // modification date is older than the zip file to be restored
+        // which does not contain it.
+
+        String textToSpeechJsonFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}appCopy${path.separator}playlists${path.separator}textToSpeech${path.separator}textToSpeech.json';
+
+        DateTime textToSpeechJsonDateTime = DateTime(2025, 10, 20, 12, 40, 16);
+
+        await DirUtil.setAllFileTimes(
+          filePathName: textToSpeechJsonFilePathName,
+          creationTime: textToSpeechJsonDateTime,
+          modificationTime: textToSpeechJsonDateTime,
+          accessTime: textToSpeechJsonDateTime,
+        );
+
+        String restorableZipFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}audioLearn_2025-10-20_13_41_28.zip';
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: restorableZipFilePathName,
+              path: restorableZipFilePathName,
+              size: 7460),
+        ]);
+
+        // Execute the 'Restore Playlists, Comments and Settings from Zip
+        // File ...' menu
+        await IntegrationTestUtil.executeRestorePlaylists(
+          tester: tester,
+          doReplaceExistingPlaylists: true,
+          doDeleteExistingPlaylistsNotContainedInZip: false,
+          closeRestoreConfirmDialog: false,
+        );
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 1 playlist, 48 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 163 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from \"$restorableZipFilePathName\".",
+          isWarningConfirming: true,
+          warningTitle: 'CONFIRMATION',
+        );
+
+        // Verify that the restored sort/filter dropdown button
+        // list no longer contains the 2 suppressed Sort Filter items
+        // and contains the 2 added sort/filter items
+
+        // Tap the 'Toggle List' button to hide the list of playlist's.
+        await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+        await tester.pumpAndSettle();
+
+        final Finder dropDownButtonFinder =
+            find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+        final Finder dropDownButtonTextFinder = find.descendant(
+          of: dropDownButtonFinder,
+          matching: find.byType(Text),
+        );
+
+        // Tap on the current dropdown button item to open the dropdown
+        // button items list
+        await tester.tap(dropDownButtonTextFinder);
+        await tester.pumpAndSettle();
+
+        // Scroll down the dropdown list to ensure all the checked items
+        // are visible for verification
+        await tester.drag(
+          dropDownButtonFinder,
+          const Offset(0, -800), // negative Y = scroll down
+        );
+        await tester.pumpAndSettle();
+
+        // Verify that the 'Suicide' sort/filter item was deleted
+        expect(find.text('Suicide'), findsNothing);
+
+        // Verify that the 'Livre 1' sort/filter item was deleted
+        expect(find.text('Livre 1'), findsNothing);
+
+        // Verify that the 'Title desc' sort/filter item was added
+        expect(find.text('Titre desc'), findsOneWidget);
+
+        // Verify that the 'Sort new' sort/filter item was added
+        expect(find.text('Sort new'), findsOneWidget);
+
+        // Verify that the 'Not pictured' sort/filter item was added
+        expect(find.text('Not pictured'), findsOneWidget);
 
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub

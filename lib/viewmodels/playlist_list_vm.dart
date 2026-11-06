@@ -451,7 +451,7 @@ class PlaylistListVM extends ChangeNotifier {
     // _mergeRestoredFromZipSettingsWithCurrentAppSettings().
     if (!restoringPlaylistsCommentsAndSettingsJsonFilesFromZip) {
       _updateAndSavePlaylistOrder(
-          addExistingSettingsAudioSortFilterData:
+          doUpdateSortFilterParms:
               restoringPlaylistsCommentsAndSettingsJsonFilesFromZip,
           managePlaylistOrder: managePlaylistOrder);
     }
@@ -900,12 +900,19 @@ class PlaylistListVM extends ChangeNotifier {
   }
 
   /// Method called when the user confirms deleting the playlist.
-  void deletePlaylist({
+  ///
+  /// If [doUpdateSortFilterParms] is true,
+  /// the method returns a list which can contain two integers:
+  ///   sort/filter parameters added number,
+  ///   sort/filter parameters removed number.
+  List<int> deletePlaylist({
     required Playlist playlistToDelete,
+    bool doUpdateSortFilterParms = false,
   }) {
     // if the playlist to delete is local, then its id is its title ...
     int playlistToDeleteIndex = _listOfSelectablePlaylists
         .indexWhere((playlist) => playlist == playlistToDelete);
+    List<int> sortFilterUpdateResult = [];
 
     if (playlistToDeleteIndex != -1) {
       if (playlistToDelete.isSelected) {
@@ -923,7 +930,10 @@ class PlaylistListVM extends ChangeNotifier {
         playlistToDelete: playlistToDelete,
       );
       _listOfSelectablePlaylists.removeAt(playlistToDeleteIndex);
-      _updateAndSavePlaylistOrder();
+
+      sortFilterUpdateResult = _updateAndSavePlaylistOrder(
+        doUpdateSortFilterParms: doUpdateSortFilterParms,
+      ); // Causes the Sort Filter items to not be updated, which is a bug
 
       if (!_isOnePlaylistSelected) {
         _disableAllButtonsIfNoPlaylistIsSelected();
@@ -931,6 +941,8 @@ class PlaylistListVM extends ChangeNotifier {
 
       notifyListeners();
     }
+
+    return sortFilterUpdateResult;
   }
 
   void _setUniqueSelectedPlaylistToFalse() {
@@ -1094,13 +1106,17 @@ class PlaylistListVM extends ChangeNotifier {
   /// Method called when the user select the left appbar menu 'Restore Playlists,
   /// Comments and Settings from Zip File' in the playlist download view.
   ///
-  /// [addExistingSettingsAudioSortFilterData] is set to true when the
+  /// [doUpdateSortFilterParms] is set to true when the
   /// playlist order is updated and the existing audio sort/filter
   /// parameters data (_namedAudioSortFilterParametersMap and
   /// _searchHistoryAudioSortFilterParametersLst) is extracted from the existing
   /// settings file and added to the corresponding settings map.
-  void _updateAndSavePlaylistOrder({
-    bool addExistingSettingsAudioSortFilterData = false,
+  ///
+  /// Returns a list of two integers:
+  ///   sort/filter parameters added number,
+  ///   sort/filter parameters removed number.
+  List<int> _updateAndSavePlaylistOrder({
+    bool doUpdateSortFilterParms = false,
     bool managePlaylistOrder = false,
   }) {
     List<String> playlistOrderFromListOfSelectablePlaylists =
@@ -1136,14 +1152,28 @@ class PlaylistListVM extends ChangeNotifier {
       playlistOrder = playlistOrderFromListOfSelectablePlaylists;
     }
 
-    if (addExistingSettingsAudioSortFilterData) {
-      _settingsDataService
-          .updatePlaylistOrderAddExistingAudioSortFilterSettingsAndSave(
-              playlistOrder: playlistOrder);
+    List<int> sortFilterUpdateResult = [];
+
+    if (doUpdateSortFilterParms) {
+      if (sortFilterUpdateResult.isEmpty) {
+        sortFilterUpdateResult = _settingsDataService
+            .updatePlaylistOrderAndUpdateExistingAudioSortFilterSettingsAndSave(
+                playlistOrder: playlistOrder);
+      } else {
+        // The sort/filter update result is not empty, so we just update
+        // the playlist order without modifying the result since at next
+        // updatePlaylistOrderAndUpdateExistingAudioSortFilterSettingsAndSave
+        // call, the result will contain [0, 0]
+        _settingsDataService
+            .updatePlaylistOrderAndUpdateExistingAudioSortFilterSettingsAndSave(
+                playlistOrder: playlistOrder);
+      }
     } else {
       _settingsDataService.updatePlaylistOrderAndSaveSettings(
           playlistOrder: playlistOrder);
     }
+
+    return sortFilterUpdateResult;
   }
 
   void moveSelectedPlaylistDown({
@@ -4067,7 +4097,7 @@ class PlaylistListVM extends ChangeNotifier {
     required String zipFilePathName,
     required bool doReplaceExistingPlaylists,
     required bool doDeleteExistingPlaylists,
-    required bool doRestoreNewSortFilterParms,
+    required bool doUpdateSortFilterParms,
   }) async {
     String selectedPlaylistBeforeRestoreTitle = '';
 
@@ -4096,19 +4126,34 @@ class PlaylistListVM extends ChangeNotifier {
     //  9 were new playlists added at end of non empty playlist list,
     //  10 deleted existing playlist title list,
     //  11 deleted comment number,
-    //  12 number of added sort/filter parameters,
-    //  13 removed sort/filter parameters number.
+    //  12 sort/filter update result as an empty list or a list of two integers:
+    //     sort/filter parameters added number,
+    //     sort/filter parameters removed number.
     List<dynamic> restoredInfoLst = await _restoreFilesFromZip(
       zipFilePathName: zipFilePathName,
       doReplaceExistingPlaylists: doReplaceExistingPlaylists,
       doDeleteExistingPlaylists: doDeleteExistingPlaylists,
+      doUpdateSortFilterParms: doUpdateSortFilterParms,
     );
+
+    List<int> sortFilterAddedAndRemovedNumber = restoredInfoLst[12];
 
     // Combining the restored app settings with the current app
     // settings
-    List<int> sortFilterAddedAndRRemovedNumber = await _mergeRestoredFromZipSettingsWithCurrentAppSettings(
-      doRestoreNewSortFilterParms: doRestoreNewSortFilterParms,
-    );
+    if (sortFilterAddedAndRemovedNumber.isEmpty) {
+      sortFilterAddedAndRemovedNumber =
+          await _mergeRestoredFromZipSettingsWithCurrentAppSettings(
+        doUpdateSortFilterParms: doUpdateSortFilterParms,
+      );
+    } else {
+        // The sortFilterAddedAndRemovedNumber is not empty, so we don't
+        // update it with the result returned by calling
+        // _mergeRestoredFromZipSettingsWithCurrentAppSettings, otherwise,
+        // the result will contain [0, 0]
+      await _mergeRestoredFromZipSettingsWithCurrentAppSettings(
+        doUpdateSortFilterParms: doUpdateSortFilterParms,
+      );
+    }
 
     updateSettingsAndPlaylistJsonFiles(
       unselectAddedPlaylist:
@@ -4157,8 +4202,8 @@ class PlaylistListVM extends ChangeNotifier {
       newPlaylistsAddedAtEndOfPlaylistLst: restoredInfoLst[9],
       deletedExistingPlaylistTitlesLst: restoredInfoLst[10],
       deletedCommentNumber: restoredInfoLst[11],
-      addedSortFilterNumber: sortFilterAddedAndRRemovedNumber[0],
-      removedSortFilterNumber: sortFilterAddedAndRRemovedNumber[1],
+      addedSortFilterNumber: sortFilterAddedAndRemovedNumber[0],
+      removedSortFilterNumber: sortFilterAddedAndRemovedNumber[1],
       playlistsStartPosition: playlistRestoreStartPosition,
     );
 
@@ -4211,8 +4256,12 @@ class PlaylistListVM extends ChangeNotifier {
   /// the restoration from the zip file was already loaded and is in the private
   /// variable _settingsDataService. Now, the app settings file is the settings
   /// file restored from the zip file.
+  ///
+  /// Returns a list of two integers:
+  ///   sort/filter parameters added number,
+  ///   sort/filter parameters removed number.
   Future<List<int>> _mergeRestoredFromZipSettingsWithCurrentAppSettings({
-    required bool doRestoreNewSortFilterParms,
+    required bool doUpdateSortFilterParms,
   }) async {
     final SettingsDataService settingsDataServiceZipVersion =
         SettingsDataService();
@@ -4270,7 +4319,7 @@ class PlaylistListVM extends ChangeNotifier {
     int sortFilterAddedCount = 0;
     int sortFilterRemovedCount = 0;
 
-    if (doRestoreNewSortFilterParms) {
+    if (doUpdateSortFilterParms) {
       // Merge the not present named audio sort/filter parameters map
       final Map<String, AudioSortFilterParameters> currentMap =
           _settingsDataService.namedAudioSortFilterParametersMap;
@@ -4337,11 +4386,15 @@ class PlaylistListVM extends ChangeNotifier {
   ///  9 were new playlists added at end of non empty playlist list
   ///  10 deleted existing playlist title list
   ///  11 deleted comment number,
+  ///  12 sort/filter update result as an empty list or a list of two integers:
+  ///     sort/filter parameters added number,
+  ///     sort/filter parameters removed number,
   /// ]
   Future<List<dynamic>> _restoreFilesFromZip({
     required String zipFilePathName,
     required bool doReplaceExistingPlaylists,
     required bool doDeleteExistingPlaylists,
+    required bool doUpdateSortFilterParms,
   }) async {
     Map<String, String> zipExistingPlaylistJsonContentsMap = {};
     List<String> existingPlaylistTitlesLst =
@@ -4677,9 +4730,10 @@ class PlaylistListVM extends ChangeNotifier {
     } // End of for loop iterating over the archive files.
 
     List<String> deletedExistingPlaylistTitlesLst = [];
+    List<int> sortFilterUpdateResult = [];
 
     if (!wasIndividualPlaylistRestored && doDeleteExistingPlaylists) {
-      deletedExistingPlaylistTitlesLst =
+      List<dynamic> results =
           await _deleteExistingPlaylistsNotContainedInMultiplePlaylistsZip(
         existingPlaylistTitlesLst: existingPlaylistTitlesLst,
         playlistInZipTitleLst: playlistInZipTitleLst,
@@ -4687,7 +4741,11 @@ class PlaylistListVM extends ChangeNotifier {
             _getZipCreationDateFromFileName(path.basename(zipFilePathName)) ??
                 zipFile.lastModifiedSync(),
         playlistRootPath: playlistRootPath,
+        doUpdateSortFilterParms: doUpdateSortFilterParms,
       );
+
+      deletedExistingPlaylistTitlesLst = results[0] as List<String>;
+      sortFilterUpdateResult = results[1] as List<int>;
     }
 
     // Add missing audios references + their comments +
@@ -4728,6 +4786,8 @@ class PlaylistListVM extends ChangeNotifier {
     //                                       end of non empty playlist list
     restoredInfoLst.add(deletedExistingPlaylistTitlesLst);
     restoredInfoLst.add(restoredNumberLst[6]); // number of deleted comments
+    restoredInfoLst.add(
+        sortFilterUpdateResult); // sort/filter update result as a list of two integers
 
     return restoredInfoLst;
   }
@@ -4742,15 +4802,20 @@ class PlaylistListVM extends ChangeNotifier {
   /// false. It is only called when restoring multiple playlists and not unique playlist
   /// from a zip file.
   ///
-  /// The method returns a list containing the deleted existing playlist titles.
-  Future<List<String>>
+  /// The method returns a list containing the list of deleted existing playlist titles
+  /// and optionally the sort/filter update result as a list of two integers:
+  ///   sort/filter parameters added number,
+  ///   sort/filter parameters removed number.
+  Future<List<dynamic>>
       _deleteExistingPlaylistsNotContainedInMultiplePlaylistsZip({
     required List<String> existingPlaylistTitlesLst,
     required List<String> playlistInZipTitleLst,
     required DateTime restoreZipDateTime,
     required String playlistRootPath,
+    required bool doUpdateSortFilterParms,
   }) async {
     List<String> deletedExistingPlaylistTitlesLst = [];
+    List<int> sortFilterUpdateResult = [];
 
     for (String existingPlaylistTitle in existingPlaylistTitlesLst) {
       if (!playlistInZipTitleLst.contains(existingPlaylistTitle)) {
@@ -4802,9 +4867,21 @@ class PlaylistListVM extends ChangeNotifier {
         }
 
         if (newestAudioDateTime.isBefore(restoreZipDateTime)) {
-          deletePlaylist(
-            playlistToDelete: existingPlaylistNotContainedInZipFile,
-          );
+          if (sortFilterUpdateResult.isEmpty) {
+            sortFilterUpdateResult = deletePlaylist(
+              playlistToDelete: existingPlaylistNotContainedInZipFile,
+              doUpdateSortFilterParms: doUpdateSortFilterParms,
+            );
+          } else {
+            // The sort/filter update result is not empty, so we just update
+            // the playlist order without modifying the result since at next
+            // updatePlaylistOrderAndUpdateExistingAudioSortFilterSettingsAndSave
+            // call, the result will contain [0, 0]
+            deletePlaylist(
+              playlistToDelete: existingPlaylistNotContainedInZipFile,
+              doUpdateSortFilterParms: doUpdateSortFilterParms,
+            );
+          }
           deletedExistingPlaylistTitlesLst.add(existingPlaylistTitle);
         }
       }
@@ -4812,7 +4889,10 @@ class PlaylistListVM extends ChangeNotifier {
 
     notifyListeners();
 
-    return deletedExistingPlaylistTitlesLst;
+    return [
+      deletedExistingPlaylistTitlesLst,
+      sortFilterUpdateResult,
+    ];
   }
 
   DateTime? _getZipCreationDateFromFileName(String zipFileName) {

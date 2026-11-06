@@ -85,10 +85,12 @@ class SettingsDataService {
       // This changes when the user clicks on the playlist toggle button.
       Playlists.arePlaylistsDisplayedInPlaylistDownloadView: true,
       Playlists.maxSavableAudioMp3FileSizeInMb: kMp3ZipFileSizeLimitInMb,
-      Playlists.onWindowsPlayVolumeInPercentage: kWindowsSystemVolume, // 2 (in constructor, if isTest is true)
+      Playlists.onWindowsPlayVolumeInPercentage:
+          kWindowsSystemVolume, // 2 (in constructor, if isTest is true)
 
       // Must be set as String and not as DateTime
-      Playlists.latestGlobalRestoredAudioDate: DateTime(2000, 1, 1).toIso8601String(),
+      Playlists.latestGlobalRestoredAudioDate:
+          DateTime(2000, 1, 1).toIso8601String(),
     },
     SettingType.dataLocation: {
       DataLocation.appSettingsPath: '',
@@ -144,7 +146,8 @@ class SettingsDataService {
       _settings[SettingType.appPosition]![AppPosition.topY] = 25.0;
       _settings[SettingType.appPosition]![AppPosition.width] = 450.0;
       _settings[SettingType.appPosition]![AppPosition.height] = 850.0;
-      _settings[SettingType.playlists]![Playlists.onWindowsPlayVolumeInPercentage] = 2;
+      _settings[SettingType.playlists]![
+          Playlists.onWindowsPlayVolumeInPercentage] = 2;
     }
   }
 
@@ -222,7 +225,11 @@ class SettingsDataService {
   /// _searchHistoryAudioSortFilterParametersLst from the existing settings file
   /// and add their content to the current settings before and saving them in the
   /// settings file.
-  void updatePlaylistOrderAddExistingAudioSortFilterSettingsAndSave({
+  /// 
+  /// Returns a list of two integers: 
+  ///   sort/filter parameters added number,
+  ///   sort/filter parameters removed number.
+  List<int> updatePlaylistOrderAndUpdateExistingAudioSortFilterSettingsAndSave({
     required List<String> playlistOrder,
   }) {
     _settings[SettingType.playlists]![Playlists.orderedTitleLst] =
@@ -237,6 +244,9 @@ class SettingsDataService {
         "$applicationPath${Platform.pathSeparator}$kSettingsFileName";
     final File settingsFile = File(settingsFilePath);
 
+    int sortFilterAddedCount = 0;
+    int sortFilterRemovedCount = 0;
+
     // If the settings file exists, extract the audio sort/filter settings.
     if (settingsFile.existsSync()) {
       try {
@@ -248,9 +258,25 @@ class SettingsDataService {
           final Map<String, dynamic> namedSettingsJson =
               existingSettings['namedAudioSortFilterSettings'];
           namedSettingsJson.forEach((audioKey, audioValue) {
-            _namedAudioSortFilterParametersMap[audioKey] =
-                AudioSortFilterParameters.fromJson(audioValue);
+            if (!_namedAudioSortFilterParametersMap.containsKey(audioKey)) {
+              _namedAudioSortFilterParametersMap[audioKey] =
+                  AudioSortFilterParameters.fromJson(audioValue);
+              sortFilterAddedCount++;
+            }
           });
+
+          List<String> keysToRemove = [];
+          _namedAudioSortFilterParametersMap.forEach((key, value) {
+            if (!namedSettingsJson.containsKey(key)) {
+              keysToRemove.add(key);
+            }
+          });
+
+          for (String key in keysToRemove) {
+            _namedAudioSortFilterParametersMap.remove(key);
+          }
+
+          sortFilterRemovedCount = keysToRemove.length;
         }
 
         // Extract the search history of audio sort/filter parameters if it exists.
@@ -269,6 +295,11 @@ class SettingsDataService {
 
     // Save the updated settings (including the merged audio sort/filter settings)
     _saveSettings();
+
+    return [
+      sortFilterAddedCount,
+      sortFilterRemovedCount,
+    ];
   }
 
   // Save settings to a JSON file. This method is not private because

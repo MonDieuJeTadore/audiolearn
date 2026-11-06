@@ -878,14 +878,14 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                   resultStringLst.contains('0');
               final bool doDeleteExistingPlaylists =
                   resultStringLst.contains('1');
-              final bool doRestoreNewSortFilterParms =
+              final bool doUpdateSortFilterParms =
                   !resultStringLst.contains('2');
 
               await UiUtil.restorePlaylistsCommentsAndAppSettingsFromZip(
                 context: context,
                 doReplaceExistingPlaylists: doReplaceExistingPlaylists,
                 doDeleteExistingPlaylists: doDeleteExistingPlaylists,
-                doRestoreNewSortFilterParms: doRestoreNewSortFilterParms,
+                doUpdateSortFilterParms: doUpdateSortFilterParms,
               );
             });
             break;

@@ -1931,7 +1931,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get doNotRestoreSortFilterParameters =>
-      'Do not restore the named\nnew sort filter parameters';
+      'Do not update the named\nsort filter parameters';
 
   @override
   String get playlistRestorationDialogTitle => 'Playlists Restoration';

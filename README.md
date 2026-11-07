@@ -1,16 +1,9 @@
-# audiolearn
+AudioLearn allows you to download audio from videos included in Youtube playlists whose links are added to the application, or from individual Youtube videos using their URLs.
 
-A new Flutter project.
+You can also import audio files, such as audiobooks, directly into the application or convert text into audio. This feature is particularly useful for listening to written prayers found on the Internet.
 
-## Getting Started
+In addition to listening the audio files, AudioLearn offers the ability to add timestamped comments to each file, making it easier to replay their most interesting parts.
 
-This project is a starting point for a Flutter application.
+It is also possible to extract the parts marked by comments into a new MP3 file, which can then be shared by email or via WhatsApp, or added to an existing playlist.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Finally, the app allows you to sort and filter audio files based on various criteria in order to select the listenable audios.

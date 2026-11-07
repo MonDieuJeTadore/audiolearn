@@ -3130,7 +3130,7 @@ abstract class AppLocalizations {
   /// No description provided for @doNotRestoreSortFilterParameters.
   ///
   /// In en, this message translates to:
-  /// **'Do not restore the named\nnew sort filter parameters'**
+  /// **'Do not update the named\nsort filter parameters'**
   String get doNotRestoreSortFilterParameters;
 
   /// No description provided for @playlistRestorationDialogTitle.

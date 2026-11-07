@@ -1946,7 +1946,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get doNotRestoreSortFilterParameters =>
-      'Ne pas restaurer les\nparamètres nommés de\ntri et filtre nouveaux';
+      'Ne pas mettre à jour\nles paramètres nommés\nde tri et filtre';
 
   @override
   String get playlistRestorationDialogTitle => 'Restauration des playlists';

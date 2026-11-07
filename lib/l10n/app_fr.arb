@@ -1289,7 +1289,7 @@
   "addedToZipPictureNumberMessage": "\n\nEgalement {pictureNumber} fichier(s) de photo JPG sauvegardé(s) dans le fichier ZIP.",
   "replaceExistingPlaylists": "Remplacer la/les\nplaylist(s) existante(s)",
   "deleteExistingPlaylists": "Supprimer les playlists\nexistantes non présentes\ndans le fichier ZIP",
-  "doNotRestoreSortFilterParameters": "Ne pas restaurer les\nparamètres nommés de\ntri et filtre nouveaux",
+  "doNotRestoreSortFilterParameters": "Ne pas mettre à jour\nles paramètres nommés\nde tri et filtre",
   "playlistRestorationDialogTitle": "Restauration des playlists",
   "playlistRestorationExplanation": "Important: si vous avez apporté des modifications à vos playlists existantes (ajout de fichiers audio, de commentaires ou d'images) depuis la création de la sauvegarde ZIP, gardez la case 'Remplacer la/les playlist(s) existante(s)' DÉCOCHÉE. Sinon, vos modifications récentes seront remplacées par les versions antérieures contenues dans la sauvegarde.\n\nLes playlists absentes du ZIP ne sont supprimées que si elles existaient AVANT la sauvegarde. Les playlists créées ou modifiées APRÈS sont automatiquement protégées, même si la case de suppression est cochée.",
   "playlistRestorationHelpTitle": "Fonction de restauration des playlists",

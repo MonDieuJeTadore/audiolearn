@@ -1949,11 +1949,19 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ne pas mettre à jour\nles paramètres nommés\nde tri et filtre';
 
   @override
+  String get doNotRestoreSortFilterParametersHelpTitle =>
+      'Mise à jour des paramètres nommés de tri et filtre';
+
+  @override
+  String get doNotRestoreSortFilterParametersHelpContent =>
+      'En cliquant sur la case à cocher, vous allez éviter que les paramètres de tri et filtre présents dans votre application soient mis à jour par les paramètres de tri et filtre contenus dans le fichier ZIP. Cette mise à jour ne peut s\'effectuer que si l\'on restaure de multiples playlists. Si un fichier ZIP ne contenant qu\'une seule playlist est restauré, cette mise à jour ne sera pas effectuée et donc cliquer ou ne pas cliquer la case à cocher n\'a aucun impact.';
+
+  @override
   String get playlistRestorationDialogTitle => 'Restauration des playlists';
 
   @override
   String get playlistRestorationExplanation =>
-      'Important: si vous avez apporté des modifications à vos playlists existantes (ajout de fichiers audio, de commentaires ou d\'images) depuis la création de la sauvegarde ZIP, gardez la case \'Remplacer la/les playlist(s) existante(s)\' DÉCOCHÉE. Sinon, vos modifications récentes seront remplacées par les versions antérieures contenues dans la sauvegarde.\n\nLes playlists absentes du ZIP ne sont supprimées que si elles existaient AVANT la sauvegarde. Les playlists créées ou modifiées APRÈS sont automatiquement protégées, même si la case de suppression est cochée.';
+      'Important: si vous avez apporté des modifications à vos playlists existantes (ajout de fichiers audio, de commentaires ou d\'images) depuis la création de la sauvegarde ZIP, gardez la case \'Remplacer la/les playlist(s) existante(s)\' DÉCOCHÉE. Sinon, vos modifications récentes seront remplacées par les versions antérieures contenues dans le ZIP.\n\nLes playlists absentes du ZIP ne sont supprimées que si elles existaient AVANT la création du ZIP. Les playlists créées ou modifiées APRÈS sont automatiquement protégées, même si la case de suppression est cochée.';
 
   @override
   String get playlistRestorationHelpTitle =>

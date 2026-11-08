@@ -3133,6 +3133,18 @@ abstract class AppLocalizations {
   /// **'Do not update the named\nsort filter parameters'**
   String get doNotRestoreSortFilterParameters;
 
+  /// No description provided for @doNotRestoreSortFilterParametersHelpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating the named sort filter parameters'**
+  String get doNotRestoreSortFilterParametersHelpTitle;
+
+  /// No description provided for @doNotRestoreSortFilterParametersHelpContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking this box prevents the sort and filter parameters in your application from being updated with the sort and filter parameters contained in the ZIP file. This update only occurs when multiple playlists are restored. If the ZIP file contains only one playlist, no update is performed, so checking or unchecking this box has no effect.'**
+  String get doNotRestoreSortFilterParametersHelpContent;
+
   /// No description provided for @playlistRestorationDialogTitle.
   ///
   /// In en, this message translates to:
@@ -3142,7 +3154,7 @@ abstract class AppLocalizations {
   /// No description provided for @playlistRestorationExplanation.
   ///
   /// In en, this message translates to:
-  /// **'Important: if you\'ve modified your existing playlists (added audio files, comments, or pictures) since creating the ZIP backup, keep the \'Replace existing playlist(s)\' checkbox UNCHECKED. Otherwise, your recent changes will be replaced by the older versions contained in the backup.\n\nPlaylists not in the ZIP will only be deleted if they existed BEFORE the backup was created. Any playlists created or modified AFTER the backup date are automatically protected and will be kept, even if the delete checkbox is checked.'**
+  /// **'Important: if you\'ve modified your existing playlists (added audio files, comments, or pictures) since creating the ZIP backup, keep the \'Replace existing playlist(s)\' checkbox UNCHECKED. Otherwise, your recent changes will be replaced by the older versions contained in the ZIP backup.\n\nPlaylists not in the ZIP will only be deleted if they existed BEFORE the ZIP was created. Any playlists created or modified AFTER the backup ZIP date are automatically protected and will be kept, even if the delete checkbox is checked.'**
   String get playlistRestorationExplanation;
 
   /// No description provided for @playlistRestorationHelpTitle.

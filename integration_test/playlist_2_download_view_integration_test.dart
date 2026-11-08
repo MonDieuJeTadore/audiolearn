@@ -24115,6 +24115,7 @@ void main() {
           isWarningConfirming: true,
           warningTitle: 'CONFIRMATION',
         );
+
         // Verify that the restored sort/filter dropdown button
         // list no longer contains the 2 suppressed Sort Filter items
         // and contains the 2 added sort/filter items
@@ -24289,7 +24290,11 @@ void main() {
       testWidgets(
           '''Multiple playlists restore, replace existing playlist. Restore multiple playlists Windows
            zip containing 'audio_learn_emi'. The two playlists 'textToSpeech' and 'new_updated_copy' are
-           deleted.''', (WidgetTester tester) async {
+           deleted.
+           
+           Since in the restored zip file 2 Sort Filter parameters are deleted and 3 Sort Filter parameters are
+           added, we verify that the Sort Filter parameters are correctly restored.
+           ''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -24341,6 +24346,9 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: true,
           doDeleteExistingPlaylistsNotContainedInZip: true,
+          doNotRestoreTheNamedSFparmsContainedInZip: false, // Ensure
+          // that named Sort Filter parameters are restored from the zip
+          // file
           closeRestoreConfirmDialog: false,
         );
 
@@ -24353,6 +24361,13 @@ void main() {
           warningTitle: 'CONFIRMATION',
         );
 
+        // Verify that the restored sort/filter dropdown button
+        // list no longer contains the 2 suppressed Sort Filter items
+        // and contains the 2 added sort/filter items
+        await _verifySFparmsRestoration(
+          tester: tester,
+        );
+
         // Purge the test playlist directory so that the created test
         // files are not uploaded to GitHub
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -24362,7 +24377,11 @@ void main() {
       testWidgets(
           '''Multiple playlists restore, replace existing playlist. Restore multiple playlists Windows
            zip containing 'audio_learn_emi'. The two playlists 'textToSpeech' and 'new_updated_copy' are
-           not deleted.''', (WidgetTester tester) async {
+           deleted.
+            
+           Since in the restored zip file Sort Filter parameters are not restored we verify that the Sort Filter
+           parameters deleted and added in the zip file are not restored.
+           ''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -24413,7 +24432,10 @@ void main() {
         await IntegrationTestUtil.executeRestorePlaylists(
           tester: tester,
           doReplaceExistingPlaylists: true,
-          doDeleteExistingPlaylistsNotContainedInZip: false,
+          doDeleteExistingPlaylistsNotContainedInZip: true,
+          doNotRestoreTheNamedSFparmsContainedInZip: true, // Ensure
+          // that named Sort Filter parameters are not restored from
+          // the zip file
           closeRestoreConfirmDialog: false,
         );
 
@@ -24421,9 +24443,16 @@ void main() {
         await IntegrationTestUtil.verifyAndCloseWarningDialog(
           tester: tester,
           warningDialogMessage:
-              "Restored 1 playlist, 48 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 163 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from \"$restorableZipFilePathName\".",
+              "Restored 1 playlist, 48 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 163 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from \"$restorableZipFilePathName\".\n\nDeleted 2 playlist(s)\n  \"new_updated_copy\",\n  \"textToSpeech\"\nno longer present in the restore ZIP file and not created or modified after the ZIP creation.",
           isWarningConfirming: true,
           warningTitle: 'CONFIRMATION',
+        );
+
+        // Verify that the restored sort/filter dropdown button
+        // list no longer contains the 2 suppressed Sort Filter items
+        // and contains the 2 added sort/filter items
+        await _verifySFparmsNotRestoration(
+          tester: tester,
         );
 
         // Purge the test playlist directory so that the created test
@@ -24491,6 +24520,94 @@ void main() {
           tester: tester,
           doReplaceExistingPlaylists: true,
           doDeleteExistingPlaylistsNotContainedInZip: false,
+          doNotRestoreTheNamedSFparmsContainedInZip: false, // Ensure
+          // that named Sort Filter parameters are restored from the zip
+          // file
+          closeRestoreConfirmDialog: false,
+        );
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 1 playlist, 48 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 163 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from \"$restorableZipFilePathName\".",
+          isWarningConfirming: true,
+          warningTitle: 'CONFIRMATION',
+        );
+
+        // Verify that the Sort Filter parameters are not restored
+        await _verifySFparmsRestoration(
+          tester: tester,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Multiple playlists restore, replace existing playlist. Restore multiple playlists Windows
+           zip containing 'audio_learn_emi'. The two playlists 'textToSpeech' and 'new_updated_copy' are
+           not deleted.
+           
+           Since in the restored zip file 2 Sort Filter parameters are deleted and 3 Sort Filter parameters are
+           added, we verify that the Sort Filter parameters are correctly restored.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'restoring_playlists_with_deletion',
+          tapOnPlaylistToggleButton: false,
+        );
+
+        // Ensuring that the 'textToSpeech' playlist json file has
+        // an older modification date than the zip file to be restored.
+        // In this situation, even if we do not replace existing playlists,
+        // the 'textToSpeech' playlist will be deleted because its
+        // modification date is older than the zip file to be restored
+        // which does not contain it.
+
+        String textToSpeechJsonFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}appCopy${path.separator}playlists${path.separator}textToSpeech${path.separator}textToSpeech.json';
+
+        DateTime textToSpeechJsonDateTime = DateTime(2025, 10, 20, 12, 40, 16);
+
+        await DirUtil.setAllFileTimes(
+          filePathName: textToSpeechJsonFilePathName,
+          creationTime: textToSpeechJsonDateTime,
+          modificationTime: textToSpeechJsonDateTime,
+          accessTime: textToSpeechJsonDateTime,
+        );
+
+        String restorableZipFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}audioLearn_2025-10-20_13_41_28.zip';
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: restorableZipFilePathName,
+              path: restorableZipFilePathName,
+              size: 7460),
+        ]);
+
+        // Execute the 'Restore Playlists, Comments and Settings from Zip
+        // File ...' menu
+        await IntegrationTestUtil.executeRestorePlaylists(
+          tester: tester,
+          doReplaceExistingPlaylists: true,
+          doDeleteExistingPlaylistsNotContainedInZip: false,
+          doNotRestoreTheNamedSFparmsContainedInZip: false, // Ensure
+          // that named Sort Filter parameters are restored from the zip
+          // file
           closeRestoreConfirmDialog: false,
         );
 
@@ -24507,6 +24624,91 @@ void main() {
         // list no longer contains the 2 suppressed Sort Filter items
         // and contains the 2 added sort/filter items
         await _verifySFparmsRestoration(
+          tester: tester,
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Multiple playlists restore, replace existing playlist. Restore multiple playlists Windows
+           zip containing 'audio_learn_emi'. The two playlists 'textToSpeech' and 'new_updated_copy' are
+           not deleted.           
+            
+           Since in the restored zip file Sort Filter parameters are not restored we verify that the Sort Filter
+           parameters deleted and added in the zip file are not restored.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'restoring_playlists_with_deletion',
+          tapOnPlaylistToggleButton: false,
+        );
+
+        // Ensuring that the 'textToSpeech' playlist json file has
+        // an older modification date than the zip file to be restored.
+        // In this situation, even if we do not replace existing playlists,
+        // the 'textToSpeech' playlist will be deleted because its
+        // modification date is older than the zip file to be restored
+        // which does not contain it.
+
+        String textToSpeechJsonFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}appCopy${path.separator}playlists${path.separator}textToSpeech${path.separator}textToSpeech.json';
+
+        DateTime textToSpeechJsonDateTime = DateTime(2025, 10, 20, 12, 40, 16);
+
+        await DirUtil.setAllFileTimes(
+          filePathName: textToSpeechJsonFilePathName,
+          creationTime: textToSpeechJsonDateTime,
+          modificationTime: textToSpeechJsonDateTime,
+          accessTime: textToSpeechJsonDateTime,
+        );
+
+        String restorableZipFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}audioLearn_2025-10-20_13_41_28.zip';
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: restorableZipFilePathName,
+              path: restorableZipFilePathName,
+              size: 7460),
+        ]);
+
+        // Execute the 'Restore Playlists, Comments and Settings from Zip
+        // File ...' menu
+        await IntegrationTestUtil.executeRestorePlaylists(
+          tester: tester,
+          doReplaceExistingPlaylists: true,
+          doDeleteExistingPlaylistsNotContainedInZip: false,
+          doNotRestoreTheNamedSFparmsContainedInZip: true, // Ensure
+          // that named Sort Filter parameters are not restored from
+          // the zip file
+          closeRestoreConfirmDialog: false,
+        );
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 1 playlist, 48 comment and 1 picture JSON files as well as 0 picture JPG file(s) in the application pictures directory and 163 audio reference(s) and 0 added plus 0 deleted plus 0 modified comment(s) in existing audio comment file(s) and the application settings from \"$restorableZipFilePathName\".",
+          isWarningConfirming: true,
+          warningTitle: 'CONFIRMATION',
+        );
+
+        // Verify that the Sort Filter parameters are not restored
+        await _verifySFparmsNotRestoration(
           tester: tester,
         );
 

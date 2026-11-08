@@ -839,6 +839,13 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                 helpContent: '',
                 displayHelpItemNumber: false,
               ),
+              HelpItem(
+                helpTitle: AppLocalizations.of(context)!
+                    .doNotRestoreSortFilterParametersHelpTitle,
+                helpContent: AppLocalizations.of(context)!
+                    .doNotRestoreSortFilterParametersHelpContent,
+                displayHelpItemNumber: false,
+              ),
             ];
 
             showDialog<List<String>>(

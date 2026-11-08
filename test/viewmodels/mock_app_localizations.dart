@@ -3472,4 +3472,12 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get backButtonTooltip => "Back";
+
+  @override
+  String get doNotRestoreSortFilterParametersHelpContent =>
+      "Checking this box prevents the sort and filter parameters in your application from being updated with the sort and filter parameters contained in the ZIP file. This update only occurs when multiple playlists are restored. If the ZIP file contains only one playlist, no update is performed, so checking or unchecking this box has no effect.";
+
+  @override
+  String get doNotRestoreSortFilterParametersHelpTitle =>
+      "Updating the named sort filter parameters";
 }

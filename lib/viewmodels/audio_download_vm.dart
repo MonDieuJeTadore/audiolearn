@@ -391,8 +391,7 @@ class AudioDownloadVM extends ChangeNotifier {
     );
 
     for (String audioToRenameFilePathName in audioFilePathNameLst) {
-      String audioToRenameFileName =
-          audioToRenameFilePathName.split(Platform.pathSeparator).last;
+      String audioToRenameFileName = path.basename(audioToRenameFilePathName);
 
       final match = regex.firstMatch(audioToRenameFileName);
       String audioTitleInAudioToRenameFileName = '';
@@ -1026,8 +1025,14 @@ class AudioDownloadVM extends ChangeNotifier {
   }) {
     final Audio audioBeforeFileRename = audio.copy();
 
-    if (!audioModifiedFileName.endsWith('.mp3')) {
-      // adding the .mp3 extension if the user did not add it
+    if (audioModifiedFileName.toLowerCase().endsWith('.mp3')) {
+      // Normalizing the extension to lowercase so that the comment
+      // and picture file names are correctly derived renamed and
+      // not renamed with a file name containing .MP3 in uppercase.
+      audioModifiedFileName =
+          '${audioModifiedFileName.substring(0, audioModifiedFileName.length - 4)}.mp3';
+    } else {
+      // Adding the .mp3 extension if the user did not add it
       audioModifiedFileName = '$audioModifiedFileName.mp3';
     }
 
@@ -1041,9 +1046,15 @@ class AudioDownloadVM extends ChangeNotifier {
     }
 
     // Verifying if the new audio file name is already used
-    if (File(
-            '$playlistDownloadPath${Platform.pathSeparator}$audioModifiedFileName')
-        .existsSync()) {
+
+    final bool isCaseOnlyRename =
+        audioModifiedFileName.toLowerCase() == audioOldFileName.toLowerCase();
+
+    if (_isFilePathNameUsed(
+      filePathName:
+          '$playlistDownloadPath${Platform.pathSeparator}$audioModifiedFileName',
+      isCaseOnlyRename: isCaseOnlyRename,
+    )) {
       warningMessageVM.renameFileNameIsAlreadyUsed(
         invalidRenameFileName: audioModifiedFileName,
       );
@@ -1058,15 +1069,17 @@ class AudioDownloadVM extends ChangeNotifier {
       audioFileName: audioModifiedFileName,
     );
 
-    final String newCommentFileName =
-        newCommentFilePathName.split(Platform.pathSeparator).last;
+    final String newCommentFileName = path.basename(newCommentFilePathName);
     final String audioModifiedFileNameWithoutMp3Extension =
         DirUtil.getFileNameWithoutMp3Extension(
       mp3FileName: audioModifiedFileName,
     );
 
     // Verifying if the new comment file name is already used
-    if (File(newCommentFilePathName).existsSync()) {
+    if (_isFilePathNameUsed(
+      filePathName: newCommentFilePathName,
+      isCaseOnlyRename: isCaseOnlyRename,
+    )) {
       warningMessageVM.renameCommentFileNameIsAlreadyUsed(
         invalidRenameFileName: audioModifiedFileNameWithoutMp3Extension,
       );
@@ -1085,11 +1098,13 @@ class AudioDownloadVM extends ChangeNotifier {
       audioFileName: audioModifiedFileName,
     );
 
-    final String newPictureFileName =
-        newPictureFilePathName.split(Platform.pathSeparator).last;
+    final String newPictureFileName = path.basename(newPictureFilePathName);
 
     // Verifying if the new picture file name is already used
-    if (File(newPictureFilePathName).existsSync()) {
+    if (_isFilePathNameUsed(
+      filePathName: newPictureFilePathName,
+      isCaseOnlyRename: isCaseOnlyRename,
+    )) {
       warningMessageVM.renamePictureFileNameIsAlreadyUsed(
         invalidRenameFileName: audioModifiedFileNameWithoutMp3Extension,
       );
@@ -1189,6 +1204,37 @@ class AudioDownloadVM extends ChangeNotifier {
       model: enclosingPlaylist,
       path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
     );
+  }
+
+  /// Returns true if a file with exactly the passed file path name
+  /// exists.
+  ///
+  /// If the rename only changes the case of the file name, a
+  /// case-insensitive file system (Windows) considers the new name
+  /// as already used since it refers to the file being renamed. In
+  /// this case, the file names in the directory are compared exactly
+  /// in order to detect a real conflict on a case-sensitive file
+  /// system.
+  bool _isFilePathNameUsed({
+    required String filePathName,
+    required bool isCaseOnlyRename,
+  }) {
+    if (!isCaseOnlyRename) {
+      return File(filePathName).existsSync();
+    }
+
+    final Directory dir = Directory(path.dirname(filePathName));
+
+    if (!dir.existsSync()) {
+      return false;
+    }
+
+    final String fileName = path.basename(filePathName);
+
+    return dir
+        .listSync(followLinks: false)
+        .whereType<File>()
+        .any((File f) => path.basename(f.path) == fileName);
   }
 
   /// Method called by the AudioModificationDialog when the user clicks on the

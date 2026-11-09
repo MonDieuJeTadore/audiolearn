@@ -655,7 +655,7 @@ class DirUtil {
     for (FileSystemEntity entity
         in dir.listSync(recursive: false, followLinks: false)) {
       if (entity is File && pattern.hasMatch(entity.path)) {
-        fileNameList.add(entity.path.split(Platform.pathSeparator).last);
+        fileNameList.add(path.basename(entity.path));
       }
     }
 

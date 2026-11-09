@@ -4146,10 +4146,10 @@ class PlaylistListVM extends ChangeNotifier {
         doUpdateSortFilterParms: doUpdateSortFilterParms,
       );
     } else {
-        // The sortFilterAddedAndRemovedNumber is not empty, so we don't
-        // update it with the result returned by calling
-        // _mergeRestoredFromZipSettingsWithCurrentAppSettings, otherwise,
-        // the result will contain [0, 0]
+      // The sortFilterAddedAndRemovedNumber is not empty, so we don't
+      // update it with the result returned by calling
+      // _mergeRestoredFromZipSettingsWithCurrentAppSettings, otherwise,
+      // the result will contain [0, 0]
       await _mergeRestoredFromZipSettingsWithCurrentAppSettings(
         doUpdateSortFilterParms: doUpdateSortFilterParms,
       );
@@ -5579,6 +5579,10 @@ class PlaylistListVM extends ChangeNotifier {
     required List<Playlist> listOfPlaylists,
     bool uniquePlaylistIsRestored = false,
   }) async {
+    if (!uniquePlaylistIsRestored && listOfPlaylists.length == 1) {
+      uniquePlaylistIsRestored = true;
+    }
+
     if (Platform.isAndroid) {
       zipFilePathName = _removeSDCardId(zipFilePathName);
     }
@@ -6139,6 +6143,10 @@ class PlaylistListVM extends ChangeNotifier {
     required List<Playlist> listOfPlaylists,
     required bool uniquePlaylistIsRestored,
   }) async {
+    if (!uniquePlaylistIsRestored && listOfPlaylists.length == 1) {
+      uniquePlaylistIsRestored = true;
+    }
+
     if (Platform.isAndroid) {
       zipDirectoryPath = _removeSDCardId(zipDirectoryPath);
     }

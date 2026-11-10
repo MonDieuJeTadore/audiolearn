@@ -5579,10 +5579,6 @@ class PlaylistListVM extends ChangeNotifier {
     required List<Playlist> listOfPlaylists,
     bool uniquePlaylistIsRestored = false,
   }) async {
-    if (!uniquePlaylistIsRestored && listOfPlaylists.length == 1) {
-      uniquePlaylistIsRestored = true;
-    }
-
     if (Platform.isAndroid) {
       zipFilePathName = _removeSDCardId(zipFilePathName);
     }
@@ -6143,10 +6139,6 @@ class PlaylistListVM extends ChangeNotifier {
     required List<Playlist> listOfPlaylists,
     required bool uniquePlaylistIsRestored,
   }) async {
-    if (!uniquePlaylistIsRestored && listOfPlaylists.length == 1) {
-      uniquePlaylistIsRestored = true;
-    }
-
     if (Platform.isAndroid) {
       zipDirectoryPath = _removeSDCardId(zipDirectoryPath);
     }

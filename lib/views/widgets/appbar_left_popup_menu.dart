@@ -1047,6 +1047,13 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                     .playlistsMp3RestorationHelpContent,
                 displayHelpItemNumber: false,
               ),
+              HelpItem(
+                helpTitle: AppLocalizations.of(context)!
+                    .uniquePlaylistMp3RestorationHelpTitle,
+                helpContent: AppLocalizations.of(context)!
+                    .uniquePlaylistMp3RestorationHelpContent,
+                displayHelpItemNumber: false,
+              ),
             ];
 
             showDialog<List<String>>(
@@ -1059,10 +1066,13 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                       .audioMp3RestorationDialogTitle,
                   dialogCommentStr: AppLocalizations.of(context)!
                       .audioMp3RestorationExplanation,
-                  checkboxLabelLst: [],
+                  checkboxLabelLst: [
+                    AppLocalizations.of(context)!.uniquePlaylistIsRestoredLabel,
+                  ],
                   validationFunctionArgs: [],
                   canAllCheckBoxBeUnchecked: true,
                   helpItemsLst: restorePlaylistsHelpItemsLst,
+                  areCheckboxesOnRow: false, // Display checkboxes on column
                 );
               },
             ).then((resultStringLst) async {
@@ -1070,6 +1080,12 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                 // The case if the Cancel button was pressed.
                 return;
               }
+
+              // resultStringLst contains the indexes of the checked
+              // checkboxes:
+              //   '0' -> 'Unique playlist is restored'
+              final bool uniquePlaylistIsRestored =
+                  resultStringLst.contains('0');
 
               await UiUtil.restorePlaylistsAudioMp3FilesFromZip(
                 context: context,
@@ -1081,6 +1097,7 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                   context,
                   listen: false,
                 ),
+                uniquePlaylistIsRestored: uniquePlaylistIsRestored,
               );
             });
             break;

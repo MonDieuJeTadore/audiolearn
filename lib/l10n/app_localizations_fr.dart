@@ -2234,11 +2234,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get uniquePlaylistMp3RestorationHelpTitle =>
-      'Fonction de restauration MP3 de la playlist';
+      'Restauration des MP3 d\'une seule playlist';
 
   @override
   String get uniquePlaylistMp3RestorationHelpContent =>
-      'Cette fonction est utile dans la situation où la playlist a été restaurée depuis un fichier ZIP qui ne contenait que les fichiers JSON de la playlist, des commentaires et des photos et donc ne contenait pas les fichiers audio MP3.';
+      'Lors de la restauration des fichiers MP3 d\'une seule playlist, assurez-vous que cette case est cochée. Sinon, la date de téléchargement la plus récente des fichiers audio des playlists restaurées sera remplacée par celle des fichiers audio de l\'unique playlist restaurée, ce qui n\'est pas correct.';
 
   @override
   String get playlistsMp3SaveHelpTitle =>
@@ -3370,4 +3370,8 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get backButtonTooltip => 'Retour';
+
+  @override
+  String get uniquePlaylistIsRestoredLabel =>
+      'Restoration des MP3\'s\nd\'une playlist unique';
 }

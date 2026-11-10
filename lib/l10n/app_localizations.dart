@@ -3539,7 +3539,7 @@ abstract class AppLocalizations {
   /// No description provided for @playlistsMp3RestorationHelpTitle.
   ///
   /// In en, this message translates to:
-  /// **'Playlists Mp3 Restoration Function'**
+  /// **'Playlists MP3 Restoration Function'**
   String get playlistsMp3RestorationHelpTitle;
 
   /// No description provided for @playlistsMp3RestorationHelpContent.
@@ -3551,13 +3551,13 @@ abstract class AppLocalizations {
   /// No description provided for @uniquePlaylistMp3RestorationHelpTitle.
   ///
   /// In en, this message translates to:
-  /// **'Playlist Mp3 Restoration Function'**
+  /// **'Single Playlist MP3 Restoration'**
   String get uniquePlaylistMp3RestorationHelpTitle;
 
   /// No description provided for @uniquePlaylistMp3RestorationHelpContent.
   ///
   /// In en, this message translates to:
-  /// **'This function is useful in the situation where the playlist was restored from a ZIP file which only contained the playlist, comments and pictures JSON files and so did not contain the audio MP3 files.'**
+  /// **'When restoring MP3 files from a single playlist, make sure this checkbox is selected. Otherwise, the latest download date of the multiple playlists restored audio files will be overwritten with the latest download date of the audio files from the single restored playlist.'**
   String get uniquePlaylistMp3RestorationHelpContent;
 
   /// No description provided for @playlistsMp3SaveHelpTitle.
@@ -5339,6 +5339,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back'**
   String get backButtonTooltip;
+
+  /// No description provided for @uniquePlaylistIsRestoredLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Unique playlist MP3\'s\nare restored'**
+  String get uniquePlaylistIsRestoredLabel;
 }
 
 class _AppLocalizationsDelegate

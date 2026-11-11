@@ -10178,6 +10178,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             closeRestoreConfirmDialog: false, // since we want to
             // verify the content of the warning dialog before
             // closing it, false must be set
+            doNotRestoreTheNamedSFparmsContainedInZip: true,
           );
 
           // Verify the displayed warning confirmation dialog
@@ -10370,6 +10371,7 @@ void playlistDownloadViewSortFilterIntegrationTest() {
             closeRestoreConfirmDialog: false, // since we want to
             // verify the content of the warning dialog before
             // closing it, false must be set
+            doNotRestoreTheNamedSFparmsContainedInZip: true,
           );
 
           // Verify the displayed warning confirmation dialog

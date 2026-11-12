@@ -10089,6 +10089,904 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
     });
+    group('Letter case change', () {
+      testWidgets(
+          '''Changing only a letter from upper to lower case in the audio file name. Not existing new audio file name
+           and the renamed audio has 1 comment as well as 1 pictures.''',
+          (WidgetTester tester) async {
+        const String localPlaylistTitle = 'local'; // Youtube playlist
+        const String audioTitle = "Really short video";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'rename_audio_file_test',
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the download app test dir
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        final PictureVM pictureVM = PictureVM(
+          settingsDataService: settingsDataService,
+        );
+
+        // Load the application picture audio map from the
+        // application picture audio map json file.
+        Map<String, List<String>> applicationPictureAudioMap =
+            pictureVM.readAppPictureAudioMap();
+
+        List pictureAudioMapLst = (applicationPictureAudioMap[
+                "Liguria_Italy_Coast_Houses_Riomaggiore_Crag_513222_3840x2400.jpg"]
+            as List);
+
+        expect(pictureAudioMapLst.length, 2);
+        expect(
+          pictureAudioMapLst[0],
+          "local|231117-002828-morning _ cinematic video 23-07-01",
+        );
+        expect(
+          pictureAudioMapLst[1],
+          "local|231117-002826-Really short video 23-07-01",
+        );
+
+        // First, find the audio sublist ListTile Text widget
+
+        Finder audioListTileTextWidgetFinder = find.text(audioTitle);
+
+        // Then obtain the audio ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        Finder audioListTileWidgetFinder = find.ancestor(
+          of: audioListTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now we want to tap the popup menu of the audio ListTile
+        // "Really short video"
+
+        // Find the leading menu icon button of the audio ListTile
+        // and tap on it
+        final Finder audioListTileLeadingMenuIconButton = find.descendant(
+          of: audioListTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the rename audio file popup menu item and tap on it
+        final Finder popupCopyMenuItem =
+            find.byKey(const Key("popup_menu_rename_audio_file"));
+
+        await tester.tap(popupCopyMenuItem);
+        await tester.pumpAndSettle();
+
+        // Enter the new file name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('audioModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        const String oldFileName = '231117-002826-Really short video 23-07-01';
+
+        expect(textField.controller!.text, "$oldFileName.mp3");
+
+        // Enter new file name
+
+        const String newFileName = '231117-002826-really short video 23-07-01';
+
+        await tester.enterText(
+          textFieldFinder,
+          "$newFileName.mp3",
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('audioModificationButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is displayed
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Audio file \"$oldFileName.mp3\" renamed to \"$newFileName.mp3\" as well as comment and picture files \"$oldFileName.json\" renamed to \"$newFileName.json\".",
+          isWarningConfirming: true,
+        );
+
+        // Verify that the renamed audio file exists
+        final String renamedAudioFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$newFileName.mp3";
+        expect(File(renamedAudioFilePath).existsSync(), true);
+
+        // Verify that the renamed comment file exists
+        final String renamedCommentFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kCommentDirName${path.separator}$newFileName.json";
+        expect(File(renamedCommentFilePath).existsSync(), true);
+
+        // Verify that the renamed picture file exists
+        final String renamedPictureFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kPictureDirName${path.separator}$newFileName.json";
+        expect(File(renamedPictureFilePath).existsSync(), true);
+
+        // Load the application picture audio map from the
+        // application picture audio map json file.
+        applicationPictureAudioMap = pictureVM.readAppPictureAudioMap();
+
+        pictureAudioMapLst = (applicationPictureAudioMap[
+                "Liguria_Italy_Coast_Houses_Riomaggiore_Crag_513222_3840x2400.jpg"]
+            as List);
+
+        expect(pictureAudioMapLst.length, 2);
+        expect(
+          pictureAudioMapLst[0],
+          "local|231117-002828-morning _ cinematic video 23-07-01",
+        );
+        expect(
+          pictureAudioMapLst[1],
+          "local|$newFileName",
+        );
+
+        // Check the new file name in the audio info dialog
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the popup menu item and tap on it
+        final Finder popupDisplayAudioInfoMenuItemFinder =
+            find.byKey(const Key("popup_menu_display_audio_info"));
+
+        await tester.tap(popupDisplayAudioInfoMenuItemFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audio new file name
+
+        final Text audioFileNameTitleTextWidget =
+            tester.widget<Text>(find.byKey(const Key('audioFileNameKey')));
+
+        expect(audioFileNameTitleTextWidget.data, "$newFileName.mp3");
+
+        // Tap the Ok button to close the audio info dialog
+        await tester.tap(find.byKey(const Key('audio_info_close_button_key')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Changing only the file type from mp3 to MP3 in the audio file name. Not existing new audio file name
+           and the renamed audio has 1 comment as well as 1 pictures.
+           
+           In order to avoid that the audio corresponding comment or picture files names contain MP3 in their
+           name, MP3 is replaced by mp3.''', (WidgetTester tester) async {
+        const String localPlaylistTitle = 'local'; // Youtube playlist
+        const String audioTitle = "Really short video";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'rename_audio_file_test',
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the download app test dir
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        final PictureVM pictureVM = PictureVM(
+          settingsDataService: settingsDataService,
+        );
+
+        // Load the application picture audio map from the
+        // application picture audio map json file.
+        Map<String, List<String>> applicationPictureAudioMap =
+            pictureVM.readAppPictureAudioMap();
+
+        List pictureAudioMapLst = (applicationPictureAudioMap[
+                "Liguria_Italy_Coast_Houses_Riomaggiore_Crag_513222_3840x2400.jpg"]
+            as List);
+
+        expect(pictureAudioMapLst.length, 2);
+        expect(
+          pictureAudioMapLst[0],
+          "local|231117-002828-morning _ cinematic video 23-07-01",
+        );
+        expect(
+          pictureAudioMapLst[1],
+          "local|231117-002826-Really short video 23-07-01",
+        );
+
+        // First, find the audio sublist ListTile Text widget
+
+        Finder audioListTileTextWidgetFinder = find.text(audioTitle);
+
+        // Then obtain the audio ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        Finder audioListTileWidgetFinder = find.ancestor(
+          of: audioListTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now we want to tap the popup menu of the audio ListTile
+        // "Really short video"
+
+        // Find the leading menu icon button of the audio ListTile
+        // and tap on it
+        final Finder audioListTileLeadingMenuIconButton = find.descendant(
+          of: audioListTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the rename audio file popup menu item and tap on it
+        final Finder popupCopyMenuItem =
+            find.byKey(const Key("popup_menu_rename_audio_file"));
+
+        await tester.tap(popupCopyMenuItem);
+        await tester.pumpAndSettle();
+
+        // Enter the new file name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('audioModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        const String oldFileName = '231117-002826-Really short video 23-07-01';
+
+        expect(textField.controller!.text, "$oldFileName.mp3");
+
+        // Enter new file name
+
+        const String newFileName = '231117-002826-Really short video 23-07-01';
+
+        await tester.enterText(
+          textFieldFinder,
+          "$newFileName.MP3", // Entering MP3 instead of mp3
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('audioModificationButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is not displayed
+
+        // Verify that the renamed audio file exists
+        final String renamedAudioFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$newFileName.mp3";
+        expect(File(renamedAudioFilePath).existsSync(), true);
+
+        // Verify that the renamed comment file exists
+        final String renamedCommentFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kCommentDirName${path.separator}$newFileName.json";
+        expect(File(renamedCommentFilePath).existsSync(), true);
+
+        // Verify that the renamed picture file exists
+        final String renamedPictureFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kPictureDirName${path.separator}$newFileName.json";
+        expect(File(renamedPictureFilePath).existsSync(), true);
+
+        // Load the application picture audio map from the
+        // application picture audio map json file.
+        applicationPictureAudioMap = pictureVM.readAppPictureAudioMap();
+
+        pictureAudioMapLst = (applicationPictureAudioMap[
+                "Liguria_Italy_Coast_Houses_Riomaggiore_Crag_513222_3840x2400.jpg"]
+            as List);
+
+        expect(pictureAudioMapLst.length, 2);
+        expect(
+          pictureAudioMapLst[0],
+          "local|231117-002828-morning _ cinematic video 23-07-01",
+        );
+        expect(
+          pictureAudioMapLst[1],
+          "local|$newFileName",
+        );
+
+        // Check the new file name in the audio info dialog
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the popup menu item and tap on it
+        final Finder popupDisplayAudioInfoMenuItemFinder =
+            find.byKey(const Key("popup_menu_display_audio_info"));
+
+        await tester.tap(popupDisplayAudioInfoMenuItemFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audio new file name
+
+        final Text audioFileNameTitleTextWidget =
+            tester.widget<Text>(find.byKey(const Key('audioFileNameKey')));
+
+        expect(audioFileNameTitleTextWidget.data, "$newFileName.mp3");
+
+        // Tap the Ok button to close the audio info dialog
+        await tester.tap(find.byKey(const Key('audio_info_close_button_key')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Changing only the file type from mp3 to Mp3 in the audio file name. Not existing new audio file name
+           and the renamed audio has 1 comment as well as 1 pictures.
+           
+           In order to avoid that the audio corresponding comment or picture files names contain MP3 in their
+           name, MP3 is replaced by mp3.''', (WidgetTester tester) async {
+        const String localPlaylistTitle = 'local'; // Youtube playlist
+        const String audioTitle = "Really short video";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'rename_audio_file_test',
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the download app test dir
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        final PictureVM pictureVM = PictureVM(
+          settingsDataService: settingsDataService,
+        );
+
+        // Load the application picture audio map from the
+        // application picture audio map json file.
+        Map<String, List<String>> applicationPictureAudioMap =
+            pictureVM.readAppPictureAudioMap();
+
+        List pictureAudioMapLst = (applicationPictureAudioMap[
+                "Liguria_Italy_Coast_Houses_Riomaggiore_Crag_513222_3840x2400.jpg"]
+            as List);
+
+        expect(pictureAudioMapLst.length, 2);
+        expect(
+          pictureAudioMapLst[0],
+          "local|231117-002828-morning _ cinematic video 23-07-01",
+        );
+        expect(
+          pictureAudioMapLst[1],
+          "local|231117-002826-Really short video 23-07-01",
+        );
+
+        // First, find the audio sublist ListTile Text widget
+
+        Finder audioListTileTextWidgetFinder = find.text(audioTitle);
+
+        // Then obtain the audio ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        Finder audioListTileWidgetFinder = find.ancestor(
+          of: audioListTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now we want to tap the popup menu of the audio ListTile
+        // "Really short video"
+
+        // Find the leading menu icon button of the audio ListTile
+        // and tap on it
+        final Finder audioListTileLeadingMenuIconButton = find.descendant(
+          of: audioListTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the rename audio file popup menu item and tap on it
+        final Finder popupCopyMenuItem =
+            find.byKey(const Key("popup_menu_rename_audio_file"));
+
+        await tester.tap(popupCopyMenuItem);
+        await tester.pumpAndSettle();
+
+        // Enter the new file name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('audioModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        const String oldFileName = '231117-002826-Really short video 23-07-01';
+
+        expect(textField.controller!.text, "$oldFileName.mp3");
+
+        // Enter new file name
+
+        const String newFileName = '231117-002826-Really short video 23-07-01';
+
+        await tester.enterText(
+          textFieldFinder,
+          "$newFileName.MP3", // Entering MP3 instead of mp3
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('audioModificationButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is not displayed
+
+        // Verify that the renamed audio file exists
+        final String renamedAudioFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$newFileName.mp3";
+        expect(File(renamedAudioFilePath).existsSync(), true);
+
+        // Verify that the renamed comment file exists
+        final String renamedCommentFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kCommentDirName${path.separator}$newFileName.json";
+        expect(File(renamedCommentFilePath).existsSync(), true);
+
+        // Verify that the renamed picture file exists
+        final String renamedPictureFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kPictureDirName${path.separator}$newFileName.json";
+        expect(File(renamedPictureFilePath).existsSync(), true);
+
+        // Load the application picture audio map from the
+        // application picture audio map json file.
+        applicationPictureAudioMap = pictureVM.readAppPictureAudioMap();
+
+        pictureAudioMapLst = (applicationPictureAudioMap[
+                "Liguria_Italy_Coast_Houses_Riomaggiore_Crag_513222_3840x2400.jpg"]
+            as List);
+
+        expect(pictureAudioMapLst.length, 2);
+        expect(
+          pictureAudioMapLst[0],
+          "local|231117-002828-morning _ cinematic video 23-07-01",
+        );
+        expect(
+          pictureAudioMapLst[1],
+          "local|$newFileName",
+        );
+
+        // Check the new file name in the audio info dialog
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the popup menu item and tap on it
+        final Finder popupDisplayAudioInfoMenuItemFinder =
+            find.byKey(const Key("popup_menu_display_audio_info"));
+
+        await tester.tap(popupDisplayAudioInfoMenuItemFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audio new file name
+
+        final Text audioFileNameTitleTextWidget =
+            tester.widget<Text>(find.byKey(const Key('audioFileNameKey')));
+
+        expect(audioFileNameTitleTextWidget.data, "$newFileName.mp3");
+
+        // Tap the Ok button to close the audio info dialog
+        await tester.tap(find.byKey(const Key('audio_info_close_button_key')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Changing a letter from upper to lower case in the audio file name aswell as the file extension from mp3 to MP3.
+           Not existing new audio file name and the renamed audio has 1 comment as well as 1 pictures.
+           
+           In order to avoid that the audio corresponding comment or picture files names contain MP3 in their
+           name, MP3 is replaced by mp3.''', (WidgetTester tester) async {
+        const String localPlaylistTitle = 'local'; // Youtube playlist
+        const String audioTitle = "Really short video";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'rename_audio_file_test',
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the download app test dir
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        final PictureVM pictureVM = PictureVM(
+          settingsDataService: settingsDataService,
+        );
+
+        // Load the application picture audio map from the
+        // application picture audio map json file.
+        Map<String, List<String>> applicationPictureAudioMap =
+            pictureVM.readAppPictureAudioMap();
+
+        List pictureAudioMapLst = (applicationPictureAudioMap[
+                "Liguria_Italy_Coast_Houses_Riomaggiore_Crag_513222_3840x2400.jpg"]
+            as List);
+
+        expect(pictureAudioMapLst.length, 2);
+        expect(
+          pictureAudioMapLst[0],
+          "local|231117-002828-morning _ cinematic video 23-07-01",
+        );
+        expect(
+          pictureAudioMapLst[1],
+          "local|231117-002826-Really short video 23-07-01",
+        );
+
+        // First, find the audio sublist ListTile Text widget
+
+        Finder audioListTileTextWidgetFinder = find.text(audioTitle);
+
+        // Then obtain the audio ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        Finder audioListTileWidgetFinder = find.ancestor(
+          of: audioListTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now we want to tap the popup menu of the audio ListTile
+        // "Really short video"
+
+        // Find the leading menu icon button of the audio ListTile
+        // and tap on it
+        final Finder audioListTileLeadingMenuIconButton = find.descendant(
+          of: audioListTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the rename audio file popup menu item and tap on it
+        final Finder popupCopyMenuItem =
+            find.byKey(const Key("popup_menu_rename_audio_file"));
+
+        await tester.tap(popupCopyMenuItem);
+        await tester.pumpAndSettle();
+
+        // Enter the new file name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('audioModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        const String oldFileName = '231117-002826-Really short video 23-07-01';
+
+        expect(textField.controller!.text, "$oldFileName.mp3");
+
+        // Enter new file name
+
+        const String newFileName = '231117-002826-really short video 23-07-01';
+
+        await tester.enterText(
+          textFieldFinder,
+          "$newFileName.MP3", // Changing the file extension to uppercase
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('audioModificationButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is displayed
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Audio file \"$oldFileName.mp3\" renamed to \"$newFileName.mp3\" as well as comment and picture files \"$oldFileName.json\" renamed to \"$newFileName.json\".",
+          isWarningConfirming: true,
+        );
+
+        // Verify that the renamed audio file exists
+        final String renamedAudioFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$newFileName.mp3";
+        expect(File(renamedAudioFilePath).existsSync(), true);
+
+        // Verify that the renamed comment file exists
+        final String renamedCommentFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kCommentDirName${path.separator}$newFileName.json";
+        expect(File(renamedCommentFilePath).existsSync(), true);
+
+        // Verify that the renamed picture file exists
+        final String renamedPictureFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kPictureDirName${path.separator}$newFileName.json";
+        expect(File(renamedPictureFilePath).existsSync(), true);
+
+        // Load the application picture audio map from the
+        // application picture audio map json file.
+        applicationPictureAudioMap = pictureVM.readAppPictureAudioMap();
+
+        pictureAudioMapLst = (applicationPictureAudioMap[
+                "Liguria_Italy_Coast_Houses_Riomaggiore_Crag_513222_3840x2400.jpg"]
+            as List);
+
+        expect(pictureAudioMapLst.length, 2);
+        expect(
+          pictureAudioMapLst[0],
+          "local|231117-002828-morning _ cinematic video 23-07-01",
+        );
+        expect(
+          pictureAudioMapLst[1],
+          "local|$newFileName",
+        );
+
+        // Check the new file name in the audio info dialog
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the popup menu item and tap on it
+        final Finder popupDisplayAudioInfoMenuItemFinder =
+            find.byKey(const Key("popup_menu_display_audio_info"));
+
+        await tester.tap(popupDisplayAudioInfoMenuItemFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audio new file name
+
+        final Text audioFileNameTitleTextWidget =
+            tester.widget<Text>(find.byKey(const Key('audioFileNameKey')));
+
+        expect(audioFileNameTitleTextWidget.data, "$newFileName.mp3");
+
+        // Tap the Ok button to close the audio info dialog
+        await tester.tap(find.byKey(const Key('audio_info_close_button_key')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Changing a letter from upper to lower case in the audio file name aswell as the file extension from mp3 to Mp3.
+           Not existing new audio file name and the renamed audio has 1 comment as well as 1 pictures.
+           
+           In order to avoid that the audio corresponding comment or picture files names contain MP3 in their
+           name, Mp3 is replaced by mp3.''', (WidgetTester tester) async {
+        const String localPlaylistTitle = 'local'; // Youtube playlist
+        const String audioTitle = "Really short video";
+
+        await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+          tester: tester,
+          savedTestDataDirName: 'rename_audio_file_test',
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the download app test dir
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        final PictureVM pictureVM = PictureVM(
+          settingsDataService: settingsDataService,
+        );
+
+        // Load the application picture audio map from the
+        // application picture audio map json file.
+        Map<String, List<String>> applicationPictureAudioMap =
+            pictureVM.readAppPictureAudioMap();
+
+        List pictureAudioMapLst = (applicationPictureAudioMap[
+                "Liguria_Italy_Coast_Houses_Riomaggiore_Crag_513222_3840x2400.jpg"]
+            as List);
+
+        expect(pictureAudioMapLst.length, 2);
+        expect(
+          pictureAudioMapLst[0],
+          "local|231117-002828-morning _ cinematic video 23-07-01",
+        );
+        expect(
+          pictureAudioMapLst[1],
+          "local|231117-002826-Really short video 23-07-01",
+        );
+
+        // First, find the audio sublist ListTile Text widget
+
+        Finder audioListTileTextWidgetFinder = find.text(audioTitle);
+
+        // Then obtain the audio ListTile widget enclosing the Text widget
+        // by finding its ancestor
+        Finder audioListTileWidgetFinder = find.ancestor(
+          of: audioListTileTextWidgetFinder,
+          matching: find.byType(ListTile),
+        );
+
+        // Now we want to tap the popup menu of the audio ListTile
+        // "Really short video"
+
+        // Find the leading menu icon button of the audio ListTile
+        // and tap on it
+        final Finder audioListTileLeadingMenuIconButton = find.descendant(
+          of: audioListTileWidgetFinder,
+          matching: find.byIcon(Icons.menu),
+        );
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the rename audio file popup menu item and tap on it
+        final Finder popupCopyMenuItem =
+            find.byKey(const Key("popup_menu_rename_audio_file"));
+
+        await tester.tap(popupCopyMenuItem);
+        await tester.pumpAndSettle();
+
+        // Enter the new file name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('audioModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        const String oldFileName = '231117-002826-Really short video 23-07-01';
+
+        expect(textField.controller!.text, "$oldFileName.mp3");
+
+        // Enter new file name
+
+        const String newFileName = '231117-002826-really short video 23-07-01';
+
+        await tester.enterText(
+          textFieldFinder,
+          "$newFileName.Mp3", // Changing the file extension to from mp3 to Mp3
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('audioModificationButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is displayed
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Audio file \"$oldFileName.mp3\" renamed to \"$newFileName.mp3\" as well as comment and picture files \"$oldFileName.json\" renamed to \"$newFileName.json\".",
+          isWarningConfirming: true,
+        );
+
+        // Verify that the renamed audio file exists
+        final String renamedAudioFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$newFileName.mp3";
+        expect(File(renamedAudioFilePath).existsSync(), true);
+
+        // Verify that the renamed comment file exists
+        final String renamedCommentFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kCommentDirName${path.separator}$newFileName.json";
+        expect(File(renamedCommentFilePath).existsSync(), true);
+
+        // Verify that the renamed picture file exists
+        final String renamedPictureFilePath =
+            "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$localPlaylistTitle${path.separator}$kPictureDirName${path.separator}$newFileName.json";
+        expect(File(renamedPictureFilePath).existsSync(), true);
+
+        // Load the application picture audio map from the
+        // application picture audio map json file.
+        applicationPictureAudioMap = pictureVM.readAppPictureAudioMap();
+
+        pictureAudioMapLst = (applicationPictureAudioMap[
+                "Liguria_Italy_Coast_Houses_Riomaggiore_Crag_513222_3840x2400.jpg"]
+            as List);
+
+        expect(pictureAudioMapLst.length, 2);
+        expect(
+          pictureAudioMapLst[0],
+          "local|231117-002828-morning _ cinematic video 23-07-01",
+        );
+        expect(
+          pictureAudioMapLst[1],
+          "local|$newFileName",
+        );
+
+        // Check the new file name in the audio info dialog
+
+        // Tap the leading menu icon button to open the popup menu
+        await tester.tap(audioListTileLeadingMenuIconButton);
+        await tester.pumpAndSettle();
+
+        // Now find the popup menu item and tap on it
+        final Finder popupDisplayAudioInfoMenuItemFinder =
+            find.byKey(const Key("popup_menu_display_audio_info"));
+
+        await tester.tap(popupDisplayAudioInfoMenuItemFinder);
+        await tester.pumpAndSettle();
+
+        // Verify the audio new file name
+
+        final Text audioFileNameTitleTextWidget =
+            tester.widget<Text>(find.byKey(const Key('audioFileNameKey')));
+
+        expect(audioFileNameTitleTextWidget.data, "$newFileName.mp3");
+
+        // Tap the Ok button to close the audio info dialog
+        await tester.tap(find.byKey(const Key('audio_info_close_button_key')));
+        await tester.pumpAndSettle();
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+    });
   });
   group('Modify audio title test and verify comment display change', () {
     testWidgets('Downl audio change audio title', (WidgetTester tester) async {

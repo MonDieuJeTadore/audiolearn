@@ -38,8 +38,8 @@ void main() {
       () {
     group('''From Windows zip.''', () {
       testWidgets(
-          '''Unique playlist restore + save, not replace existing playlist. Restore unique playlist Windows zip
-            containing 'S8 audio' playlist to Android application which contains 'S8 audio' and 'local'
+          '''Unique playlist restore + save, not replace existing playlist. Restore unique playlist Windows
+            zip containing 'S8 audio' playlist to Android application which contains 'S8 audio' and 'local'
             playlists. The restored 'S8 audio' playlist contains additional audios to which comments and
             pictures are associated. After restoring the playlist, the playlist is saved. First as individual
             playlist saving and then as multiple playlists saving.''',

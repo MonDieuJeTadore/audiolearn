@@ -68,3 +68,5 @@ windows/flutter/generated_plugins.cmake
 /test/data/audio__
 windows/flutter/generated_plugin_registrant.cc
 windows/flutter/generated_plugins.cmake
+# Widget Preview related
+.widget_preview/

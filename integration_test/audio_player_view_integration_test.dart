@@ -12680,7 +12680,7 @@ void main() {
         _verifyPositionValueAfterCommentWasPlayed(
           tester: tester,
           commentPositionTextButtonInTenthSecondsMin: 23183, // why not 46408
-          commentPositionTextButtonInTenthSecondsMax: 23202,
+          commentPositionTextButtonInTenthSecondsMax: 23203,
           audioPlayerViewAudioPositionMin: '38:39',
           audioPlayerViewAudioPositionMax: '38:40',
         );

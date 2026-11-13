@@ -33,6 +33,11 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
   late final TextEditingController _soundReductionDurationController;
   late final TextEditingController _volumeController; // NEW
 
+  /// Converts seconds to an integer number of tenths of a second, so that
+  /// comparisons are not affected by binary floating-point rounding
+  /// (e.g. 427.6 + 1.6 = 429.20000000000005 > 429.2).
+  int _toTenths(double seconds) => (seconds * 10).round();
+
   @override
   void initState() {
     super.initState();
@@ -112,17 +117,17 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
     final commentTitle = widget.existingSegment?.commentTitle ?? '';
     final volume = double.tryParse(_volumeController.text) ?? -1.0; // NEW
 
-    if (start < 0 || start > widget.maxDuration - 0.1) {
+    final int startT = _toTenths(start);
+    final int endT = _toTenths(end);
+    final int maxT = _toTenths(widget.maxDuration);
+
+    if (start < 0 || startT > maxT - 1) {
       _showError(
         "${AppLocalizations.of(context)!.startPositionError(TimeFormatUtil.formatSeconds(widget.maxDuration - 0.1))}.",
       );
       return;
     }
-    if (end <= start ||
-        end >
-            TimeFormatUtil.roundToTenthOfSecond(
-              toBeRounded: widget.maxDuration,
-            )) {
+    if (endT <= startT || endT > maxT) {
       _showError(
         "${AppLocalizations.of(context)!.endPositionError(TimeFormatUtil.formatSeconds(start))} ${TimeFormatUtil.formatSeconds(widget.maxDuration)}.",
       );
@@ -142,9 +147,7 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
       _showError("${AppLocalizations.of(context)!.fadeInDurationError}.");
       return;
     }
-    final segmentDuration = end - start;
-    if (fadeInDuration > segmentDuration) {
-      // NEW validation
+    if (_toTenths(fadeInDuration) > endT - startT) {      // NEW validation
       String errorDetail =
           "${TimeFormatUtil.formatSeconds(start)} + ${TimeFormatUtil.formatSeconds(fadeInDuration)} = ${TimeFormatUtil.formatSeconds(start + fadeInDuration)}";
       _showError(
@@ -163,19 +166,22 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
     }
     // Validate sound reduction position
     if (soundReductionPosition > 0 && soundReductionDuration > 0) {
-      if (soundReductionPosition < start) {
+      final int srPosT = _toTenths(soundReductionPosition);
+      final int srEndT = srPosT + _toTenths(soundReductionDuration);
+
+      if (srPosT < startT) {
         _showError(
             "${AppLocalizations.of(context)!.soundPositionBeforeStartError(TimeFormatUtil.formatSeconds(soundReductionPosition))} (${TimeFormatUtil.formatSeconds(start)}).");
         return;
       }
-      if (soundReductionPosition >= end) {
+      if (srPosT >= endT) {
         _showError(
             "${AppLocalizations.of(context)!.soundPositionBeyondEndError(TimeFormatUtil.formatSeconds(soundReductionPosition))} (${TimeFormatUtil.formatSeconds(end)}).");
         return;
       }
-      double soundReductionEnd =
-          soundReductionPosition + soundReductionDuration;
-      if (soundReductionEnd > end) {
+      if (srEndT > endT) {
+        double soundReductionEnd =
+            soundReductionPosition + soundReductionDuration;
         String errorDetail =
             "${TimeFormatUtil.formatSeconds(soundReductionPosition)} + ${TimeFormatUtil.formatSeconds(soundReductionDuration)} = ${TimeFormatUtil.formatSeconds(soundReductionEnd)}";
         _showError(
@@ -256,7 +262,6 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
 
   @override
   Widget build(BuildContext context) {
-
     AudioSegment? existingSegment = widget.existingSegment;
     String dialogTitle = '';
 
@@ -267,7 +272,6 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
         dialogTitle = AppLocalizations.of(context)!.editCommentDialogTitle;
       }
     }
-
 
     return Actions(
       actions: {

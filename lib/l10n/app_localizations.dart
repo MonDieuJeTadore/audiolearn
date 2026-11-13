@@ -3557,7 +3557,7 @@ abstract class AppLocalizations {
   /// No description provided for @uniquePlaylistMp3RestorationHelpContent.
   ///
   /// In en, this message translates to:
-  /// **'When restoring MP3 files from a single playlist, make sure this checkbox is selected. Otherwise, the latest download date of the multiple playlists restored audio files will be overwritten with the latest download date of the audio files from the single restored playlist.'**
+  /// **'Select this checkbox when restoring MP3 files from a single playlist. Otherwise, the latest download date of previously restored playlists\' audio files may be overwritten by the latest download date of the single playlist\'s restored audio files.'**
   String get uniquePlaylistMp3RestorationHelpContent;
 
   /// No description provided for @playlistsMp3SaveHelpTitle.

@@ -15933,7 +15933,9 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
-            doNotRestoreTheNamedSFparmsContainedInZip: false,
+            doNotRestoreTheNamedSFparmsContainedInZip: false, // Will
+            // cause the named sort/filter parms contained in the zip
+            // to be restored
             closeRestoreConfirmDialog: false,
           );
 
@@ -16154,7 +16156,9 @@ void main() {
             tester: tester,
             doReplaceExistingPlaylists: false,
             doDeleteExistingPlaylistsNotContainedInZip: false,
-            doNotRestoreTheNamedSFparmsContainedInZip: true,
+            doNotRestoreTheNamedSFparmsContainedInZip: true, // Will
+            // prevent the named sort/filter parms contained in the zip
+            // from being restored
             closeRestoreConfirmDialog: false,
           );
 
@@ -24017,8 +24021,8 @@ void main() {
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: true,
           doNotRestoreTheNamedSFparmsContainedInZip: true, // Ensure
-          // that named Sort Filter parameters are not restored from the zip
-          // file
+          // that named Sort Filter parameters are not restored from the
+          // zip file
           closeRestoreConfirmDialog: false,
         );
 
@@ -24189,8 +24193,8 @@ void main() {
           doReplaceExistingPlaylists: false,
           doDeleteExistingPlaylistsNotContainedInZip: false,
           doNotRestoreTheNamedSFparmsContainedInZip: true, // Ensure
-          // that named Sort Filter parameters are not restored from the zip
-          // file
+          // that named Sort Filter parameters are not restored from the
+          // zip file
           closeRestoreConfirmDialog: false,
         );
 

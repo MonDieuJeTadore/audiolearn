@@ -3482,12 +3482,5 @@ class MockAppLocalizations extends AppLocalizations {
       "Updating the named sort filter parameters";
 
   @override
-  String get uniquePlaylistIsRestoredLabel => "Unique playlist MP3's
-are restored";
-
-  @override
-  String get uniquePlaylistMp3RestorationHelpTitle => "Unique playlist MP3 Restoration Checkbox";
-
-  @override
-  String get uniquePlaylistMp3RestorationHelpContent => "If the MP3's of a unique playlist are restored, it is important to set this checkbox to true, otherwise the latest download date of the multiple playlists restored audios will be updated with the latest download date of the unique playlist restored audios.";
+  String get uniquePlaylistIsRestoredLabel => "Unique playlist MP3's are restored";
 }

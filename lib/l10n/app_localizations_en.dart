@@ -2216,7 +2216,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get uniquePlaylistMp3RestorationHelpContent =>
-      'When restoring MP3 files from a single playlist, make sure this checkbox is selected. Otherwise, the latest download date of the multiple playlists restored audio files will be overwritten with the latest download date of the audio files from the single restored playlist.';
+      'Select this checkbox when restoring MP3 files from a single playlist. Otherwise, the latest download date of previously restored playlists\' audio files may be overwritten by the latest download date of the single playlist\'s restored audio files.';
 
   @override
   String get playlistsMp3SaveHelpTitle => 'Playlists Mp3 Save Function';

@@ -29404,7 +29404,8 @@ void main() {
             savedTestDataDirName: 'extract_comments_to_mp3_test',
           );
 
-          // First, find the '1 long music' playlist audio ListTile Text widget
+          // First, find the "Quand Dieu transforme l’épreuve en victoire"
+          // playlist audio ListTile Text widget
           final Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
 
           // Then obtain the audio ListTile widget enclosing the Text widget
@@ -29907,6 +29908,200 @@ void main() {
           DirUtil.deleteFilesInDirAndSubDirs(
             rootPath: kApplicationPathWindowsTest,
           );
+        });
+        group('Bug correction verification', () {
+          testWidgets(
+              '''Extract to playlist in music quality an audio with 1 comment. This ensures that the bug
+               when adding 427.6 seconds + 1.6 seconds in the add segment dialog resulted in 429.20000005
+               instead of 429.2 was fixed.''', (WidgetTester tester) async {
+            const String audioTitle =
+                "CHANTS POUR LES DÉFUNTS_ Des Mélodies Sacrée pour Prier pour Nos Disparus et Demander la Miséricorde";
+
+            await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+              tester: tester,
+              savedTestDataDirName:
+                  'extract_unique_comment_to_musical_mp3_test',
+            );
+
+            // First, find the "CHANTS POUR LES DÉFUNTS_ Des Mélodies Sacrée pour
+            // Prier pour Nos Disparus et Demander la Miséricorde" playlist audio
+            // ListTile Text widget
+            final Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
+
+            // Then obtain the audio ListTile widget enclosing the Text widget
+            // by finding its ancestor
+            final Finder audioTitleTileWidgetFinder = find.ancestor(
+              of: audioTitleTileTextWidgetFinder,
+              matching: find.byType(ListTile),
+            );
+
+            // Now we want to tap the popup menu of the audioTitle ListTile
+
+            // Find the leading menu icon button of the audioTitle ListTile
+            // and tap on it
+            final Finder audioTitleTileLeadingMenuIconButton = find.descendant(
+              of: audioTitleTileWidgetFinder,
+              matching: find.byIcon(Icons.menu),
+            );
+
+            // Tap the leading menu icon button to open the popup menu
+            await tester.tap(audioTitleTileLeadingMenuIconButton);
+            await tester.pumpAndSettle();
+
+            // Now find the 'Audio Comments ...' popup menu item and
+            // tap on it
+            final Finder audioCommentsPopupMenuItem =
+                find.byKey(const Key("popup_menu_audio_comment"));
+
+            await tester.tap(audioCommentsPopupMenuItem);
+            await tester.pumpAndSettle();
+
+            final Finder audioCommentsLstFinder = find.byKey(const Key(
+              'audioCommentsListKey',
+            ));
+
+            // Ensure the list has 1 child widget
+            expect(
+              tester.widget<ListBody>(audioCommentsLstFinder).children.length,
+              1,
+            );
+
+            // Now open the extract comments to MP3 dialog
+
+            // Find the extract comments to MP3 text button of the comment
+            // add dialog and tap on it
+            final Finder extractCommentsToMp3ButtonFinder =
+                find.byKey(const Key('extractCommentsToMp3TextButton'));
+            await tester.tap(extractCommentsToMp3ButtonFinder);
+            await tester.pumpAndSettle();
+
+            // Verify the extract comments to MP3 dialog commentTitle
+            expect(find.text('Comments to MP3'), findsOneWidget);
+
+            // Verify the presence of the help icon button
+            expect(find.byIcon(Icons.help_outline), findsOneWidget);
+
+            // Verify the Comments number commentTitle
+            expect(find.text('Comments (1)'), findsOneWidget);
+
+            await IntegrationTestUtil.checkExtractionCommentDetails(
+              tester: tester,
+              segmentDetailsList: [
+                {
+                  'number': 1,
+                  'commentTitle': "Oh Jésus, accueille nos défunts dans le Paradis",
+                  'startPosition': '0:00.0',
+                  'endPosition': '7:09.2',
+                  'playSpeed': 'Play speed: 1.0',
+                  'volume': 'Volume: 1.00',
+                  'increaseDuration': 'Increase duration: 0:00.0',
+                  'reductionPosition': 'Reduction position: 0:00.0',
+                  'reductionDuration': 'Reduction duration: 0:00.0',
+                  'duration': 'Duration: 7:09.2',
+                },
+              ],
+            );
+
+            // Now edit the "Oh Jésus, accueille nos défunts dans le Paradis" comment
+            // to modify its start position and reduction position
+            // and duration
+
+            // This opens the edit comment dialog
+            Finder editCommentIconButtonFinder =
+                find.byKey(const Key('editSegmentButtonKey_1'));
+            await tester.tap(editCommentIconButtonFinder);
+            await tester.pumpAndSettle();
+
+            // Modify the start position to 7:00.0
+            Finder commentFadeInDurationTextFieldFinder =
+                find.byKey(const Key('startPositionTextField'));
+            await tester.tap(commentFadeInDurationTextFieldFinder);
+            await tester.enterText(
+                commentFadeInDurationTextFieldFinder, '7:00.0');
+            await tester.pumpAndSettle();
+
+            // Modify the reduction position to 7:08.6
+            Finder commentReductionPositionTextFieldFinder =
+                find.byKey(const Key('soundReductionPositionTextField'));
+            await tester.tap(commentReductionPositionTextFieldFinder);
+            await tester.enterText(
+                commentReductionPositionTextFieldFinder, '7:08.6');
+            await tester.pumpAndSettle();
+
+            // Necessary to drag down vertically the add s4egment dialog
+            await tester.drag(
+              find.byType(AddSegmentDialog),
+              const Offset(
+                  0, -500), // Negative value for vertical drag to scroll down
+            );
+            await tester.pumpAndSettle();
+
+            // Modify the reduction duration to 0:00.6
+            Finder commentReductionDurationTextFieldFinder =
+                find.byKey(const Key('soundReductionDurationTextField'));
+            await tester.tap(commentReductionDurationTextFieldFinder);
+            await tester.enterText(
+                commentReductionDurationTextFieldFinder, '0:00.6');
+            await tester.pumpAndSettle();
+
+            // Confirm the comment edition by tapping the save button
+            Finder saveEditedCommentButtonFinder =
+                find.byKey(const Key('saveEditedSegmentButton'));
+            await tester.tap(saveEditedCommentButtonFinder);
+            await tester.pumpAndSettle();
+
+            // Type on 'In playlist' checkbox to set it
+            final Finder inPlaylistCheckboxFinder =
+                find.byKey(const Key('inPlaylistCheckBox'));
+            await tester.tap(inPlaylistCheckboxFinder);
+            await tester.pumpAndSettle();
+
+            // Now, type on the Extract MP3 button. This opens the playlist
+            // selection dialog
+
+            final Finder extractMp3ButtonFinder =
+                find.byKey(const Key('extractMp3Button'));
+            await tester.tap(extractMp3ButtonFinder);
+            await tester.pumpAndSettle();
+
+            // Find the RadioListTile target playlist to which the
+            // extracted audio will be moved
+
+            final Finder radioListTile = find
+                .ancestor(
+                  of: find.text('Destination'),
+                  matching: find.byType(ListTile),
+                )
+                .last;
+
+            // Tap the target playlist RadioListTile to select it
+            await tester.tap(radioListTile);
+            await tester.pumpAndSettle();
+
+            // Now find the confirm button and tap on it
+            await tester.tap(find.byKey(const Key('confirmButton')));
+            await tester.pumpAndSettle();
+
+            await Future.delayed(const Duration(milliseconds: 1500));
+            await tester.pumpAndSettle();
+
+            // Verify the extract comments to MP3 success dialog message
+            // and play and pause the extracted MP3 file
+            await _verifyAndPlayExtractedMp3Method(
+              tester: tester,
+              extractionSuccessMessage:
+                  'Extracted MP3 saved to:\nC:\\development\\flutter\\audiolearn\\test\\data\\audio\\playlists\\Destination\\261113-075357-CHANTS POUR LES DÉFUNTS_ Des Mélodies Sacrée pour Prier pour Nos Disparus et Demander la Miséricorde 26-11-01.mp3',
+              extractionPlayingMessage:
+                  'Playing: 261113-075357-CHANTS POUR LES DÉFUNTS_ Des Mélodies Sacrée pour Prier pour Nos Disparus et Demander la Miséricorde 26-11-01.mp3',
+              extractedAudioDuration: '0:09.2',
+            );
+
+            // Purge the test playlist directory so that the created test
+            // files are not uploaded to GitHub
+            DirUtil.deleteFilesInDirAndSubDirs(
+              rootPath: kApplicationPathWindowsTest,
+            );
+          });
         });
       });
       testWidgets(

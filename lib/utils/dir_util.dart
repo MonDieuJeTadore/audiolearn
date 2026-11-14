@@ -881,7 +881,7 @@ class DirUtil {
     final String parent = existingDir.parent.path;
     final String newPath = path.join(parent, newDirectoryName);
 
-    final newDir = Directory(newPath);
+    final Directory newDir = Directory(newPath);
     bool targetExists = newDir.existsSync();
 
     // Determine if the "existing" target directory is actually the same

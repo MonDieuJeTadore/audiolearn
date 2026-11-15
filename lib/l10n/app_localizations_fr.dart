@@ -1116,8 +1116,8 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String invalidYoutubePlaylistTitle(Object playlistTitle) {
-    return 'Le titre de la playlist Youtube \"$playlistTitle\" ne peut contenir aucune virgule. Corrigez le titre et rééssayez ...';
+  String invalidLocalPlaylistTitleWithPathCharacter(Object playlistTitle) {
+    return 'Le titre de la playlist locale \"$playlistTitle\" ne peut contenir aucun de ces 3 caractères en relation avec le répertoire:  /, \\ ou :. Corrigez le titre et rééssayez ...';
   }
 
   @override

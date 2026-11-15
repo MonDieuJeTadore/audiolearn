@@ -499,8 +499,9 @@
       "playlistTitle": {}
     }
   },
-  "invalidYoutubePlaylistTitle": "The Youtube playlist title \"{playlistTitle}\" can not contain any comma. Please correct the title and retry ...",
-  "@invalidYoutubePlaylistTitle": {
+  "invalidLocalPlaylistTitleWithPathCharacter": "The local playlist title \"{playlistTitle}\" cannot contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...",
+  "@invalidLocalPlaylistTitleWithPathCharacter": {
+    "description": "Error shown when a local playlist title contains /, \\ or :",
     "placeholders": {
       "playlistTitle": {}
     }

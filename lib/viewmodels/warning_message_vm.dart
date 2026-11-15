@@ -35,11 +35,11 @@ enum WarningMessageType {
   invalidLocalPlaylistTitle, // The case if local playlist title
   // contains one or more commas.
 
+  invalidLocalPlaylistTitleWithPathCharacter, // The case if local
+  // playlist title contains '/' or '\' or ':' character(s).
+
   invalidModifiedPlaylistTitle, // The case if the modified playlist
   // title contains one or more commas.
-
-  invalidYoutubePlaylistTitle, // The case if Youtube playlist title
-  // contains one or more commas.
 
   renameFileNameInvalid, // The case if the file name proposed
   // for renaming an audio file has not .mp3 extension.
@@ -545,21 +545,19 @@ class WarningMessageVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _invalidModifiedPlaylistTitle = '';
-  String get invalidModifiedPlaylistTitle => _invalidModifiedPlaylistTitle;
-  set invalidModifiedPlaylistTitle(String invalidModifiedPlaylistTitle) {
-    _invalidModifiedPlaylistTitle = invalidModifiedPlaylistTitle;
-    warningMessageType = WarningMessageType.invalidModifiedPlaylistTitle;
+  set invalidLocalPlaylistTitleWithPathCharacter(String invalidLocalPlaylistTitle) {
+    _invalidLocalPlaylistTitle = invalidLocalPlaylistTitle;
+    warningMessageType = WarningMessageType.invalidLocalPlaylistTitleWithPathCharacter;
 
     // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
     notifyListeners();
   }
 
-  String _invalidYoutubePlaylistTitle = '';
-  String get invalidYoutubePlaylistTitle => _invalidYoutubePlaylistTitle;
-  set invalidYoutubePlaylistTitle(String invalidYoutubePlaylistTitle) {
-    _invalidYoutubePlaylistTitle = invalidYoutubePlaylistTitle;
-    warningMessageType = WarningMessageType.invalidYoutubePlaylistTitle;
+  String _invalidModifiedPlaylistTitle = '';
+  String get invalidModifiedPlaylistTitle => _invalidModifiedPlaylistTitle;
+  set invalidModifiedPlaylistTitle(String invalidModifiedPlaylistTitle) {
+    _invalidModifiedPlaylistTitle = invalidModifiedPlaylistTitle;
+    warningMessageType = WarningMessageType.invalidModifiedPlaylistTitle;
 
     // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
     notifyListeners();

@@ -515,6 +515,20 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
         });
 
         return const SizedBox.shrink();
+      case WarningMessageType.invalidLocalPlaylistTitleWithPathCharacter:
+        String playlistTitle = _warningMessageVM.invalidLocalPlaylistTitle;
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _displayWarningDialog(
+            context: _context,
+            message: AppLocalizations.of(context)!
+                .invalidLocalPlaylistTitleWithPathCharacter(playlistTitle),
+            warningMessageVM: _warningMessageVM,
+            themeProviderVM: themeProviderVM,
+          );
+        });
+
+        return const SizedBox.shrink();
       case WarningMessageType.invalidModifiedPlaylistTitle:
         String playlistTitle = _warningMessageVM.invalidModifiedPlaylistTitle;
 
@@ -523,20 +537,6 @@ class WarningMessageDisplayDialog extends StatelessWidget with ScreenMixin {
             context: _context,
             message: AppLocalizations.of(context)!
                 .invalidModifiedPlaylistTitle(playlistTitle),
-            warningMessageVM: _warningMessageVM,
-            themeProviderVM: themeProviderVM,
-          );
-        });
-
-        return const SizedBox.shrink();
-      case WarningMessageType.invalidYoutubePlaylistTitle:
-        String playlistTitle = _warningMessageVM.invalidYoutubePlaylistTitle;
-
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _displayWarningDialog(
-            context: _context,
-            message: AppLocalizations.of(context)!
-                .invalidYoutubePlaylistTitle(playlistTitle),
             warningMessageVM: _warningMessageVM,
             themeProviderVM: themeProviderVM,
           );

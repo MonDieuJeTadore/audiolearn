@@ -676,8 +676,8 @@ class AudioDownloadVM extends ChangeNotifier {
         // titles which will then not be findable in the playlist
         // directory. For this reason, adding such a playlist is refused
         // by the method.
-        warningMessageVM.invalidYoutubePlaylistTitle = playlistTitle;
-        return null;
+        youtubePlaylistTitleToCorrect = playlistTitle;
+        playlistTitle = playlistTitle.replaceAll(',', '');
       } else if (playlistTitle == '') {
         // The case if the Youtube playlist is private
         warningMessageVM.signalPrivatePlaylistAddition();
@@ -688,14 +688,16 @@ class AudioDownloadVM extends ChangeNotifier {
           playlistTitle.contains(':') ||
           playlistTitle.contains('\\')) {
         // The case if the Youtube playlist title contains a '/'
-        // character. This character is used to separate the
-        // directories in a path and so can not be used in a
-        // playlist title. For this reason, '/' is replaced by
-        // '-' in the playlist title.
+        // (Android) or '\' (Windows) or ':' (Windows) character.
+        // The two first characters are used to separate the
+        // directories in a path. ':' is used on Windows as a
+        // drive letter separator. So, these characters can not
+        // be used in a playlist title. For this reason, they are
+        // replaced by '-' in the playlist title.
         youtubePlaylistTitleToCorrect = playlistTitle;
-        playlistTitle = playlistTitle.replaceAll('/', '-');
-        playlistTitle = playlistTitle.replaceAll(':', '-');
-        playlistTitle = playlistTitle.replaceAll('\\', '-');
+        playlistTitle = playlistTitle.replaceAll('/', '-'); // '/' is used on Android and other OS as a path separator
+        playlistTitle = playlistTitle.replaceAll(':', '-'); // ':' is used on Windows as a drive letter separator
+        playlistTitle = playlistTitle.replaceAll('\\', '-'); // '\' is used on Windows as a path separator
       }
 
       int playlistIndex = _listOfPlaylist

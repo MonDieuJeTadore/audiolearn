@@ -1940,11 +1940,11 @@ abstract class AppLocalizations {
   /// **'The local playlist title \"{playlistTitle}\" can not contain any comma. Please correct the title and retry ...'**
   String invalidLocalPlaylistTitle(Object playlistTitle);
 
-  /// No description provided for @invalidYoutubePlaylistTitle.
+  /// Error shown when a local playlist title contains /, \ or :
   ///
   /// In en, this message translates to:
-  /// **'The Youtube playlist title \"{playlistTitle}\" can not contain any comma. Please correct the title and retry ...'**
-  String invalidYoutubePlaylistTitle(Object playlistTitle);
+  /// **'The local playlist title \"{playlistTitle}\" cannot contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...'**
+  String invalidLocalPlaylistTitleWithPathCharacter(Object playlistTitle);
 
   /// No description provided for @setValueToTargetWarning.
   ///

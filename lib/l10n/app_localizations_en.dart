@@ -1109,8 +1109,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String invalidYoutubePlaylistTitle(Object playlistTitle) {
-    return 'The Youtube playlist title \"$playlistTitle\" can not contain any comma. Please correct the title and retry ...';
+  String invalidLocalPlaylistTitleWithPathCharacter(Object playlistTitle) {
+    return 'The local playlist title \"$playlistTitle\" cannot contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...';
   }
 
   @override

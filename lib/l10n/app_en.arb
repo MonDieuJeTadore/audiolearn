@@ -499,14 +499,14 @@
       "playlistTitle": {}
     }
   },
-  "invalidLocalPlaylistTitleWithPathCharacter": "The local playlist title \"{playlistTitle}\" cannot contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...",
+  "invalidLocalPlaylistTitleWithPathCharacter": "The local playlist title \"{playlistTitle}\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...",
   "@invalidLocalPlaylistTitleWithPathCharacter": {
     "description": "Error shown when a local playlist title contains /, \\ or :",
     "placeholders": {
       "playlistTitle": {}
     }
   },
-  "invalidModifiedPlaylistTitleWithPathCharacter": "The local modified playlist title \"{playlistTitle}\" cannot contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...",
+  "invalidModifiedPlaylistTitleWithPathCharacter": "The local modified playlist title \"{playlistTitle}\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...",
   "@invalidModifiedPlaylistTitleWithPathCharacter": {
     "description": "Error shown when a local playlist title contains /, \\ or :",
     "placeholders": {

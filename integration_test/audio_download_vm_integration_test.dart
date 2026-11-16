@@ -1786,6 +1786,80 @@ Future<void> main() async {
         rootPath: kApplicationPathWindowsTest,
       );
     });
+    testWidgets(
+        '''Adding playlist in spoken quality with invalid comma.''',
+        (WidgetTester tester) async {
+      // necessary in case the previous test failed and so did not
+      // delete the its playlist dir
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+
+      // Copying the initial local playlist json file with no audio
+      DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+        sourceRootPath:
+            "$kDownloadAppTestSavedDataDir${path.separator}sort_and_filter_audio_dialog_widget_newly_downloaded_playlist_test",
+        destinationRootPath: kApplicationPathWindowsTest,
+      );
+
+      await IntegrationTestUtil.launchIntegrTestAppEnablingInternetAccess(
+        tester: tester,
+        forcedLocale: const Locale('en'),
+      );
+
+      // Entering the created playlist URL in the Youtube URL or search
+      // text field of the app
+      var incorrectlyTitledPlaylistUrl =
+          'https://youtube.com/playlist?list=PLeOdcVaUSoC4&si=VqVZ6489Arn2rZ01';
+
+      await tester.enterText(
+        find.byKey(
+          const Key('youtubeUrlOrSearchTextField'),
+        ),
+        incorrectlyTitledPlaylistUrl,
+      );
+      await tester.pumpAndSettle();
+
+      // Open the add playlist dialog by tapping the add playlist
+      // button
+      await tester.tap(find.byKey(const Key('addPlaylistButton')));
+      await tester.pumpAndSettle();
+
+      // Check the value of the AlertDialog dialog title
+      Text alertDialogTitle =
+          tester.widget(find.byKey(const Key('playlistConfirmDialogTitleKey')));
+      expect(alertDialogTitle.data, 'Add Youtube Playlist');
+
+      // Check the value of the AlertDialog url Text
+      Text confirmUrlText =
+          tester.widget(find.byKey(const Key('playlistUrlConfirmDialogText')));
+      expect(confirmUrlText.data, incorrectlyTitledPlaylistUrl);
+
+      // Confirm the addition by tapping the 'Add' button in
+      // the AlertDialog and then on the 'OK' button of the
+      // confirm dialog
+      await tester
+          .tap(find.byKey(const Key('addPlaylistConfirmDialogAddButton')));
+      await tester.pumpAndSettle();
+
+      // Add a delay to allow the update playlist URL to finish. 1
+      // second is ok
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      // Verify the displayed warning dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "Youtube playlist \"test, 4\" of spoken quality added with corrected title \"test 4\" at the end of the playlist list at position 4.",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
   });
 }
 

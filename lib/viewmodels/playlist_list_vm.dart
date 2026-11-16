@@ -5709,7 +5709,7 @@ class PlaylistListVM extends ChangeNotifier {
                     // the multiple playlists, comments, pictures and settings
                     // from a zip file or restoring a unique playlist before
                     // restoring the MP3 files from a zip file, the last comment
-                    // end position cannot be used to determine if the audio
+                    // end position can not be used to determine if the audio
                     // restored from the zip file has the same duration as the
                     // last comment end position and so the text to speech audio
                     // will not be replaced to the last generated one.
@@ -6012,7 +6012,7 @@ class PlaylistListVM extends ChangeNotifier {
                   // the multiple playlists, comments, pictures and settings
                   // from a zip file or restoring a unique playlist before
                   // restoring the MP3 files from a zip file, the last comment
-                  // end position cannot be used to determine if the audio
+                  // end position can not be used to determine if the audio
                   // restored from the zip file has the same duration as the
                   // last comment end position and so the text to speech audio
                   // will not be replaced to the last generated one.

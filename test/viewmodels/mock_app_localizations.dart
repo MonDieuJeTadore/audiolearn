@@ -980,7 +980,7 @@ class MockAppLocalizations extends AppLocalizations {
   String renameFileNameAlreadyUsed(
     Object fileName,
   ) =>
-      "The file name \"$fileName\" already exists in the same directory and cannot be used.";
+      "The file name \"$fileName\" already exists in the same directory and can not be used.";
 
   @override
   String invalidLocalPlaylistTitle(
@@ -2707,11 +2707,11 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get negativeSilenceDurationError =>
-      "Silence duration cannot be negative";
+      "Silence duration can not be negative";
 
   @override
   String get negativeSoundDurationError =>
-      "Sound reduction duration cannot be negative";
+      "Sound reduction duration can not be negative";
 
   @override
   String get negativeSoundPositionError =>
@@ -2730,7 +2730,7 @@ class MockAppLocalizations extends AppLocalizations {
       "($commentNumber skipped)";
 
   @override
-  String get fadeInDurationError => "Fade-in duration cannot be negative";
+  String get fadeInDurationError => "Fade-in duration can not be negative";
 
   @override
   String get volumeFadeInOptional => "Volume Fade-In (optional)";
@@ -2887,7 +2887,7 @@ class MockAppLocalizations extends AppLocalizations {
   String fadeInExceedsCommentDurationError(
     Object detail,
   ) =>
-      "Increase duration end ($detail) cannot exceed comment end position";
+      "Increase duration end ($detail) can not exceed comment end position";
 
   @override
   String soundPositionBeforeStartError(

@@ -597,7 +597,7 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                 );
                 break;
               case AudioPopupMenuAction.redownloadDeletedAudio:
-                // You cannot await here, but you can trigger an
+                // You can not await here, but you can trigger an
                 // action which will not block the widget tree
                 // rendering.
                 WidgetsBinding.instance.addPostFrameCallback((_) async {

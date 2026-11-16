@@ -879,7 +879,7 @@ class UiUtil {
     AudioLearnAppViewType audioLearnAppViewType,
   ) {
     if (audioToDeleteCommentLst.isNotEmpty) {
-      // The audio has comments, so it cannot be deleted from the
+      // The audio has comments, so it can not be deleted from the
       // playlist json file without that a user confirmation was
       // obtained.
       return null;

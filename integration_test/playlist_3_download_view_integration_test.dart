@@ -9401,7 +9401,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            "The file name \"$fileNameOfExistingFile\" already exists in the same directory and cannot be used.",
+            "The file name \"$fileNameOfExistingFile\" already exists in the same directory and can not be used.",
       );
 
       // Verify that the old name file exists
@@ -32094,7 +32094,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'silenceDurationTextField',
           enteredValue: '-0:00.1',
-          expectedErrorMessage: 'Silence duration cannot be negative.',
+          expectedErrorMessage: 'Silence duration can not be negative.',
         );
 
         // Now modify the silence duration to -0:01.0 and verify
@@ -32103,7 +32103,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'silenceDurationTextField',
           enteredValue: '-0:01.0',
-          expectedErrorMessage: 'Silence duration cannot be negative.',
+          expectedErrorMessage: 'Silence duration can not be negative.',
         );
 
         // Now modify the silence duration to -0:10.0 and verify
@@ -32112,7 +32112,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'silenceDurationTextField',
           enteredValue: '-0:10.0',
-          expectedErrorMessage: 'Silence duration cannot be negative.',
+          expectedErrorMessage: 'Silence duration can not be negative.',
         );
 
         // Now modify the silence duration to -1:00.0 and verify
@@ -32121,7 +32121,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'silenceDurationTextField',
           enteredValue: '-1:00.0',
-          expectedErrorMessage: 'Silence duration cannot be negative.',
+          expectedErrorMessage: 'Silence duration can not be negative.',
         );
 
         // Now modify the silnceposition to -0:00.0
@@ -32179,7 +32179,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'fadeInDurationTextField',
           enteredValue: '-0:00.1',
-          expectedErrorMessage: 'Increase duration cannot be negative.',
+          expectedErrorMessage: 'Increase duration can not be negative.',
         );
 
         // Now modify the Volume fade-in duration to -0:01.0 and verify
@@ -32188,7 +32188,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'fadeInDurationTextField',
           enteredValue: '-0:01.0',
-          expectedErrorMessage: 'Increase duration cannot be negative.',
+          expectedErrorMessage: 'Increase duration can not be negative.',
         );
 
         // Now modify the Volume fade-in duration to -0:10.0 and verify
@@ -32197,7 +32197,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'fadeInDurationTextField',
           enteredValue: '-0:10.0',
-          expectedErrorMessage: 'Increase duration cannot be negative.',
+          expectedErrorMessage: 'Increase duration can not be negative.',
         );
 
         // Now modify the Volume fade-in duration to -1:00.0 and verify
@@ -32206,7 +32206,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'fadeInDurationTextField',
           enteredValue: '-1:00.0',
-          expectedErrorMessage: 'Increase duration cannot be negative.',
+          expectedErrorMessage: 'Increase duration can not be negative.',
         );
 
         // Now modify the Volume fade-in duration to 2:12.9 and verify
@@ -32216,7 +32216,7 @@ void main() {
           positionTextFieldKey: 'fadeInDurationTextField',
           enteredValue: '2:12.9',
           expectedErrorMessage:
-              "Increase duration end (0:00.0 + 2:12.9 = 2:12.9) cannot exceed comment end position (2:12.8).",
+              "Increase duration end (0:00.0 + 2:12.9 = 2:12.9) can not exceed comment end position (2:12.8).",
         );
 
         // Now modify the start position to 0:16.0
@@ -32242,7 +32242,7 @@ void main() {
           positionTextFieldKey: 'fadeInDurationTextField',
           enteredValue: '0:18.0',
           expectedErrorMessage:
-              "Increase duration end (0:16.0 + 0:18.0 = 0:34.0) cannot exceed comment end position (0:32.0).",
+              "Increase duration end (0:16.0 + 0:18.0 = 0:34.0) can not exceed comment end position (0:32.0).",
         );
 
         // Now modify the Volume fade-in duration to 0:00.0
@@ -32259,7 +32259,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'soundReductionPositionTextField',
           enteredValue: '-0:00.1',
-          expectedErrorMessage: 'Sound reduction position cannot be negative.',
+          expectedErrorMessage: 'Sound reduction position can not be negative.',
         );
 
         // Now modify the Volume fade-out position to -0:01.0 and verify
@@ -32268,7 +32268,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'soundReductionPositionTextField',
           enteredValue: '-0:01.0',
-          expectedErrorMessage: 'Sound reduction position cannot be negative.',
+          expectedErrorMessage: 'Sound reduction position can not be negative.',
         );
 
         // Now modify the Volume fade-out position to -0:10.0 and verify
@@ -32277,7 +32277,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'soundReductionPositionTextField',
           enteredValue: '-0:10.0',
-          expectedErrorMessage: 'Sound reduction position cannot be negative.',
+          expectedErrorMessage: 'Sound reduction position can not be negative.',
         );
 
         // Now modify the Volume fade-out position to -1:00.0 and verify
@@ -32286,7 +32286,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'soundReductionPositionTextField',
           enteredValue: '-1:00.0',
-          expectedErrorMessage: 'Sound reduction position cannot be negative.',
+          expectedErrorMessage: 'Sound reduction position can not be negative.',
         );
 
         // Now modify the Volume fade-out position to 0:20.0
@@ -32311,7 +32311,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'soundReductionDurationTextField',
           enteredValue: '-0:00.1',
-          expectedErrorMessage: 'Sound reduction duration cannot be negative.',
+          expectedErrorMessage: 'Sound reduction duration can not be negative.',
         );
 
         // Now modify the Volume fade-out duration to -0:01.0 and verify
@@ -32320,7 +32320,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'soundReductionDurationTextField',
           enteredValue: '-0:01.0',
-          expectedErrorMessage: 'Sound reduction duration cannot be negative.',
+          expectedErrorMessage: 'Sound reduction duration can not be negative.',
         );
 
         // Now modify the Volume fade-out duration to -0:10.0 and verify
@@ -32329,7 +32329,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'soundReductionDurationTextField',
           enteredValue: '-0:10.0',
-          expectedErrorMessage: 'Sound reduction duration cannot be negative.',
+          expectedErrorMessage: 'Sound reduction duration can not be negative.',
         );
 
         // Now modify the Volume fade-out duration to -1:00.0 and verify
@@ -32338,7 +32338,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'soundReductionDurationTextField',
           enteredValue: '-1:00.0',
-          expectedErrorMessage: 'Sound reduction duration cannot be negative.',
+          expectedErrorMessage: 'Sound reduction duration can not be negative.',
         );
 
         // Now modify the Volume fade-out duration to 0:05.0

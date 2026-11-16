@@ -117,7 +117,7 @@
       "url": {}
     }
   },
-  "renameFileNameAlreadyUsed": "The file name \"{fileName}\" already exists in the same directory and cannot be used.",
+  "renameFileNameAlreadyUsed": "The file name \"{fileName}\" already exists in the same directory and can not be used.",
   "@renameFileNameAlreadyUsed": {
     "description": "Warning announcing that the playlist with invalid URL was not added.",
     "placeholders": {
@@ -1241,17 +1241,17 @@
   "volumeEditLabel": "Volume (0.2 to 2.0)",
   "endPositionError": "End position must be after start position ({startPosition}) and not exceed",
   "startPositionError": "Start position must be between 0 and {inclusive} inclusive",
-  "negativeSilenceDurationError": "Silence duration cannot be negative",
-  "negativeSoundDurationError": "Sound reduction duration cannot be negative",
-  "negativeSoundPositionError": "Sound reduction position cannot be negative",
+  "negativeSilenceDurationError": "Silence duration can not be negative",
+  "negativeSoundDurationError": "Sound reduction duration can not be negative",
+  "negativeSoundPositionError": "Sound reduction position can not be negative",
   "soundPositionBeforeStartError": "Sound reduction position ({value}) must be after or at the comment start position",
   "soundPositionBeyondEndError": "Sound reduction position ({value}) must be before the comment end position",
   "soundPositionPlusDurationBeyondEndError": "Sound reduction of {value1} must complete before or at the comment end position ({value2})",
   "invalidVolumeError": "Sound volume must be beetween {value1} and {value2}",
   "loadedComments": "Loaded {commentNumber} comment(s)",
   "skippedComments": "({commentNumber} skipped)",
-  "fadeInDurationError": "Increase duration cannot be negative",
-  "fadeInExceedsCommentDurationError": "Increase duration end ({detail}) cannot exceed comment end position",
+  "fadeInDurationError": "Increase duration can not be negative",
+  "fadeInExceedsCommentDurationError": "Increase duration end ({detail}) can not exceed comment end position",
   "volumeFadeInOptional": "Volume fade-in (optional)",
   "fadeInDurationLabel": "Increase duration (h:mm:ss.t)",
   "fadeInDurationHelperText": "Duration to fade volume from 0% to 100% at comment start",

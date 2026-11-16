@@ -305,7 +305,7 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                                   if (apparentCurrentAudioPosition >= // ← was: audioPlayerVMlistenFalse.currentAudioPosition
                                       commentVMlistenFalse
                                           .currentCommentEndPosition) {
-                                    // You cannot await here, but you can
+                                    // You can not await here, but you can
                                     // trigger an action which will not
                                     // block the widget tree rendering.
                                     //
@@ -664,7 +664,7 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                 currentAudioPosition >=
                     widget.commentableAudio.audioDuration -
                         const Duration(milliseconds: 1400)) {
-              // You cannot await here, but you can trigger an
+              // You can not await here, but you can trigger an
               // action which will not block the widget tree
               // rendering.
               WidgetsBinding.instance.addPostFrameCallback((_) {

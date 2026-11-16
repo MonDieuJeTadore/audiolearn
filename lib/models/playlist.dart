@@ -609,7 +609,7 @@ class Playlist {
     int currentOrPastPlayableAudioIndexReduction = 0;
 
     // Since we are removing items from the list, we need to make a
-    // copy of the list because we cannot iterate over a list that
+    // copy of the list because we can not iterate over a list that
     // is being modified.
     List<Audio> playableAudioLstCopy = List<Audio>.from(playableAudioLst);
     int playableAudioIndex = 0;

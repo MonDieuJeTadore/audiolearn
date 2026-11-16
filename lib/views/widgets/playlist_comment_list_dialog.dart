@@ -543,7 +543,7 @@ class _PlaylistCommentListDialogState extends State<PlaylistCommentListDialog>
                                 currentAudioPosition >=
                                     currentAudio.audioDuration -
                                         const Duration(milliseconds: 1400))) {
-                          // You cannot await here, but you can trigger an
+                          // You can not await here, but you can trigger an
                           // action which will not block the widget tree
                           // rendering.
                           WidgetsBinding.instance

@@ -242,7 +242,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String renameFileNameAlreadyUsed(Object fileName) {
-    return 'The file name \"$fileName\" already exists in the same directory and cannot be used.';
+    return 'The file name \"$fileName\" already exists in the same directory and can not be used.';
   }
 
   @override
@@ -2786,15 +2786,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get negativeSilenceDurationError =>
-      'Silence duration cannot be negative';
+      'Silence duration can not be negative';
 
   @override
   String get negativeSoundDurationError =>
-      'Sound reduction duration cannot be negative';
+      'Sound reduction duration can not be negative';
 
   @override
   String get negativeSoundPositionError =>
-      'Sound reduction position cannot be negative';
+      'Sound reduction position can not be negative';
 
   @override
   String soundPositionBeforeStartError(Object value) {
@@ -2827,11 +2827,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get fadeInDurationError => 'Increase duration cannot be negative';
+  String get fadeInDurationError => 'Increase duration can not be negative';
 
   @override
   String fadeInExceedsCommentDurationError(Object detail) {
-    return 'Increase duration end ($detail) cannot exceed comment end position';
+    return 'Increase duration end ($detail) can not exceed comment end position';
   }
 
   @override

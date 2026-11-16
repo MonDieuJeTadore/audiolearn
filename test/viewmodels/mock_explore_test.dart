@@ -26,7 +26,7 @@ void main() {
     // Stubbing the 'videos' property.
     //
     // This is necessary because the 'videos' property is
-    // a getter and cannot be stubbed directly:
+    // a getter and can not be stubbed directly:
     // mockYoutubeExplode.videos.get(any) will not work.
     // Instead, we stub the getter to return a mock of the
     // VideoClient class, which has a 'get' method that

@@ -517,7 +517,7 @@ abstract class AppLocalizations {
   /// Warning announcing that the playlist with invalid URL was not added.
   ///
   /// In en, this message translates to:
-  /// **'The file name \"{fileName}\" already exists in the same directory and cannot be used.'**
+  /// **'The file name \"{fileName}\" already exists in the same directory and can not be used.'**
   String renameFileNameAlreadyUsed(Object fileName);
 
   /// Warning announcing that the playlist with the URL is already in the playlist list.
@@ -4466,19 +4466,19 @@ abstract class AppLocalizations {
   /// No description provided for @negativeSilenceDurationError.
   ///
   /// In en, this message translates to:
-  /// **'Silence duration cannot be negative'**
+  /// **'Silence duration can not be negative'**
   String get negativeSilenceDurationError;
 
   /// No description provided for @negativeSoundDurationError.
   ///
   /// In en, this message translates to:
-  /// **'Sound reduction duration cannot be negative'**
+  /// **'Sound reduction duration can not be negative'**
   String get negativeSoundDurationError;
 
   /// No description provided for @negativeSoundPositionError.
   ///
   /// In en, this message translates to:
-  /// **'Sound reduction position cannot be negative'**
+  /// **'Sound reduction position can not be negative'**
   String get negativeSoundPositionError;
 
   /// No description provided for @soundPositionBeforeStartError.
@@ -4520,13 +4520,13 @@ abstract class AppLocalizations {
   /// No description provided for @fadeInDurationError.
   ///
   /// In en, this message translates to:
-  /// **'Increase duration cannot be negative'**
+  /// **'Increase duration can not be negative'**
   String get fadeInDurationError;
 
   /// No description provided for @fadeInExceedsCommentDurationError.
   ///
   /// In en, this message translates to:
-  /// **'Increase duration end ({detail}) cannot exceed comment end position'**
+  /// **'Increase duration end ({detail}) can not exceed comment end position'**
   String fadeInExceedsCommentDurationError(Object detail);
 
   /// No description provided for @volumeFadeInOptional.

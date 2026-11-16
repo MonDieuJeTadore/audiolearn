@@ -506,6 +506,13 @@
       "playlistTitle": {}
     }
   },
+  "invalidModifiedPlaylistTitleWithPathCharacter": "The local modified playlist title \"{playlistTitle}\" cannot contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...",
+  "@invalidModifiedPlaylistTitleWithPathCharacter": {
+    "description": "Error shown when a local playlist title contains /, \\ or :",
+    "placeholders": {
+      "playlistTitle": {}
+    }
+  },
   "setValueToTargetWarning": "The entered value {invalidValueWarningParam} ({maxMinPossibleValue}). Please correct it and retry ...",
   "invalidValueTooBig": "exceeds the maximal value",
   "invalidValueTooSmall": "is below the minimal value",

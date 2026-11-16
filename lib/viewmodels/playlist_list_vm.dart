@@ -681,7 +681,8 @@ class PlaylistListVM extends ChangeNotifier {
         // directories in a path (/ on Android, '\' on Windows).
         // ':' is used on Windows as a drive letter separator.
         // So, these characters can not be used in a playlist title.
-        _warningMessageVM.invalidLocalPlaylistTitleWithPathCharacter = localPlaylistTitle;
+        _warningMessageVM.invalidLocalPlaylistTitleWithPathCharacter =
+            localPlaylistTitle;
 
         return null;
       }
@@ -6872,6 +6873,17 @@ class PlaylistListVM extends ChangeNotifier {
       // directory. For this reason, adding such a playlist is refused
       // by the method.
       _warningMessageVM.invalidModifiedPlaylistTitle = modifiedPlaylistTitle;
+
+      return false;
+    } else if (modifiedPlaylistTitle.contains('/') ||
+        modifiedPlaylistTitle.contains(':') ||
+        modifiedPlaylistTitle.contains('\\')) {
+      // The two first characters are used to separate the
+      // directories in a path (/ on Android, '\' on Windows).
+      // ':' is used on Windows as a drive letter separator.
+      // So, these characters can not be used in a playlist title.
+      _warningMessageVM.invalidModifiedPlaylistTitleWithPathCharacter =
+          modifiedPlaylistTitle;
 
       return false;
     }

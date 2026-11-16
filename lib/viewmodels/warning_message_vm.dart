@@ -41,6 +41,9 @@ enum WarningMessageType {
   invalidModifiedPlaylistTitle, // The case if the modified playlist
   // title contains one or more commas.
 
+  invalidModifiedPlaylistTitleWithPathCharacter, // The case if the
+  // modified playlist title contains '/' or '\' or ':' character(s).
+
   renameFileNameInvalid, // The case if the file name proposed
   // for renaming an audio file has not .mp3 extension.
 
@@ -558,6 +561,14 @@ class WarningMessageVM extends ChangeNotifier {
   set invalidModifiedPlaylistTitle(String invalidModifiedPlaylistTitle) {
     _invalidModifiedPlaylistTitle = invalidModifiedPlaylistTitle;
     warningMessageType = WarningMessageType.invalidModifiedPlaylistTitle;
+
+    // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
+    notifyListeners();
+  }
+
+  set invalidModifiedPlaylistTitleWithPathCharacter(String invalidModifiedPlaylistTitle) {
+    _invalidModifiedPlaylistTitle = invalidModifiedPlaylistTitle;
+    warningMessageType = WarningMessageType.invalidModifiedPlaylistTitleWithPathCharacter;
 
     // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
     notifyListeners();

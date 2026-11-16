@@ -1121,6 +1121,11 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String invalidModifiedPlaylistTitleWithPathCharacter(Object playlistTitle) {
+    return 'Le titre modifié de la playlist locale \"$playlistTitle\" ne peut contenir aucun de ces 3 caractères en relation avec le répertoire:  /, \\ ou :. Corrigez le titre et rééssayez ...';
+  }
+
+  @override
   String setValueToTargetWarning(
       Object invalidValueWarningParam, Object maxMinPossibleValue) {
     return 'La valeur entrée $invalidValueWarningParam ($maxMinPossibleValue). Corrigez la valeur et rééssayez ...';

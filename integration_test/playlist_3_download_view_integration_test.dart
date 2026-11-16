@@ -26766,6 +26766,278 @@ void main() {
         );
       });
       testWidgets(
+          '''Rename playlist with changing its name to an invalid playlist name containing invalid chars ':'.
+             This will display a warning and will not rename the playlist.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}rename playlist test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        const String playlistToRenameTitle = 'local';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToRenameTitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Enter the new playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, playlistToRenameTitle);
+
+        // Enter the new playlist title
+
+        const String modifiedPlaylistTitle = 'local : new';
+
+        await tester.enterText(
+          textFieldFinder,
+          modifiedPlaylistTitle,
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is displayed
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "The local modified playlist title \"$modifiedPlaylistTitle\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...",
+          isWarningConfirming: false,
+        );
+
+        // Verify that the rename playlist dialog remains displayed
+        expect(find.byType(PlaylistRenameDialog), findsOneWidget);
+
+        // Verify that the TextField displays the invalid playlist
+        // title since the new title was not accepted
+
+        expect(textField.controller!.text, modifiedPlaylistTitle);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Rename playlist with changing its name to an invalid playlist name containing invalid chars '/'.
+             This will display a warning and will not rename the playlist.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}rename playlist test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        const String playlistToRenameTitle = 'local';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToRenameTitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Enter the new playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, playlistToRenameTitle);
+
+        // Enter the new playlist title
+
+        const String modifiedPlaylistTitle = 'local / new';
+
+        await tester.enterText(
+          textFieldFinder,
+          modifiedPlaylistTitle,
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is displayed
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "The local modified playlist title \"$modifiedPlaylistTitle\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...",
+          isWarningConfirming: false,
+        );
+
+        // Verify that the rename playlist dialog remains displayed
+        expect(find.byType(PlaylistRenameDialog), findsOneWidget);
+
+        // Verify that the TextField displays the invalid playlist
+        // title since the new title was not accepted
+
+        expect(textField.controller!.text, modifiedPlaylistTitle);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Rename playlist with changing its name to an invalid playlist name containing invalid chars '\\'.
+             This will display a warning and will not rename the playlist.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the test initial audio data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}rename playlist test",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        _loadSettingsMap();
+
+        final SettingsDataService settingsDataService = SettingsDataService(
+          isTest: true,
+        );
+
+        // Load the settings from the json file. This is necessary
+        // otherwise the ordered playlist titles will remain empty
+        // and the playlist list will not be filled with the
+        // playlists available in the app test dir
+        await settingsDataService.loadSettingsFromFile(
+            settingsJsonPathFileName:
+                "$kApplicationPathWindowsTest${path.separator}$kSettingsFileName");
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        const String playlistToRenameTitle = 'local';
+
+        await IntegrationTestUtil.typeOnPlaylistMenuItem(
+          tester: tester,
+          playlistTitle: playlistToRenameTitle,
+          playlistMenuKeyStr: 'popup_menu_rename_playlist',
+        );
+
+        // Enter the new playlist name
+
+        // Find the TextField using the Key
+        final Finder textFieldFinder =
+            find.byKey(const Key('playlistTitleModificationTextField'));
+
+        // Retrieve the TextField widget
+        final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+        // Verify the initial value of the TextField
+
+        expect(textField.controller!.text, playlistToRenameTitle);
+
+        // Enter the new playlist title
+
+        const String modifiedPlaylistTitle = 'local \\ new';
+
+        await tester.enterText(
+          textFieldFinder,
+          modifiedPlaylistTitle,
+        );
+        await tester.pumpAndSettle();
+
+        // Now tap the rename button
+        await tester.tap(find.byKey(const Key('playlistRenameButton')));
+        await tester.pumpAndSettle();
+
+        // Ensure the warning dialog is displayed
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "The local modified playlist title \"$modifiedPlaylistTitle\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...",
+          isWarningConfirming: false,
+        );
+
+        // Verify that the rename playlist dialog remains displayed
+        expect(find.byType(PlaylistRenameDialog), findsOneWidget);
+
+        // Verify that the TextField displays the invalid playlist
+        // title since the new title was not accepted
+
+        expect(textField.controller!.text, modifiedPlaylistTitle);
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
           '''Rename playlist with acceptable new name. Verify the results of the rename operation.''',
           (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the

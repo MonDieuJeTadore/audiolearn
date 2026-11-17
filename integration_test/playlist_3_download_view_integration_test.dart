@@ -24686,7 +24686,10 @@ void main() {
       () {
     group('''From directory with zip''', () {
       testWidgets(
-          '''Left appbar menu, directory with zip's, 1 playlist audio MP3 files restoration.''',
+          '''Left appbar menu, directory with zip's, 1 playlist audio MP3 files restoration.
+             Since the 'Unique playlist MP3's are restored' checkbox is not checked, the latest
+             download date of the restored MP3 files will be updated with the last download date
+             of the restored MP3 files.''',
           (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
@@ -24710,6 +24713,14 @@ void main() {
 
         await app.main();
         await tester.pumpAndSettle();
+
+        // Before restoring the MP3 files of the unique playlist,
+        // verify the value of the latest download date of the
+        // restored MP3 files
+        await _verifyLatestMP3RestoredDownloadDateTime(
+          tester: tester,
+          latestMMP3RestoredDownloadDateTimeStr: '01/01/2000 00:00',
+        );
 
         // Replace the platform instance with your mock
         MockFilePicker mockFilePicker = MockFilePicker();
@@ -24762,6 +24773,124 @@ void main() {
           warningDialogMessage:
               "Restored 22 audio(s) MP3 in 1 playlist(s) from the multiple MP3 zip files contained in dir \"$mp3RestorableZipDirectory\".",
           isWarningConfirming: true,
+        );
+
+        // After restoring the MP3 files of the unique playlist,
+        // verify that the value of the latest download date of
+        // the restored MP3 files was updated correctly
+        await _verifyLatestMP3RestoredDownloadDateTime(
+          tester: tester,
+          latestMMP3RestoredDownloadDateTimeStr: '20/10/2025 07:47',
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Left appbar menu, directory with zip's, 1 playlist audio MP3 files restoration.
+             Since the 'Unique playlist MP3's are restored' checkbox is checked, the latest
+             download date of the restored MP3 files will not be updated with the last download
+             date of the restored MP3 files.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the integration test data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}restoring_audio_mp3_selecting_zip_or_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Delete the 'Prières du Maître' playlist MP3 files to be able
+        // to restore them
+        DirUtil.deleteMp3FilesInDir(
+          filePath:
+              '$kPlaylistDownloadRootPathWindowsTest${path.separator}Prières du Maître',
+        );
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Before restoring the MP3 files of the unique playlist,
+        // verify the value of the latest download date of the
+        // restored MP3 files
+        await _verifyLatestMP3RestoredDownloadDateTime(
+          tester: tester,
+          latestMMP3RestoredDownloadDateTimeStr: '01/01/2000 00:00',
+        );
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String mp3RestorableZipDirectory =
+            '$kApplicationPathWindowsTest${path.separator}Mp3ZipFiles';
+
+        // Setting the directory to select in the mock file
+        // picker. This directory contains multiple playlists
+        // MP3 zip files
+        mockFilePicker.setPathToSelect(
+          pathToSelectStr: mp3RestorableZipDirectory,
+        );
+
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuRestorePlaylistsAudioMp3FilesFromZip',
+        );
+
+        // Check the 'Unique playlist MP3's are restored' checkbox
+        await tester.tap(find.byKey(const Key('checkbox_0_key')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed confirmation dialog
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'MP3 Restoration',
+          dialogMessage:
+              "Only the MP3 relative to the audios listed in the playlists which are not already present in the playlists are restorable.",
+          closeDialog: true,
+        );
+
+        // Now tap on the 'A Directory with ZIPs' button
+        await tester.tap(find.byKey(const Key('selectDirectoryButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed problem confirmation dialog and
+        // close it
+        await IntegrationTestUtil.verifyConfirmActionDialog(
+          tester: tester,
+          confirmActionDialogTitle:
+              "Problem if selecting a directory on a smartphone:",
+          confirmActionDialogMessagePossibleLst: [
+            "If the ZIP files are located on your smartphone, click on Cancel after reading the explanation. You must first copy the ZIP files in a folder on your computer. Directory scanning does not work over the phone USB connection but is ok on a computer directory.",
+          ],
+          closeDialogWithConfirmButton: true,
+          usePumpAndSettle: true,
+        );
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 22 audio(s) MP3 in 1 playlist(s) from the multiple MP3 zip files contained in dir \"$mp3RestorableZipDirectory\".",
+          isWarningConfirming: true,
+        );
+
+        // After restoring the MP3 files of the unique playlist,
+        // verify that the value of the latest download date of
+        // the restored MP3 files was not updated since the
+        // 'Unique playlist MP3's are restored' checkbox was
+        // checked
+        await _verifyLatestMP3RestoredDownloadDateTime(
+          tester: tester,
+          latestMMP3RestoredDownloadDateTimeStr: '01/01/2000 00:00',
         );
 
         // Purge the test playlist directory so that the created test
@@ -25074,7 +25203,10 @@ void main() {
     });
     group('''From single zip file's''', () {
       testWidgets(
-          '''Left appbar menu, a single zip file, 1 playlist audio MP3 files restoration.''',
+          '''Left appbar menu, a single zip file, 1 playlist audio MP3 files restoration.
+             Since the 'Unique playlist MP3's are restored' checkbox is not checked, the latest
+             download date of the restored MP3 files will be updated with the last download date
+             of the restored MP3 files.''',
           (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
@@ -25098,6 +25230,14 @@ void main() {
 
         await app.main();
         await tester.pumpAndSettle();
+
+        // Before restoring the MP3 files of the unique playlist,
+        // verify the value of the latest download date of the
+        // restored MP3 files
+        await _verifyLatestMP3RestoredDownloadDateTime(
+          tester: tester,
+          latestMMP3RestoredDownloadDateTimeStr: '01/01/2000 00:00',
+        );
 
         // Replace the platform instance with your mock
         MockFilePicker mockFilePicker = MockFilePicker();
@@ -25140,6 +25280,114 @@ void main() {
           warningDialogMessage:
               "Restored 22 audio(s) MP3 in 1 playlist(s) from the MP3 zip file \"$mp3RestorableZipFilePathName\".",
           isWarningConfirming: true,
+        );
+
+        // After restoring the MP3 files of the unique playlist,
+        // verify that the value of the latest download date of
+        // the restored MP3 files was updated correctly
+        await _verifyLatestMP3RestoredDownloadDateTime(
+          tester: tester,
+          latestMMP3RestoredDownloadDateTimeStr: '20/10/2025 07:47',
+        );
+
+        // Purge the test playlist directory so that the created test
+        // files are not uploaded to GitHub
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+      });
+      testWidgets(
+          '''Left appbar menu, a single zip file, 1 playlist audio MP3 files restoration.
+             Since the 'Unique playlist MP3's are restored' checkbox is checked, the latest
+             download date of the restored MP3 files will not be updated with the last download
+             date of the restored MP3 files.''',
+          (WidgetTester tester) async {
+        // Purge the test playlist directory if it exists so that the
+        // playlist list is empty
+        DirUtil.deleteFilesInDirAndSubDirs(
+          rootPath: kApplicationPathWindowsTest,
+        );
+
+        // Copy the integration test data to the app dir
+        DirUtil.copyFilesFromDirAndSubDirsToDirectory(
+          sourceRootPath:
+              "$kDownloadAppTestSavedDataDir${path.separator}restoring_audio_mp3_selecting_zip_or_dir",
+          destinationRootPath: kApplicationPathWindowsTest,
+        );
+
+        // Delete the 'Prières du Maître' playlist MP3 files to be able
+        // to restore them
+        DirUtil.deleteMp3FilesInDir(
+          filePath:
+              '$kPlaylistDownloadRootPathWindowsTest${path.separator}Prières du Maître',
+        );
+
+        await app.main();
+        await tester.pumpAndSettle();
+
+        // Before restoring the MP3 files of the unique playlist,
+        // verify the value of the latest download date of the
+        // restored MP3 files
+        await _verifyLatestMP3RestoredDownloadDateTime(
+          tester: tester,
+          latestMMP3RestoredDownloadDateTimeStr: '01/01/2000 00:00',
+        );
+
+        // Replace the platform instance with your mock
+        MockFilePicker mockFilePicker = MockFilePicker();
+        FilePicker.platform = mockFilePicker;
+
+        String mp3RestorableZipFilePathName =
+            '$kApplicationPathWindowsTest${path.separator}Prières du Maître_mp3_from_2025-02-11_09_00_11_on_2025-10-24_14_20_20.zip';
+
+        // Setting the directory to select in the mock file
+        // picker. This directory contains multiple playlists
+        // MP3 zip files
+        mockFilePicker.setSelectedFiles([
+          PlatformFile(
+              name: mp3RestorableZipFilePathName,
+              path: mp3RestorableZipFilePathName,
+              size: 15365504),
+        ]);
+
+        await IntegrationTestUtil.typeOnAppbarMenuItem(
+          tester: tester,
+          appbarMenuKeyStr: 'appBarMenuRestorePlaylistsAudioMp3FilesFromZip',
+        );
+
+        // Check the 'Unique playlist MP3's are restored' checkbox
+        await tester.tap(find.byKey(const Key('checkbox_0_key')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed confirmation dialog
+        await IntegrationTestUtil.verifySetValueToTargetDialog(
+          tester: tester,
+          dialogTitle: 'MP3 Restoration',
+          dialogMessage:
+              "Only the MP3 relative to the audios listed in the playlists which are not already present in the playlists are restorable.",
+          closeDialog: true,
+        );
+
+        // Now tap on the 'A single ZIP File' button
+        await tester.tap(find.byKey(const Key('selectFileButton')));
+        await tester.pumpAndSettle();
+
+        // Verify the displayed warning confirmation dialog
+        await IntegrationTestUtil.verifyAndCloseWarningDialog(
+          tester: tester,
+          warningDialogMessage:
+              "Restored 22 audio(s) MP3 in 1 playlist(s) from the MP3 zip file \"$mp3RestorableZipFilePathName\".",
+          isWarningConfirming: true,
+        );
+
+        // After restoring the MP3 files of the unique playlist,
+        // verify that the value of the latest download date of
+        // the restored MP3 files was not updated since the
+        // 'Unique playlist MP3's are restored' checkbox was
+        // checked
+        await _verifyLatestMP3RestoredDownloadDateTime(
+          tester: tester,
+          latestMMP3RestoredDownloadDateTimeStr: '01/01/2000 00:00',
         );
 
         // Purge the test playlist directory so that the created test
@@ -27520,7 +27768,8 @@ void main() {
         await app.main();
         await tester.pumpAndSettle();
 
-        const String playlistToRenameTitle = 'temp'; // Youtube playlist to be renamed
+        const String playlistToRenameTitle =
+            'temp'; // Youtube playlist to be renamed
 
         await IntegrationTestUtil.typeOnPlaylistMenuItem(
           tester: tester,
@@ -27606,7 +27855,8 @@ void main() {
         await app.main();
         await tester.pumpAndSettle();
 
-        const String playlistToRenameTitle = 'temp'; // Youtube playlist to be renamed
+        const String playlistToRenameTitle =
+            'temp'; // Youtube playlist to be renamed
 
         await IntegrationTestUtil.typeOnPlaylistMenuItem(
           tester: tester,
@@ -27696,7 +27946,8 @@ void main() {
         await app.main();
         await tester.pumpAndSettle();
 
-        const String playlistToRenameTitle = 'temp'; // Youtube playlist to be renamed
+        const String playlistToRenameTitle =
+            'temp'; // Youtube playlist to be renamed
 
         await IntegrationTestUtil.typeOnPlaylistMenuItem(
           tester: tester,
@@ -27787,7 +28038,8 @@ void main() {
         await app.main();
         await tester.pumpAndSettle();
 
-        const String playlistToRenameTitle = 'temp'; // Youtube playlist to be renamed
+        const String playlistToRenameTitle =
+            'temp'; // Youtube playlist to be renamed
 
         await IntegrationTestUtil.typeOnPlaylistMenuItem(
           tester: tester,
@@ -27878,7 +28130,8 @@ void main() {
         await app.main();
         await tester.pumpAndSettle();
 
-        const String playlistToRenameTitle = 'temp'; // Youtube playlist to be renamed
+        const String playlistToRenameTitle =
+            'temp'; // Youtube playlist to be renamed
 
         await IntegrationTestUtil.typeOnPlaylistMenuItem(
           tester: tester,
@@ -27969,7 +28222,8 @@ void main() {
         await app.main();
         await tester.pumpAndSettle();
 
-        const String playlistToRenameTitle = 'temp'; // Youtube playlist to be renamed
+        const String playlistToRenameTitle =
+            'temp'; // Youtube playlist to be renamed
 
         await IntegrationTestUtil.typeOnPlaylistMenuItem(
           tester: tester,
@@ -28067,7 +28321,8 @@ void main() {
           settingsDataService: settingsDataService,
         );
 
-        const String playlistToRenameTitle = 'temp'; // Youtube playlist to be renamed
+        const String playlistToRenameTitle =
+            'temp'; // Youtube playlist to be renamed
 
         Map<String, List<String>> applicationPictureAudioMap =
             pictureVM.readAppPictureAudioMap();
@@ -30535,7 +30790,8 @@ void main() {
               segmentDetailsList: [
                 {
                   'number': 1,
-                  'commentTitle': "Oh Jésus, accueille nos défunts dans le Paradis",
+                  'commentTitle':
+                      "Oh Jésus, accueille nos défunts dans le Paradis",
                   'startPosition': '0:00.0',
                   'endPosition': '7:09.2',
                   'playSpeed': 'Play speed: 1.0',

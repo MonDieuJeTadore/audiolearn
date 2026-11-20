@@ -136,9 +136,6 @@ enum WarningMessageType {
   // audios were rewinded to start position. This happens when the user clicks
   // on the Rewind Audio to Start playlist menu item.
 
-  filteredAudioNumberAndDuration, // The case if obtaining the filtered
-  // audios number and duration.
-
   filteredAudioNumberAndDurationOnDate, // The case if obtaining the filtered
   // audios number and duration on date.
 
@@ -1490,19 +1487,6 @@ class WarningMessageVM extends ChangeNotifier {
 
     warningMessageType =
         WarningMessageType.rewindedFilteredPlayableAudioToStart;
-
-    // Causes the display warning message widget to be displayed.
-    notifyListeners();
-  }
-
-  void filteredAudioNumberAndDuration({
-    required int filteredAudiosNumber,
-    required String filteredAudiosDurationStr,
-  }) {
-    _rewindedPlayableAudioNumber = filteredAudiosNumber;
-    _todayPlayableAudioDurationStr = filteredAudiosDurationStr;
-
-    warningMessageType = WarningMessageType.filteredAudioNumberAndDuration;
 
     // Causes the display warning message widget to be displayed.
     notifyListeners();

@@ -1793,7 +1793,6 @@
   "setAudioLastListenedDateTitleTooltip": "Ceci est utile si les audios concernés n'ont pas été écoutés avant la date définie.",
   "lastListenedDate": "Date dernière écoute",
   "lastListenedDateSortFilterTooltip": "Les audios écoutés à cette date seront listés.",
-  "filteredAudioNumberAndDuration": "Durée jouable totale des {number} audios filtrés jouables aujourd'hui de la playlist: {playableDuration}.",
   "filteredAudioNumberAndDurationDialogTitle": "Valeurs obtenues",
   "playableEveryNDaysRange": "Intervalle jouable tous les n jours",
   "startAudioPlayableEveryNDaysSortFilterTooltip": "Si seule l'intervalle minimale est définie, tous les audios jouables ces n jours ou les n jours supérieurs à la valeur définie seront listés. Si non défini, les audios sont jouables tous les jours !",

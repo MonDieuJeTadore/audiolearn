@@ -3253,13 +3253,6 @@ class MockAppLocalizations extends AppLocalizations {
       "Obtain filtered Audios Number and Duration";
 
   @override
-  String filteredAudioNumberAndDuration(
-    Object number,
-    Object playableDuration,
-  ) =>
-      "Total playable duration of the $number playlist filtered audios: $playableDuration.";
-
-  @override
   String get filteredAudioNumberAndDurationDialogTitle => "Values";
 
   @override

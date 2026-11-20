@@ -3229,12 +3229,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Les audios écoutés à cette date seront listés.';
 
   @override
-  String filteredAudioNumberAndDuration(
-      Object number, Object playableDuration) {
-    return 'Durée jouable totale des $number audios filtrés jouables aujourd\'hui de la playlist: $playableDuration.';
-  }
-
-  @override
   String get filteredAudioNumberAndDurationDialogTitle => 'Valeurs obtenues';
 
   @override

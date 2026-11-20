@@ -5117,12 +5117,6 @@ abstract class AppLocalizations {
   /// **'Lists all audios listened on or after the specified start date if set.'**
   String get lastListenedDateSortFilterTooltip;
 
-  /// No description provided for @filteredAudioNumberAndDuration.
-  ///
-  /// In en, this message translates to:
-  /// **'Total playable duration of the {number} playlist filtered playable today audios: {playableDuration}.'**
-  String filteredAudioNumberAndDuration(Object number, Object playableDuration);
-
   /// No description provided for @filteredAudioNumberAndDurationDialogTitle.
   ///
   /// In en, this message translates to:

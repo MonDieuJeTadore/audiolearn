@@ -24,17 +24,17 @@ void main() {
 
   group(
       '''ONLY WORKS ON Medium Phone EMULATOR, NOT ON FLUTTER EMULATOR. REASON: EMULATOR SIZE !
-          RUN setup_test.bat IN ORDER TO COPY THE CONTENT OF restore_existing_playlists_with_new_
-          audios_android_emulator.zip to kApplicationPathAndroidTest = "/storage/emulated/0/Documents
-          /test/audiolearn".
+         RUN setup_test.bat IN ORDER TO COPY THE CONTENT OF restore_existing_playlists_with_new_
+         audios_android_emulator.zip to kApplicationPathAndroidTest = "/storage/emulated/0/Documents
+         /test/audiolearn".
 
-          On not empty app dir where a playlist is selected, restore Windows zip in which playlist(s)
-          corresponding to existing playlist(s) contain additional audios to which comments and pictures
-          are associated. This situation happens if the AudioLearn application exists on two different
-          engines and the user wants to restore the playlists, comments and pictures from one computer
-          to another in order to add to the target pc or smartphone the audios downloaded on the source
-          engine. The audio mp3 files are not added since they are not in the zip file. But the Audio
-          objects are added to the existing playlist and so can be redownloaded if needed.''',
+         On not empty app dir where a playlist is selected, restore Windows zip in which playlist(s)
+         corresponding to existing playlist(s) contain additional audios to which comments and pictures
+         are associated. This situation happens if the AudioLearn application exists on two different
+         engines and the user wants to restore the playlists, comments and pictures from one computer
+         to another in order to add to the target pc or smartphone the audios downloaded on the source
+         engine. The audio mp3 files are not added since they are not in the zip file. But the Audio
+         objects are added to the existing playlist and so can be redownloaded if needed.''',
       () {
     group('''From Windows zip.''', () {
       testWidgets(

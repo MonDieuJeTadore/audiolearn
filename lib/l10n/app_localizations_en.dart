@@ -3243,7 +3243,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String invalidDateFormatErrorMessage(Object dateStr) {
-    return '$dateStr does not respect the date only format.';
+    return '$dateStr does not respect the date format.';
   }
 
   @override

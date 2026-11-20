@@ -5204,7 +5204,7 @@ abstract class AppLocalizations {
   /// No description provided for @invalidDateFormatErrorMessage.
   ///
   /// In en, this message translates to:
-  /// **'{dateStr} does not respect the date only format.'**
+  /// **'{dateStr} does not respect the date format.'**
   String invalidDateFormatErrorMessage(Object dateStr);
 
   /// No description provided for @invalidDateErrorMessage.

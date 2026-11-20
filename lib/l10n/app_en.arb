@@ -1374,7 +1374,7 @@
   "playableOnDateTitleExplanation": "The defined date will be used as next playable date to obtain the filtered audios number and their total playable duration at this date.",
   "definePlayableOnDateTitleTooltip": "Tooltip to define !",
   "playableOnDateLabel": "Date ({selectedAppDateFormat})",
-  "invalidDateFormatErrorMessage": "{dateStr} does not respect the date only format.",
+  "invalidDateFormatErrorMessage": "{dateStr} does not respect the date format.",
   "invalidDateErrorMessage": "The date {dateStr} is invalid.",
   "filteredAudioNumberAndDurationOnDate": "Total playable duration of the {number} playlist filtered audios playable on {date}: {playableDuration}.",
   "modifyAudioListenedDateMenu": "Modify Audio last listened Date ...",

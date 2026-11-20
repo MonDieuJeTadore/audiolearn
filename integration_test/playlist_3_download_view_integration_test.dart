@@ -24689,8 +24689,7 @@ void main() {
           '''Left appbar menu, directory with zip's, 1 playlist audio MP3 files restoration.
              Since the 'Unique playlist MP3's are restored' checkbox is not checked, the latest
              download date of the restored MP3 files will be updated with the last download date
-             of the restored MP3 files.''',
-          (WidgetTester tester) async {
+             of the restored MP3 files.''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -24793,8 +24792,7 @@ void main() {
           '''Left appbar menu, directory with zip's, 1 playlist audio MP3 files restoration.
              Since the 'Unique playlist MP3's are restored' checkbox is checked, the latest
              download date of the restored MP3 files will not be updated with the last download
-             date of the restored MP3 files.''',
-          (WidgetTester tester) async {
+             date of the restored MP3 files.''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -25206,8 +25204,7 @@ void main() {
           '''Left appbar menu, a single zip file, 1 playlist audio MP3 files restoration.
              Since the 'Unique playlist MP3's are restored' checkbox is not checked, the latest
              download date of the restored MP3 files will be updated with the last download date
-             of the restored MP3 files.''',
-          (WidgetTester tester) async {
+             of the restored MP3 files.''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -25300,8 +25297,7 @@ void main() {
           '''Left appbar menu, a single zip file, 1 playlist audio MP3 files restoration.
              Since the 'Unique playlist MP3's are restored' checkbox is checked, the latest
              download date of the restored MP3 files will not be updated with the last download
-             date of the restored MP3 files.''',
-          (WidgetTester tester) async {
+             date of the restored MP3 files.''', (WidgetTester tester) async {
         // Purge the test playlist directory if it exists so that the
         // playlist list is empty
         DirUtil.deleteFilesInDirAndSubDirs(
@@ -34334,6 +34330,102 @@ void main() {
       expect(
         find.text("$secondAudioTitle\n0:30"),
         findsOneWidget,
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+  });
+  group(
+      'Obtain playlist filtered audios number and their total playable duration on date test',
+      () {
+    testWidgets(
+        '''Set to the selected playlist a sort/filter parameter. Then type on the
+        'Filtered Audios Actions ...' playlist menu and then on the 'Rewind filtered Audios to Start'
+        sub-menu. Then check the confirm warning as well as the filtered audios titles.''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'extract_comments_to_mp3_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String playlistToRewindTitle = 'Les prières de cette playlist';
+
+      // Now select the 'Les prières de cette playlist' playlist
+      await IntegrationTestUtil.selectPlaylist(
+        tester: tester,
+        playlistToSelectTitle: playlistToRewindTitle,
+      );
+
+      // Tap the 'Toggle List' button to close the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      String sortFilterParmName = 'Dur < 0:00:29';
+
+      // Now tap on the current dropdown button item to open the dropdown
+      // button items list
+
+      Finder dropDownButtonFinder =
+          find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+      Finder dropDownButtonTextFinder = find.descendant(
+        of: dropDownButtonFinder,
+        matching: find.byType(Text),
+      );
+
+      await tester.tap(dropDownButtonTextFinder);
+      await tester.pumpAndSettle();
+
+      // Find and tap on the 'Dur < 0:00:29' sort/filter item
+      Finder sortFilterParmNameDropDownTextFinder =
+          find.text(sortFilterParmName).last;
+      await tester.tap(sortFilterParmNameDropDownTextFinder);
+      await tester.pumpAndSettle();
+
+      // Tap the 'Toggle List' button to display the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Now test the 'Obtain filtered Audios Number and their total
+      // playable Duration on Date' functionality
+
+      // Clicking first on the 'Filtered Audio Actions ...' playlist
+      // menu item and then on the 'Rewind filtered Audios to Start'
+      // sub-menu item
+      await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+        tester: tester,
+        playlistTitle: playlistToRewindTitle,
+        playlistSubMenuKeyStr:
+            'popup_menu_obtain_filtered_audio_number_and_duration',
+      );
+
+      // Now verifying the 'Define the playable on Date' dialog
+      await IntegrationTestUtil.verifySetValueToTargetDialog(
+        tester: tester,
+        dialogTitle: 'Define the playable on Date',
+        dialogMessage:
+            "The defined date will be used as next playable date to obtain the filtered audios number and their total playable duration at this date.",
+      );
+
+      // Check the "Add all JPG pictures to ZIP" checkbox
+      // await tester.tap(find.byKey(const Key('checkbox_0_key')));
+      // await tester.pumpAndSettle();
+
+      // Close the dialog with the OK button
+      await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+      await tester.pumpAndSettle();
+
+      // Now verifying the confirming warning dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "Total playable duration of the 2 playlist filtered audios playable on ${DateFormat('dd/MM/yyyy').format(DateTime.now())}: 0:57.",
+        warningTitle: 'Obtained Values',
       );
 
       // Purge the test playlist directory so that the created test

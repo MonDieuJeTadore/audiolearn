@@ -477,7 +477,7 @@ void main() {
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
-            'The Youtube playlist title "$invalidYoutubePlaylistTitle" can not contain any comma. Please correct the title and retry ...',
+            'Youtube playlist "$invalidYoutubePlaylistTitle" of spoken quality added with corrected title "Johnny Hallyday songs" at the end of the playlist list at position 1.',
         isWarningConfirming: false,
       );
 

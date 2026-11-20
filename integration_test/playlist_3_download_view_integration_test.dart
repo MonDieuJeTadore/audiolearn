@@ -34537,6 +34537,216 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
     });
+    testWidgets(
+        '''Invalid date is used. Set to the selected playlist a sort/filter parameter. Then type on the
+        'Filtered Audios Actions ...' playlist menu and then on the 'Obtain filtered Audios Number and
+        their total playable Duration on Date ...' sub-menu. Then enter the date and click on the Ok
+        buttone.''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'extract_comments_to_mp3_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String playlistToRewindTitle = 'Les prières de cette playlist';
+
+      // Now select the 'Les prières de cette playlist' playlist
+      await IntegrationTestUtil.selectPlaylist(
+        tester: tester,
+        playlistToSelectTitle: playlistToRewindTitle,
+      );
+
+      // Tap the 'Toggle List' button to close the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      String sortFilterParmName = 'Dur < 0:00:29';
+
+      // Now tap on the current dropdown button item to open the dropdown
+      // button items list
+
+      Finder dropDownButtonFinder =
+          find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+      Finder dropDownButtonTextFinder = find.descendant(
+        of: dropDownButtonFinder,
+        matching: find.byType(Text),
+      );
+
+      await tester.tap(dropDownButtonTextFinder);
+      await tester.pumpAndSettle();
+
+      // Find and tap on the 'Dur < 0:00:29' sort/filter item
+      Finder sortFilterParmNameDropDownTextFinder =
+          find.text(sortFilterParmName).last;
+      await tester.tap(sortFilterParmNameDropDownTextFinder);
+      await tester.pumpAndSettle();
+
+      // Tap the 'Toggle List' button to display the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Now test the 'Obtain filtered Audios Number and their total
+      // playable Duration on Date' functionality
+
+      // Clicking first on the 'Filtered Audio Actions ...' playlist
+      // menu item and then on the 'Rewind filtered Audios to Start'
+      // sub-menu item
+      await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+        tester: tester,
+        playlistTitle: playlistToRewindTitle,
+        playlistSubMenuKeyStr:
+            'popup_menu_obtain_filtered_audio_number_and_duration',
+      );
+
+      // Now verifying the 'Define the playable on Date' dialog
+      await IntegrationTestUtil.verifySetValueToTargetDialog(
+        tester: tester,
+        dialogTitle: 'Define the playable on Date',
+        dialogMessage:
+            "The defined date will be used as next playable date to obtain the filtered audios number and their total playable duration at this date.",
+      );
+
+      Finder setValueToTargetDialogFinder = find.byType(SetValueToTargetDialog);
+
+      // This finder obtained as descendant of its enclosing dialog does
+      // enable to change the value of the TextField
+      Finder setValueToTargetDialogEditTextFinder = find.descendant(
+        of: setValueToTargetDialogFinder,
+        matching: find.byType(TextField),
+      );
+
+      // Now change the date in the dialog
+      final String invalidDate = '20/13/2026';
+      TextField textField =
+          tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+      textField.controller!.text = invalidDate;
+      await tester.pumpAndSettle();
+
+      // Close the dialog with the OK button
+      await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+      await tester.pumpAndSettle();
+
+      // Now verifying the error warning dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "The date $invalidDate is invalid.",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''Incorrect date format is used. Set to the selected playlist a sort/filter parameter. Then type on the
+        'Filtered Audios Actions ...' playlist menu and then on the 'Obtain filtered Audios Number and
+        their total playable Duration on Date ...' sub-menu. Then enter the date and click on the Ok
+        buttone.''',
+        (WidgetTester tester) async {
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'extract_comments_to_mp3_test',
+        tapOnPlaylistToggleButton: false,
+      );
+
+      const String playlistToRewindTitle = 'Les prières de cette playlist';
+
+      // Now select the 'Les prières de cette playlist' playlist
+      await IntegrationTestUtil.selectPlaylist(
+        tester: tester,
+        playlistToSelectTitle: playlistToRewindTitle,
+      );
+
+      // Tap the 'Toggle List' button to close the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      String sortFilterParmName = 'Dur < 0:00:29';
+
+      // Now tap on the current dropdown button item to open the dropdown
+      // button items list
+
+      Finder dropDownButtonFinder =
+          find.byKey(const Key('sort_filter_parms_dropdown_button'));
+
+      Finder dropDownButtonTextFinder = find.descendant(
+        of: dropDownButtonFinder,
+        matching: find.byType(Text),
+      );
+
+      await tester.tap(dropDownButtonTextFinder);
+      await tester.pumpAndSettle();
+
+      // Find and tap on the 'Dur < 0:00:29' sort/filter item
+      Finder sortFilterParmNameDropDownTextFinder =
+          find.text(sortFilterParmName).last;
+      await tester.tap(sortFilterParmNameDropDownTextFinder);
+      await tester.pumpAndSettle();
+
+      // Tap the 'Toggle List' button to display the list of playlist's.
+      await tester.tap(find.byKey(const Key('playlist_toggle_button')));
+      await tester.pumpAndSettle();
+
+      // Now test the 'Obtain filtered Audios Number and their total
+      // playable Duration on Date' functionality
+
+      // Clicking first on the 'Filtered Audio Actions ...' playlist
+      // menu item and then on the 'Rewind filtered Audios to Start'
+      // sub-menu item
+      await IntegrationTestUtil.typeOnPlaylistSubMenuItem(
+        tester: tester,
+        playlistTitle: playlistToRewindTitle,
+        playlistSubMenuKeyStr:
+            'popup_menu_obtain_filtered_audio_number_and_duration',
+      );
+
+      // Now verifying the 'Define the playable on Date' dialog
+      await IntegrationTestUtil.verifySetValueToTargetDialog(
+        tester: tester,
+        dialogTitle: 'Define the playable on Date',
+        dialogMessage:
+            "The defined date will be used as next playable date to obtain the filtered audios number and their total playable duration at this date.",
+      );
+
+      Finder setValueToTargetDialogFinder = find.byType(SetValueToTargetDialog);
+
+      // This finder obtained as descendant of its enclosing dialog does
+      // enable to change the value of the TextField
+      Finder setValueToTargetDialogEditTextFinder = find.descendant(
+        of: setValueToTargetDialogFinder,
+        matching: find.byType(TextField),
+      );
+
+      // Now change the date in the dialog
+      final String invalidDate = '20/112026';
+      TextField textField =
+          tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
+
+      textField.controller!.text = invalidDate;
+      await tester.pumpAndSettle();
+
+      // Close the dialog with the OK button
+      await tester.tap(find.byKey(const Key('setValueToTargetOkButton')));
+      await tester.pumpAndSettle();
+
+      // Now verifying the error warning dialog
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "$invalidDate does not respect the date format.",
+      );
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
   });
 }
 

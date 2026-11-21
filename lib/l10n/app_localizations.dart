@@ -1952,6 +1952,12 @@ abstract class AppLocalizations {
   /// **'The local modified playlist title \"{playlistTitle}\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the title and retry ...'**
   String invalidModifiedPlaylistTitleWithPathCharacter(Object playlistTitle);
 
+  /// Error shown when an audio file name contains /, \ or :
+  ///
+  /// In en, this message translates to:
+  /// **'The modified audio file name \"{audioFileName}\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the file name and retry ...'**
+  String invalidModifiedAudioFileNameWithPathCharacter(Object audioFileName);
+
   /// No description provided for @setValueToTargetWarning.
   ///
   /// In en, this message translates to:

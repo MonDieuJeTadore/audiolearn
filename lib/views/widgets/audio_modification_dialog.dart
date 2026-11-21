@@ -351,7 +351,7 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
 
     switch (widget.audioModificationType) {
       case AudioModificationType.renameAudioFile:
-        _renameAudioFile(context);
+        isWarningDisplayed = _renameAudioFile(context);
         break;
       case AudioModificationType.modifyAudioTitle:
         _modifyAudioTitle(context);
@@ -374,14 +374,20 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
     return isWarningDisplayed;
   }
 
-  void _renameAudioFile(BuildContext context) {
+  /// Returns true if a warning was displayed by the AudioDownloadVM, false otherwise. The warning
+  /// is displayed if the user adds ':', '/', or '\' in the audio file name.
+  /// 
+  /// In this case, after the warning is displayed, the audio modification dialog is not
+  /// closed and the user can correct the error. If no warning is displayed, the audio modification
+  /// dialog is closed.
+  bool _renameAudioFile(BuildContext context) {
     String audioFileName = _audioModificationTextEditingController.text;
     AudioDownloadVM audioDownloadVMlistenFalse = Provider.of<AudioDownloadVM>(
       context,
       listen: false,
     );
 
-    audioDownloadVMlistenFalse.renameAudioFile(
+    return audioDownloadVMlistenFalse.renameAudioFile(
       audio: widget.audio,
       audioModifiedFileName: audioFileName,
     );
@@ -415,7 +421,7 @@ class _AudioModificationDialogState extends State<AudioModificationDialog>
 
   /// Returns true if a warning was displayed by the AudioDownloadVM, false otherwise. The warning
   /// is displayed if the user enters an error when defining the playable only week days or month
-  /// days. IIn this case, after the warning is displayed, the audio modification dialog is not
+  /// days. In this case, after the warning is displayed, the audio modification dialog is not
   /// closed and the user can correct the error. If no warning is displayed, the audio modification
   /// dialog is closed.
   bool _modifyPlayableEveryDays({

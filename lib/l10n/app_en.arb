@@ -513,6 +513,13 @@
       "playlistTitle": {}
     }
   },
+  "invalidModifiedAudioFileNameWithPathCharacter": "The modified audio file name \"{audioFileName}\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the file name and retry ...",
+  "@invalidModifiedAudioFileNameWithPathCharacter": {
+    "description": "Error shown when an audio file name contains /, \\ or :",
+    "placeholders": {
+      "audioFileName": {}
+    }
+  },
   "setValueToTargetWarning": "The entered value {invalidValueWarningParam} ({maxMinPossibleValue}). Please correct it and retry ...",
   "invalidValueTooBig": "exceeds the maximal value",
   "invalidValueTooSmall": "is below the minimal value",

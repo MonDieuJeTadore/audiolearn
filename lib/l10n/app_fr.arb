@@ -621,6 +621,14 @@
       }
     }
   },
+  "invalidModifiedAudioFileNameWithPathCharacter": "Le nom modifié du fichier audio \"{audioFileName}\" ne peut contenir aucun de ces 3 caractères en relation avec le répertoire:  /, \\ ou :. Corrigez le nom et rééssayez ...",
+  "@invalidModifiedAudioFileNameWithPathCharacter": {
+    "placeholders": {
+      "audioFileName": {
+        "type": "Object"
+      }
+    }
+  },
   "setValueToTargetWarning": "La valeur entrée {invalidValueWarningParam} ({maxMinPossibleValue}). Corrigez la valeur et rééssayez ...",
   "invalidValueTooBig": "excède la valeur maximale",
   "invalidValueTooSmall": "est inférieure à la valeur minimale",

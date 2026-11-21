@@ -695,9 +695,12 @@ class AudioDownloadVM extends ChangeNotifier {
         // be used in a playlist title. For this reason, they are
         // replaced by '-' in the playlist title.
         youtubePlaylistTitleToCorrect = playlistTitle;
-        playlistTitle = playlistTitle.replaceAll('/', '-'); // '/' is used on Android and other OS as a path separator
-        playlistTitle = playlistTitle.replaceAll(':', '-'); // ':' is used on Windows as a drive letter separator
-        playlistTitle = playlistTitle.replaceAll('\\', '-'); // '\' is used on Windows as a path separator
+        playlistTitle = playlistTitle.replaceAll('/',
+            '-'); // '/' is used on Android and other OS as a path separator
+        playlistTitle = playlistTitle.replaceAll(
+            ':', '-'); // ':' is used on Windows as a drive letter separator
+        playlistTitle = playlistTitle.replaceAll(
+            '\\', '-'); // '\' is used on Windows as a path separator
       }
 
       int playlistIndex = _listOfPlaylist
@@ -1021,10 +1024,25 @@ class AudioDownloadVM extends ChangeNotifier {
 
   /// Rename the passed audio file as well as the associated comment file
   /// if it exists and the associated picture file if it exists.
-  void renameAudioFile({
+  /// Returns true if a warning was displayed, false otherwise. The warning is displayed if the user
+  /// adds ':', '/', or '\' in the audio file name..
+  bool renameAudioFile({
     required Audio audio,
     required String audioModifiedFileName,
   }) {
+    if (audioModifiedFileName.contains('/') ||
+        audioModifiedFileName.contains(':') ||
+        audioModifiedFileName.contains('\\')) {
+      // The two first characters are used to separate the
+      // directories in a path (/ on Android, '\' on Windows).
+      // ':' is used on Windows as a drive letter separator.
+      // So, these characters can not be used in a file name.
+      warningMessageVM.invalidModifiedAudioFileNameWithPathCharacter =
+          audioModifiedFileName;
+
+      return true;
+    }
+
     final Audio audioBeforeFileRename = audio.copy();
 
     if (audioModifiedFileName.toLowerCase().endsWith('.mp3')) {
@@ -1044,7 +1062,7 @@ class AudioDownloadVM extends ChangeNotifier {
     if (audioOldFileName == audioModifiedFileName) {
       // the case if the user clicked on modify button without
       // having modified the audio file name
-      return;
+      return false;
     }
 
     // Verifying if the new audio file name is already used
@@ -1061,7 +1079,7 @@ class AudioDownloadVM extends ChangeNotifier {
         invalidRenameFileName: audioModifiedFileName,
       );
 
-      return;
+      return true;
     }
 
     // building the new comment file path name
@@ -1086,7 +1104,7 @@ class AudioDownloadVM extends ChangeNotifier {
         invalidRenameFileName: audioModifiedFileNameWithoutMp3Extension,
       );
 
-      return;
+      return true;
     }
 
     PictureVM pictureVM = PictureVM(
@@ -1111,7 +1129,7 @@ class AudioDownloadVM extends ChangeNotifier {
         invalidRenameFileName: audioModifiedFileNameWithoutMp3Extension,
       );
 
-      return;
+      return true;
     }
 
     // renaming the audio file
@@ -1123,7 +1141,7 @@ class AudioDownloadVM extends ChangeNotifier {
         fileNotExistName: audioOldFileName,
       );
 
-      return;
+      return true;
     }
 
     Playlist enclosingPlaylist = audio.enclosingPlaylist!;
@@ -1206,6 +1224,8 @@ class AudioDownloadVM extends ChangeNotifier {
       model: enclosingPlaylist,
       path: enclosingPlaylist.getPlaylistDownloadFilePathName(),
     );
+
+    return false;
   }
 
   /// Returns true if a file with exactly the passed file path name

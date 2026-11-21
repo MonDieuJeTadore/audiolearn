@@ -6865,7 +6865,7 @@ class PlaylistListVM extends ChangeNotifier {
     if (modifiedPlaylistTitle.contains(',')) {
       // A playlist title containing one or several commas can not
       // be handled by the application due to the fact that when
-      // this playlist title will be added in the  playlist ordered
+      // this playlist title will be added in the playlist ordered
       // title list of the SettingsDataService, since the elements
       // of this list are separated by a comma, the playlist title
       // containing one or more commas will be divided in two or more

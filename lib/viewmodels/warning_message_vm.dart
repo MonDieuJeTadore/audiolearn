@@ -44,6 +44,9 @@ enum WarningMessageType {
   invalidModifiedPlaylistTitleWithPathCharacter, // The case if the
   // modified playlist title contains '/' or '\' or ':' character(s).
 
+  invalidModifiedAudioFileNameWithPathCharacter, // The case if the
+  // modified playlist title contains '/' or '\' or ':' character(s).
+
   renameFileNameInvalid, // The case if the file name proposed
   // for renaming an audio file has not .mp3 extension.
 
@@ -566,6 +569,16 @@ class WarningMessageVM extends ChangeNotifier {
   set invalidModifiedPlaylistTitleWithPathCharacter(String invalidModifiedPlaylistTitle) {
     _invalidModifiedPlaylistTitle = invalidModifiedPlaylistTitle;
     warningMessageType = WarningMessageType.invalidModifiedPlaylistTitleWithPathCharacter;
+
+    // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
+    notifyListeners();
+  }
+
+  String _invalidModifiedAudioFileNameWithPathCharacter = '';
+  String get invalidModifiedAudioFileNameWithPathCharacter => _invalidModifiedAudioFileNameWithPathCharacter;
+  set invalidModifiedAudioFileNameWithPathCharacter(String invalidModifiedAudioFileNameWithPathCharacter) {
+    _invalidModifiedAudioFileNameWithPathCharacter = invalidModifiedAudioFileNameWithPathCharacter;
+    warningMessageType = WarningMessageType.invalidModifiedAudioFileNameWithPathCharacter;
 
     // Causes the display warning message widget to be displayed.      // Causes the display warning message widget to be displayed.
     notifyListeners();

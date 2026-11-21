@@ -1119,6 +1119,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String invalidModifiedAudioFileNameWithPathCharacter(Object audioFileName) {
+    return 'The modified audio file name \"$audioFileName\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the file name and retry ...';
+  }
+
+  @override
   String setValueToTargetWarning(
       Object invalidValueWarningParam, Object maxMinPossibleValue) {
     return 'The entered value $invalidValueWarningParam ($maxMinPossibleValue). Please correct it and retry ...';

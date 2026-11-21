@@ -1001,6 +1001,12 @@ class MockAppLocalizations extends AppLocalizations {
       "This local playlist title \"$playlistTitle\" can not contain commas. Commas are replaced by colons.";
 
   @override
+  String invalidModifiedAudioFileNameWithPathCharacter(
+    Object audioFileName,
+  ) =>
+      "This modified audio file name \"$audioFileName\" can not contain commas. Commas are replaced by colons.";
+
+  @override
   String setValueToTargetWarning(
     Object invalidValueWarningParam,
     Object maxMinPossibleValue,

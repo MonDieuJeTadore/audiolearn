@@ -9404,6 +9404,10 @@ void main() {
             "The file name \"$fileNameOfExistingFile\" already exists in the same directory and can not be used.",
       );
 
+      // Now type on the Cancel button to close the Rename Audio File dialog
+      await tester.tap(find.byKey(const Key('audioModificationCancelButton')));
+      await tester.pumpAndSettle();
+
       // Verify that the old name file exists
       final String renamedAudioFilePath =
           "$kApplicationPathWindowsTest${path.separator}playlists${path.separator}$youtubePlaylistTitle${path.separator}$initialFileName";
@@ -9679,6 +9683,10 @@ void main() {
         warningDialogMessage:
             "The comment file name \"${newFileName.substring(0, newFileName.length - 4)}.json\" already exists in the comment directory and so renaming the audio file with the name \"$newFileName\" is not possible.",
       );
+
+      // Now type on the Cancel button to close the Rename Audio File dialog
+      await tester.tap(find.byKey(const Key('audioModificationCancelButton')));
+      await tester.pumpAndSettle();
 
       // Verify that the old name file exists
       const String initialFileName =

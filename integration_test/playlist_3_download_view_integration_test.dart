@@ -9444,8 +9444,8 @@ void main() {
       );
     });
     testWidgets(
-        '''Invalid new file name with no mp3 extension. In this case, the displayed confirmation
-           shows that a MP3 extention was added and that the file was renamed.''',
+        '''New file name with no mp3 extension. In this case, the displayed confirmation
+           shows that a MP3 extention was added and that the file was corectly renamed.''',
         (WidgetTester tester) async {
       const String youtubePlaylistTitle =
           'audio_player_view_2_shorts_test'; // Youtube playlist
@@ -9514,8 +9514,8 @@ void main() {
 
       expect(textField.controller!.text, '$initialFileNameNoExt.mp3');
 
-      // Now entering an invalid file name in the file name TextField
-      const String renamedFileNameNoExt = 'Really short video';
+      // Now entering the file name with no extension in the file name TextField
+      const String renamedFileNameNoExt = 'file name with no extension';
 
       await tester.enterText(
         textFieldFinder,
@@ -9527,9 +9527,7 @@ void main() {
       await tester.tap(find.byKey(const Key('audioModificationButton')));
       await tester.pumpAndSettle();
 
-      // Since file name has no mp3 extension a warning will be displayed ...
-
-      // Ensure the warning dialog is displayed
+      // Ensure the confirmation dialog is displayed
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
         warningDialogMessage:
@@ -9572,6 +9570,277 @@ void main() {
         rootPath: kApplicationPathWindowsTest,
       );
     });
+    testWidgets(
+        '''Invalid new file name containing the '/' invalid path-related character. A warning will be displayed and the
+           file will not be renamed.''',
+        (WidgetTester tester) async {
+      const String youtubePlaylistTitle = 'S8 audio'; // Youtube playlist
+      const String audioToRenameTitle =
+          "Quand Aurélien Barrau va dans une école de management";
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'audio_comment_corrected_test',
+        selectedPlaylistTitle: youtubePlaylistTitle,
+      );
+
+      Finder audioListTileTextWidgetFinder = find.text(audioToRenameTitle);
+
+      // Then obtain the audio ListTile widget enclosing the Text widget
+      // by finding its ancestor
+      Finder audioListTileWidgetFinder = find.ancestor(
+        of: audioListTileTextWidgetFinder,
+        matching: find.byType(ListTile),
+      );
+
+      // Now we want to tap the popup menu of the audio ListTile
+      // "Quand Aurélien Barrau va dans une école de management"
+
+      // Find the leading menu icon button of the audio ListTile
+      // and tap on it
+      final Finder audioListTileLeadingMenuIconButton = find.descendant(
+        of: audioListTileWidgetFinder,
+        matching: find.byIcon(Icons.menu),
+      );
+
+      // Tap the leading menu icon button to open the popup menu
+      await tester.tap(audioListTileLeadingMenuIconButton);
+      await tester.pumpAndSettle();
+
+      // Now find the rename audio file popup menu item and tap on it
+      final Finder popupCopyMenuItem =
+          find.byKey(const Key("popup_menu_rename_audio_file"));
+
+      await tester.tap(popupCopyMenuItem);
+      await tester.pumpAndSettle();
+
+      // Now enter the new file name
+
+      // Find the TextField using the Key
+      final Finder textFieldFinder =
+          find.byKey(const Key('audioModificationTextField'));
+
+      // Retrieve the TextField widget
+      final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+      // Verify the initial value of the TextField
+      expect(textField.controller!.text,
+          '240722-081104-Quand Aurélien Barrau va dans une école de management 23-09-10.mp3');
+
+      const String newFileName = 'New file / name.mp3';
+
+      await tester.enterText(
+        textFieldFinder,
+        newFileName,
+      );
+
+      await tester.pumpAndSettle();
+
+      // Now tap the rename button
+      await tester.tap(find.byKey(const Key('audioModificationButton')));
+      await tester.pumpAndSettle();
+
+      // Since the new file name contains the '/' invalid character, a warning
+      // will be displayed ...
+
+      // Ensure the warning dialog is displayed
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "The modified audio file name \"$newFileName\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the file name and retry ...",
+      );
+
+      // Now type on the Cancel button to close the Rename Audio File dialog
+      await tester.tap(find.byKey(const Key('audioModificationCancelButton')));
+      await tester.pumpAndSettle();
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''Invalid new file name containing the '\\' invalid path-related character. A warning will be displayed and the
+           file will not be renamed.''',
+        (WidgetTester tester) async {
+      const String youtubePlaylistTitle = 'S8 audio'; // Youtube playlist
+      const String audioToRenameTitle =
+          "Quand Aurélien Barrau va dans une école de management";
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'audio_comment_corrected_test',
+        selectedPlaylistTitle: youtubePlaylistTitle,
+      );
+
+      Finder audioListTileTextWidgetFinder = find.text(audioToRenameTitle);
+
+      // Then obtain the audio ListTile widget enclosing the Text widget
+      // by finding its ancestor
+      Finder audioListTileWidgetFinder = find.ancestor(
+        of: audioListTileTextWidgetFinder,
+        matching: find.byType(ListTile),
+      );
+
+      // Now we want to tap the popup menu of the audio ListTile
+      // "Quand Aurélien Barrau va dans une école de management"
+
+      // Find the leading menu icon button of the audio ListTile
+      // and tap on it
+      final Finder audioListTileLeadingMenuIconButton = find.descendant(
+        of: audioListTileWidgetFinder,
+        matching: find.byIcon(Icons.menu),
+      );
+
+      // Tap the leading menu icon button to open the popup menu
+      await tester.tap(audioListTileLeadingMenuIconButton);
+      await tester.pumpAndSettle();
+
+      // Now find the rename audio file popup menu item and tap on it
+      final Finder popupCopyMenuItem =
+          find.byKey(const Key("popup_menu_rename_audio_file"));
+
+      await tester.tap(popupCopyMenuItem);
+      await tester.pumpAndSettle();
+
+      // Now enter the new file name
+
+      // Find the TextField using the Key
+      final Finder textFieldFinder =
+          find.byKey(const Key('audioModificationTextField'));
+
+      // Retrieve the TextField widget
+      final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+      // Verify the initial value of the TextField
+      expect(textField.controller!.text,
+          '240722-081104-Quand Aurélien Barrau va dans une école de management 23-09-10.mp3');
+
+      const String newFileName = 'New file \\ name.mp3';
+
+      await tester.enterText(
+        textFieldFinder,
+        newFileName,
+      );
+
+      await tester.pumpAndSettle();
+
+      // Now tap the rename button
+      await tester.tap(find.byKey(const Key('audioModificationButton')));
+      await tester.pumpAndSettle();
+
+      // Since the new file name contains the '/' invalid character, a warning
+      // will be displayed ...
+
+      // Ensure the warning dialog is displayed
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "The modified audio file name \"$newFileName\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the file name and retry ...",
+      );
+
+      // Now type on the Cancel button to close the Rename Audio File dialog
+      await tester.tap(find.byKey(const Key('audioModificationCancelButton')));
+      await tester.pumpAndSettle();
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+    testWidgets(
+        '''Invalid new file name containing the ':' invalid path-related character. A warning will be displayed and the
+           file will not be renamed.''',
+        (WidgetTester tester) async {
+      const String youtubePlaylistTitle = 'S8 audio'; // Youtube playlist
+      const String audioToRenameTitle =
+          "Quand Aurélien Barrau va dans une école de management";
+
+      await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
+        tester: tester,
+        savedTestDataDirName: 'audio_comment_corrected_test',
+        selectedPlaylistTitle: youtubePlaylistTitle,
+      );
+
+      Finder audioListTileTextWidgetFinder = find.text(audioToRenameTitle);
+
+      // Then obtain the audio ListTile widget enclosing the Text widget
+      // by finding its ancestor
+      Finder audioListTileWidgetFinder = find.ancestor(
+        of: audioListTileTextWidgetFinder,
+        matching: find.byType(ListTile),
+      );
+
+      // Now we want to tap the popup menu of the audio ListTile
+      // "Quand Aurélien Barrau va dans une école de management"
+
+      // Find the leading menu icon button of the audio ListTile
+      // and tap on it
+      final Finder audioListTileLeadingMenuIconButton = find.descendant(
+        of: audioListTileWidgetFinder,
+        matching: find.byIcon(Icons.menu),
+      );
+
+      // Tap the leading menu icon button to open the popup menu
+      await tester.tap(audioListTileLeadingMenuIconButton);
+      await tester.pumpAndSettle();
+
+      // Now find the rename audio file popup menu item and tap on it
+      final Finder popupCopyMenuItem =
+          find.byKey(const Key("popup_menu_rename_audio_file"));
+
+      await tester.tap(popupCopyMenuItem);
+      await tester.pumpAndSettle();
+
+      // Now enter the new file name
+
+      // Find the TextField using the Key
+      final Finder textFieldFinder =
+          find.byKey(const Key('audioModificationTextField'));
+
+      // Retrieve the TextField widget
+      final TextField textField = tester.widget<TextField>(textFieldFinder);
+
+      // Verify the initial value of the TextField
+      expect(textField.controller!.text,
+          '240722-081104-Quand Aurélien Barrau va dans une école de management 23-09-10.mp3');
+
+      const String newFileName = 'New file : name.mp3';
+
+      await tester.enterText(
+        textFieldFinder,
+        newFileName,
+      );
+
+      await tester.pumpAndSettle();
+
+      // Now tap the rename button
+      await tester.tap(find.byKey(const Key('audioModificationButton')));
+      await tester.pumpAndSettle();
+
+      // Since the new file name contains the '/' invalid character, a warning
+      // will be displayed ...
+
+      // Ensure the warning dialog is displayed
+      await IntegrationTestUtil.verifyAndCloseWarningDialog(
+        tester: tester,
+        warningDialogMessage:
+            "The modified audio file name \"$newFileName\" can not contain any of these 3 path-related characters: /, \\ or :. Please correct the file name and retry ...",
+      );
+
+      // Now type on the Cancel button to close the Rename Audio File dialog
+      await tester.tap(find.byKey(const Key('audioModificationCancelButton')));
+      await tester.pumpAndSettle();
+
+      // Purge the test playlist directory so that the created test
+      // files are not uploaded to GitHub
+      DirUtil.deleteFilesInDirAndSubDirs(
+        rootPath: kApplicationPathWindowsTest,
+      );
+    });
+
     testWidgets('''Not existing new audio file name and existing new comment
                    file name. The renamed audio has a comment file which will be
                    renamed as well, but since a comment file exist with
@@ -34442,8 +34711,7 @@ void main() {
         '''Older date is used. Set to the selected playlist a sort/filter parameter. Then type on the
         'Filtered Audios Actions ...' playlist menu and then on the 'Obtain filtered Audios Number and
         their total playable Duration on Date ...' sub-menu. Then enter the date and click on the Ok
-        buttone.''',
-        (WidgetTester tester) async {
+        buttone.''', (WidgetTester tester) async {
       await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
         tester: tester,
         savedTestDataDirName: 'extract_comments_to_mp3_test',
@@ -34519,8 +34787,8 @@ void main() {
       );
 
       // Now change the date in the dialog
-      final String olderDate =
-          DateFormat('dd/MM/yyyy').format(DateTime.now().subtract(const Duration(days: 3)));
+      final String olderDate = DateFormat('dd/MM/yyyy')
+          .format(DateTime.now().subtract(const Duration(days: 3)));
       TextField textField =
           tester.widget<TextField>(setValueToTargetDialogEditTextFinder);
 
@@ -34549,8 +34817,7 @@ void main() {
         '''Invalid date is used. Set to the selected playlist a sort/filter parameter. Then type on the
         'Filtered Audios Actions ...' playlist menu and then on the 'Obtain filtered Audios Number and
         their total playable Duration on Date ...' sub-menu. Then enter the date and click on the Ok
-        buttone.''',
-        (WidgetTester tester) async {
+        buttone.''', (WidgetTester tester) async {
       await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
         tester: tester,
         savedTestDataDirName: 'extract_comments_to_mp3_test',
@@ -34640,8 +34907,7 @@ void main() {
       // Now verifying the error warning dialog
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
-        warningDialogMessage:
-            "The date $invalidDate is invalid.",
+        warningDialogMessage: "The date $invalidDate is invalid.",
       );
 
       // Purge the test playlist directory so that the created test
@@ -34654,8 +34920,7 @@ void main() {
         '''Incorrect date format is used. Set to the selected playlist a sort/filter parameter. Then type on the
         'Filtered Audios Actions ...' playlist menu and then on the 'Obtain filtered Audios Number and
         their total playable Duration on Date ...' sub-menu. Then enter the date and click on the Ok
-        buttone.''',
-        (WidgetTester tester) async {
+        buttone.''', (WidgetTester tester) async {
       await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
         tester: tester,
         savedTestDataDirName: 'extract_comments_to_mp3_test',
@@ -34745,8 +35010,7 @@ void main() {
       // Now verifying the error warning dialog
       await IntegrationTestUtil.verifyAndCloseWarningDialog(
         tester: tester,
-        warningDialogMessage:
-            "$invalidDate does not respect the date format.",
+        warningDialogMessage: "$invalidDate does not respect the date format.",
       );
 
       // Purge the test playlist directory so that the created test

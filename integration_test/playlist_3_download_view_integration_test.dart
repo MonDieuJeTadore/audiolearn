@@ -32418,7 +32418,8 @@ void main() {
           selectedPlaylistTitle: '1 music with invalid comment',
         );
 
-        // First, find the '1 music with invalid comment' playlist audio ListTile Text widget
+        // First, find the 'Jésus, c'est le plus beau nom' audio in the
+        // '1 music with invalid comment' playlist
         Finder audioTitleTileTextWidgetFinder = find.text(audioTitle);
 
         // Then obtain the audio ListTile widget enclosing the Text widget
@@ -32437,12 +32438,11 @@ void main() {
           matching: find.byIcon(Icons.menu),
         );
 
-        // Tap the leading menu icon button to open the popup menu
+        // Tap the leading menu icon button to open the audio popup menu
         await tester.tap(audioTitleTileLeadingMenuIconButton);
         await tester.pumpAndSettle();
 
-        // Now find the 'Audio Comments ...' popup menu item and
-        // tap on it
+        // Now find the 'Audio Comments ...' popup menu item and tap on it
         Finder audioCommentsPopupMenuItem =
             find.byKey(const Key("popup_menu_audio_comment"));
 

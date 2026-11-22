@@ -894,7 +894,7 @@ class _CommentListAddDialogContentState
       widgetsLst.add(
         GestureDetector(
           // This GestureDetector allows to click anywhere on the comment
-          //                  item to edit the comment, not just on the title
+          // item to edit the comment, not just on the title
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

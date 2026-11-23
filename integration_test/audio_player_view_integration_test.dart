@@ -13015,9 +13015,10 @@ void main() {
             comment(s).''', () {
       testWidgets(
           '''Click on play button, then click on comment icon button to display the comment list
-           add dialog and verify its content. Then let finish playing the audio downloaded
-           before the last downloaded audio and start playing the not listened last downloaded
-           audio. Verify the comment list add dialog content.''', (
+           add dialog and verify its content as well as the comment creation and update date tooltips.
+           Then let finish playing the audio downloaded before the last downloaded audio and start
+           playing the not listened last downloaded audio. Verify the comment list add dialog content.''',
+          (
         WidgetTester tester,
       ) async {
         const String previousEndDownloadedAudioTitle =
@@ -13076,10 +13077,15 @@ void main() {
         // existing comment
 
         // Verify the first played audio comment list add dialog
-        _verifyCommentListAddDialog(
+        await _verifyCommentListAddDialog(
+          tester: tester,
           commentTitle: "La prière du Maître",
           commentContent:
               "« Mon Dieu, je Te donne mon cœur!\r\nL'amour a jailli de mon âme, toujours Ton Esprit me réclame. \r\nLe jour Ta lumière m'enflamme, de joie je Te donne mon cœur ! »",
+          commentCreationDateTooltip:
+              'Comment creation date/time 20/06/2025 11:20.',
+          commentUpdateDateTooltip:
+              'Comment last update date/time 23/11/2026 16:20.',
         );
 
         // Ensure that the audio position is updated
@@ -13089,7 +13095,8 @@ void main() {
         }
 
         // Verify the second played audio comment list add dialog
-        _verifyCommentListAddDialog(
+        await _verifyCommentListAddDialog(
+          tester: tester,
           commentTitle: "Les paroles ...",
           commentContent:
               "Jésus, c'est le plus beau nom,\nMerveilleux Sauveur,\nSeigneur de gloire !\nEmmanuel, Dieu est avec nous,\nSource de joie, Parole de vie.",
@@ -14059,10 +14066,41 @@ Future<void> _createCommentUnderPlaySpeed({
   await Future.delayed(const Duration(milliseconds: 200));
 }
 
-void _verifyCommentListAddDialog({
+Future<void> _verifyCommentListAddDialog({
+  required WidgetTester tester,
   required String commentTitle,
   required String commentContent,
-}) {
+  String commentCreationDateTooltip = '',
+  String commentUpdateDateTooltip = '',
+}) async {
+  if (commentCreationDateTooltip.isNotEmpty) {
+    Finder commentCreationDateTextWidgetFinder =
+        find.byKey(const Key('creation_date_key'));
+
+    // Trigger the tooltip with a long press
+    await tester.longPress(commentCreationDateTextWidgetFinder);
+
+    // Wait for the tooltip to appear
+    await tester.pumpAndSettle();
+
+    // Verify the the comment creation date text tooltip
+    expect(find.text(commentCreationDateTooltip), findsOneWidget);
+  }
+
+  if (commentUpdateDateTooltip.isNotEmpty) {
+    Finder commentCreationDateTextWidgetFinder =
+        find.byKey(const Key('last_update_date_key'));
+
+    // Trigger the tooltip with a long press
+    await tester.longPress(commentCreationDateTextWidgetFinder);
+
+    // Wait for the tooltip to appear
+    await tester.pumpAndSettle();
+
+    // Verify the the comment creation date text tooltip
+    expect(find.text(commentUpdateDateTooltip), findsOneWidget);
+  }
+
   // Find the list body containing the comments
   final Finder commentListDialogFinder =
       find.byKey(const Key('audioCommentsListKey'));

@@ -32617,32 +32617,6 @@ void main() {
           doNotTapOnSaveButton: true,
         );
 
-        // Now modify the Volume to 0.1 and verify the error message
-        await _verifyExistenceOfErrorMessage(
-          tester: tester,
-          positionTextFieldKey: 'volumeTextField',
-          enteredValue: '2.1',
-          expectedErrorMessage:
-              'Sound volume must be beetween 0.2 and 2.00.',
-        );
-
-        // Now modify the Volume to 0.1 and verify the error message
-        await _verifyExistenceOfErrorMessage(
-          tester: tester,
-          positionTextFieldKey: 'volumeTextField',
-          enteredValue: '0.1',
-          expectedErrorMessage:
-              'Sound volume must be beetween 0.2 and 2.00.',
-        );
-
-        // Now modify the Volume to 0.2. No error message is shown
-        await _verifyExistenceOfErrorMessage(
-          tester: tester,
-          positionTextFieldKey: 'volumeTextField',
-          enteredValue: '0.2',
-          doNotTapOnSaveButton: true,
-        );
-
         // Now modify the silence duration to -0:00.1 and verify
         // the error message
         await _verifyExistenceOfErrorMessage(
@@ -32725,6 +32699,32 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'playSpeedTextField',
           enteredValue: '1.0',
+          doNotTapOnSaveButton: true,
+        );
+
+        // Now modify the Volume to 0.1 and verify the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'volumeTextField',
+          enteredValue: '2.1',
+          expectedErrorMessage:
+              'Sound volume must be beetween 0.2 and 2.00.',
+        );
+
+        // Now modify the Volume to 0.1 and verify the error message
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'volumeTextField',
+          enteredValue: '0.1',
+          expectedErrorMessage:
+              'Sound volume must be beetween 0.2 and 2.00.',
+        );
+
+        // Now modify the Volume to 0.2. No error message is shown
+        await _verifyExistenceOfErrorMessage(
+          tester: tester,
+          positionTextFieldKey: 'volumeTextField',
+          enteredValue: '0.2',
           doNotTapOnSaveButton: true,
         );
 

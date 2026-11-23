@@ -13071,7 +13071,7 @@ void main() {
         _verifyCommentListAddDialog(
           commentTitle: "La prière du Maître",
           commentContent:
-              "« Mon Dieu, je Te donne mon cœur!\r\nL'amour a jailli de mon âme, toujours Ton Esprit me réclame. \r\nLe jour Ta lumière m'enflamme, de joie je Te donne mon cœur! »",
+              "« Mon Dieu, je Te donne mon cœur!\r\nL'amour a jailli de mon âme, toujours Ton Esprit me réclame. \r\nLe jour Ta lumière m'enflamme, de joie je Te donne mon cœur ! »",
         );
 
         // Ensure that the audio position is updated

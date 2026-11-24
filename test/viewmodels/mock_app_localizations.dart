@@ -3487,5 +3487,10 @@ class MockAppLocalizations extends AppLocalizations {
       "Updating the named sort filter parameters";
 
   @override
-  String get uniquePlaylistIsRestoredLabel => "Unique playlist MP3's are restored";
+  String get uniquePlaylistIsRestoredLabel =>
+      "Unique playlist MP3's are restored";
+
+  @override
+  String get maxDurationTooltip =>
+      "This value is useful since it indicates the maximum value possible for the End position";
 }

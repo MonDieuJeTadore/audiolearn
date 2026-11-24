@@ -1642,6 +1642,7 @@
   "clearAllCommentDialogTitle": "Enlever tous les commentaires",
   "clearAllCommentExplanation": "Etes-vous sûr que vous voulez enlever tous les commentaires ?",
   "maxDuration": "Durée audio totale",
+  "maxDurationTooltip": "Cette valeur est utile du fait qu'elle indique la valeur maximale possible pour le champ Position de fin",
   "startPositionLabel": "Position de début (h:mm:ss.d)",
   "endPositionLabel": "Position de fin (h:mm:ss.d)",
   "silenceDurationLabel": "Silence après la fin (h:mm:ss.d)",

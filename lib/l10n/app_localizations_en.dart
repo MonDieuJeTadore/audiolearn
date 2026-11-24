@@ -2695,6 +2695,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get maxDuration => 'Total audio duration';
 
   @override
+  String get maxDurationTooltip =>
+      'This value is useful since it indicates the maximum value possible for the End position field';
+
+  @override
   String get startPositionLabel => 'Start position (h:mm:ss.t)';
 
   @override
@@ -3186,7 +3190,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get setAudioLastListenedDateTitleTooltip =>
-      'This is usefull if the concerned audios were not listened before the defined date.';
+      'This is useful if the concerned audios were not listened before the defined date.';
 
   @override
   String get lastListenedDate => 'Last listened date';

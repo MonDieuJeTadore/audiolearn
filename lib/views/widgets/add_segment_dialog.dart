@@ -331,9 +331,13 @@ class _AddSegmentDialogState extends State<AddSegmentDialog> {
                           ),
                         )
                       : const SizedBox.shrink(),
-                  Text(
-                    // Displays the total audio duration
-                    "${AppLocalizations.of(context)!.maxDuration}: ${TimeFormatUtil.formatSeconds(widget.maxDuration)}",
+                  Tooltip(
+                    message: AppLocalizations.of(context)!.maxDurationTooltip,
+                    child: Text(
+                      key: const Key('maxDurationTextKey'),
+                      // Displays the total audio duration
+                      "${AppLocalizations.of(context)!.maxDuration}: ${TimeFormatUtil.formatSeconds(widget.maxDuration)}",
+                    ),
                   ),
                   const SizedBox(height: 8),
                   TextField(

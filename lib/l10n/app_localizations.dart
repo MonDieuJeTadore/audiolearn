@@ -4301,6 +4301,12 @@ abstract class AppLocalizations {
   /// **'Total audio duration'**
   String get maxDuration;
 
+  /// No description provided for @maxDurationTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'This value is useful since it indicates the maximum value possible for the End position field'**
+  String get maxDurationTooltip;
+
   /// No description provided for @startPositionLabel.
   ///
   /// In en, this message translates to:
@@ -5108,7 +5114,7 @@ abstract class AppLocalizations {
   /// No description provided for @setAudioLastListenedDateTitleTooltip.
   ///
   /// In en, this message translates to:
-  /// **'This is usefull if the concerned audios were not listened before the defined date.'**
+  /// **'This is useful if the concerned audios were not listened before the defined date.'**
   String get setAudioLastListenedDateTitleTooltip;
 
   /// No description provided for @lastListenedDate.

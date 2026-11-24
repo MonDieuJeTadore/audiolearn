@@ -2723,6 +2723,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get maxDuration => 'Durée audio totale';
 
   @override
+  String get maxDurationTooltip =>
+      'Cette valeur est utile du fait qu\'elle indique la valeur maximale possible pour le champ Position de fin';
+
+  @override
   String get startPositionLabel => 'Position de début (h:mm:ss.d)';
 
   @override

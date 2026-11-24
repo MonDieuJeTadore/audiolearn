@@ -9572,8 +9572,7 @@ void main() {
     });
     testWidgets(
         '''Invalid new file name containing the '/' invalid path-related character. A warning will be displayed and the
-           file will not be renamed.''',
-        (WidgetTester tester) async {
+           file will not be renamed.''', (WidgetTester tester) async {
       const String youtubePlaylistTitle = 'S8 audio'; // Youtube playlist
       const String audioToRenameTitle =
           "Quand Aurélien Barrau va dans une école de management";
@@ -9662,8 +9661,7 @@ void main() {
     });
     testWidgets(
         '''Invalid new file name containing the '\\' invalid path-related character. A warning will be displayed and the
-           file will not be renamed.''',
-        (WidgetTester tester) async {
+           file will not be renamed.''', (WidgetTester tester) async {
       const String youtubePlaylistTitle = 'S8 audio'; // Youtube playlist
       const String audioToRenameTitle =
           "Quand Aurélien Barrau va dans une école de management";
@@ -9752,8 +9750,7 @@ void main() {
     });
     testWidgets(
         '''Invalid new file name containing the ':' invalid path-related character. A warning will be displayed and the
-           file will not be renamed.''',
-        (WidgetTester tester) async {
+           file will not be renamed.''', (WidgetTester tester) async {
       const String youtubePlaylistTitle = 'S8 audio'; // Youtube playlist
       const String audioToRenameTitle =
           "Quand Aurélien Barrau va dans une école de management";
@@ -32051,7 +32048,8 @@ void main() {
         );
       });
       testWidgets(
-          '''Invalid comments with durations greater than audio duration. ''',
+          '''Invalid comments with durations greater than audio duration. Additionally, check the Total audio duration
+             tooltip.''',
           (WidgetTester tester) async {
         const String audioTitle = "Jésus, c'est le plus beau nom";
 
@@ -32342,6 +32340,23 @@ void main() {
             find.byKey(const Key('editSegmentButtonKey_2'));
         await tester.tap(editCommentIconButtonFinder);
         await tester.pumpAndSettle();
+
+        // Verify the presence of the max duration tooltip
+        Finder maxDurationTextWidgetFinder =
+            find.byKey(const Key('maxDurationTextKey'));
+
+        // Verify the the Total audio duration text tooltip
+
+        // Find the tooltip text
+        final Finder maxDurationTooltipFinder = find.ancestor(
+          of: maxDurationTextWidgetFinder,
+          matching: find.byType(Tooltip),
+        );
+        Tooltip tooltipWidget =
+            tester.widget<Tooltip>(maxDurationTooltipFinder);
+
+        expect(tooltipWidget.message,
+            'This value is useful since it indicates the maximum value possible for the End position field');
 
         // Confirm the comment edition by tapping the save button
         saveEditedCommentButtonFinder =
@@ -32707,8 +32722,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'volumeTextField',
           enteredValue: '2.1',
-          expectedErrorMessage:
-              'Sound volume must be beetween 0.2 and 2.00.',
+          expectedErrorMessage: 'Sound volume must be beetween 0.2 and 2.00.',
         );
 
         // Now modify the Volume to 0.1 and verify the error message
@@ -32716,8 +32730,7 @@ void main() {
           tester: tester,
           positionTextFieldKey: 'volumeTextField',
           enteredValue: '0.1',
-          expectedErrorMessage:
-              'Sound volume must be beetween 0.2 and 2.00.',
+          expectedErrorMessage: 'Sound volume must be beetween 0.2 and 2.00.',
         );
 
         // Now modify the Volume to 0.2. No error message is shown
@@ -35822,6 +35835,8 @@ Future<void> _verifyDateFormatApplication({
 
   expect(find.text(commentCreationDate), findsOneWidget);
   expect(find.text(commentUpdateDate), findsOneWidget);
+
+  // Verify the comment tooltip
 
   // Now close the comment list dialog
   await tester.tap(find.byKey(const Key('closeDialogTextButton')));

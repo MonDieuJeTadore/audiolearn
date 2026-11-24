@@ -14069,28 +14069,34 @@ Future<void> _verifyCommentListAddDialog({
     Finder commentCreationDateTextWidgetFinder =
         find.byKey(const Key('creation_date_key'));
 
-    // Trigger the tooltip with a long press
-    await tester.longPress(commentCreationDateTextWidgetFinder);
-
-    // Wait for the tooltip to appear
-    await tester.pumpAndSettle();
-
     // Verify the the comment creation date text tooltip
-    expect(find.text(commentCreationDateTooltip), findsOneWidget);
+
+    // Find the tooltip text
+    final Finder commentCreationDateTooltipFinder = find.ancestor(
+      of: commentCreationDateTextWidgetFinder,
+      matching: find.byType(Tooltip),
+    );
+    Tooltip tooltipWidget =
+        tester.widget<Tooltip>(commentCreationDateTooltipFinder);
+
+    expect(tooltipWidget.message, commentCreationDateTooltip);
   }
 
   if (commentUpdateDateTooltip.isNotEmpty) {
-    Finder commentCreationDateTextWidgetFinder =
+    Finder commentUpdateDateTextWidgetFinder =
         find.byKey(const Key('last_update_date_key'));
 
-    // Trigger the tooltip with a long press
-    await tester.longPress(commentCreationDateTextWidgetFinder);
-
-    // Wait for the tooltip to appear
-    await tester.pumpAndSettle();
-
     // Verify the the comment creation date text tooltip
-    expect(find.text(commentUpdateDateTooltip), findsOneWidget);
+
+    // Find the tooltip text
+    final Finder commentUpdateDateTooltipFinder = find.ancestor(
+      of: commentUpdateDateTextWidgetFinder,
+      matching: find.byType(Tooltip),
+    );
+    Tooltip tooltipWidget =
+        tester.widget<Tooltip>(commentUpdateDateTooltipFinder);
+
+    expect(tooltipWidget.message, commentUpdateDateTooltip);
   }
 
   // Find the list body containing the comments

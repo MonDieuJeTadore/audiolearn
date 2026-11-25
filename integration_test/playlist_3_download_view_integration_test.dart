@@ -32049,8 +32049,7 @@ void main() {
       });
       testWidgets(
           '''Invalid comments with durations greater than audio duration. Additionally, check the Total audio duration
-             tooltip.''',
-          (WidgetTester tester) async {
+             tooltip.''', (WidgetTester tester) async {
         const String audioTitle = "Jésus, c'est le plus beau nom";
 
         await IntegrationTestUtil.initializeApplicationAndSelectPlaylist(
@@ -35836,7 +35835,21 @@ Future<void> _verifyDateFormatApplication({
   expect(find.text(commentCreationDate), findsOneWidget);
   expect(find.text(commentUpdateDate), findsOneWidget);
 
-  // Verify the comment tooltip
+  // Verify the comment creation date and its tooltip
+  _verifyDateAndTooltipCoherence(
+    tester: tester,
+    dateTextWidgetKey: const Key('creation_date_key'),
+    tooltipPrefix: 'Comment creation date/time',
+    expectedShortDate: commentCreationDate,
+  );
+
+  // Verify the comment update date and itstooltip
+  _verifyDateAndTooltipCoherence(
+    tester: tester,
+    dateTextWidgetKey: const Key('last_update_date_key'),
+    tooltipPrefix: 'Comment last update date/time',
+    expectedShortDate: commentUpdateDate,
+  );
 
   // Now close the comment list dialog
   await tester.tap(find.byKey(const Key('closeDialogTextButton')));
@@ -35955,6 +35968,59 @@ Future<void> _verifyDateFormatApplication({
 
   await tester.tap(audioModificationCancelButtonFinder);
   await tester.pumpAndSettle();
+}
+
+/// Vérifie que la date courte affichée (ex. '12/10/24', '10/12/24' ou
+/// '24/10/12') est cohérente avec la date longue de son tooltip
+/// (ex. 'Comment creation date/time 12/10/2024 09:00.' ou
+/// '... 2024/10/12 09:00.'), quel que soit le format de date choisi.
+void _verifyDateAndTooltipCoherence({
+  required WidgetTester tester,
+  required Key dateTextWidgetKey,
+  required String tooltipPrefix, // ex. 'Comment creation date/time'
+  required String expectedShortDate,
+}) {
+  final Finder dateTextWidgetFinder = find.byKey(dateTextWidgetKey);
+
+  // La date courte affichée est bien celle attendue
+  expect(tester.widget<Text>(dateTextWidgetFinder).data, expectedShortDate);
+
+  // Récupération du message du tooltip englobant
+  final Tooltip tooltipWidget = tester.widget<Tooltip>(
+    find.ancestor(
+      of: dateTextWidgetFinder,
+      matching: find.byType(Tooltip),
+    ),
+  );
+  final String message = tooltipWidget.message!;
+
+  // Date longue: année sur 4 chiffres soit en dernier (dd/MM/yyyy,
+  // MM/dd/yyyy), soit en premier (yyyy/MM/dd), suivie de hh:mm.
+  final RegExp tooltipRegExp = RegExp(
+    '^${RegExp.escape(tooltipPrefix)} '
+    r'(\d{2}/\d{2}/\d{4}|\d{4}/\d{2}/\d{2}) \d{2}:\d{2}\.$',
+  );
+  final RegExpMatch? match = tooltipRegExp.firstMatch(message);
+
+  expect(
+    match,
+    isNotNull,
+    reason: 'Tooltip "$message" ne respecte pas le format attendu',
+  );
+
+  // Conversion de la date longue en date courte: l'année sur 4
+  // chiffres est réduite à ses 2 derniers chiffres.
+  final String shortDateFromTooltip = match!
+      .group(1)!
+      .split('/')
+      .map((String part) => part.length == 4 ? part.substring(2) : part)
+      .join('/');
+
+  expect(
+    shortDateFromTooltip,
+    expectedShortDate,
+    reason: 'Date du tooltip "$message" incohérente avec "$expectedShortDate"',
+  );
 }
 
 Future<void> _verifyAudioInfoDialogDateFormat({

@@ -583,7 +583,7 @@ class _CommentAddEditDialogState extends State<CommentAddEditDialog>
                   // value after the seconds value
                   ? commentVM.currentCommentEndPosition
                       .HHmmssZeroHH(addRemainingOneDigitTenthOfSecond: true)
-                  : commentVM.currentCommentEndPosition.HHmmssZeroHH(),
+                  : commentVM.currentCommentEndPosition.HHmmssZeroHH(), // addRemainingOneDigitTenthOfSecond = false
             );
           },
         ),

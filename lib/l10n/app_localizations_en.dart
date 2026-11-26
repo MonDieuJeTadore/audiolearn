@@ -2172,7 +2172,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restorePlaylistsAudioMp3FilesFromZipTooltip =>
-      'Restoring audios MP3 not yet present in the playlists from a saved ZIP file. Only the MP3 relative to the audios listed in the playlists are restorable.';
+      'Restoring audios MP3 not yet present in the playlists from one or several ZIP file(s). Only the MP3 relative to the audios listed in the playlists are restorable.';
 
   @override
   String get audioMp3RestorationDialogTitle => 'MP3 Restoration';
@@ -2187,7 +2187,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restorePlaylistAudioMp3FilesFromZipTooltip =>
-      'Restoring audios MP3 not yet present in the playlist from a saved ZIP file. Only the MP3 relative to the audios listed in the playlist are restorable.';
+      'Restoring audios MP3 not yet present in the playlist from one or several ZIP file(s). Only the MP3 relative to the audios listed in the playlist are restorable.';
 
   @override
   String get audioMp3UniquePlaylistRestorationDialogTitle => 'MP3 Restoration';

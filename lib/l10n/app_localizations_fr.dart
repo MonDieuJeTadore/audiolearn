@@ -2193,7 +2193,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get restorePlaylistsAudioMp3FilesFromZipTooltip =>
-      'Restaure les audios MP3 des playlists à partir d\'un fichier ZIP préalablement sauvé. Seuls les fichiers MP3 qui correspondent aux audios listés dans les playlists et qui ne sont pas déjà présents dans ces playlists sont restaurés.';
+      'Restaure les audios MP3 des playlists à partir d\'un ou de plusieurs fichiers ZIP préalablement sauvés. Seuls les fichiers MP3 qui correspondent aux audios listés dans les playlists et qui ne sont pas déjà présents dans ces playlists sont restaurés.';
 
   @override
   String get audioMp3RestorationDialogTitle => 'Restauration des MP3';
@@ -2208,7 +2208,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get restorePlaylistAudioMp3FilesFromZipTooltip =>
-      'Restaure les audios MP3 de la playlist à partir d\'un fichier ZIP préalablement sauvé. Seuls les fichiers MP3 qui correspondent aux audios listés dans la playlist et qui ne sont pas déjà présents dans cette playlist sont restaurés.';
+      'Restaure les audios MP3 de la playlist à partir d\'un ou de plusieurs fichiers ZIP préalablement sauvés. Seuls les fichiers MP3 qui correspondent aux audios listés dans la playlist et qui ne sont pas déjà présents dans cette playlist sont restaurés.';
 
   @override
   String get audioMp3UniquePlaylistRestorationDialogTitle =>

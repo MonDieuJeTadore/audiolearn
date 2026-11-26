@@ -1425,11 +1425,11 @@
     }
   },
   "restorePlaylistsAudioMp3FilesFromZipMenu": "Restaurer les audios MP3 des playlists depuis un ou plusieurs fichier(s) ZIP ...",
-  "restorePlaylistsAudioMp3FilesFromZipTooltip": "Restaure les audios MP3 des playlists à partir d'un fichier ZIP préalablement sauvé. Seuls les fichiers MP3 qui correspondent aux audios listés dans les playlists et qui ne sont pas déjà présents dans ces playlists sont restaurés.",
+  "restorePlaylistsAudioMp3FilesFromZipTooltip": "Restaure les audios MP3 des playlists à partir d'un ou de plusieurs fichiers ZIP préalablement sauvés. Seuls les fichiers MP3 qui correspondent aux audios listés dans les playlists et qui ne sont pas déjà présents dans ces playlists sont restaurés.",
   "audioMp3RestorationDialogTitle": "Restauration des MP3",
   "audioMp3RestorationExplanation": "Seuls les fichiers MP3 qui correspondent aux audios listés dans les playlists et qui ne sont pas déjà présents dans les playlists sont restaurés.",
   "restorePlaylistAudioMp3FilesFromZipMenu": "Restaurer les audios MP3 de la playlist depuis un ou plusieurs fichier(s) ZIP ...",
-  "restorePlaylistAudioMp3FilesFromZipTooltip": "Restaure les audios MP3 de la playlist à partir d'un fichier ZIP préalablement sauvé. Seuls les fichiers MP3 qui correspondent aux audios listés dans la playlist et qui ne sont pas déjà présents dans cette playlist sont restaurés.",
+  "restorePlaylistAudioMp3FilesFromZipTooltip": "Restaure les audios MP3 de la playlist à partir d'un ou de plusieurs fichiers ZIP préalablement sauvés. Seuls les fichiers MP3 qui correspondent aux audios listés dans la playlist et qui ne sont pas déjà présents dans cette playlist sont restaurés.",
   "audioMp3UniquePlaylistRestorationDialogTitle": "Restauration des MP3",
   "audioMp3UniquePlaylistRestorationExplanation": "Seuls les fichiers MP3 qui correspondent aux audios listés dans la playlist et qui ne sont pas déjà présents dans cette playlist sont restaurés.",
   "playlistInvalidRootPathWarning": "Le répertoire défini \"{playlistRootPath}\" est invalide du fait que le nom du répertoire final '{wrongName}' devant contenir les playlists est différent de 'playlists'. Veuillez renommer le nouveau répertoire contenant les playlists et rééffectuer son changement",

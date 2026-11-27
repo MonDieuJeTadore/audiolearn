@@ -527,7 +527,6 @@
   "confirmCommentedAudioDeletionComment": "The audio contains {commentNumber} comment(s) which will be deleted as well. Confirm deletion ?",
   "commentStartPositionTooltip": "Comment start position in audio.",
   "commentEndPositionTooltip": "Comment end position in audio.",
-  "playlistToggleButtonInAudioPlayerViewTooltip": "Show/hide playlists. Then check a playlist to select its current listened audio.",
   "playlistSelectedSnackBarMessage": "Playlist \"{title}\" selected",
   "playlistImportAudioMenu": "Import Audio File(s) ...",
   "playlistImportAudioMenuTooltip": "Import MP3 audio file(s) or MP4 video file(s) converted to MP3 audio file(s) into the playlist in order to be able to listen them and add positionned comments and pictures to them.",

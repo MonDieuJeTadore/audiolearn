@@ -1160,10 +1160,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commentEndPositionTooltip => 'Fin du commentaire dans l\'audio.';
 
   @override
-  String get playlistToggleButtonInAudioPlayerViewTooltip =>
-      'Afficher/masquer les playlists. Ensuite, cochez une playlist pour sélectionner son audio en cours d\'écoute.';
-
-  @override
   String playlistSelectedSnackBarMessage(Object title) {
     return 'Playlist \"$title\" sélectionnée';
   }

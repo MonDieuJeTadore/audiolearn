@@ -2001,12 +2001,6 @@ abstract class AppLocalizations {
   /// **'Comment end position in audio.'**
   String get commentEndPositionTooltip;
 
-  /// No description provided for @playlistToggleButtonInAudioPlayerViewTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'Show/hide playlists. Then check a playlist to select its current listened audio.'**
-  String get playlistToggleButtonInAudioPlayerViewTooltip;
-
   /// No description provided for @playlistSelectedSnackBarMessage.
   ///
   /// In en, this message translates to:

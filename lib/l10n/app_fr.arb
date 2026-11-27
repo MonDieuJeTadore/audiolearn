@@ -636,7 +636,6 @@
   "confirmCommentedAudioDeletionComment": "L'audio contient {commentNumber} commentaire(s) qui seront également supprimés. Confirmer la suppression ?",
   "commentStartPositionTooltip": "Début du commentaire dans l'audio.",
   "commentEndPositionTooltip": "Fin du commentaire dans l'audio.",
-  "playlistToggleButtonInAudioPlayerViewTooltip": "Afficher/masquer les playlists. Ensuite, cochez une playlist pour sélectionner son audio en cours d'écoute.",
   "playlistSelectedSnackBarMessage": "Playlist \"{title}\" sélectionnée",
   "playlistImportAudioMenu": "Importer des audios ...",
   "playlistImportAudioMenuTooltip": "Importer des audios MP3 ou des vidéos MP4 converties en audios MP3 dans la playlist afin de pouvoir les écouter ainsi qu'y ajouter des commentaires positionnés et des photos.",

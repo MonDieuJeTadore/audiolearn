@@ -1041,10 +1041,6 @@ class MockAppLocalizations extends AppLocalizations {
       "The audio contains \"$commentNumber\" comments which will be deleted as well. Confirm deletion ?";
 
   @override
-  String get playlistToggleButtonInAudioPlayerViewTooltip =>
-      "Show/hide playlists. Then select a playlist to display its current listened audio.";
-
-  @override
   String get playlistCommentsDialogTitle => "Playlist Audio Comments";
 
   @override

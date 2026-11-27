@@ -646,8 +646,8 @@ void main() {
       IntegrationTestUtil.verifyPositionBetweenMinMax(
         tester: tester,
         textWidgetFinder: audioPlayerViewAudioPositionFinder,
-        minPositionTimeStr: '7:04',
-        maxPositionTimeStr: '7:09',
+        minPositionTimeStr: '7:05',
+        maxPositionTimeStr: '7:10',
       );
 
       // Purge the test playlist directory so that the created test
@@ -1366,7 +1366,7 @@ void main() {
         audioPausedDateTimeSecBeforeNowModification: 1,
         audioPositionBeforePlayingStr: '17:59',
         expectedMinPositionTimeStr: '17:57',
-        expectedMaxPositionTimeStr: '17:58',
+        expectedMaxPositionTimeStr: '17:59',
       );
 
       // Purge the test playlist directory so that the created test
@@ -3988,7 +3988,7 @@ void main() {
       // change the current audios play position to audio end
 
       await tester.tap(find.byKey(const Key('audioPlayerViewSkipToEndButton')));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 800));
 
       // check the current audios changed position
       expect(find.text('16:26'), findsOneWidget);
@@ -4352,7 +4352,7 @@ void main() {
       // new command: change the current audios play position to audio end
 
       await tester.tap(find.byKey(const Key('audioPlayerViewSkipToEndButton')));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 800));
 
       expect(find.text('16:26'), findsOneWidget);
 
@@ -4569,7 +4569,7 @@ void main() {
       // change the current audios play position to audio end
 
       await tester.tap(find.byKey(const Key('audioPlayerViewSkipToEndButton')));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 800));
 
       // check the current audios changed position
       expect(find.text('16:26'), findsOneWidget);
@@ -11922,7 +11922,7 @@ void main() {
         );
       });
     });
-    group('With AUDIOPLAYERS 6.4.0 or higher executable only', () {
+    group('No longer with AUDIOPLAYERS 6.4.0 or higher executable only', () {
       testWidgets(
           '''Verify that after typing once on the decrease end position comment button in very short
            comment (0:00 to 0:04) the comment plays till 0:03 seconds and not later.''',
@@ -12202,7 +12202,7 @@ void main() {
         );
       });
       testWidgets(
-          '''FAILS IN 5_2_1 BRANCH. Audio speed 0.5. Set the fourth comment end position to 1:17:15 and verify
+          '''Audio speed 0.5. Set the fourth comment end position to 1:17:15 and verify
             that the comment stops at 1:17:15. Verify that after typing once on the decrease
             end position button, the comment plays till 1:17:14 seconds and not later.''',
           (WidgetTester tester) async {

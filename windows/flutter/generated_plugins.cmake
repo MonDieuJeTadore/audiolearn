@@ -7,7 +7,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   ffmpeg_kit_flutter_new
   flutter_tts
-  flutter_volume_controller
   permission_handler_windows
   screen_retriever_windows
   url_launcher_windows

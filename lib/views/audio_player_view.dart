@@ -21,7 +21,6 @@ import '../viewmodels/theme_provider_vm.dart';
 import 'screen_mixin.dart';
 import 'widgets/audio_playable_list_dialog.dart';
 import 'widgets/playlist_add_remove_sort_filter_options_dialog.dart';
-import 'widgets/playlist_list_item.dart';
 import 'widgets/audio_set_speed_dialog.dart';
 import 'widgets/audio_sort_filter_dialog.dart';
 
@@ -249,10 +248,6 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
           commentVMlistenTrue: commentVMlistenTrue,
           pictureVMlistenTrue: pictureVMlistenTrue,
         ),
-        (playlistListVMlistenFalse.isPlaylistListExpanded)
-            ? _buildExpandedPlaylistList(
-                playlistListVMlistenFalse: playlistListVMlistenFalse)
-            : const SizedBox.shrink(),
         _buildPlayButtonOrAudioPicture(
           playlistListVMlistenTrue: playlistListVMlistenTrue,
           audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
@@ -377,41 +372,6 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
           children: [
             Row(
               children: [
-                SizedBox(
-                  // sets the rounded TextButton size improving the distance
-                  // between the button text and its border
-                  width: kGreaterButtonWidth,
-                  height: kNormalButtonHeight,
-                  child: Tooltip(
-                    message: AppLocalizations.of(context)!
-                        .playlistToggleButtonInAudioPlayerViewTooltip,
-                    child: TextButton(
-                      key: const Key('playlist_toggle_button'),
-                      style: ButtonStyle(
-                        shape: getButtonRoundedShape(
-                          currentTheme: themeProviderVM.currentTheme,
-                        ),
-                        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(
-                            horizontal: kSmallButtonInsidePadding,
-                            vertical: 0,
-                          ),
-                        ),
-                        overlayColor:
-                            textButtonTapModification, // Tap feedback color
-                      ),
-                      onPressed: () {
-                        playlistListVMlistenFalse.togglePlaylistsList();
-                      },
-                      child: Text(
-                        'Playlists',
-                        style: (themeProviderVM.currentTheme == AppTheme.dark)
-                            ? kTextButtonStyleDarkMode
-                            : kTextButtonStyleLightMode,
-                      ),
-                    ),
-                  ),
-                ),
                 if (audioPictureFile != null &&
                     !commentVMlistenTrue.wasCommentDialogOpened)
                   // if a picture is displayed instead of the play button,
@@ -1434,88 +1394,6 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
         ),
       ],
     );
-  }
-
-  Widget _buildExpandedPlaylistList({
-    required PlaylistListVM playlistListVMlistenFalse,
-  }) {
-    List<Playlist> upToDateSelectablePlaylists =
-        playlistListVMlistenFalse.getUpToDateSelectablePlaylists();
-    Expanded expanded = Expanded(
-      child: ListView.builder(
-        key: const Key('expandable_playlist_list'),
-        controller: _playlistScrollController,
-        itemCount: upToDateSelectablePlaylists.length,
-        itemBuilder: (context, index) {
-          Playlist playlist = upToDateSelectablePlaylists[index];
-          return Builder(
-            builder: (listTileContext) {
-              return PlaylistListItem(
-                settingsDataService: widget.settingsDataService,
-                playlist: playlist,
-                onPageChangedFunction: widget.onPageChangedFunction,
-                toggleListIfSelected: true,
-              );
-            },
-          );
-        },
-      ),
-    );
-
-    _scrollToSelectedPlaylist(
-      playlistListVMlistenFalse: playlistListVMlistenFalse,
-    );
-
-    return expanded;
-  }
-
-  void _scrollToSelectedPlaylist({
-    required PlaylistListVM playlistListVMlistenFalse,
-  }) {
-    int playlistToScrollPosition =
-        playlistListVMlistenFalse.determinePlaylistToScrollPosition();
-
-    int noScrollLimit = 4;
-
-    if (playlistToScrollPosition <= noScrollLimit) {
-      // This avoids scrolling down when the selected playlist is
-      // in the top part of the list of playlists. Without that, the
-      // list is unusefully scrolled down and the user has to scroll
-      // up to see a selected top playlist.
-      return;
-    }
-
-    double scrollPositionNumber = playlistToScrollPosition.toDouble();
-
-    if (playlistToScrollPosition > 50) {
-      scrollPositionNumber *= 0.675;
-    } else if (playlistToScrollPosition > 25) {
-      scrollPositionNumber *= 0.68;
-    } else if (playlistToScrollPosition > 20) {
-      scrollPositionNumber *= 0.69;
-    } else if (playlistToScrollPosition > 10) {
-      scrollPositionNumber *= 0.67;
-    } else if (playlistToScrollPosition > noScrollLimit) {
-      scrollPositionNumber *= 0.6;
-    }
-
-    double offset = scrollPositionNumber * widget.playlistItemHeight;
-
-    if (_playlistScrollController.hasClients) {
-      _playlistScrollController.jumpTo(0.0);
-      _playlistScrollController.animateTo(
-        offset,
-        duration: kScrollDuration,
-        curve: Curves.easeInOut,
-      );
-    } else {
-      // The scroll controller isn't attached to any scroll views.
-      // Schedule a callback to try again after the next frame.
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => _scrollToSelectedPlaylist(
-                playlistListVMlistenFalse: playlistListVMlistenFalse,
-              ));
-    }
   }
 
   Widget _buildUndoRedoButtons({

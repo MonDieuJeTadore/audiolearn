@@ -7,7 +7,6 @@ import 'package:audiolearn/viewmodels/audio_player_vm.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../l10n/app_localizations.dart';
@@ -1814,7 +1813,7 @@ class PlaylistListItem extends StatelessWidget with ScreenMixin {
           .dateFormatInvalid; // This will prevent the dialog from closing
     } else {
       final String parsedDateStr =
-          "${parsedDate!.day}/${parsedDate!.month}/${parsedDate!.year}";
+          "${parsedDate.day}/${parsedDate.month}/${parsedDate.year}";
       final String stripLeadingZeros = enteredDateStr
           .split('/')
           .map((part) => part.replaceFirst(RegExp(r'^0+(?=\d)'), ''))

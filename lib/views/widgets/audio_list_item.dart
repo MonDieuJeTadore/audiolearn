@@ -348,6 +348,13 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
                 audioPlayerVMlistenFalse.currentAudioTitleNotifier.value =
                     modifiedAudioTitle;
               }
+
+              await audioPlayerVMlistenFalse
+                  .setCurrentAudioFromSelectedPlaylist(
+                wasAudioTitleModified: true, // If wasAudioTitleModified
+                // is true, the audioi duration will be displayed in the
+                // audio player view.
+              );
             });
             break;
           case AudioPopupMenuAction.modifyAudioUrl:
@@ -744,7 +751,8 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
           lastSubtitlePart =
               '${AppLocalizations.of(context)!.remaining} $audioRemainingHHMMSSDuration ${AppLocalizations.of(context)!.audioStateNotListened}';
         } else {
-          if (lastListenedDateTime.hour == 0 && lastListenedDateTime.minute == 0) {
+          if (lastListenedDateTime.hour == 0 &&
+              lastListenedDateTime.minute == 0) {
             lastSubtitlePart =
                 '${AppLocalizations.of(context)!.remaining} $audioRemainingHHMMSSDuration ${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)}}';
           } else {
@@ -766,7 +774,8 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
         );
 
         if (videoUploadDate == null) {
-          lastSubtitlePart = '$defaultLastSubTitlePart ${AppLocalizations.of(context)!.videoUploadDateNotExist}';
+          lastSubtitlePart =
+              '$defaultLastSubTitlePart ${AppLocalizations.of(context)!.videoUploadDateNotExist}';
         } else {
           lastSubtitlePart =
               '$defaultLastSubTitlePart ${AppLocalizations.of(context)!.videoUploadDate} ${dateFormatVMlistenTrue.formatDate(videoUploadDate)}';
@@ -799,15 +808,14 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
         return '${audioDuration.HHmmss(addRemainingOneDigitTenthOfSecond: true)} $lastSubtitlePart $audioDownloadDurationSubtitlePart';
       case SortingOption.playableEveryNDays:
         return _applyDefault(
-          context: context,
-          dateFormatVMlistenTrue: dateFormatVMlistenTrue,
-          audioDuration: audioDuration,
-          finalSubtitlePart: _lastListenedDateTimeOrPlayableEveryNDays(
-                      context: context,
-                      dateFormatVMlistenTrue: dateFormatVMlistenTrue,
-                      audioDuration: audioDuration,
-                    )
-        );
+            context: context,
+            dateFormatVMlistenTrue: dateFormatVMlistenTrue,
+            audioDuration: audioDuration,
+            finalSubtitlePart: _lastListenedDateTimeOrPlayableEveryNDays(
+              context: context,
+              dateFormatVMlistenTrue: dateFormatVMlistenTrue,
+              audioDuration: audioDuration,
+            ));
       default:
         return _applyDefault(
           context: context,
@@ -855,13 +863,13 @@ class AudioListItem extends StatelessWidget with ScreenMixin {
     if (lastListenedDateTime == null) {
       lastSubtitlePart = AppLocalizations.of(context)!.audioStateNotListened;
     } else {
-          if (lastListenedDateTime.hour == 0 && lastListenedDateTime.minute == 0) {
-            lastSubtitlePart =
-                 '${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)}';
-          } else {
-            lastSubtitlePart =
-                 '${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)} ${AppLocalizations.of(context)!.atPreposition} ${timeFormat.format(lastListenedDateTime)}';
-          }
+      if (lastListenedDateTime.hour == 0 && lastListenedDateTime.minute == 0) {
+        lastSubtitlePart =
+            '${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)}';
+      } else {
+        lastSubtitlePart =
+            '${AppLocalizations.of(context)!.listenedOn} ${dateFormatVMlistenTrue.formatDate(lastListenedDateTime)} ${AppLocalizations.of(context)!.atPreposition} ${timeFormat.format(lastListenedDateTime)}';
+      }
     }
 
     if (playableEveryNDays == '1') {

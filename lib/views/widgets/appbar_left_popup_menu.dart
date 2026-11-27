@@ -308,6 +308,13 @@ class AppBarLeftPopupMenuWidget extends StatelessWidget with ScreenMixin {
                     audioPlayerVMlistenFalse.currentAudioTitleNotifier.value =
                         modifiedAudioTitle;
                   }
+
+                  await audioPlayerVMlistenFalse
+                      .setCurrentAudioFromSelectedPlaylist(
+                        wasAudioTitleModified: true, // If wasAudioTitleModified
+                        // is true, the audioi duration will be displayed in the
+                        // audio player view.
+                      );
                 });
                 break;
               case AudioPopupMenuAction.modifyAudioUrl:

@@ -58,6 +58,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
     with WidgetsBindingObserver, ScreenMixin {
   final double _audioIconSizeSmall = 35;
   final double _audioIconSizeMedium = 40;
+  final double _audioIconSizeMediumGreater = 60;
   final double _audioIconSizeLarge = 80;
   late double _audioPlaySpeed;
 
@@ -384,7 +385,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
                       return IconButton(
                         key: const Key(
                             'picture_displayed_play_pause_button_key'),
-                        iconSize: _audioIconSizeMedium,
+                        iconSize: _audioIconSizeMediumGreater,
                         onPressed: () async {
                           audioPlayerVMlistenFalse.isPlaying
                               ? await audioPlayerVMlistenFalse.pause()

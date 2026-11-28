@@ -368,61 +368,61 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
           areAudioButtonsEnabled = false;
         }
 
+        final bool showPlayPauseButton = audioPictureFile != null &&
+            !commentVMlistenTrue.wasCommentDialogOpened;
+
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                if (audioPictureFile != null &&
-                    !commentVMlistenTrue.wasCommentDialogOpened)
-                  // if a picture is displayed instead of the play button,
-                  // then a play or pause button is included in the second
-                  // line except if the comment dialog was opened.
-                  ValueListenableBuilder<bool>(
-                    valueListenable:
-                        audioPlayerVMlistenFalse.currentAudioPlayPauseNotifier,
-                    builder: (context, isPaused, child) {
-                      return IconButton(
-                        key: const Key(
-                            'picture_displayed_play_pause_button_key'),
-                        iconSize: _audioIconSizeMediumGreater,
-                        onPressed: () async {
-                          audioPlayerVMlistenFalse.isPlaying
-                              ? await audioPlayerVMlistenFalse.pause()
-                              : await audioPlayerVMlistenFalse.playCurrentAudio(
-                                  isFromAudioPlayerView: true,
-                                );
+            // Takes all the free space on the left of the button group
+            // and centers the play/pause button inside it.
+            Expanded(
+              child: Center(
+                child: showPlayPauseButton
+                    // If a picture is displayed instead of the play button,
+                    // then a play or pause button is included in the second
+                    // line except if the comment dialog was opened.
+                    ? ValueListenableBuilder<bool>(
+                        valueListenable: audioPlayerVMlistenFalse
+                            .currentAudioPlayPauseNotifier,
+                        builder: (context, isPaused, child) {
+                          return IconButton(
+                            key: const Key(
+                                'picture_displayed_play_pause_button_key'),
+                            iconSize: _audioIconSizeMediumGreater,
+                            onPressed: () async {
+                              audioPlayerVMlistenFalse.isPlaying
+                                  ? await audioPlayerVMlistenFalse.pause()
+                                  : await audioPlayerVMlistenFalse
+                                      .playCurrentAudio(
+                                      isFromAudioPlayerView: true,
+                                    );
+                            },
+                            style: ButtonStyle(
+                              padding:
+                                  WidgetStateProperty.all<EdgeInsetsGeometry>(
+                                const EdgeInsets.symmetric(
+                                    horizontal: kSmallButtonInsidePadding,
+                                    vertical: 0),
+                              ),
+                              overlayColor: iconButtonTapModification,
+                            ),
+                            icon:
+                                Icon(isPaused ? Icons.pause : Icons.play_arrow),
+                          );
                         },
-                        style: ButtonStyle(
-                          // Highlight button when pressed
-                          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.symmetric(
-                                horizontal: kSmallButtonInsidePadding,
-                                vertical: 0),
-                          ),
-                          overlayColor:
-                              iconButtonTapModification, // Tap feedback color
-                        ),
-                        // Display the play or pause button depending on the
-                        // isPaused value which is updated by the audio player
-                        // currentAudioPlayPauseNotifier
-                        icon: Icon(isPaused ? Icons.pause : Icons.play_arrow),
-                      );
-                    },
-                  ),
-              ],
+                      )
+                    : const SizedBox.shrink(),
+              ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 _buildSetAudioVolumeIconButton(
                   context: context,
                   audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
                   areAudioButtonsEnabled: areAudioButtonsEnabled,
                 ),
-                const SizedBox(
-                  width: kRowButtonGroupWidthSeparator,
-                ),
+                const SizedBox(width: kRowButtonGroupWidthSeparator),
                 _buildSetAudioSpeedTextButton(
                   context: context,
                   audioPlayerVMlistenFalse: audioPlayerVMlistenFalse,
@@ -1144,7 +1144,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
                   sliderValue = currentPosition.inSeconds.toDouble();
                   maxDuration =
                       currentAudio.audioDuration.inMilliseconds / 1000.0;
-                      
+
                   // Display times converted to apparent (speed-adjusted) seconds
                   currentAudioPositionStr = Duration(
                     microseconds:
@@ -1236,8 +1236,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
                         iconSize: _audioIconSizeMedium,
                         onPressed: () async => await audioPlayerVMlistenFalse
                             .changeAudioPlayPosition(
-                          posOrNegPositionModificationInSeconds:
-                              -60,
+                          posOrNegPositionModificationInSeconds: -60,
                         ),
                         style: ButtonStyle(
                           // Highlight button when pressed
@@ -1258,8 +1257,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
                         iconSize: _audioIconSizeMedium,
                         onPressed: () async => await audioPlayerVMlistenFalse
                             .changeAudioPlayPosition(
-                          posOrNegPositionModificationInSeconds:
-                              -10,
+                          posOrNegPositionModificationInSeconds: -10,
                         ),
                         style: ButtonStyle(
                           // Highlight button when pressed
@@ -1280,8 +1278,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
                         iconSize: _audioIconSizeMedium,
                         onPressed: () async => await audioPlayerVMlistenFalse
                             .changeAudioPlayPosition(
-                          posOrNegPositionModificationInSeconds:
-                              10,
+                          posOrNegPositionModificationInSeconds: 10,
                         ),
                         style: ButtonStyle(
                           // Highlight button when pressed
@@ -1302,8 +1299,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
                         iconSize: _audioIconSizeMedium,
                         onPressed: () async => await audioPlayerVMlistenFalse
                             .changeAudioPlayPosition(
-                          posOrNegPositionModificationInSeconds:
-                              60,
+                          posOrNegPositionModificationInSeconds: 60,
                         ),
                         style: ButtonStyle(
                           // Highlight button when pressed
@@ -1329,8 +1325,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
                     child: GestureDetector(
                       onTap: () async => await audioPlayerVMlistenFalse
                           .changeAudioPlayPosition(
-                        posOrNegPositionModificationInSeconds:
-                            -60,
+                        posOrNegPositionModificationInSeconds: -60,
                       ),
                       child: const Text(
                         '1 m',
@@ -1344,8 +1339,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
                     child: GestureDetector(
                       onTap: () async => await audioPlayerVMlistenFalse
                           .changeAudioPlayPosition(
-                        posOrNegPositionModificationInSeconds:
-                            -10,
+                        posOrNegPositionModificationInSeconds: -10,
                       ),
                       child: const Text(
                         '10 s',
@@ -1359,8 +1353,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
                     child: GestureDetector(
                       onTap: () async => await audioPlayerVMlistenFalse
                           .changeAudioPlayPosition(
-                        posOrNegPositionModificationInSeconds:
-                            10,
+                        posOrNegPositionModificationInSeconds: 10,
                       ),
                       child: const Text(
                         '10 s',
@@ -1374,8 +1367,7 @@ class _AudioPlayerViewState extends State<AudioPlayerView>
                     child: GestureDetector(
                       onTap: () async => await audioPlayerVMlistenFalse
                           .changeAudioPlayPosition(
-                        posOrNegPositionModificationInSeconds:
-                            60,
+                        posOrNegPositionModificationInSeconds: 60,
                       ),
                       child: const Text(
                         '1 m',

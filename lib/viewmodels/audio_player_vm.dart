@@ -367,10 +367,17 @@ class AudioPlayerVM extends ChangeNotifier {
   /// AudioPlayerView screen.
   ///
   /// Read below the usefullness of the [audioWasRedownloaded] parameter.
+  /// [audioWasRedownloaded] indicates whether the audio was redownloaded.
+  /// [doClearUndoRedoLists] indicates whether the undo and redo lists should be cleared.
+  /// 
+  /// [wasAudioTitleModified] indicates whether the audio title was modified.
+  /// If [wasAudioTitleModified] is true, the audioi duration will be displayed
+  /// in the audio player view.
   Future<void> _setCurrentAudio({
     required Audio audio,
     bool doClearUndoRedoLists = true,
     bool audioWasRedownloaded = false,
+    bool wasAudioTitleModified = false,
   }) async {
     // necessary to avoid position error when the chosen audio is displayed
     // in the AudioPlayerView screen.
@@ -385,7 +392,9 @@ class AudioPlayerVM extends ChangeNotifier {
     // audio position fields in the audio player view are not updated
     // when playing an audio the first time after having redownloaded
     // it or having redownloaded several filtered audios.
-    if (!audioWasRedownloaded && _currentAudio == audio) {
+    if (!audioWasRedownloaded &&
+        _currentAudio == audio &&
+        !wasAudioTitleModified) {
       return;
     }
 
@@ -739,7 +748,13 @@ class AudioPlayerVM extends ChangeNotifier {
   /// This switches to the AudioPlayerView screen without playing
   /// the selected playlist current or last played audio which
   /// is displayed correctly in the AudioPlayerView screen.
-  Future<void> setCurrentAudioFromSelectedPlaylist() async {
+  /// 
+  /// [wasAudioTitleModified] indicates whether the audio title was modified.
+  /// If [wasAudioTitleModified] is true, the audioi duration will be displayed
+  /// in the audio player view.
+  Future<void> setCurrentAudioFromSelectedPlaylist({
+    bool wasAudioTitleModified = false,
+  }) async {
     List<Playlist> selectedPlaylistLst = _playlistListVM.getSelectedPlaylists();
 
     if (selectedPlaylistLst.isEmpty) {
@@ -770,7 +785,7 @@ class AudioPlayerVM extends ChangeNotifier {
       return;
     }
 
-    if (_currentAudio == currentOrPastPlaylistAudio) {
+    if (_currentAudio == currentOrPastPlaylistAudio && !wasAudioTitleModified) {
       return;
     }
 
